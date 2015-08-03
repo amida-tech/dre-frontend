@@ -1,0 +1,7 @@
+/node_modules
+/dist
+/.idea
+/.tmp
+/.sass-cache
+/bower_components
+/app/dre-frontend.util/scripts/config/dre-frontend-environment.js

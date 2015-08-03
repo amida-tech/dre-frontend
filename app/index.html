@@ -1,0 +1,103 @@
+<!doctype html>
+<html ng-app="dreFrontendApp">
+<head>
+  <meta charset="utf-8">
+  <title ng-bind="$state.current.data.name  || 'My PHR'"></title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width">
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <!-- build:css(.) styles/vendor.css -->
+  <!-- bower:css -->
+  <!-- endbower -->
+  <!-- endbuild -->
+  <!-- build:css(.tmp) styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild -->
+</head>
+<body>
+<!--[if lte IE 8]>
+<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
+  your browser</a> to improve your experience.</p>
+<![endif]-->
+
+<div class="header">
+  <nav ng-cloak class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                data-target="#navbar-collapse-menu" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" ui-sref="$state.current.data.isPublic ? 'main' : 'home'"><img class="img-navbar-logo" src="images/bb-logo-vector.png"></a>
+      </div>
+      <div class="collapse navbar-collapse" id="navbar-collapse-menu">
+        <ul ng-if="$state.current.data.isPublic" class="nav navbar-nav navbar-right">
+          <li><a ui-sref="register">Sign Up</a></li>
+          <li><a ui-sref="login">Log In</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</div>
+
+<div ui-view></div>
+
+<div class="footer">
+  <nav class="navbar navbar-inverse navbar-fixed-bottom">
+    <div class="container-fluid">
+      <h6>Made by Amida Technology Solutions | Licensed under Creative Commons</h6>
+    </div>
+  </nav>
+
+</div>
+
+
+<!-- build:js(.) scripts/vendor.js -->
+<!-- bower:js -->
+<script src="bower_components/jquery/dist/jquery.js"></script>
+<script src="bower_components/angular/angular.js"></script>
+<script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+<script src="bower_components/angular-touch/angular-touch.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+<script src="bower_components/lodash/lodash.js"></script>
+<script src="bower_components/lodash-angular-wrapper/lodash-angular-wrapper.js"></script>
+<!-- endbower -->
+<script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/angular-momentjs/angular-momentjs.js"></script>
+<!-- endbuild -->
+
+<!-- build:js({.tmp,app}) scripts/scripts.js -->
+<script src="scripts/app.js"></script>
+<!-- Begin: Controllers-->
+<script src="scripts/controllers/main.js"></script>
+<script src="scripts/controllers/login.js"></script>
+<script src="scripts/controllers/register.js"></script>
+<script src="scripts/controllers/home.js"></script>
+<script src="scripts/controllers/record.js"></script>
+<!-- End: Controllers-->
+
+<!-- Begin: Directives-->
+<script src="scripts/directives/login-form.js"></script>
+<!-- End: Directives-->
+<!-- endbuild -->
+
+<!-- build:js({.tmp,app}) scripts/dre-frontend.utils.js -->
+<script src="dre-frontend.util/dre-frontend.util.js"></script>
+<script src="dre-frontend.util/scripts/services/dre-frontend-http.js"></script>
+<script src="dre-frontend.util/scripts/config/dre-frontend-globals.js"></script>
+<script src="dre-frontend.util/scripts/config/dre-frontend-environment.js"></script>
+<!-- endbuild -->
+
+<!-- build:js({.tmp,app}) scripts/dre-frontend.fhir.js -->
+<script src="dre-frontend.fhir/dre-frontend.fhir.js"></script>
+<!-- endbuild -->
+<!-- build:js({.tmp,app}) scripts/dre-frontend.core.js -->
+<script src="dre-frontend.core/dre-frontend.core.js"></script>
+<script src="dre-frontend.core/scripts/services/dre-frontend-auth.js"></script>
+<!-- endbuild -->
+</body>
+</html>

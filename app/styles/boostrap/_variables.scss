@@ -1,0 +1,35 @@
+
+// Bootstrap Variable Overrides.
+$icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
+
+$font-family-sans-serif:  "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$font-family-serif:       "Raleway", "Helvetica Neue", Helvetica, Arial, sans-serif !default;
+$font-family-impact:      "Montserrat", serif !default;
+
+$gray-darker:            lighten(#000, 13.5%) !default; // #222
+$gray-dark:              lighten(#000, 20%) !default;   // #333
+$gray:                   lighten(#000, 33.5%) !default; // #555
+$gray-light:             lighten(#000, 46.7%) !default; // #777
+$gray-lighter:           lighten(#000, 93.5%) !default; // #eee
+
+$brand-blue-light: #E1EDFF;
+$brand-blue: #6AA6FF;
+$brand-blue-dark:  #3869B2;
+$brand-orange: #FFCD6A;
+$brand-orange-dark: #B28426;
+
+$headings-font-family:    $font-family-serif;
+
+$brand-primary:         $brand-blue;
+
+$body-bg:                 $gray-dark;
+
+$navbar-inverse-color:                      $gray-lighter;
+$navbar-inverse-bg:                         $gray-dark;
+$navbar-inverse-border:                     $gray-dark;
+$navbar-margin-bottom: 0;
+
+$navbar-inverse-link-color:                 $gray-lighter;
+$navbar-inverse-link-hover-color:           $brand-blue;
+
+$border-radius-base: 0;

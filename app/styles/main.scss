@@ -1,0 +1,30 @@
+/* Override bootstrap vars.
+========================================================================== */
+@import "boostrap/variables";
+@import "fontawesome/variables";
+
+/* VENDOR - Default fall-backs and external files.
+========================================================================== */
+// bower:scss
+@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
+@import "fontawesome/scss/font-awesome.scss";
+// endbower
+
+/* Site re-usable modules
+========================================================================== */
+@import "modules/fonts";
+@import "modules/panels";
+@import "modules/buttons";
+
+/* Default classes
+========================================================================== */
+@import "header&footer";
+@import "general";
+
+/* Routes classes.
+========================================================================== */
+@import "controllers/home";
+
+/* Classes for directives.
+========================================================================== */
+

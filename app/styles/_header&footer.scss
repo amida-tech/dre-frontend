@@ -1,0 +1,18 @@
+/* Custom page header */
+.header {
+  .img-navbar-logo{
+    max-height: 30px;
+    max-width: 30px;
+    margin-top: -7px;
+  }
+  text-transform: uppercase;
+  font-family: $font-family-impact;
+}
+
+/* Custom page footer */
+.footer {
+  padding-top: 19px;
+  color: $gray-light;
+  text-align: center;
+}
+
