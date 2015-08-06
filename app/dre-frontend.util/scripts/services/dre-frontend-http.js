@@ -5,7 +5,7 @@ angular.module('dreFrontend.util')
 
     var defaults = {
       cache: false,
-      withCredentials: true
+      withCredentials: false
     };
 
     var msgs = {

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dreFrontend.util')
-  .service('dreFrontendAuthService', function (dreFrontendHttp) {
+  .service('dreFrontendAuthService', function (dreFrontendHttp, $q) {
     var authData = null;
     var urls = {
       login: '/api/v1/login',
