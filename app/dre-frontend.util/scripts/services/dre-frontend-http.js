@@ -12,7 +12,7 @@ angular.module('dreFrontend.util')
       defaultNetwork: 'Network or server error. Please try again or call helpdesk.'
     };
     var buildServiceUrl = function (apiPath) {
-      return dreFrontendEnvironment.serverUrl + apiPath;
+      return dreFrontendEnvironment.baseServerUrl + apiPath;
     };
     return function (options) {
       //build service url
