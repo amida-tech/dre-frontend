@@ -61,6 +61,15 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
         name: 'My PHR | Home',
         isPublic: false
       }
+    })
+    .state('fhir', {
+      url: '/fhir',
+      templateUrl: '../views/controllers/fhir.html',
+      controller: 'FhirCtrl',
+      data: {
+        name: 'My PHR | FHIR',
+        isPublic: true
+      }
     });
   $urlRouterProvider.otherwise('/');
 
