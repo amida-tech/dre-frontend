@@ -20,39 +20,41 @@
   your browser</a> to improve your experience.</p>
 <![endif]-->
 
-<div class="header">
-  <nav ng-cloak class="navbar navbar-inverse">
-    <div class="container-fluid">
+<table class="wrapper"><tr><td>
+  <header>
+    <div class="container">
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                data-target="#navbar-collapse-menu" aria-expanded="false">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#logout-menu">
           <span class="sr-only">Toggle navigation</span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" ui-sref="$state.current.data.isPublic ? 'main' : 'home'"><img class="img-navbar-logo" src="images/bb-logo-vector.png"></a>
+        <a class="navbar-brand" ui-sref="{{$state.current.data.isPublic ? 'main' : 'home'}}">
+          <img class="img-navbar-logo" src="images/bb-logo-vector.png">
+        </a>
       </div>
-      <div class="collapse navbar-collapse" id="navbar-collapse-menu">
-        <ul ng-if="$state.current.data.isPublic" class="nav navbar-nav navbar-right">
-          <li><a ui-sref="register">Sign Up</a></li>
-          <li><a ui-sref="login">Log In</a></li>
+      <div class="navbar-collapse collapse" id="logout-menu">
+        <ul ng-if="$state.current.data.isPublic"  class="nav navbar-nav navbar-right ">
+          <li><a ui-sref="register">Sign Up</a>
+          </li>
+          <li><a ui-sref="login">Log In</a>
+          </li>
         </ul>
+
       </div>
-    </div>
-  </nav>
-</div>
 
+    </div>
+  </header>
+</td></tr>
+  <tr><td class="wr_td_content">
 <div ui-view></div>
-
-<div class="footer">
-  <nav class="navbar navbar-inverse navbar-fixed-bottom">
-    <div class="container-fluid">
+  </td></tr>
+  <tr><td class="wr_td_footer">
+    <footer class="text-center">
       <h6>Made by Amida Technology Solutions | Licensed under Creative Commons</h6>
-    </div>
-  </nav>
-
-</div>
+    </footer>
+  </td></tr></table>
 
 
 <!-- build:js(.) scripts/vendor.js -->

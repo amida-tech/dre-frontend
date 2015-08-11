@@ -10,6 +10,10 @@
 @import "fontawesome/scss/font-awesome.scss";
 // endbower
 
+/* Default vars and mixins.
+========================================================================== */
+@import "varibles";
+
 /* Site re-usable modules
 ========================================================================== */
 @import "modules/fonts";
