@@ -1,18 +1,33 @@
-/* Custom page header */
-.header {
-  .img-navbar-logo{
-    max-height: 30px;
+header{
+  background:#333333;
+  .img-navbar-logo {
     max-width: 30px;
-    margin-top: -7px;
+    max-height: 30px;
+    margin: -5px 10px;
   }
-  text-transform: uppercase;
-  font-family: $font-family-impact;
-}
+  .navbar-toggle{
+    border-color: #777777;
+    border-radius: 0px;
+    :hover{
+      border-color:#dddddd;
+      background:#777777;
+    }
+    .icon-bar{
+      background-color: white;
+    }
+  }
+  .navbar-nav{
 
-/* Custom page footer */
-.footer {
-  padding-top: 19px;
-  color: $gray-light;
-  text-align: center;
+    > li > a {
+      color: white;
+      font-weight: normal;
+      font-family: "Montserrat", serif;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      &:hover, &:focus{
+        color: $color-blue;
+        background:none;
+      }
+    }
+  }
 }
-

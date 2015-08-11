@@ -55,11 +55,11 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
     })
     .state('home', {
       url: '/home',
-      templateUrl: '../views/controllers/home.html',
+      templateUrl: 'views/controllers/home.html',
       controller: 'HomeCtrl',
       data: {
         name: 'My PHR | Home',
-        isPublic: false
+        isPublic: true//todo after ready set private
       }
     })
     .state('fhir', {

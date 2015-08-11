@@ -1,35 +1,28 @@
-.landing-advertising {
-	margin: 50px;
-}
 
-.landing-panel {
-	padding: 20px;
-	background: url('../images/hero3-optimized.jpg') no-repeat left center;
-	background-size: 1600px;
-	background-color: transparent;
-	min-height: 400px;
-
-	h1 {
-		color: #fff;
-	}
-}
-.marketing-block {
-  background: url("../images/blur.png") no-repeat fixed;
-  h2, p {
-	color: #fff;
-  }
-}
-.icon-circle {
-    @extend .img-circle;
-	background: $brand-blue;
+.landing-advertising{
+  margin:50px 0;
+  .icon-circle{
+	background: $color-blue;
 	width: 100px;
-	height:100px;
+	height: 100px;
 	margin: 0 auto;
+	line-height:100px;
 	text-align: center;
-
-	i {
+	border-radius: 50%;
+	i{
 	  margin-top: 20px;
 	  color: #fff;
 	}
+  }
 }
 
+
+
+
+.landing-panel{
+  background-image: url(../images/hero3-optimized.jpg);
+  background-position: 50% 50%;
+  background-size: cover;
+  position: relative;
+  min-height:400px;
+}
