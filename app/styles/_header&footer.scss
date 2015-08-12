@@ -8,7 +8,7 @@ header{
   .navbar-toggle{
     border-color: #777777;
     border-radius: 0px;
-    :hover{
+    &:hover{
       border-color:#dddddd;
       background:#777777;
     }

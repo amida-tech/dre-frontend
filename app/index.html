@@ -35,6 +35,18 @@
         </a>
       </div>
       <div class="navbar-collapse collapse" id="logout-menu">
+        <ul class="nav navbar-nav">
+            <li><a href="">My Record</a>
+            </li>
+            <li><a href="">My Billing</a>
+            </li>
+            <li><a href="">My Notes</a>
+            </li>
+            <li><a href="">My Files</a>
+            </li>
+            <!-- ngIf: (profile_info.name.first==='Isabella')&&(profile_info.name.last==='Jones') --><li ng-if="(profile_info.name.first==='Isabella')&amp;&amp;(profile_info.name.last==='Jones')" class="ng-scope"><a ng-click="vm.navbarClick('demo')">DEMO</a>
+            </li><!-- end ngIf: (profile_info.name.first==='Isabella')&&(profile_info.name.last==='Jones') -->
+        </ul>
         <ul ng-if="$state.current.data.isPublic"  class="nav navbar-nav navbar-right ">
           <li><a ui-sref="register">Sign Up</a>
           </li>
