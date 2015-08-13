@@ -62,6 +62,15 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
         isPublic: true//todo after ready set private
       }
     })
+    .state('record', {
+      url: '/record',
+      templateUrl: 'views/controllers/record.html',
+      controller: 'RecordCtrl',
+      data: {
+        name: 'My PHR',
+        isPublic: true
+      }
+    })
     .state('fhir', {
       url: '/fhir',
       templateUrl: '../views/controllers/fhir.html',
