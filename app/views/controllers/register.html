@@ -1,3 +1,104 @@
-<div class="">
-This is Sugn up
+<div class="container">
+    <div class="row">
+        <div class="col-sm-6 col-sm-offset-3 body-padding">
+            <!-- STEP 1 -->
+            <h4 class="text-center white">Registration: Step One</h4>
+            <div class="panel panel-body">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-info" style="width: 35%">
+                    </div>
+                </div>
+                <h5 class="text-center">Note: All fields are required.</h5>
+                <div class="form-group">
+                    <label>User ID:</label>
+                    <input type="text" class="form-control">
+
+                </div>
+                <div class="form-group">
+                    <label>Email Address:</label>
+                    <input type="text" class="form-control">
+
+                </div>
+                <div class="form-group">
+                    <label>Password:</label>
+                    <input type="text" class="form-control">
+
+                </div>
+                <div class="form-group">
+                    <label>Repeat Password:</label>
+                    <input type="text" class="form-control">
+
+                </div>
+                <button type="submit" class="btn btn-block btn-primary">Next</button>
+            </div>
+            <!-- STEP 1 END -->
+            <!-- STEP 2 -->
+            <h4 class="text-center white">Registration: Step Two</h4>
+            <div class="panel panel-body">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-info" style="width: 67%">
+                    </div>
+                </div>
+                <h5 class="text-center">Note: All fields are required.</h5>
+                <div class="form-group">
+                    <label>First Name:</label>
+                    <input type="text" class="form-control">
+
+                </div>
+                <div class="form-group">
+                    <label>Middle Name:</label>
+                    <input type="text" class="form-control">
+
+                </div>
+                <div class="form-group">
+                    <label>Last Name:</label>
+                    <input type="text" class="form-control">
+
+                </div>
+                <div class="row">
+                    <div class="form-group col-sm-6">
+                        <p class="input-group">
+                            <label>Date of Birth:</label>
+                            <input type="text" class="form-control" placeholder="MM/DD/YYYY">
+                            <span class="input-group-btn" style="vertical-align: bottom">
+                                <button type="button" class="btn btn-default" ng-click="open($event)" style="height: 42px">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </button>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="form-group col-sm-4 col-sm-offset-2">
+                        <label>Gender:</label>
+                        <select class="form-control">
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Undifferentiated">Undifferentiated</option>
+                        </select>
+
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-block btn-primary">Next</button>
+            </div>
+            <!-- STEP 2 END -->
+            <!-- STEP 3 -->
+            <h4 class="text-center white">Registration: Finished</h4>
+            <div class="panel panel-body">
+                <div class="progress">
+                    <div class="progress-bar progress-bar-info" style="width: 100%">
+                    </div>
+                </div>
+                <p class="text-center">
+                    <i class="fa fa-check fa-2x"></i>
+                </p>
+                <p class="text-center">
+                    You are all set!
+                </p>
+                <p class="text-center padding-bottom">
+                    Click below to continue to your health record.
+                </p>
+                <button type="submit" class="btn btn-block btn-success">Complete</button>
+            </div>
+            <!-- STEP 3 END -->
+        </div>
+    </div>
 </div>
