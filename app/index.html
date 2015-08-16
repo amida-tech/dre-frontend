@@ -21,43 +21,7 @@
 <![endif]-->
 
 <table class="wrapper"><tr><td>
-  <header>
-    <div class="container">
-      <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#logout-menu">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a class="navbar-brand" ui-sref="{{$state.current.data.isPublic ? 'main' : 'home'}}">
-          <img class="img-navbar-logo" src="images/bb-logo-vector.png">
-        </a>
-      </div>
-      <div class="navbar-collapse collapse" id="logout-menu">
-        <ul class="nav navbar-nav">
-            <li><a href="">My Record</a>
-            </li>
-            <li><a href="">My Billing</a>
-            </li>
-            <li><a href="">My Notes</a>
-            </li>
-            <li><a href="">My Files</a>
-            </li>
-            <!-- ngIf: (profile_info.name.first==='Isabella')&&(profile_info.name.last==='Jones') --><li ng-if="(profile_info.name.first==='Isabella')&amp;&amp;(profile_info.name.last==='Jones')" class="ng-scope"><a ng-click="vm.navbarClick('demo')">DEMO</a>
-            </li><!-- end ngIf: (profile_info.name.first==='Isabella')&&(profile_info.name.last==='Jones') -->
-        </ul>
-        <ul ng-if="$state.current.data.isPublic"  class="nav navbar-nav navbar-right ">
-          <li><a ui-sref="register">Sign Up</a>
-          </li>
-          <li><a ui-sref="login">Log In</a>
-          </li>
-        </ul>
-
-      </div>
-
-    </div>
-  </header>
+<main-menu></main-menu>
 </td></tr>
   <tr><td class="wr_td_content">
 <div ui-view></div>
@@ -83,6 +47,7 @@
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="bower_components/moment/moment.js"></script>
 <script src="bower_components/angular-momentjs/angular-momentjs.js"></script>
+<script src="bower_components/angular-messages/angular-messages.js"></script>
 <!-- endbuild -->
 
 <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -98,6 +63,9 @@
 
 <!-- Begin: Directives-->
 <script src="scripts/directives/login-form.js"></script>
+<script src="scripts/directives/main-menu.js"></script>
+<script src="scripts/directives/input-equals-validator.js"></script>
+<script src="scripts/directives/unique-username-validator.js"></script>
 <!-- End: Directives-->
 <!-- endbuild -->
 

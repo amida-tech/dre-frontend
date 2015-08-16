@@ -7,9 +7,9 @@
  * # loginForm
  */
 angular.module('dreFrontendApp')
-  .directive('loginForm', function (dreFrontendAuthService,dreFrontendEnvironment,$state ) {
+  .directive('loginForm', function (dreFrontendAuthService, dreFrontendEnvironment, $state) {
     return {
-      templateUrl: 'views/directives/loginForm.html',
+      templateUrl: '../../views/directives/login-form.html',
       restrict: 'AE',
       scope: {},
       controller: function ($scope) {
@@ -20,17 +20,14 @@ angular.module('dreFrontendApp')
         };
         $scope.submitLogin = function () {
           if ($scope.loginForm.$valid) {
-            dreFrontendAuthService.login($scope.model.login, $scope.model.password).then(function (isAuthenticated) {
-              if(isAuthenticated){
-                $state.go('home');
-              }else{
-                $scope.model.error = 'Please check your Login/Password';
-              }
+            dreFrontendAuthService.login($scope.model.login, $scope.model.password).then(function () {
+              $state.go('home');
+            }).catch(function () {
+              $scope.model.error = 'Please check your Login/Password';
             });
           } else {
             $scope.model.error = 'Please check your Login/Password';
           }
-
         };
       }
     };

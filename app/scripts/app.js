@@ -10,8 +10,7 @@
  */
 var app = angular
   .module('dreFrontendApp', ['ui.router', 'ui.bootstrap', 'dreFrontend.core', 'dreFrontend.fhir', 'dreFrontend.util',
-    'ngTouch'
-  ]);
+    'ngTouch','ngMessages']);
 app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryProvider, $locationProvider, datepickerConfig,
                      datepickerPopupConfig, dreFrontendGlobalsProvider, $urlRouterProvider, $stateProvider) {
   //Enable/disable browser log console. Disable only for production release
@@ -23,7 +22,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
   datepickerConfig.showWeeks = false;
   datepickerConfig.formatYear = 'yyyy';
   datepickerPopupConfig.datepickerPopup = dreFrontendGlobalsProvider.$get().dateFormat;
-
+  datepickerPopupConfig.closeText = 'Close';
   //routes
   $stateProvider
     .state('main', {
@@ -68,7 +67,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
       controller: 'RecordCtrl',
       data: {
         name: 'My PHR',
-        isPublic: true
+        isPublic: true//todo after ready set private
       }
     })
     .state('fhir', {
@@ -84,13 +83,13 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
 
 });
 app.run(function ($rootScope, $state, dreFrontendAuthService) {
-  $rootScope.$state = $state;
   $rootScope.$on("$stateChangeError", console.log.bind(console));
 
   $rootScope.$on('$stateChangeStart', function (e, to) {
    //if rule not defined
     if (!angular.isDefined(to.data.isPublic)) return;
     //Check auth
+    //TODO maybe replace with function without promise
     dreFrontendAuthService.isAuthenticated().then(function (isAuthenticated) {
       //if private state and user is not authenticated
       if (!to.data.isPublic && !isAuthenticated) {
