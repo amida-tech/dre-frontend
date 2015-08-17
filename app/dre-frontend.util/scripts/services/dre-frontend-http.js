@@ -8,9 +8,6 @@ angular.module('dreFrontend.util')
       withCredentials: false
     };
 
-    var msgs = {
-      defaultNetwork: 'Network or server error. Please try again or call helpdesk.'
-    };
     var buildServiceUrl = function (apiPath) {
       return dreFrontendEnvironment.baseServerUrl + apiPath;
     };
@@ -25,13 +22,13 @@ angular.module('dreFrontend.util')
           if (d.status === 200) {
             return d.data;
           }
-          return $q.reject(msgs.defaultNetwork);
+          return $q.reject(d.data);
 
         },
         function (e) {
           $log.debug('http failure(' + options.url + '):', options);
           $log.debug(e);
-          return $q.reject(msgs.defaultNetwork);
+          return $q.reject(e.data);
         }
       )
     }

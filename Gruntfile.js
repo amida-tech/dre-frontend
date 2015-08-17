@@ -448,6 +448,20 @@ module.exports = function (grunt) {
         dest: '<%= yeoman.app %>/dre-frontend.util/scripts/config/dre-frontend-environment.js'
       },
       // Environment targets
+      mock: {
+        options: {
+        },
+        constants: {
+          dreFrontendEnvironment: {
+            name: 'mock',
+            baseServerUrl:'mock',
+            fhirServerUrl:'mocksFhir',
+            defaultUser:'isabella',
+            defaultPassword:'testtest',
+            enableDebugLog:true
+          }
+        }
+      },
       dev: {
         options: {
         },
@@ -533,6 +547,10 @@ module.exports = function (grunt) {
   ]);
   grunt.registerTask('buildQa', [
     'ngconstant:qa',
+    'build'
+  ]);
+  grunt.registerTask('buildMock', [
+    'ngconstant:mock',
     'build'
   ]);
   grunt.registerTask('default', [

@@ -69,7 +69,13 @@ bower install
 # Configuration managment
 
 You have the option to choose your API services from different servers. This is helpful if you do not have or want the Backend Project set up on your local environment.
-There are 2 configurations:
+There are different configurations:
+
+### Development server less server (mock)
+
+This is demo and client debug configuration. All server responses already mocked. No server calls. Log to the browser console debug information enabled.
+```
+grunt ngconstant:mock
 
 ### Development without server (dev)
 
@@ -94,6 +100,7 @@ Please do not update it manual.
 * Run `grunt serve` for preview current configuration.
 * Run `grunt serve:dist` for preview current builded configuration.
 * Run `grunt buildQa` for building qa version.
+* Run `grunt buildMock` for building mocked (server less) version.
 
 #### *Note for a staging build*
 ```
