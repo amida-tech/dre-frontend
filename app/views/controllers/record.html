@@ -8,26 +8,142 @@
                 <h4>Isabella Jones</h4>
                 <p>Born: May 1, 1975</p>
             </div>
+            <div class="sidebar-control">
+                <a href="#" class="btn active">All</a>
+                <a href="#" class="btn">Medications</a>
+                <a href="#" class="btn">Test Results</a>
+                <a href="#" class="btn">Encounters</a>
+                <a href="#" class="btn">Vital Signs</a>
+                <a href="#" class="btn">Immunizations</a>
+                <a href="#" class="btn">Allergies</a>
+                <a href="#" class="btn">Conditions</a>
+                <a href="#" class="btn">Procedures</a> 
+                <a href="#" class="btn">Social History</a>     
+            </div>
         </div>
         <div class="col-sm-9 body-padding">
             <div class="panel panel-body">
                 <div class="breadcrumb0">
                     <a href="#">Home</a>
                     <i class="fa fa-angle-right"></i>
+                    <span>My records</span>
                 </div>
                 <div class="row">
-                    <div class="col-sm-7">
-                        <h4 class="ng-binding">Hi Isabella !</h4>
-                        <p>Welcome to your Personal Health Record. You can review your record summary and account history from this home page.</p>
-                        <p>Last Login: 8/12/15 11:49 AM</p>
+                    <div class="col-sm-12 col-md-6">
+                        <h4 class="ng-binding">Isabella's Record Overview</h4>
+                        <p>This page gives an overview of your health record activity.</p>
                         <p>Last Updated: 8/11/15 4:20 PM</p>
                     </div>
-                    <div class="col-sm-5">
-                        
+                    <div class="col-sm-6 col-md-3 box">
+                        <a href="" class="btn btn-default btn-ico center-block" data-toggle="modal" data-target="#myModal">
+                            <table>
+                                <tr>
+                                    <td><i class="fa fa-print fa-2x"></i></td>
+                                    <td>
+                                        <h5>Print <br> my record</h5>
+                                    </td>
+                                </tr>
+                            </table>
+                        </a>
+                    </div>
+                    <div class="col-sm-6 col-md-3 box">
+                        <a class="btn btn-default btn-ico center-block" data-toggle="modal" data-target="#myModal">
+                            <table>
+                                <tr>
+                                    <td><img class="img-navbar-logo" src="images/bb-logo-vector.png" height="30"></td>
+                                    <td>
+                                        <h6>BlueButton</h6>
+                                        <h5>Download<br>my data<span style="font-size: 8px; vertical-align: top;">®</span></h5>
+                                    </td>
+                                </tr>
+                            </table>
+                        </a>
+                        <h6 class="text-center">
+                            <a href="http://healthit.gov/patients-families/your-health-data" target="_blank">Blue Button</a> lets you go online and download your health records.            
+                        </h6>
                     </div>
                 </div>
             </div>
-            <h4 class="text-center white">Account History</h4>
+            <div class="panel panel-body">                
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h4>Measurements</h4>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <h4 class="text-muted">Height</h4>
+                                    </td>
+                                    <td>
+                                        <h5 class="ng-binding">5' 10"</h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h4 class="text-muted">Weight</h4>
+                                    </td>
+                                    <td>
+                                        <h5 class="ng-binding">198 lbs</h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h4 class="text-muted">BMI</h4>
+                                    </td>
+                                    <td>
+                                        <h5 class="ng-binding">28.5</h5>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <h4 class="text-muted">Blood Pressure</h4>
+                                    </td>
+                                    <td>
+                                        <h5 class="ng-binding">145/88 mmHg</h5>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-6">
+                        <tabset>
+                            <tab heading="Weight">
+                                <br/>Weight
+                            </tab>
+                            <tab heading="Blood Pressure">
+                                <br/>Blood Pressure
+                            </tab>
+                        </tabset>                        
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-body">
+                <div class="breadcrumb0">
+                    <a href="#">Home</a>
+                    <i class="fa fa-angle-right"></i>
+                    <a href="#">My records</a>
+                    <i class="fa fa-angle-right"></i>
+                    <span>My medications</span>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 col-md-6">
+                        <h4>Isabella's medications</h4>
+                        <p>Last Updated: 8/11/15 4:20 PM</p>                        
+                    </div>
+                    
+                    <div class="col-sm-3 col-sm-offset-3">
+                        <button class="btn btn-default" data-toggle="modal" data-target="#myModal3">
+                            <div class="text-left" style="text-transform: none;">
+                                <div class="pull-right">
+                                    <h5 style="margin-top: 0px; margin-bottom: 0px; font-size: 1.5em;">Add Medication</h5>
+                                </div>
+                            </div>
+                        </button>
+                    </div>                    
+                </div>
+                <div class="text-center"><i class="fa fa-flag-o fa-inline"></i> 1 update to your medications requiring review.</div>
+            </div>
+            <h4 class="text-center white">Medications</h4>
             <div class="panel panel-body">
                 <p>Timeline</p>
                 <table class="timeline_tbl" width="100%">
@@ -36,22 +152,7 @@
                             <div class="timeline">
                                 <div class="line">                      
                                     <i style="left:40%;"><span>08/11/2015</span></i>
-                                    <i style="left:50%;"><span>08/11/2015</span></i>
-                                    <i style="left:60%;"><span>08/11/2015</span></i>
-                                    <i style="left:80%;"><span>08/11/2015</span></i>
-                                </div>
-                                <div class="row">
-                                    <div class="col-xs-6">Jun 2015</div>
-                                    <div class="col-xs-6 text-right">Oct 2015</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="timeline">
-                                <div class="line">                      
-                                    <i style="left:10%;"><span>08/11/2015</span></i>
-                                    <i style="left:50%;"><span>08/11/2015</span></i>
-                                    <i style="left:60%;"><span>08/11/2015</span></i>
+                                  
                                     <i style="left:80%;"><span>08/11/2015</span></i>
                                 </div>
                                 <div class="row">
@@ -63,77 +164,286 @@
                     </tr>
                 </table>
                 <div class="blocks">
+                    <!-- START -->
+                    <div>
+                        <div class="row"><i class="col-sm-2 h_line"></i></div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                
+                            </div>
+                            <div class="col-sm-10">
+                                <div class="btn-group pull-right">                                
+                                    <label class="btn btn-default">
+                                        <input type="checkbox" value="inactive" checked="checked"> 
+                                        Show Inactive Meds
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <div>
                         <div class="row"><i class="col-sm-2 h_line"></i></div>
                         <div class="row">
                             <div class="col-sm-2">
                                 <a class="timeline-entry-icon text-center center-block">
-                                    <i class="fa fa-sign-in fa-2x"></i>
+                                    <i class="fa icon-pill fa-2x"></i>
                                 </a>
                             </div>
                             <div class="col-sm-10">
                                 <div class="panel panel-body">
-                                    <h4 class="text-left">Logged in</h4>
+                                    
                                     <div class="row">
-                                        <div class="col-sm-3">
-                                            <h5 class="text-left">8/12/15 1:51 PM</h5>
+                                        <div class="col-sm-6">
+                                            <h4 class="text-left">ASPIRIN</h4>
+                                            <h5 class="text-left">Sep 20, 2012 - Present</h5>
                                         </div>
-                                        <div class="col-sm-9">
-                                                <h5><span>User logged in from IP address '31.24.28.6'</span></h5>
+                                        <div class="col-sm-6">
+                                            
+                                            <button class="pull-right btn btn-link" data-toggle="modal" data-target="#myModal2">                                                
+                                                <i class="fa fa-info-circle fa-2x"></i>
+                                            </button>
+                                            <a href="#">
+                                                <button class="pull-right btn btn-link ng-binding">
+                                                    <i class="fa fa-flag fa-inline"></i>1 pending update<span class="ng-hide">s</span>
+                                                </button>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    
                     </div>
                     <div>
                         <div class="row"><i class="col-sm-2 h_line"></i></div>
                         <div class="row">
                             <div class="col-sm-2">
-                                <a class="timeline-entry-icon text-center center-block">
-                                    <i class="fa fa-cloud-upload fa-2x"></i>
+                                <a class="timeline-entry-icon-medication-inactive text-center center-block">
+                                    <span class="fa-stack fa-lg ng-scope" id="entry3"><i class="fa fa-ban fa-stack-2x fa-rotate-90"></i><i class="fa-stack-1x icon-inhaler "></i></span>
                                 </a>
                             </div>
                             <div class="col-sm-10">
                                 <div class="panel panel-body">
-                                    <h4 class="text-left">FILE UPLOADED</h4>
+                                    
                                     <div class="row">
-                                        <div class="col-sm-3">
-                                            <h5 class="text-left">8/12/15 1:51 PM</h5>
+                                        <div class="col-sm-6">
+                                            <h4 class="text-left">ASPIRIN</h4>
+                                            <h5 class="text-left">Sep 20, 2012 - Present</h5>
                                         </div>
-                                        <div class="col-sm-9">
-                                                <h5><span>User logged in from IP address '31.24.28.6'</span></h5>
+                                        <div class="col-sm-6">
+                                            
+                                            <button class="pull-right btn btn-link" data-toggle="modal" data-target="#myModal2">                                                
+                                                <i class="fa fa-info-circle fa-2x"></i>
+                                            </button>
+                                            <a href="#">
+                                                <button class="pull-right btn btn-link ng-binding">
+                                                    <i class="fa fa-flag fa-inline"></i>1 pending update<span class="ng-hide">s</span>
+                                                </button>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    
                     </div>
-                    <div>
-                        <div class="row"><i class="col-sm-2 h_line"></i></div>
-                        <div class="row">
-                            <div class="col-sm-2">
-                                <a class="timeline-entry-icon text-center center-block">
-                                    <i class="fa fa-user fa-2x"></i>
-                                </a>
-                            </div>
-                            <div class="col-sm-10">
-                                <div class="panel panel-body">
-                                    <h4 class="text-left">Account created</h4>
-                                    <div class="row">
-                                        <div class="col-sm-3">
-                                            <h5 class="text-left">8/12/15 1:51 PM</h5>
-                                        </div>
-                                        <div class="col-sm-9">
-                                                <h5><span>User logged in from IP address '31.24.28.6'</span></h5>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- END -->
                 </div>
+            </div>            
+        </div>
+    </div>
+</div>
+
+<!-- MODAL 1 -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h3 class="modal-title">Print My Record</h3>
+      </div>
+      <div class="modal-body ng-scope">
+        <div class="row text-center">
+            <h3>Would you like to include the additional data you've entered?</h3>
+            <h5>This would include your notes and the medications you've added yourself</h5>
+        </div>
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-1">
+                <button class="btn btn-default col-sm-12">No</button>
+            </div>
+            <div class="col-sm-4 col-sm-offset-2">
+                <button class="btn btn-primary col-sm-12">Yes</button>
+            </div>
+        </div>
+    </div>
+      <div class="modal-footer">
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END -->
+<!-- MODAL 2 -->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h3 class="modal-title">DETAILS FOR ASPIRIN</h3>
+        </div>
+        <div class="modal-body ng-scope">
+            <div class="row">
+                <div class="col-md-3">
+                    <ul id="myTabs" class="nav nav-tabs" role="tablist">
+                        <li class="active">
+                            <a class="btn btn-link" href="#tab1"><i class="fa fa-ellipsis-h"></i> Details</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-link" href="#tab2"><i class="fa fa-comment"></i> Notes</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-link" href="#tab3"><i class="fa fa-picture-o"></i> Images</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-link" href="#tab4"><i class="fa fa-exclamation-triangle"></i> Adverse Events</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-link" href="#tab5"><i class="fa fa-question-circle"></i> Learn More</a>
+                        </li>
+                        <li>
+                            <a class="btn btn-link" href="#tab6"><i class="fa fa-clock-o"></i> History</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-9">
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade active in" id="tab1">
+                            <h4>Details</h4>
+                            <table class="table table-hover ng-scope">
+                                <tr>
+                                    <td>Status:</td>
+                                    <td>Completed</td>
+                                </tr>
+                                <tr>
+                                    <td>Status:</td>
+                                    <td>Completed</td>
+                                </tr>
+                                <tr>
+                                    <td>Status:</td>
+                                    <td>Completed</td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="tab2">
+                            <h4>Notes</h4>
+                            <div class="row container-fluid">
+                                <div class="col-sm-1 panel-body">
+                                    <h5 class="text-center"><a><i class="fa fa-star-o"></i></a></h5>
+                                </div>
+                                <div class="col-sm-11 panel-body">
+                                    <div class="form-group">
+                                        <label for="commentEntry">New:</label>
+                                        <textarea class="form-control" placeholder="Enter Note" rows="2" required="required"name="commentEntry"></textarea>
+                                    </div>
+                                    <button class="btn btn-primary pull-right" disabled="disabled">Add Note</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="tab3">
+                            <h4>IMAGES</h4>
+                            <p>No images found in the NIH NLM RxImage Database for search term 'Aspirin'</p>
+                        </div>
+                        <div class="tab-pane fade" id="tab4">
+                            <h4>ADVERSE EVENTS</h4>
+                            <p>The following adverse events were reported to the FDA for this medication (Source: OpenFDA Adverse Events database)</p>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <td>Term</td>
+                                        <td class="ng-binding">Number reported (out of 396060 )</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="ng-binding">NAUSEA</td>
+                                        <td class="ng-binding">2.93 %</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ng-binding">DYSPNOEA</td>
+                                        <td class="ng-binding">2.93 %</td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ng-binding">FLUSHING</td>
+                                        <td class="ng-binding">2.93 %</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="tab5">
+                            <h4>LEARN MORE</h4>
+                            <p>Click on the following link(s) from MedlinePlus Connect to learn more about this medication.</p>
+                            <p>No MedlinePlus links found for search term 'Aspirin'</p>
+                        </div>
+                        <div class="tab-pane fade" id="tab6">
+                            <h4>SOURCES</h4>
+                            <table class="table table-hover ng-scope">
+                                <tr>
+                                    <td>Source</td>
+                                    <td><a href="#">bluebutton-cms.txt</a></td>
+                                </tr>
+                                <tr>
+                                    <td>Status</td>
+                                    <td>New</td>
+                                </tr>
+                                <tr>
+                                    <td>Merged</td>
+                                    <td>8/11/15 4:20 PM</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                    </div>   
+                </div>
+            </div>
+<script>
+$('#myTabs a').click(function (e) {
+  e.preventDefault()
+  $(this).tab('show')
+})
+</script>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary pull-right" data-dismiss="modal" ng-click="close()">Close</button>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- END -->
+<!-- MODAL 3 -->
+<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h3 class="modal-title">Medication Entry</h3>
+            </div>
+            <div class="modal-body ng-scope">
+                <h3>Select a drug type:</h3>
+                <div class="row">
+                    <div class="col-sm-6">                       
+                        <button class="btn btn-default btn-group-justified">Prescription</button>                     
+                    </div>
+                    <div class="col-sm-6">                       
+                        <button class="btn btn-default btn-group-justified">Over the Counter</button>
+                    </div>                    
+                </div>                
+            </div>
+            <div class="modal-footer">
+
             </div>
         </div>
     </div>
 </div>
+<!-- END -->

@@ -61,6 +61,9 @@ h6, .h6 {
   margin-top: 10px;
   margin-bottom: 10px;
 }
+a:hover {
+    cursor: pointer;
+}
 
 .white{
   color:white;
@@ -71,6 +74,13 @@ label {
   max-width: 100%;
   margin-bottom: 5px;
   font-weight: bold;
+}
+.fa-inline {
+    margin-right: 10px;
+}
+.modal-content {
+    text-align: left;
+    background-color: #eee;
 }
 .form-control {
   display: block;
@@ -229,7 +239,7 @@ $timeline-color:rgb(106, 166, 255);
         }
     }
     
-    .timeline-entry-icon{
+    .timeline-entry-icon, .timeline-entry-icon-medication, .timeline-entry-icon-medication-inactive{
         background: #fff;
         height: 58px;
         width: 58px;
@@ -249,6 +259,23 @@ $timeline-color:rgb(106, 166, 255);
             background:#6aa6ff;
         }
     }
+    .timeline-entry-icon-medication-inactive {
+        background: #fff;
+        border-color:#777777;
+        position: relative;
+        overflow: hidden;
+        i{
+            color: #777777;
+        }
+        &:hover{
+            color:white;
+            background:#777777;
+            i{
+                color:white;
+            }
+        }
+    }
+    
 }
 .progress {
     overflow: hidden;
@@ -273,4 +300,127 @@ $timeline-color:rgb(106, 166, 255);
         -o-transition: width 0.6s ease;
         transition: width 0.6s ease;
     }
+}
+.sidebar-control{
+    a{
+        background-color: transparent;
+        border: 2px solid white;
+        border-bottom:0;
+        display:block;
+        color:white;
+        text-transform:uppercase;
+        margin:0;
+        &:last-child{
+            border-bottom:2px solid white;
+        }
+        &.active, &:hover{
+            background-color: rgba(255, 255, 255, 0.4);
+            color:white;
+        }
+    }
+}
+.btn-ico{
+    color:#6AA6FF;
+    & table{
+        height:52px;
+        text-align:left;
+        td:nth-child(1){
+            padding-right:10px;
+        }
+    }
+    h5{
+        margin:0;
+        text-transform: none;
+    }
+    h6{
+        margin:0;
+        text-transform: none;
+    }
+}
+.nav-tabs{
+    & > li{
+        & > a{
+            margin-right: 2px;
+            line-height: 1.428571429;
+            border: 1px solid transparent;
+            border-radius: 0px 0px 0 0;
+            &:hover, &:focus{
+                border-color: #eeeeee #eeeeee #dddddd;
+                background-color: #eeeeee;
+            }
+        }
+        &.active > a{
+            border-color: #eeeeee #eeeeee #dddddd;
+            background-color: #eeeeee;
+            &:hover, &:focus{
+                border-color: #eeeeee #eeeeee #dddddd;
+                background-color: #eeeeee;
+                cursor: default;
+            }
+        }
+    }
+} 
+
+.nav{
+    > .open{
+        > a{
+            background-color: #777777;
+            cursor:pointer;
+            &:hover, &:focus{
+                background-color: #777777;
+                
+            }
+        }
+    }
+}
+#myTabs{
+    border:0;
+    li{
+        display:block;
+        float:none;     
+        margin:0;
+        a{
+            display:block;
+            border:2px solid transparent;
+            text-align:left;
+            color:#6aa6ff;
+            font-size: 14px;
+            &:hover{
+                text-decoration: underline;
+            }
+        }
+        &.active a{
+            border-color:#6aa6ff;
+        }
+    }
+}
+[data-icon]:before,
+.icon-inhaler:before,
+.icon-liquid:before,
+.icon-pill:before,
+.icon-syringe:before {
+  display: inline-block;
+  font-family: "fontcustom";
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  line-height: 1;
+  text-decoration: inherit;
+  text-rendering: optimizeLegibility;
+  text-transform: none;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  font-smoothing: antialiased;
+}
+.icon-inhaler:before {
+  content: "\f104";
+}
+.icon-liquid:before {
+  content: "\f105";
+}
+.icon-pill:before {
+  content: "\f106";
+}
+.icon-syringe:before {
+  content: "\f107";
 }
