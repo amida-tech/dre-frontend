@@ -487,6 +487,18 @@ module.exports = function (grunt) {
             enableDebugLog:true
           }
         }
+      },
+      vagrant: {
+        options: {
+        },
+        constants: {
+          dreFrontendEnvironment: {
+            name: 'vagrant',
+            baseServerUrl:'http://192.168.33.10:3000',
+            fhirServerUrl:'http://192.168.33.10:8080/hapi-fhir-jpaserver',
+            enableDebugLog:true
+          }
+        }
       }
     },
     // Test settings
