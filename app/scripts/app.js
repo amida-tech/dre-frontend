@@ -10,7 +10,7 @@
  */
 var app = angular
   .module('dreFrontendApp', ['ui.router', 'ui.bootstrap', 'dreFrontend.core', 'dreFrontend.fhir', 'dreFrontend.util',
-    'ngTouch','ngMessages','dreFrontend.mocks']);
+    'ngTouch', 'ngMessages', 'dreFrontend.mocks']);
 app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryProvider, $locationProvider, datepickerConfig,
                      datepickerPopupConfig, dreFrontendGlobalsProvider, $urlRouterProvider, $stateProvider) {
   //Enable/disable browser log console. Disable only for production release
@@ -30,7 +30,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
       templateUrl: 'views/controllers/main.html',
       controller: 'MainCtrl',
       data: {
-        name: 'My PHR',
+        name: '',
         isPublic: true
       }
     })
@@ -39,7 +39,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
       templateUrl: 'views/controllers/login.html',
       controller: 'LoginCtrl',
       data: {
-        name: 'My PHR | Login',
+        name: 'Login',
         isPublic: true
       }
     })
@@ -48,26 +48,45 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
       templateUrl: 'views/controllers/register.html',
       controller: 'RegisterCtrl',
       data: {
-        name: 'My PHR | New User',
+        name: 'New User',
         isPublic: true
       }
     })
-    .state('home', {
+    .state('homeRoot', {
       url: '/home',
-      templateUrl: 'views/controllers/home.html',
-      controller: 'HomeCtrl',
+      templateUrl: 'views/controllers/home-root.html',
+      abstract: true
+    })
+    .state('home', {
+      url: '',
+      parent:'homeRoot',
       data: {
-        name: 'My PHR | Home',
-        isPublic: true//todo after ready set private
+        name: 'Home',
+        isPublic: false
+      },
+      views: {
+        'homeMenu@homeRoot': {},
+        'pageBody@homeRoot': {
+          templateUrl: "views/controllers/account-history.html",
+          controller: "AccountHistoryCtrl"
+        }
       }
     })
     .state('record', {
       url: '/record',
-      templateUrl: 'views/controllers/record.html',
-      controller: 'RecordCtrl',
+      parent:'home',
       data: {
-        name: 'My PHR',
-        isPublic: true//todo after ready set private
+        name: 'My Records',
+        isPublic: false
+      },
+      views: {
+        'homeMenu@homeRoot': {
+          templateUrl: "views/controllers/record-menu.html"
+        },
+        'pageBody@homeRoot': {
+          templateUrl: "views/controllers/record-history.html",
+          controller: "RecordHistoryCtrl"
+        }
       }
     })
     .state('fhir', {
@@ -84,9 +103,9 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
 });
 app.run(function ($rootScope, $state, dreFrontendAuthService) {
   $rootScope.$on("$stateChangeError", console.log.bind(console));
-
+  $rootScope.$state = $state;
   $rootScope.$on('$stateChangeStart', function (e, to) {
-   //if rule not defined
+    //if rule not defined
     if (!angular.isDefined(to.data.isPublic)) return;
     //Check auth
     //TODO maybe replace with function without promise

@@ -1,0 +1,7 @@
+<div class="profile panel-body">
+  <div class="profile-image">
+    <img ng-src="{{model.avatarUrl}}" alt="{{model.userName}}"/>
+  </div>
+  <h4>{{model.userName}}</h4>
+  <p>Born: {{model.dateOfBorn | date : 'longDate'}}</p>
+</div>

@@ -4,7 +4,7 @@ angular.module('dreFrontend.mocks')
   .service('dreFrontendAuthMocks', function ($log, $q, $rootScope, $httpBackend) {
   return function(){
     $log.debug('start configure auth mocks');
-    var isAuthenticated = false;
+    var isAuthenticated = true;
     var defaultUserName = 'isabella';
     //login
     $httpBackend.whenPOST('mock/api/v1/login').respond(function (method, url, data) {

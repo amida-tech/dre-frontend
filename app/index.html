@@ -2,7 +2,7 @@
 <html ng-app="dreFrontendApp">
 <head>
   <meta charset="utf-8">
-  <title ng-bind="$state.current.data.name  || 'My PHR'"></title>
+  <title ng-bind="'My PHR' + ($state.current.data.name ? ' | ' + $state.current.data.name : '') "></title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width">
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
@@ -19,18 +19,25 @@
 <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
   your browser</a> to improve your experience.</p>
 <![endif]-->
-
-<table class="wrapper"><tr><td>
-<main-menu></main-menu>
-</td></tr>
-  <tr><td class="wr_td_content">
-<div ui-view></div>
-  </td></tr>
-  <tr><td class="wr_td_footer">
-    <footer class="text-center">
-      <h6>Made by Amida Technology Solutions | Licensed under Creative Commons</h6>
-    </footer>
-  </td></tr></table>
+<table class="wrapper">
+  <tr>
+    <td>
+      <main-menu></main-menu>
+    </td>
+  </tr>
+  <tr>
+    <td class="wr_td_content">
+      <div ui-view></div>
+    </td>
+  </tr>
+  <tr>
+    <td class="wr_td_footer">
+      <footer class="text-center">
+        <h6>Made by Amida Technology Solutions | Licensed under Creative Commons</h6>
+      </footer>
+    </td>
+  </tr>
+</table>
 
 
 <!-- build:js(.) scripts/vendor.js -->
@@ -58,8 +65,8 @@
 <script src="scripts/controllers/fhir.js"></script>
 <script src="scripts/controllers/login.js"></script>
 <script src="scripts/controllers/register.js"></script>
-<script src="scripts/controllers/home.js"></script>
-<script src="scripts/controllers/record.js"></script>
+<script src="scripts/controllers/account-history.js"></script>
+<script src="scripts/controllers/record-history.js"></script>
 <!-- End: Controllers-->
 
 <!-- Begin: Directives-->
@@ -67,6 +74,12 @@
 <script src="scripts/directives/main-menu.js"></script>
 <script src="scripts/directives/input-equals-validator.js"></script>
 <script src="scripts/directives/unique-username-validator.js"></script>
+<script src="scripts/directives/user-info.js"></script>
+<script src="scripts/directives/home-breadcrumbs.js"></script>
+<script src="scripts/directives/user-timeline.js"></script>
+<script src="scripts/directives/user-measurements.js"></script>
+<script src="scripts/directives/user-timeline-entry-icon.js"></script>
+<script src="scripts/directives/user-timeline-entry-title.js"></script>
 <!-- End: Directives-->
 <!-- endbuild -->
 

@@ -1,0 +1,86 @@
+<div class="panel panel-body">
+  <home-breadcrumbs></home-breadcrumbs>
+  <div class="row">
+    <div class="col-sm-12 col-md-6">
+      <h4 class="ng-binding">{{model.firstName}}'s Record Overview</h4>
+
+      <p>This page gives an overview of your health record activity.</p>
+
+      <p>Last Updated: {{model.lastUpdate| date :'short'}}</p>
+    </div>
+    <div class="col-sm-6 col-md-3 box">
+      <a href="" class="btn btn-default btn-ico center-block" data-toggle="modal" data-target="#myModal">
+        <table>
+          <tr>
+            <td><i class="fa fa-print fa-2x"></i></td>
+            <td>
+              <h5>Print <br> my record</h5>
+            </td>
+          </tr>
+        </table>
+      </a>
+    </div>
+    <div class="col-sm-6 col-md-3 box">
+      <a class="btn btn-default btn-ico center-block" data-toggle="modal" data-target="#myModal">
+        <table>
+          <tr>
+            <td><img class="img-navbar-logo" src="images/bb-logo-vector.png" height="30"></td>
+            <td>
+              <h6>BlueButton</h6>
+              <h5>Download<br>my data<span style="font-size: 8px; vertical-align: top;">®</span></h5>
+            </td>
+          </tr>
+        </table>
+      </a>
+      <h6 class="text-center">
+        <a href="http://healthit.gov/patients-families/your-health-data" target="_blank">Blue Button</a> lets you go
+        online and download your health records.
+      </h6>
+    </div>
+  </div>
+</div>
+<user-measurements></user-measurements>
+<h4 class="text-center white">Account History</h4>
+<div class="panel panel-body">
+  <user-timeline></user-timeline>
+  <div class="blocks">
+    <!-- START -->
+    <div ng-repeat="action in ::model.actionsList">
+      <div class="row"><i class="col-sm-2 h_line"></i></div>
+      <div class="row">
+        <div class="col-sm-2">
+          <a class="timeline-entry-icon text-center center-block" ng-switch="action.actionType">
+            <i ng-switch-when="login" class="fa fa-sign-in fa-2x"></i>
+            <i ng-switch-when="upload" class="fa fa-cloud-upload fa-2x"></i>
+            <i ng-switch-when="create" class="fa fa-user fa-2x"></i>
+          </a>
+        </div>
+        <div class="col-sm-10">
+          <div class="panel panel-body">
+            <h4 ng-switch="action.actionType">
+              <span ng-switch-when="login" class="text-left">Logged in</span>
+              <span ng-switch-when="upload" class="text-left">File uploaded</span>
+              <span ng-switch-when="create" class="text-left">Account created</span>
+            </h4>
+
+            <div class="row">
+              <div class="col-sm-3">
+                <h5 class="text-left">{{action.actionDate | date:'short'}}</h5>
+              </div>
+              <div class="col-sm-9">
+                <h5 ng-switch="action.actionType">
+                  <span ng-switch-when="login"
+                        class="text-left">User logged in from IP address '{{action.actionData}}'</span>
+                  <span ng-switch-when="upload" class="text-left">User uploaded '{{action.actionData}}'</span>
+                  <span ng-switch-when="create" class="text-left">User created account '{{action.actionData}}'</span>
+                </h5>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <h5 ng-hide="model.actionsList" class="col-sm-12 text-center">No Record Entries</h5>
+    <!-- END -->
+  </div>
+</div>

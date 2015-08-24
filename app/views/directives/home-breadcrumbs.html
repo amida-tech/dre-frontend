@@ -1,0 +1,5 @@
+<ol class="breadcrumb">
+  <li ng-repeat="parent in model.parents"><a ui-sref="{{parent.route}}" ui-sref-active="active">{{parent.name}}</a></li>
+  <li class="active">{{model.currentPage}}</li>
+  <li ng-show="model.parents.length == 0"></li>
+</ol>
