@@ -1,8 +1,10 @@
 <div class="">
     <div class="col-sm-3">
         <button class="btn btn-block btn-primary" ng-click="getPatients()">getPatients</button>
-        <button class="btn btn-block btn-primary" ng-click="getPatient(35239)">getPatient(35239)</button>
+        <button class="btn btn-block btn-primary" ng-click="getPatient(3768)">getPatient(3768)</button>
         <button class="btn btn-block btn-primary" ng-click="getMedications()">getMedications()</button>
-        <button class="btn btn-block btn-primary" ng-click="getMedication(22004)">getMedication(22004)</button>
+        <button class="btn btn-block btn-primary" ng-click="getMedication(3796)">getMedication(3796)</button>
+        <button class="btn btn-block btn-primary" ng-click="getPatientMedications(3768)">getPatientMedications(3768)</button>
     </div>
-</div>
+    <div class="col-sm-9 "><pre class="bg-success" style="white-space: pre-wrap;" ng-show="response">{{response | json }}</pre></div>
+</di>

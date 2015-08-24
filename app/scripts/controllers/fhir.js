@@ -7,25 +7,43 @@
  * # FhirCtrl
  * Controller of the dreFrontendApp
  */
-angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, dreFrontendFhirService) {
+angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, $fhir) {
     $scope.getPatients = function(){
-        dreFrontendFhirService.patient.all(function(data){
-            console.log(data);
-        });
-    }
+        $fhir.read("Patient")
+        .then(
+          function(data){
+            $scope.response = data;
+          },
+          function(err){
+            console.log(err);
+          }
+        );
+    };
     $scope.getPatient = function(id){
-        dreFrontendFhirService.patient.one(id, function(data){
-            console.log(data);
+      $fhir.read("Patient", id)
+        .then(function(data){
+          $scope.response = data;
         });
-    }
+    };
     $scope.getMedications = function(){
-        dreFrontendFhirService.medication.all(function(data){
-            console.log(data);
-        });
-    }
+        $fhir.read("medication").then(
+          function(data) {
+            $scope.response = data;
+          }
+        );
+    };
     $scope.getMedication = function(id){
-        dreFrontendFhirService.medication.one(id, function(data){
-            console.log(data);
+      $fhir.read("medication",id)
+        .then(function(data){
+            $scope.response = data;
         });
-    }
+    };
+
+    $scope.getPatientMedications = function(patient_id) {
+      $fhir
+        .search("MedicationPrescription", {patient: patient_id})
+        .then(function (data) {
+          $scope.response = data;
+        });
+    };
 });
