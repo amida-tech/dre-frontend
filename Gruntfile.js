@@ -469,7 +469,7 @@ module.exports = function (grunt) {
           dreFrontendEnvironment: {
             name: 'dev',
             baseServerUrl:'http://dre.amida-demo.com:3000',
-            fhirServerUrl:'http://dev.ntrlab.ru:8080/hapi-fhir-jpaserver-example',
+            fhirServerUrl:'http://dre.ntrlab.ru:8080/fhir/base',
             defaultUser:'isabella',
             defaultPassword:'testtest',
             enableDebugLog:true
