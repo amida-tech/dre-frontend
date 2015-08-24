@@ -1,18 +1,44 @@
-'use strict';
+"use strict";
 
 angular.module('dreFrontend.fhir')
-  .service('$fhir', ['Restangular',"$q",function(Restangular,$q){
-    var resource;
-
+  .service("dreFrontendFhirService", ["Restangular","$q",function(Restangular,$q) {
+/*
+2do: add fhir-resource validator before any operation
+*/
     function set_response(res) {
-      resource = res;
       /*
       do response processing here:
       - inject getters
       - format data
       - etc
        */
+      if (res.resourceType == "Bundle") {
+        for (var i = 0; i < res.total; i++) {
+          add_resource_loader(res.entry[i].resource);
+        }
+      } else {
+        add_resource_loader(res);
+      }
+
       return res;
+    }
+
+    function add_resource_loader(r) {
+      angular.forEach(r, function(v){
+        if (v && typeof v == "object" && v.hasOwnProperty("reference")) {
+          angular.extend(v,{
+            load: function() {
+              var self = this;
+              var p = v.reference.split("/");
+              return Restangular.one(p[0],p[1]).get().then(function(sub_resource) {
+                add_resource_loader(sub_resource);
+                angular.extend(self,sub_resource);
+                return sub_resource;
+              });
+            }
+          });
+        }
+      });
     }
 
     function _search (resourceType, params) {

@@ -7,9 +7,9 @@
  * # FhirCtrl
  * Controller of the dreFrontendApp
  */
-angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, $fhir) {
+angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, dreFrontendFhirService) {
     $scope.getPatients = function(){
-        $fhir.read("Patient").then(
+        dreFrontendFhirService.read("Patient").then(
           function (res) {
             $scope.response = res;
             $scope.res_type = "success";
@@ -21,7 +21,7 @@ angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, $fhir)
             );
     };
     $scope.getPatient = function(id){
-      $fhir.read("Patient", id).then(
+      dreFrontendFhirService.read("Patient", id).then(
         function (res) {
           $scope.response = res;
           $scope.res_type = "success";
@@ -33,7 +33,7 @@ angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, $fhir)
       );
     };
     $scope.getMedications = function(){
-        $fhir.read("Medication").then(
+        dreFrontendFhirService.read("Medication").then(
           function (res) {
             $scope.response = res;
             $scope.res_type = "success";
@@ -45,7 +45,7 @@ angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, $fhir)
         );
     };
     $scope.getMedication = function(id){
-      $fhir.read("Medication",id).then(
+      dreFrontendFhirService.read("Medication",id).then(
         function (res) {
           $scope.response = res;
           $scope.res_type = "success";
@@ -58,11 +58,14 @@ angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, $fhir)
     };
 
     $scope.getPatientMedications = function(patient_id) {
-      $fhir
+      dreFrontendFhirService
         .search("MedicationPrescription", {patient: patient_id}).then(
         function (res) {
           $scope.response = res;
           $scope.res_type = "success";
+          res.entry[0].resource.medication.load().then(function(r){
+            r.manufacturer.load();
+          });
         },
         function (err) {
           $scope.response = err;
@@ -72,7 +75,7 @@ angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, $fhir)
     };
 
     $scope.createPatient = function(_data) {
-      $fhir.create("Patient", _data).then(
+      dreFrontendFhirService.create("Patient", _data).then(
         function (res) {
           $scope.response = res;
           $scope.res_type = "success";
@@ -83,5 +86,4 @@ angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, $fhir)
         }
       );
     }
-
 });
