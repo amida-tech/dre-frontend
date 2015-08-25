@@ -1,7 +1,6 @@
 'use strict';
 angular.module('dreFrontend.fhir')
-  .constant('fhirEnv', function () {
-    return {
+  .constant('fhirEnv', {
       resourceTypes: [
         "AdverseReaction",
         "Alert",
@@ -53,5 +52,4 @@ angular.module('dreFrontend.fhir')
         "Supply",
         "ValueSet"
       ]
-    };
-  });
+    });
