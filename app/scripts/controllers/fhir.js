@@ -69,6 +69,22 @@ angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, dreFro
         });
     };
 
+  $scope.MedicationPrescription = function() {
+    dreFrontendFhirService.read("MedicationPrescription")
+      .then(function (res) {
+        $scope.response = res;
+        $scope.res_type = "success";
+        res.entry[0].resource.medication.load()
+          .then(function(r){
+            r.manufacturer.load();
+          });
+      })
+      .catch(function (err) {
+        $scope.response = err;
+        $scope.res_type = "danger";
+      });
+  };
+
     $scope.createPatient = function(_data) {
       dreFrontendFhirService.create("Patient", _data)
         .then(function (res) {
