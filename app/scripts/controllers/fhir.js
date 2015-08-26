@@ -74,10 +74,14 @@ angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, dreFro
       .then(function (res) {
         $scope.response = res;
         $scope.res_type = "success";
-        res.entry[0].resource.medication.load()
-          .then(function(r){
-            r.manufacturer.load();
-          });
+        return res;
+      })
+      .then(function(res) {
+        res.next().then(function(next_res){
+          $scope.response = next_res;
+          return next_res;
+        })
+        return(res);
       })
       .catch(function (err) {
         $scope.response = err;
