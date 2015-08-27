@@ -22,7 +22,7 @@ angular.module('dreFrontend.fhir')
         }
 
         function _add_page_handlers(bundleResource) {
-          if (bundleResource.resourceType == "Bundle") {
+          if (bundleResource.resourceType == fhirEnv.bundleType) {
             var handlers = {};
             angular.forEach(bundleResource.link,
               function (_link) {
@@ -49,13 +49,22 @@ angular.module('dreFrontend.fhir')
         }
 
         function set_response(res) {
-          if (res.resourceType == "Bundle") {
+          if (res.resourceType == fhirEnv.bundleType) {
             _add_page_handlers(res);
             angular.forEach(res.entry, function (v) {
               add_resource_loader(v.resource);
             });
           } else
             add_resource_loader(res);
+
+          /* remove unnecessary data */
+
+          res = Restangular.stripRestangular(res);
+          res = _.omit(res,["meta","type","base","link","search"]);
+
+          if (res.resourceType == fhirEnv.bundleType)
+            res.entry = _.pluck(res.entry,"resource");
+
           return res;
         }
 
@@ -93,9 +102,11 @@ angular.module('dreFrontend.fhir')
         }
 
         function _read(resourceType, id) {
+          var params = (typeof id == 'undefined')?{"_count": _count}:{};
+
           return _is_valid_resource_type(resourceType)
             .then(function (resType) {
-              return Restangular.one(resType, id).get({"_count": _count}).then(set_response);
+              return Restangular.one(resType, id).get(params).then(set_response);
             });
         }
 

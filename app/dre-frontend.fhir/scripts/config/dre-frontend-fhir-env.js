@@ -51,5 +51,6 @@ angular.module('dreFrontend.fhir')
         "Substance",
         "Supply",
         "ValueSet"
-      ]
+      ],
+      bundleType: "Bundle"
     });

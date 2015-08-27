@@ -58,8 +58,9 @@ angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, dreFro
         .then(function (res) {
           $scope.response = res;
           $scope.res_type = "success";
-          res.entry[0].resource.medication.load()
+          res.entry[0].medication.load()
             .then(function(r){
+              /*angular.extend(res.entry[0].medication,r);*/
               r.manufacturer.load();
             });
         })
