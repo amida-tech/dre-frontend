@@ -56,7 +56,8 @@ angular.module('dreFrontend.fhir')
           if (res.resourceType == fhirEnv.bundleType) {
             _add_page_handlers(res);
             angular.forEach(res.entry, function (v) {
-              add_resource_loader(v.resource);
+              if (v.resource)
+                add_resource_loader(v.resource);
             });
           } else
             add_resource_loader(res);
@@ -124,7 +125,7 @@ angular.module('dreFrontend.fhir')
         }
 
         function _create(resourceType, data) {
-          return $q.reject("not implemented");
+          return Restangular.one("").post(resourceType,data);
         }
 
         function _update(resourceType, id, data) {

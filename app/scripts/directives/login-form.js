@@ -9,7 +9,7 @@
 angular.module('dreFrontendApp')
   .directive('loginForm', function (dreFrontendAuthService, dreFrontendEnvironment, $state) {
     return {
-      templateUrl: '../../views/directives/login-form.html',
+      templateUrl: 'views/directives/login-form.html',
       restrict: 'AE',
       scope: {},
       controller: function ($scope) {

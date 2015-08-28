@@ -18,7 +18,7 @@ angular.module('dreFrontendApp')
         $scope.model = {
           actionTitle:''
         };
-        switch ($scope.userTimelineEntryTitle.actionType){
+        switch ($scope.userTimelineEntryTitle.type){
           case 'login':
             $scope.model.actionTitle = 'Logged in';
             break;
@@ -31,11 +31,8 @@ angular.module('dreFrontendApp')
           case 'create':
             $scope.model.actionTitle = 'Account created';
             break;
-          case 'medication':
-            $scope.model.actionTitle = 'Aspirin';//TODO replace
-            break;
-          case 'inhaler':
-            $scope.model.actionTitle= 'Inhaler';
+          case 'MedicationPrescription':
+            $scope.model.actionTitle = $scope.userTimelineEntryTitle.title;
             break;
           default:
             $scope.model.actionTitle = '';

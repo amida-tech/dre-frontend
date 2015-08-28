@@ -15,15 +15,15 @@ angular.module('dreFrontendApp')
       actionsList:[
         {
           actionDate: new Date(12,12,2014),
-          actionType: 'login'
+          type: 'login'
         },
         {
           actionDate: new Date(12,11,2014),
-          actionType: 'upload'
+          type: 'upload'
         },
         {
           actionDate: new Date(12,10,2014),
-          actionType: 'create'
+          type: 'create'
         }
       ]
     };
