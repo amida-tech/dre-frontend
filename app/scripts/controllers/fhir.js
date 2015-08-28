@@ -46,5 +46,5 @@ angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, dreFro
       DreFrontendMedications.getByPatientId(patient_id)
         .then(success_handler)
         .catch(fail_handler);
-    }
+    };
 });
