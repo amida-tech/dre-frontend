@@ -239,7 +239,7 @@ label {
         }
     }
     
-    .timeline-entry-icon, .timeline-entry-icon-medication, .timeline-entry-icon-medication-inactive{
+    .timeline-entry-icon, .timeline-entry-icon-inactive{
         background: #fff;
         height: 58px;
         width: 58px;
@@ -259,11 +259,16 @@ label {
             background:#6aa6ff;
         }
     }
-    .timeline-entry-icon-medication-inactive {
+    .timeline-entry-icon-inactive {
         background: #fff;
         border-color:#777777;
         position: relative;
         overflow: hidden;
+
+        i.fa-ban{
+          font-size: 6.198em;
+          line-height: 0.32em;
+        }
         i{
             color: #777777;
         }
