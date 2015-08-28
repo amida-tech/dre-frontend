@@ -50,7 +50,7 @@ angular.module('dreFrontend.fhir')
 
         function set_response(res) {
           function _omit(r) {
-            return _.omit(r,["meta","type","base","link","search","text"]);
+            return _.omit(r,["type","base","link","search","text"]);
           }
 
           if (res.resourceType == fhirEnv.bundleType) {
