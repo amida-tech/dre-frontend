@@ -2,7 +2,7 @@
   <home-breadcrumbs></home-breadcrumbs>
   <div class="row">
     <div class="col-sm-12 col-md-6">
-      <h4 class="ng-binding">{{model.firstName}}'s Record Overview</h4>
+      <h4>{{model.firstName}}'s Record Overview</h4>
 
       <p>This page gives an overview of your health record activity.</p>
 
@@ -49,31 +49,14 @@
       <div class="row"><i class="col-sm-2 h_line"></i></div>
       <div class="row">
         <div class="col-sm-2">
-          <a class="timeline-entry-icon text-center center-block" ng-switch="action.actionType">
-            <i ng-switch-when="login" class="fa fa-sign-in fa-2x"></i>
-            <i ng-switch-when="upload" class="fa fa-cloud-upload fa-2x"></i>
-            <i ng-switch-when="create" class="fa fa-user fa-2x"></i>
-          </a>
+          <div user-timeline-entry-icon="action"></div>
         </div>
         <div class="col-sm-10">
           <div class="panel panel-body">
-            <h4 ng-switch="action.actionType">
-              <span ng-switch-when="login" class="text-left">Logged in</span>
-              <span ng-switch-when="upload" class="text-left">File uploaded</span>
-              <span ng-switch-when="create" class="text-left">Account created</span>
-            </h4>
-
+            <div user-timeline-entry-title="action"></div>
             <div class="row">
               <div class="col-sm-3">
                 <h5 class="text-left">{{action.actionDate | date:'short'}}</h5>
-              </div>
-              <div class="col-sm-9">
-                <h5 ng-switch="action.actionType">
-                  <span ng-switch-when="login"
-                        class="text-left">User logged in from IP address '{{action.actionData}}'</span>
-                  <span ng-switch-when="upload" class="text-left">User uploaded '{{action.actionData}}'</span>
-                  <span ng-switch-when="create" class="text-left">User created account '{{action.actionData}}'</span>
-                </h5>
               </div>
             </div>
           </div>

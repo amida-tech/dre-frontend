@@ -89,6 +89,23 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
         }
       }
     })
+    .state('record.medications', {
+      url: '/record/medications',
+      parent:'record',
+      data: {
+        name: 'My Medications',
+        isPublic: false
+      },
+      views: {
+        'homeMenu@homeRoot': {
+          templateUrl: "views/controllers/record-menu.html"
+        },
+        'pageBody@homeRoot': {
+          templateUrl: "views/controllers/medications.html",
+          controller: "MedicationsCtrl"
+        }
+      }
+    })
     .state('fhir', {
       url: '/fhir',
       templateUrl: '../views/controllers/fhir.html',

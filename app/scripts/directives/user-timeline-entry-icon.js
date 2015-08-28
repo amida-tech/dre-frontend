@@ -9,14 +9,18 @@
 angular.module('dreFrontendApp')
   .directive('userTimelineEntryIcon', function ($state, dreFrontendAuthService, $rootScope, dreFrontendGlobals) {
     return {
-      template: '<a class="timeline-entry-icon text-center center-block" ng-click="toggleDetails()"> <i class="fa fa-2x {{model.actionClass}}"></i></a>',
+      template: '<a class="text-center center-block" ng-class="{\'timeline-entry-icon\': !model.isInactive, ' +
+      '\'timeline-entry-icon-inactive\': model.isInactive}" ng-click="toggleDetails()"> ' +
+      '<i class="fa fa-ban fa-stack-2x fa-rotate-90" ng-if="model.isInactive"></i>' +
+      '<i class="fa fa-2x {{model.actionClass}}"></i></a>',
       restrict: 'AE',
       scope: {
         userTimelineEntryIcon: '='
       },
       controller: function ($scope) {
         $scope.model = {
-          actionClass:''
+          actionClass:'',
+          isInactive : $scope.userTimelineEntryIcon.isInactive
         };
         switch ($scope.userTimelineEntryIcon.actionType){
           case 'login':
@@ -30,6 +34,12 @@ angular.module('dreFrontendApp')
             break;
           case 'create':
             $scope.model.actionClass = 'fa-user';
+            break;
+          case 'medication':
+            $scope.model.actionClass = 'icon-pill';
+            break;
+          case 'inhaler':
+            $scope.model.actionClass= 'icon-inhaler';
             break;
           default:
             $scope.model.actionClass = '';

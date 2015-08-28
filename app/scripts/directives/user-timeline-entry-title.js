@@ -31,6 +31,12 @@ angular.module('dreFrontendApp')
           case 'create':
             $scope.model.actionTitle = 'Account created';
             break;
+          case 'medication':
+            $scope.model.actionTitle = 'Aspirin';//TODO replace
+            break;
+          case 'inhaler':
+            $scope.model.actionTitle= 'Inhaler';
+            break;
           default:
             $scope.model.actionTitle = '';
         }

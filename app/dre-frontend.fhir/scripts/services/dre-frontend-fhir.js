@@ -49,6 +49,10 @@ angular.module('dreFrontend.fhir')
         }
 
         function set_response(res) {
+          function _omit(r) {
+            return _.omit(r,["meta","type","base","link","search","text"]);
+          }
+
           if (res.resourceType == fhirEnv.bundleType) {
             _add_page_handlers(res);
             angular.forEach(res.entry, function (v) {
@@ -60,10 +64,12 @@ angular.module('dreFrontend.fhir')
           /* remove unnecessary data */
 
           res = Restangular.stripRestangular(res);
-          res = _.omit(res,["meta","type","base","link","search"]);
+          res = _omit(res);
 
-          if (res.resourceType == fhirEnv.bundleType)
-            res.entry = _.pluck(res.entry,"resource");
+          if (res.resourceType == fhirEnv.bundleType) {
+            res.entry = _.pluck(res.entry, "resource");
+            _.forEach(res.entry,function (e,k) {res.entry[k] = _omit(e);});
+          }
 
           return res;
         }
@@ -76,7 +82,7 @@ angular.module('dreFrontend.fhir')
                   var self = this;
                   var p = v.reference.split("/");
                   return Restangular.one(p[0], p[1]).get().then(function (sub_resource) {
-                    add_resource_loader(sub_resource);
+                    sub_resource = set_response(sub_resource);
                     angular.extend(self, sub_resource);
                     return sub_resource;
                   });
@@ -91,7 +97,10 @@ angular.module('dreFrontend.fhir')
             params = resourceType;
             resourceType = null;
           }
-          angular.extend(params, {"_count": _count});
+
+          if (!params._count)
+            angular.extend(params, {"_count": _count});
+
           if (resourceType)
             return _is_valid_resource_type(resourceType)
               .then(function (resType) {
@@ -126,14 +135,9 @@ angular.module('dreFrontend.fhir')
           return $q.reject("not implemented");
         }
 
-        function _search_last(resourceType, qty) {
-          return $q.reject("not implemented");
-        }
-
         return {
           search: _search,
           read: _read,
-          searchLast: _search_last,
           history: _history,
           create: _create,
           update: _update,
