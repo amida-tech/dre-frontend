@@ -1,8 +1,10 @@
 <div class="panel panel-body">
+  <home-breadcrumbs></home-breadcrumbs>
   <div class="row">
     <div class="col-sm-12 col-md-6">
-      <h4>Isabella's medications</h4>
-      <p>Last Updated: 8/11/15 4:20 PM</p>
+      <h4>{{model.firstName}}'s medications</h4>
+
+      <p>Last Updated: {{model.lastUpdate| date :'short'}}</p>
     </div>
 
     <div class="col-sm-3 col-sm-offset-3">
@@ -19,24 +21,7 @@
 </div>
 <h4 class="text-center white">Medications</h4>
 <div class="panel panel-body">
-  <p>Timeline</p>
-  <table class="timeline_tbl" width="100%">
-    <tr>
-      <td>
-        <div class="timeline">
-          <div class="line">
-            <i style="left:40%;"><span>08/11/2015</span></i>
-
-            <i style="left:80%;"><span>08/11/2015</span></i>
-          </div>
-          <div class="row">
-            <div class="col-xs-6"></div>
-            <div class="col-xs-6 text-right">Oct 2015</div>
-          </div>
-        </div>
-      </td>
-    </tr>
-  </table>
+  <user-timeline></user-timeline>
   <div class="blocks">
     <!-- START -->
     <div>
@@ -48,7 +33,7 @@
         <div class="col-sm-10">
           <div class="btn-group pull-right">
             <label class="btn btn-default">
-              <input type="checkbox" value="inactive" checked="checked">
+              <input type="checkbox" ng-model="model.showInactive">
               Show Inactive Meds
             </label>
           </div>
@@ -56,72 +41,25 @@
       </div>
     </div>
 
-    <div>
+    <div ng-repeat="action in model.actionsList | filter: (model.showInactive? {} : {isInactive:false})">
       <div class="row"><i class="col-sm-2 h_line"></i></div>
       <div class="row">
         <div class="col-sm-2">
-          <a class="timeline-entry-icon text-center center-block">
-            <i class="fa icon-pill fa-2x"></i>
-          </a>
+          <div user-timeline-entry-icon="action"></div>
         </div>
         <div class="col-sm-10">
           <div class="panel panel-body">
-
+            <div user-timeline-entry-title="action"></div>
             <div class="row">
-              <div class="col-sm-6">
-                <h4 class="text-left">ASPIRIN</h4>
-                <h5 class="text-left">Sep 20, 2012 - Present</h5>
-              </div>
-              <div class="col-sm-6">
-
-                <button class="pull-right btn btn-link" data-toggle="modal" data-target="#myModal2">
-                  <i class="fa fa-info-circle fa-2x"></i>
-                </button>
-                <a href="#">
-                  <button class="pull-right btn btn-link ng-binding">
-                    <i class="fa fa-flag fa-inline"></i>1 pending update<span class="ng-hide">s</span>
-                  </button>
-                </a>
+              <div class="col-sm-3">
+                <h5 class="text-left">{{action.actionDate | date:'short'}}</h5>
               </div>
             </div>
           </div>
         </div>
       </div>
-
     </div>
-    <div>
-      <div class="row"><i class="col-sm-2 h_line"></i></div>
-      <div class="row">
-        <div class="col-sm-2">
-          <a class="timeline-entry-icon-medication-inactive text-center center-block">
-            <span class="fa-stack fa-lg ng-scope" id="entry3"><i class="fa fa-ban fa-stack-2x fa-rotate-90"></i><i class="fa-stack-1x icon-inhaler "></i></span>
-          </a>
-        </div>
-        <div class="col-sm-10">
-          <div class="panel panel-body">
-
-            <div class="row">
-              <div class="col-sm-6">
-                <h4 class="text-left">ASPIRIN</h4>
-                <h5 class="text-left">Sep 20, 2012 - Present</h5>
-              </div>
-              <div class="col-sm-6">
-
-                <button class="pull-right btn btn-link" data-toggle="modal" data-target="#myModal2">
-                  <i class="fa fa-info-circle fa-2x"></i>
-                </button>
-                <a href="#">
-                  <button class="pull-right btn btn-link ng-binding">
-                    <i class="fa fa-flag fa-inline"></i>1 pending update<span class="ng-hide">s</span>
-                  </button>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
+    <h5 ng-hide="model.actionsList" class="col-sm-12 text-center">No Medication Entries</h5>
     <!-- END -->
   </div>
 </div>

@@ -483,7 +483,7 @@ module.exports = function (grunt) {
           dreFrontendEnvironment: {
             name: 'qa',
             baseServerUrl:'http://dre.amida-demo.com:3000',
-            fhirServerUrl:'http://dev.ntrlab.ru:8080/hapi-fhir-jpaserver-example',
+            fhirServerUrl:'http://dev.ntrlab.ru:8080/fhir/base',
             enableDebugLog:true
           }
         }
