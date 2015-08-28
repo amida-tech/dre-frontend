@@ -35,7 +35,7 @@ angular.module('dreFrontendApp')
           case 'create':
             $scope.model.displayClass = 'fa-user';
             break;
-          case 'medication':
+          case 'MedicationPrescription':
             $scope.model.displayClass = 'icon-pill';
             $scope.model.isInactive = $scope.userTimelineEntryIcon.isInactive;
             break;

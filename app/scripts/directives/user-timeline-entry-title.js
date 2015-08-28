@@ -31,7 +31,7 @@ angular.module('dreFrontendApp')
           case 'create':
             $scope.model.actionTitle = 'Account created';
             break;
-          case 'medication':
+          case 'MedicationPrescription':
             $scope.model.actionTitle = $scope.userTimelineEntryTitle.title;
             break;
           default:
