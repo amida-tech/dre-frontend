@@ -7,7 +7,7 @@
  * # FhirCtrl
  * Controller of the dreFrontendApp
  */
-angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, dreFrontendFhirService, DreFrontendMedications) {
+angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, dreFrontendFhirService, DreFrontendMedications, DreFrontendObservations) {
 
   function success_handler(response) {
     $scope.response = response;
@@ -47,4 +47,27 @@ angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, dreFro
         .then(success_handler)
         .catch(fail_handler);
     };
+    
+    $scope.getWeightHistory = function(patient_id) {
+      DreFrontendObservations.getWeightHistory(patient_id)
+        .then(success_handler)
+        .catch(fail_handler);
+    };
+    $scope.getHeightHistory = function(patient_id) {
+      DreFrontendObservations.getHeightHistory(patient_id)
+        .then(success_handler)
+        .catch(fail_handler);
+    };
+    
+    $scope.getLastWeight = function(patient_id) {
+      DreFrontendObservations.getLastWeight(patient_id)
+        .then(success_handler)
+        .catch(fail_handler);
+    };
+    
+    $scope.getLastHeight = function(patient_id) {
+      DreFrontendObservations.getLastHeight(patient_id)
+        .then(success_handler)
+        .catch(fail_handler);
+    }
 });
