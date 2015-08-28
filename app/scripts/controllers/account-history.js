@@ -16,21 +16,21 @@ angular.module('dreFrontendApp')
       actionsList:[
         {
           actionDate: new Date(12,12,2014),
-          actionType: 'login',
+          type: 'login',
           actionData: '158.46.35.150'
         },
         {
           actionDate: new Date(12,11,2014),
-          actionType: 'logout'
+          type: 'logout'
         },
         {
           actionDate: new Date(12,10,2014),
-          actionType: 'upload',
+          type: 'upload',
           actionData: 'bluebutton-duplicate.xml'
         },
         {
           actionDate: new Date(12,9,2014),
-          actionType: 'create',
+          type: 'create',
           actionData: 'isabella'
         }
       ]

@@ -1,5 +1,5 @@
 'use strict';
-angular.module('dreFrontend.util', [])
+angular.module('dreFrontend.util', ['lodashAngularWrapper'])
     .config(function () {
 
     });
