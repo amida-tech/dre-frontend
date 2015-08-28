@@ -7,7 +7,7 @@
  * # FhirCtrl
  * Controller of the dreFrontendApp
  */
-angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, dreFrontendFhirService) {
+angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, dreFrontendFhirService, DreFrontendMedications) {
     $scope.getPatients = function(){
         dreFrontendFhirService.read("Patient")
           .then(function(res){
@@ -60,7 +60,6 @@ angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, dreFro
           $scope.res_type = "success";
           res.entry[0].medication.load()
             .then(function(r){
-              /*angular.extend(res.entry[0].medication,r);*/
               r.manufacturer.load();
             });
         })
@@ -90,15 +89,12 @@ angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, dreFro
       });
   };
 
-    $scope.createPatient = function(_data) {
-      dreFrontendFhirService.create("Patient", _data)
-        .then(function (res) {
+    $scope.Medications = function(patient_id) {
+      var medications = DreFrontendMedications.getByPatientId(patient_id)
+        .then(function(res){
+          console.log(res);
           $scope.response = res;
           $scope.res_type = "success";
-        })
-        .catch(function (err) {
-          $scope.response = err;
-          $scope.res_type = "danger";
         });
     }
 });

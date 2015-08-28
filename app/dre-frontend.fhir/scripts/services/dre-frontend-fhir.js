@@ -126,9 +126,14 @@ angular.module('dreFrontend.fhir')
           return $q.reject("not implemented");
         }
 
+        function _search_last(resourceType, qty) {
+          return $q.reject("not implemented");
+        }
+
         return {
           search: _search,
           read: _read,
+          searchLast: _search_last,
           history: _history,
           create: _create,
           update: _update,
