@@ -7,7 +7,7 @@
  * # mainMenu
  */
 angular.module('dreFrontendApp')
-  .directive('entryDetails', function ($state, dreFrontendAuthService, $rootScope, dreFrontendGlobals) {
+  .directive('entryDetails', function () {
     return {
       template: 'views/directives/entry-details.html',
       restrict: 'AE',
@@ -16,16 +16,8 @@ angular.module('dreFrontendApp')
       },
       controller: function ($scope) {
         $scope.model = {
-          displayClass: '',
-          isInactive: false
+          detailRows: [{key: 'Status', value: 'Completed'},{key: 'Sig', value: 'Aspirin'}]
         };
-        switch ($scope.userTimelineEntryIcon.type) {
-          case 'MedicationPrescription':
-
-            break;
-          default:
-
-        }
       }
     };
   });

@@ -1,0 +1,36 @@
+<div class="row container-fluid panel-body" ng-form="noteEditForm" name="noteEditForm">
+  <div class="col-sm-1">
+    <h5 class="text-center">
+      <button class="btn- btn-link" ng-click="toggleFavorite()">
+        <i class="fa" ng-class="{'fa-star-o':!model.isFavorite, 'fa-star':model.isFavorite}"></i>
+      </button>
+    </h5>
+  </div>
+  <div class="col-sm-11">
+    <div class="form-group">
+      <label for="noteText" ng-show="model.isNew">New:</label>
+      <label for="noteText" ng-show="!model.isNew">Edit<span ng-show="model.lastUpdateDate"> ({{model.lastUpdateDate| date:'short'}})</span>:</label>
+      <textarea class="form-control" placeholder="Enter Note" rows="2" ng-disabled="!model.isEditMode"
+                ng-model="model.noteText" required="required" id="noteText" name="noteText"></textarea>
+      <div ng-messages="noteEditForm.noteText.$error" role="alert" ng-if="noteEditForm.noteText.$dirty">
+        <p ng-message="required" class="help-block">Note text is required.</p>
+      </div>
+    </div>
+    <div class="form-group" ng-show="model.isNew && model.isEditMode">
+      <button class="btn btn-primary pull-right" ng-click="createNote()">Add Note</button>
+    </div>
+    <div class="form-group" ng-hide="model.isNew">
+      <button class="btn btn-primary pull-right" ng-hide="model.isEditMode" ng-click="model.isEditMode = true">Edit</button>
+      <button type="button" class="btn btn-danger pull-left" ng-click="deleteNote()" ng-show="model.isEditMode">Delete note</button>
+      <button type="button" class="btn btn-default pull-right" ng-show="model.isEditMode" ng-click="model.isEditMode = false">Cancel</button>
+      <button type="button" class="btn btn-primary pull-right" ng-show="model.isEditMode" ng-click="saveNote()"
+              ng-disabled="noteEditForm.$invalid">Save Note</button>
+      <div class="clearfix"></div>
+      <div class="text-center">
+        <div ng-if="model.error" class="text-center login-alert"><i class="fa fa-exclamation-circle"></i>
+          {{model.error}}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

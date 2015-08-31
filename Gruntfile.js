@@ -468,7 +468,7 @@ module.exports = function (grunt) {
         constants: {
           dreFrontendEnvironment: {
             name: 'dev',
-            baseServerUrl:'http://dre.amida-demo.com:3000',
+            baseServerUrl:'http://dre.amida-demo.com:3000/api/v1',
             fhirServerUrl:'http://dre.ntrlab.ru:8080/fhir/base',
             defaultUser:'isabella',
             defaultPassword:'testtest',
@@ -482,7 +482,7 @@ module.exports = function (grunt) {
         constants: {
           dreFrontendEnvironment: {
             name: 'qa',
-            baseServerUrl:'http://dre.amida-demo.com:3000',
+            baseServerUrl:'http://dre.amida-demo.com:3000/api/v1',
             fhirServerUrl:'http://dev.ntrlab.ru:8080/fhir/base',
             enableDebugLog:true
           }
@@ -494,8 +494,8 @@ module.exports = function (grunt) {
         constants: {
           dreFrontendEnvironment: {
             name: 'vagrant',
-            baseServerUrl:'http://192.168.33.10:3000',
-            fhirServerUrl:'http://192.168.33.10:8080/hapi-fhir-jpaserver',
+            baseServerUrl:'http://192.168.33.10:3000/api/v1',
+            fhirServerUrl:'http://dev.ntrlab.ru:8080/fhir/base',
             enableDebugLog:true
           }
         }

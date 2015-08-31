@@ -4,11 +4,11 @@ angular.module('dreFrontend.util')
   .service('dreFrontendAuthService', function (dreFrontendHttp, $q, dreFrontendGlobals, $rootScope,$log) {
     var authData = null;
     var urls = {
-      login: '/api/v1/login',
-      logout: '/api/v1/logout',
-      checkAuth: '/api/v1/account',
-      validateLogin: '/api/v1/users',
-      register: '/api/v1/register'
+      login: '/login',
+      logout: '/logout',
+      checkAuth: '/account',
+      validateLogin: '/users',
+      register: '/register'
     };
     var self = {
       login: function (login, password) {
