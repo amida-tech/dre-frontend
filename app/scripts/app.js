@@ -108,7 +108,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
     })
     .state('fhir', {
       url: '/fhir',
-      templateUrl: '../views/controllers/fhir.html',
+      templateUrl: 'views/controllers/fhir.html',
       controller: 'FhirCtrl',
       data: {
         name: 'My PHR | FHIR',
