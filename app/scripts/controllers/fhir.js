@@ -7,7 +7,8 @@
  * # FhirCtrl
  * Controller of the dreFrontendApp
  */
-angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, dreFrontendFhirService, DreFrontendMedications, DreFrontendObservations) {
+angular.module('dreFrontendApp').controller('FhirCtrl',
+  function ($scope, dreFrontendFhirService, DreFrontendMedications, DreFrontendObservations, DreFrontendPatient) {
 
   function success_handler(response) {
     $scope.response = response;
@@ -22,20 +23,32 @@ angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, dreFro
   }
 
     $scope.getPatients = function(){
-        dreFrontendFhirService.read("Patient")
-          .then(success_handler)
+      DreFrontendPatient.getAll()
+        .then(function(bundle){
+          bundle.entry[0].official_name = bundle.entry[0].getOfficialName();
+          $scope.response = bundle;
+          $scope.res_type = "success";
+          return bundle;
+        })
           .catch(fail_handler);
     };
+
     $scope.getPatient = function(id){
-      dreFrontendFhirService.read("Patient", id)
-        .then(success_handler)
+      DreFrontendPatient.getById(id)
+        .then(function(patient){
+          $scope.response.official_name = patient.getOfficialName();
+          $scope.res_type = "success";
+          return patient;
+        })
         .catch(fail_handler);
     };
+
     $scope.getMedications = function(){
         DreFrontendMedications.getAll()
           .then(success_handler)
           .catch(fail_handler);
     };
+
     $scope.getMedication = function(id){
       DreFrontendMedications.getById(id)
         .then(success_handler)
@@ -47,24 +60,25 @@ angular.module('dreFrontendApp').controller('FhirCtrl', function ($scope, dreFro
         .then(success_handler)
         .catch(fail_handler);
     };
-    
+
     $scope.getWeightHistory = function(patient_id) {
       DreFrontendObservations.getWeightHistory(patient_id)
         .then(success_handler)
         .catch(fail_handler);
     };
+
     $scope.getHeightHistory = function(patient_id) {
       DreFrontendObservations.getHeightHistory(patient_id)
         .then(success_handler)
         .catch(fail_handler);
     };
-    
+
     $scope.getLastWeight = function(patient_id) {
       DreFrontendObservations.getLastWeight(patient_id)
         .then(success_handler)
         .catch(fail_handler);
     };
-    
+
     $scope.getLastHeight = function(patient_id) {
       DreFrontendObservations.getLastHeight(patient_id)
         .then(success_handler)
