@@ -23,17 +23,32 @@ angular.module('dreFrontendApp')
           isInactive: false
         };
         switch ($scope.userTimelineEntryIcon.type) {
-          case 'login':
+          case 'initAccount':
+            $scope.model.displayClass = 'fa-user';
+            break;
+          case 'loggedIn':
             $scope.model.displayClass = 'fa-sign-in';
             break;
-          case 'logout':
+          case 'loggedOut':
             $scope.model.displayClass = 'fa-sign-out';
             break;
-          case 'upload':
+          case 'fileUploaded':
             $scope.model.displayClass = 'fa-cloud-upload';
             break;
-          case 'create':
-            $scope.model.displayClass = 'fa-user';
+          case 'fileDownloaded':
+            $scope.model.displayClass = 'fa-cloud-download';
+            break;
+          case 'labResults':
+            $scope.model.displayClass = 'fa-flask';
+            break;
+          case 'passwordChange':
+            $scope.model.displayClass = 'fa-cog';
+            break;
+          case 'infoUpdate':
+            $scope.model.displayClass = 'fa-pencil';
+            break;
+          case 'medUpdate':
+            $scope.model.displayClass = 'icon-pill';
             break;
           case 'MedicationPrescription':
             $scope.model.displayClass = 'icon-pill';
