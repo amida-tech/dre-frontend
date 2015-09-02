@@ -17,7 +17,7 @@ angular.module('dreFrontend.fhir')
             return dreFrontendFhirService.search("Observation", {
                 "code": "8302-2",
                 "subject:Patient": patient_id,
-                "_sort:desc": "_id",
+                "_sort:desc": "date",
                 "_count": 1
             })
             .then(function (response) {
@@ -28,7 +28,7 @@ angular.module('dreFrontend.fhir')
             return dreFrontendFhirService.search("Observation", {
                 "code": "29463-7,27113001,3141-9",
                 "subject:Patient": patient_id,
-                "_sort:desc": "_id",
+                "_sort:desc": "date",
                 "_count": 1
             })
             .then(function (response) {
@@ -39,7 +39,7 @@ angular.module('dreFrontend.fhir')
             return dreFrontendFhirService.search("Observation", {
                 "code": "29463-7,27113001,3141-9",
                 "subject:Patient": patient_id,
-                "_sort:desc": "_id",
+                "_sort:desc": "date",
                 "_count": (typeof count == 'undefined')? 30 : count
             })
             .then(function (response) {
@@ -50,7 +50,7 @@ angular.module('dreFrontend.fhir')
             return dreFrontendFhirService.search("Observation", {
                 "code": "8302-2",
                 "subject:Patient": patient_id,
-                "_sort:desc": "_id",
+                "_sort:desc": "date",
                 "_count": (typeof count == 'undefined')? 30 : count
             })
             .then(function (response) {

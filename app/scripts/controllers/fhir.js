@@ -108,7 +108,8 @@ angular.module('dreFrontendApp')
             angular.forEach(_.pluck(fhir_data, "resource"), function (res) {
                 var res_body = _.omit(res, ["meta", "id"]);
                 /* change reference path before loading */
-                res_body.subject.reference = "Patient/3768";
+                res_body.subject = {reference : "Patient/3768"};
+                res_body.performer = [];
                 dreFrontendFhirService.create(res.resourceType, res_body)
                     .then(function (r) {
                         $scope.response.push(res_body.code.coding[0].display);
