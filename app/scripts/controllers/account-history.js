@@ -8,31 +8,25 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-  .controller('AccountHistoryCtrl', function ($scope) {
+  .controller('AccountHistoryCtrl', function ($scope, dreFrontendAccountHistoryService, _) {
     $scope.model = {
       firstName : 'Not implemented',
-      lastLogin: new Date(),
-      lastUpdate: new Date(),
-      actionsList:[
-        {
-          actionDate: new Date(12,12,2014),
-          type: 'login',
-          actionData: '158.46.35.150'
-        },
-        {
-          actionDate: new Date(12,11,2014),
-          type: 'logout'
-        },
-        {
-          actionDate: new Date(12,10,2014),
-          type: 'upload',
-          actionData: 'bluebutton-duplicate.xml'
-        },
-        {
-          actionDate: new Date(12,9,2014),
-          type: 'create',
-          actionData: 'isabella'
-        }
-      ]
+      lastLogin: '',
+      lastUpdate: '',
+      actionsList:[]
     };
+    dreFrontendAccountHistoryService.getLastMasterActions().then(function(response){
+      console.log('response',response.recordHistory);
+      $scope.model.lastLogin = new Date(response.lastLogin);
+      $scope.model.lastUpdate = new Date(response.lastUpdate);
+      $scope.model.actionsList = [];
+      _.forEach(response.recordHistory, function(itm){
+        $scope.model.actionsList.push({
+          type: itm.event_type,
+          title: itm.type,
+          date: new Date(itm.date),
+          note: itm.note
+        });
+      });
+    });
   });

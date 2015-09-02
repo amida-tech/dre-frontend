@@ -5,7 +5,7 @@ angular.module('dreFrontend.util')
 
     var defaults = {
       cache: false,
-      withCredentials: false
+      withCredentials: true
     };
 
     var buildServiceUrl = function (apiPath) {

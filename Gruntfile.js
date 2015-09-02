@@ -468,7 +468,7 @@ module.exports = function (grunt) {
         constants: {
           dreFrontendEnvironment: {
             name: 'dev',
-            baseServerUrl:'http://dre.amida-demo.com:3000/api/v1',
+            baseServerUrl:'http://localhost:3000/api/v1',
             fhirServerUrl:'http://dre.ntrlab.ru:8080/fhir/base',
             defaultUser:'isabella',
             defaultPassword:'testtest',

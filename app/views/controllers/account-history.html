@@ -19,7 +19,7 @@
   <user-timeline></user-timeline>
   <div class="blocks">
     <!-- START -->
-    <div ng-repeat="action in ::model.actionsList">
+    <div ng-repeat="action in model.actionsList">
       <div class="row"><i class="col-sm-2 h_line"></i></div>
       <div class="row">
         <div class="col-sm-2">
@@ -30,13 +30,11 @@
             <div user-timeline-entry-title="action"></div>
             <div class="row">
               <div class="col-sm-3">
-                <h5 class="text-left">{{action.actionDate | date:'short'}}</h5>
+                <h5 class="text-left">{{action.date | date:'short'}}</h5>
               </div>
               <div class="col-sm-9">
-                <h5 ng-switch="action.actionType">
-                  <span ng-switch-when="login" class="text-left">User logged in from IP address '{{action.actionData}}'</span>
-                  <span ng-switch-when="upload" class="text-left">User uploaded '{{action.actionData}}'</span>
-                  <span ng-switch-when="create" class="text-left">User created account '{{action.actionData}}'</span>
+                <h5>
+                  {{action.note}}
                 </h5>
               </div>
             </div>
