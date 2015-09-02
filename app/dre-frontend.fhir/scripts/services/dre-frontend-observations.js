@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-  .factory('DreFrontendObservations', function (dreFrontendFhirService) {
+  .factory('dreFrontendObservations', function (dreFrontendFhirService) {
 
     function Observations(data) {
       this.setData(data);

@@ -9,12 +9,14 @@
         <button class="btn btn-block btn-primary" ng-click="getHeightHistory(3768)">getHeightHistory(3768)</button>
         <button class="btn btn-block btn-primary" ng-click="getLastHeight(3768)">getLastHeight(3768)</button>
         <button class="btn btn-block btn-primary" ng-click="getLastWeight(3768)">getLastWeight(3768)</button>
-      <hr>
-      <button class="btn btn-block btn-primary" ng-click="getTestResults(3626)">Test Results 3626</button>
-      <button class="btn btn-block btn-primary" ng-click="getTestResults(3627)">Test Results 3627</button>
-      <button class="btn btn-block btn-primary" ng-click="getTestResults(3624)">Test Results 3624</button>
-      <hr>
-      <button class="btn btn-block btn-primary" ng-click="loadData()">load data</button>
+        <hr>
+        <button class="btn btn-block btn-primary" ng-click="getTestResults(3626)">Test Results 3626</button>
+        <button class="btn btn-block btn-primary" ng-click="getTestResults(3627)">Test Results 3627</button>
+        <button class="btn btn-block btn-primary" ng-click="getTestResults(3624)">Test Results 3624</button>
+        <hr>
+        <button class="btn btn-block btn-primary" ng-click="loadData()">load data</button>
     </div>
-    <div class="col-sm-9 "><pre class="bg-{{res_type}}" style="white-space: pre-wrap;" ng-show="response">{{response | json }}</pre></div>
+    <div class="col-sm-9 ">
+        <pre class="bg-{{res_type}}" style="white-space: pre-wrap;" ng-show="response">{{response | json }}</pre>
+    </div>
 </div>

@@ -8,14 +8,14 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-  .controller('MedicationsCtrl', function ($scope,DreFrontendMedications,_) {
+  .controller('MedicationsCtrl', function ($scope,dreFrontendMedications,_) {
     $scope.model = {
       firstName : 'Not implemented',
       lastUpdate: new Date(),
       showInactive: false,
       medicationsList:[]
     };
-    DreFrontendMedications.getByPatientId(3768).then(function(medications){
+    dreFrontendMedications.getByPatientId(3768).then(function(medications){
       $scope.model.medicationsList = [];
       _.forEach(medications.entry, function(entry){
         $scope.model.medicationsList.push({
