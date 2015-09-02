@@ -1,5 +1,10 @@
 "use strict";
-
+/*
+codes:
+BMI - 39156-5, 60621009
+Blood pressure systolic - 8480-6,271649006
+    distolic - 8480-4, 271650006
+ */
 angular.module('dreFrontend.fhir')
   .factory('dreFrontendObservations', function (dreFrontendFhirService) {
 

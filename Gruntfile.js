@@ -468,9 +468,9 @@ module.exports = function (grunt) {
         constants: {
           dreFrontendEnvironment: {
             name: 'dev',
-            baseServerUrl:'http://localhost:3000/api/v1',
+            baseServerUrl:'http://dre.ntrlab.ru:83/api/v1',
             fhirServerUrl:'http://dre.ntrlab.ru:8080/fhir/base',
-            defaultUser:'isabella',
+            defaultUser:'test',
             defaultPassword:'testtest',
             enableDebugLog:true
           }
