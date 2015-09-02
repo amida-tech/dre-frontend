@@ -75,22 +75,41 @@ angular.module('dreFrontend.fhir')
           return res;
         }
 
-        function add_resource_loader(r) {
-          angular.forEach(r, function (v) {
-            if (v && typeof v == "object" && v.hasOwnProperty("reference")) {
-              angular.extend(v, {
+        function add_resource_loader(resource) {
+          var f = function (prop) {
+            if (prop && typeof prop == "object" && prop.hasOwnProperty("reference")) {
+              console.log(prop.reference);
+              angular.extend(prop, {
                 load: function () {
                   var self = this;
-                  var p = v.reference.split("/");
-                  return Restangular.one(p[0], p[1]).get().then(function (sub_resource) {
+
+                  var process_sub_resource = function (sub_resource) {
                     sub_resource = set_response(sub_resource);
                     angular.extend(self, sub_resource);
                     return sub_resource;
-                  });
+                  };
+
+                  if (prop.match(/^#.+/)) {
+                    /* contained resource */
+                    var data = _.first(_.filter(resource.contains, {"id": prop.substring(1)})) || {};
+                    return process_sub_resource(data);
+                  } else {
+                    /* relative reference resource */
+                    var p = prop.reference.split("/");
+                    return Restangular.one(p[0], p[1]).get().then(process_sub_resource);
+                  }
+                  /*2do: add absolute reference handling */
+
                 }
               });
             }
-          });
+          };
+          /* add loaders into resources */
+          angular.forEach(resource, f);
+
+          /* add loaders into result array */
+          if (resource.result)
+            angular.forEach(resource.result, f);
         }
 
         function _search(resourceType, params) {
