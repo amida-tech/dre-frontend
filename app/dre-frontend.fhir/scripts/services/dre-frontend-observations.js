@@ -3,7 +3,7 @@
 codes:
 BMI - 39156-5, 60621009
 Blood pressure systolic - 8480-6,271649006
-    distolic - 8480-4, 271650006
+    diastolic - 8480-4, 271650006
  */
 angular.module('dreFrontend.fhir')
   .factory('dreFrontendObservations', function (dreFrontendFhirService) {
@@ -18,6 +18,72 @@ angular.module('dreFrontend.fhir')
     };
 
     var observations = {
+        getLastBMI: function(patient_id){
+            return dreFrontendFhirService.search("Observation", {
+                "code": "39156-5,60621009",
+                "subject:Patient": patient_id,
+                "_sort:desc": "date",
+                "_count": 1
+            })
+            .then(function (response) {
+                return new Observations(response);
+            });
+        },
+        getBMIHistory: function(patient_id, count){
+            return dreFrontendFhirService.search("Observation", {
+                "code": "39156-5,60621009",
+                "subject:Patient": patient_id,
+                "_sort:desc": "date",
+                "_count": (typeof count == 'undefined')? 30 : count
+            })
+            .then(function (response) {
+                return new Observations(response);
+            });
+        },
+        getBloodPressureSystolicHistory: function(patient_id, count){
+            return dreFrontendFhirService.search("Observation", {
+                "code": "8480-6,271649006",
+                "subject:Patient": patient_id,
+                "_sort:desc": "date",
+                "_count": (typeof count == 'undefined')? 30 : count
+            })
+            .then(function (response) {
+                return new Observations(response);
+            });
+        },
+        getBloodPressureDiastolicHistory: function(patient_id, count){
+            return dreFrontendFhirService.search("Observation", {
+                "code": "8480-4,271650006",
+                "subject:Patient": patient_id,
+                "_sort:desc": "date",
+                "_count": (typeof count == 'undefined')? 30 : count
+            })
+            .then(function (response) {
+                return new Observations(response);
+            });
+        },
+        getLastBloodPressureSystolic: function(patient_id){
+            return dreFrontendFhirService.search("Observation", {
+                "code": "8480-6,271649006",
+                "subject:Patient": patient_id,
+                "_sort:desc": "date",
+                "_count": 1
+            })
+            .then(function (response) {
+                return new Observations(response);
+            });
+        },
+        getLastBloodPressureDiastolic: function(patient_id){
+            return dreFrontendFhirService.search("Observation", {
+                "code": "8480-4,271650006",
+                "subject:Patient": patient_id,
+                "_sort:desc": "date",
+                "_count": 1
+            })
+            .then(function (response) {
+                return new Observations(response);
+            });
+        },
         getLastHeight: function(patient_id){
             return dreFrontendFhirService.search("Observation", {
                 "code": "8302-2",

@@ -92,6 +92,42 @@ angular.module('dreFrontendApp')
                 .then(success_handler)
                 .catch(fail_handler);
         };
+        
+        $scope.getLastBMI = function(patient_id){
+            dreFrontendObservations.getLastBMI(patient_id)
+                .then(success_handler)
+                .catch(fail_handler);
+        };
+        
+        $scope.getBMIHistory = function(patient_id){
+            dreFrontendObservations.getBMIHistory(patient_id)
+                .then(success_handler)
+                .catch(fail_handler);
+        };
+        
+        $scope.getBloodPressureSystolicHistory = function(patient_id){
+            dreFrontendObservations.getBloodPressureSystolicHistory(patient_id)
+                .then(success_handler)
+                .catch(fail_handler);
+        };
+        
+        $scope.getBloodPressureDiastolicHistory = function(patient_id){
+            dreFrontendObservations.getBloodPressureDiastolicHistory(patient_id)
+                .then(success_handler)
+                .catch(fail_handler);
+        };
+        
+        $scope.getLastBloodPressureSystolic = function(patient_id){
+            dreFrontendObservations.getLastBloodPressureSystolic(patient_id)
+                .then(success_handler)
+                .catch(fail_handler);
+        };
+        
+        $scope.getLastBloodPressureDiastolic = function(patient_id){
+            dreFrontendObservations.getLastBloodPressureDiastolic(patient_id)
+                .then(success_handler)
+                .catch(fail_handler);
+        };
 
         $scope.getTestResults = function (patient_id) {
             dreFrontendTestresults.getByPatientId(patient_id)
