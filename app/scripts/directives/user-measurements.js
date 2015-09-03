@@ -17,7 +17,8 @@ angular.module('dreFrontendApp')
           height: 'n/a',
           weight: 'n/a',
           BMI: 'n/a',
-          pressure: 'n/a',
+          pressureDiastolic: 'n/a',
+          pressureSystolic: 'n/a',
           chartOptions: {
             chart: {
               type: "lineChart",
@@ -81,7 +82,12 @@ angular.module('dreFrontendApp')
         });
         dreFrontendObservations.getLastBloodPressureDiastolic(3768).then(function (lastPressure) {
           if (lastPressure && lastPressure.entry && lastPressure.entry.length > 0 && lastPressure.entry[0].valueQuantity) {
-            $scope.model.pressure = lastPressure.entry[0].valueQuantity.value;
+            $scope.model.pressureDiastolic = lastPressure.entry[0].valueQuantity.value;
+          }
+        });
+        dreFrontendObservations.getLastBloodPressureSystolic(3768).then(function (lastPressure) {
+          if (lastPressure && lastPressure.entry && lastPressure.entry.length > 0 && lastPressure.entry[0].valueQuantity) {
+            $scope.model.pressureSystolic = lastPressure.entry[0].valueQuantity.value;
           }
         });
         //init graph values
