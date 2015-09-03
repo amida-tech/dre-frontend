@@ -91,9 +91,9 @@ angular.module('dreFrontend.fhir')
                                         return sub_resource;
                                     };
 
-                                    if (prop.match(/^#.+/)) {
+                                    if (prop.reference.match(/^#.+/)) {
                                         /* contained resource */
-                                        var data = _.first(_.filter(resource.contains, {"id": prop.substring(1)})) || {};
+                                        var data = _.first(_.filter(resource.contains, {"id": prop.reference.substring(1)})) || {};
                                         return process_sub_resource(data);
                                     } else {
                                         /* relative reference resource */
