@@ -1,6 +1,6 @@
 'use strict';
 angular.module('dreFrontend.fhir', ['restangular','dreFrontend.util'])
-    .config(function (RestangularProvider,dreFrontendEnvironment, dreFrontendFhirServiceProvider) {
+    .config(function (RestangularProvider,dreFrontendEnvironment, dreFrontendFhirServiceProvider,fhirEnv) {
       RestangularProvider.setBaseUrl(dreFrontendEnvironment.fhirServerUrl);
-      dreFrontendFhirServiceProvider.setCount(30);
+      dreFrontendFhirServiceProvider.setCount(fhirEnv.page_length);
   });

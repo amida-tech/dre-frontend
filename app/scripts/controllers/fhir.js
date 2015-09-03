@@ -14,8 +14,8 @@ angular.module('dreFrontendApp')
               dreFrontendFhirService,
               dreFrontendMedications,
               dreFrontendObservations,
-              dreFrontendPatient,
-              dreFrontendTestresults) {
+              dreFrontendPatient
+    ) {
 
         function success_handler(response) {
             $scope.response = response;
@@ -120,7 +120,7 @@ angular.module('dreFrontendApp')
         $scope.getLastBloodPressureSystolic = function(patient_id){
             dreFrontendObservations.getLastBloodPressureSystolic(patient_id)
                 .then(success_handler)
-                .catch(fail_handler); 
+                .catch(fail_handler);
         };
 
         $scope.getLastBloodPressureDiastolic = function(patient_id){
@@ -130,9 +130,9 @@ angular.module('dreFrontendApp')
         };
 
         $scope.getTestResults = function (patient_id) {
-            dreFrontendTestresults.getByPatientId(patient_id)
+            dreFrontendObservations.getTestResults(patient_id,50)
                 .then(function (test_results) {
-                    $scope.response = test_results.getResults();
+                    $scope.response = test_results;
                     $scope.res_type = "success";
                     return $scope.response;
                 });

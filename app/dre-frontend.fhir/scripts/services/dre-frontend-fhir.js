@@ -80,7 +80,6 @@ angular.module('dreFrontend.fhir')
                 function add_resource_loader(resource) {
                     var f = function (prop) {
                         if (prop && typeof prop == "object" && prop.hasOwnProperty("reference")) {
-                            console.log(prop.reference);
                             angular.extend(prop, {
                                 load: function () {
                                     var self = this;
