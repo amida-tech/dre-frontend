@@ -7,7 +7,7 @@
  * # mainMenu
  */
 angular.module('dreFrontendApp')
-  .directive('userMeasurements', function ($state, dreFrontendObservations, $filter) {
+  .directive('userMeasurements', function ($state, dreFrontendObservations, $filter, _) {
     return {
       templateUrl: 'views/directives/user-measurements.html',
       restrict: 'AE',
@@ -52,8 +52,13 @@ angular.module('dreFrontendApp')
           pressureData: [
             {
               values: [],
-              key: 'Blood Pressure',
+              key: 'Diastolic',
               color: '#2ca02c'
+            },
+            {
+              values: [],
+              key: 'Systolic',
+              color: '#ff7f0e'
             }
           ]
         };
@@ -92,14 +97,26 @@ angular.module('dreFrontendApp')
           });
         });
         dreFrontendObservations.getBloodPressureDiastolicHistory(3768).then(function (pressureHistory) {
-          $scope.model.pressureData[0].values = [];
+          var data = [];
           _.forEach(pressureHistory.entry, function (entry) {
             var applyDate = entry.appliesDateTime || (entry.issued || entry.meta.lastUpdated);
-            $scope.model.pressureData[0].values.push({
+            data.push({
               y: entry.valueQuantity.value,
               x: new Date(applyDate)
             });
           });
+          $scope.model.pressureData[0].values = _.sortBy(data,'x');
+        });
+        dreFrontendObservations.getBloodPressureSystolicHistory(3768).then(function (pressureHistory) {
+          var data = [];
+          _.forEach(pressureHistory.entry, function (entry) {
+            var applyDate = entry.appliesDateTime || (entry.issued || entry.meta.lastUpdated);
+            data.push({
+              y: entry.valueQuantity.value,
+              x: new Date(applyDate)
+            });
+          });
+          $scope.model.pressureData[1].values = _.sortBy(data,'x');
         });
       }
     };
