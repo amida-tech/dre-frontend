@@ -18,14 +18,16 @@ angular.module('dreFrontendApp')
     dreFrontendMedications.getByPatientId(3768).then(function(medications){
       $scope.model.medicationsList = [];
       _.forEach(medications.entry, function(entry){
-        $scope.model.medicationsList.push({
-          rawEntry: entry,
-          type: entry.resourceType,
-          isInactive: entry.status != 'active',
-          title: entry.medication.name,
-          startDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.start : undefined,
-          stopDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.stop : undefined
-        })
+        if(angular.isObject(entry.medication)){
+          $scope.model.medicationsList.push({
+            rawEntry: entry,
+            type: entry.resourceType,
+            isInactive: entry.status != 'active',
+            title: entry.medication.name,
+            startDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.start : undefined,
+            stopDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.stop : undefined
+          })
+        }
       });
     });
     //3768

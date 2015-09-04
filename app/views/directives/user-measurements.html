@@ -33,7 +33,7 @@
             <h4 class="text-muted">Blood Pressure</h4>
           </td>
           <td>
-            <h5>{{model.pressure}}</h5>
+            <h5>{{model.pressureSystolic}} / {{model.pressureDiastolic}}</h5>
           </td>
         </tr>
         </tbody>
@@ -42,10 +42,10 @@
     <div class="col-sm-6">
       <tabset>
         <tab heading="Weight">
-          <br/>Weight
+          <nvd3 options="model.chartOptions" data="model.weightData"class="with-3d-shadow with-transitions"></nvd3>
         </tab>
         <tab heading="Blood Pressure">
-          <br/>Blood Pressure
+          <nvd3 options="model.chartOptions" data="model.pressureData" class="with-3d-shadow with-transitions"></nvd3>
         </tab>
       </tabset>
     </div>

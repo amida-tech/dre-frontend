@@ -16,7 +16,6 @@ angular.module('dreFrontendApp')
       actionsList:[]
     };
     dreFrontendAccountHistoryService.getLastMasterActions().then(function(response){
-      console.log('response',response.recordHistory);
       $scope.model.lastLogin = new Date(response.lastLogin);
       $scope.model.lastUpdate = new Date(response.lastUpdate);
       $scope.model.actionsList = [];

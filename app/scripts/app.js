@@ -10,7 +10,7 @@
  */
 var app = angular
   .module('dreFrontendApp', ['ui.router', 'ui.bootstrap', 'dreFrontend.core', 'dreFrontend.fhir', 'dreFrontend.util',
-    'ngTouch', 'ngMessages', 'dreFrontend.mocks']);
+    'ngTouch', 'ngMessages', 'nvd3', 'dreFrontend.mocks']);
 app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryProvider, $locationProvider, datepickerConfig,
                      datepickerPopupConfig, dreFrontendGlobalsProvider, $urlRouterProvider, $stateProvider) {
   //Enable/disable browser log console. Disable only for production release
@@ -59,7 +59,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
     })
     .state('home', {
       url: '',
-      parent:'homeRoot',
+      parent: 'homeRoot',
       data: {
         name: 'Home',
         isPublic: false
@@ -74,7 +74,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
     })
     .state('record', {
       url: '/record',
-      parent:'home',
+      parent: 'home',
       data: {
         name: 'My Records',
         isPublic: false
@@ -91,7 +91,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
     })
     .state('record.medications', {
       url: '/record/medications',
-      parent:'record',
+      parent: 'record',
       data: {
         name: 'My Medications',
         isPublic: false
