@@ -11,7 +11,6 @@ angular.module('dreFrontendApp')
     return {
       template: '<a class="text-center center-block" ng-class="{\'timeline-entry-icon\': !model.isInactive, ' +
       '\'timeline-entry-icon-inactive\': model.isInactive}" ng-click="toggleDetails()"> ' +
-      '<i class="fa fa-ban fa-stack-2x fa-rotate-90" ng-if="model.isInactive"></i>' +
       '<i class="fa fa-2x {{model.displayClass}}"></i></a>',
       restrict: 'AE',
       scope: {

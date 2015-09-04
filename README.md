@@ -100,6 +100,7 @@ Please do not update it manual.
 * Run `grunt serve` for preview current configuration.
 * Run `grunt serve:dist` for preview current builded configuration.
 * Run `grunt buildQa` for building qa version.
+* Run `grunt buildDev` for building ntr version.
 * Run `grunt buildMock` for building mocked (server less) version.
 
 #### *Note for a staging build*
