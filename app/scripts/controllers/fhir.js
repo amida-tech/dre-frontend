@@ -131,11 +131,14 @@ angular.module('dreFrontendApp')
 
         $scope.getTestResults = function (patient_id) {
             dreFrontendObservations.getTestResults(patient_id,50)
-                .then(function (test_results) {
-                    $scope.response = test_results;
-                    $scope.res_type = "success";
-                    return $scope.response;
-                });
+                .then(success_handler)
+                .catch(fail_handler);
+        };
+
+        $scope.getVitalSigns = function (patient_id) {
+            dreFrontendObservations.getVitalSigns(patient_id)
+                .then(success_handler)
+                .catch(fail_handler);
         };
 
         $scope.loadData = function () {

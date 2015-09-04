@@ -54,7 +54,7 @@ angular.module('dreFrontend.fhir')
             "ValueSet"
         ],
         bundleType: "Bundle",
-        codes: {
+        vital_signs: {
             body_weight: ["29463-7","27113001","3141-9"],
             body_height: ["8302-2"],
             systolic_blood_pressure: ["8480-6","271649006"],

@@ -13,8 +13,10 @@ angular.module('dreFrontend.fhir')
         };
 
         function searchData(code_name, patient_id, count) {
+            var codes = (code_name == "vital_signs") ? _.flatten(_.valuesIn(fhirEnv.vital_signs)):fhirEnv.vital_signs[code_name];
+
             var params = {
-                "code": fhirEnv.codes[code_name].join(','),
+                "code": codes.join(','),
                 "subject:Patient": patient_id,
                 "_sort:desc": "date"
             };
@@ -81,7 +83,7 @@ angular.module('dreFrontend.fhir')
                 return dreFrontendFhirService.search("Observation", {patient: patient_id, _count: count || 50})
                     .then(function (response) {
                         var new_entry = [];
-                        var exclude_codes = _.flatten(_.valuesIn(fhirEnv.codes));
+                        var exclude_codes = _.flatten(_.valuesIn(fhirEnv.vital_signs));
 
                         angular.forEach(response.entry, function (resource) {
                             /* exclude weight, height, blood pressures & BMI resources */
@@ -93,6 +95,9 @@ angular.module('dreFrontend.fhir')
 
                         return new Observations(response);
                     });
+            },
+            getVitalSigns: function(patient_id, count) {
+                return searchData("vital_signs", patient_id);
             }
         };
 
