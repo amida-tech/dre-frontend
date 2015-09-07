@@ -561,6 +561,10 @@ module.exports = function (grunt) {
     'ngconstant:qa',
     'build'
   ]);
+   grunt.registerTask('buildDev', [
+    'ngconstant:dev',
+    'build'
+  ]);
   grunt.registerTask('buildMock', [
     'ngconstant:mock',
     'build'
