@@ -129,7 +129,7 @@ angular.module('dreFrontendApp')
                 .then(success_handler)
                 .catch(fail_handler);
         };
-        
+
         $scope.getEncounters = function(patient_id){
             dreFrontendEncounters.getByPatientId(patient_id)
                 .then(success_handler)

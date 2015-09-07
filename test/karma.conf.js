@@ -35,6 +35,10 @@ module.exports = function(config) {
       'bower_components/restangular/dist/restangular.js',
       'bower_components/angular-messages/angular-messages.js',
       'bower_components/angular-mocks/angular-mocks.js',
+      'bower_components/d3/d3.js',
+      'bower_components/nvd3/nv.d3.js',
+      'bower_components/angular-nvd3/dist/angular-nvd3.min.js',
+      'bower_components/angular-file-upload/dist/angular-file-upload.min.js',
       // endbower
       "app/scripts/**/*.js",
       "test/mock/**/*.js",

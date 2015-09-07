@@ -1,4 +1,8 @@
 <div class="">
+    <div class = "col-sm-9 col-sm-offset-3">
+        <div upload-form></div>
+    </div>
+    <hr>
     <div class="col-sm-3">
         <button class="btn btn-block btn-primary" ng-click="getPatient(3768)">getPatient(3768)</button>
         <button class="btn btn-block btn-primary" ng-click="Medications(3768)">patient's Medications</button>
@@ -16,7 +20,7 @@
         <button class="btn btn-block btn-primary" ng-click="getTestResults(3768)">Test RESULTS</button>
         <button class="btn btn-block btn-primary" ng-click="getVitalSigns(3768)">vital signs</button>
         <hr>
-        <button class="btn btn-block btn-primary disabled" ng-click="loadData()">load data</button>
+        <button class="btn btn-block btn-primary">load data</button>
     </div>
     <div class="col-sm-9 ">
         <pre class="bg-{{res_type}}" style="white-space: pre-wrap;" ng-show="response">{{response | json }}</pre>

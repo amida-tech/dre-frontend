@@ -10,7 +10,7 @@
  */
 var app = angular
   .module('dreFrontendApp', ['ui.router', 'ui.bootstrap', 'dreFrontend.core', 'dreFrontend.fhir', 'dreFrontend.util',
-    'ngTouch', 'ngMessages', 'nvd3', 'dreFrontend.mocks']);
+    'ngTouch', 'ngMessages', 'nvd3', 'dreFrontend.mocks','angularFileUpload']);
 app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryProvider, $locationProvider, datepickerConfig,
                      datepickerPopupConfig, dreFrontendGlobalsProvider, $urlRouterProvider, $stateProvider) {
   //Enable/disable browser log console. Disable only for production release
