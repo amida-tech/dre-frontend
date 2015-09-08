@@ -14,13 +14,11 @@ angular.module('dreFrontendApp')
             restrict: 'AE',
             scope: {},
             controller: function ($scope) {
-                var uploader = $scope.uploader = new FileUploader({url:upload_url});
-
-                uploader.filters.push({
-                    name: 'queueLengthFilter',
-                    fn: function(item /*{File|FileLikeObject}*/, options) {
-                        return this.queue.length < 1;
-                    }
+                var uploader = $scope.uploader = new FileUploader({
+                    url:upload_url,
+                    withCredentials: true,
+                    method:"PUT",
+                    queueLimit: 1
                 });
 
                 uploader.onSuccessItem = function(fileItem, response, status, headers) {
