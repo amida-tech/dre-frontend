@@ -10,7 +10,7 @@
  */
 var app = angular
   .module('dreFrontendApp', ['ui.router', 'ui.bootstrap', 'dreFrontend.core', 'dreFrontend.fhir', 'dreFrontend.util',
-    'ngTouch', 'ngMessages', 'nvd3', 'dreFrontend.mocks','angularFileUpload']);
+    'ngTouch', 'ngMessages', 'nvd3', 'dreFrontend.mocks','angularFileUpload', 'ngTable']);
 app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryProvider, $locationProvider, datepickerConfig,
                      datepickerPopupConfig, dreFrontendGlobalsProvider, $urlRouterProvider, $stateProvider) {
   //Enable/disable browser log console. Disable only for production release
@@ -106,6 +106,36 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
         }
       }
     })
+      .state('files', {
+          url: '/files',
+          parent: 'home',
+          data: {
+              name: 'My Files',
+              isPublic: false
+          },
+          views: {
+              'homeMenu@homeRoot': {},
+              'pageBody@homeRoot': {
+                  templateUrl: "views/controllers/files.html",
+                  controller: 'FilesCtrl'
+              }
+          }
+      })
+      .state('files.upload', {
+          url: '/upload',
+          parent: 'files',
+          data: {
+              name: 'Upload File',
+              isPublic: false
+          },
+          views: {
+              'homeMenu@homeRoot': {},
+              'pageBody@homeRoot': {
+                  templateUrl: "views/controllers/files-upload.html",
+                  controller: 'FilesUploadCtrl'
+              }
+          }
+      })
     .state('fhir', {
       url: '/fhir',
       templateUrl: 'views/controllers/fhir.html',
@@ -123,7 +153,7 @@ app.run(function ($rootScope, $state, dreFrontendAuthService) {
   $rootScope.$state = $state;
   $rootScope.$on('$stateChangeStart', function (e, to) {
     //if rule not defined
-    if (!angular.isDefined(to.data.isPublic)) return;
+    if (!angular.isDefined(to.data.isPublic)) { return };
     //Check auth
     //TODO maybe replace with function without promise
     dreFrontendAuthService.isAuthenticated().then(function (isAuthenticated) {

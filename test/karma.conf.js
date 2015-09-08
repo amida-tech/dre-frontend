@@ -39,6 +39,7 @@ module.exports = function(config) {
       'bower_components/nvd3/nv.d3.js',
       'bower_components/angular-nvd3/dist/angular-nvd3.min.js',
       'bower_components/angular-file-upload/dist/angular-file-upload.min.js',
+      'bower_components/ng-table/dist/ng-table.min.js',
       // endbower
       "app/scripts/**/*.js",
       "test/mock/**/*.js",
