@@ -118,12 +118,14 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
   $urlRouterProvider.otherwise('/');
 
 });
-app.run(function ($rootScope, $state, dreFrontendAuthService) {
+app.run(function ($rootScope, $state, dreFrontendAuthService,dreFrontEndPatientInfo, dreFrontendGlobals) {
   $rootScope.$on("$stateChangeError", console.log.bind(console));
   $rootScope.$state = $state;
   $rootScope.$on('$stateChangeStart', function (e, to) {
     //if rule not defined
-    if (!angular.isDefined(to.data.isPublic)) return;
+    if (!angular.isDefined(to.data.isPublic)) {
+        return;
+    }
     //Check auth
     //TODO maybe replace with function without promise
     dreFrontendAuthService.isAuthenticated().then(function (isAuthenticated) {
@@ -134,4 +136,10 @@ app.run(function ($rootScope, $state, dreFrontendAuthService) {
       }
     });
   });
+  $rootScope.$on(dreFrontendGlobals.authEvents.loggedIn, function(event, userId){
+      dreFrontEndPatientInfo.setPatientId(userId);
+  });
+    $rootScope.$on(dreFrontendGlobals.authEvents.loggedOut, function(){
+        dreFrontEndPatientInfo.clearPatientData();
+    });
 });

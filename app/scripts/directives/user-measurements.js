@@ -7,12 +7,13 @@
  * # mainMenu
  */
 angular.module('dreFrontendApp')
-  .directive('userMeasurements', function ($state, dreFrontendObservations, $filter, _) {
+  .directive('userMeasurements', function ($state, dreFrontendObservations, $filter, _,dreFrontEndPatientInfo) {
     return {
       templateUrl: 'views/directives/user-measurements.html',
       restrict: 'AE',
       scope: {},
       controller: function ($scope) {
+          var patientId = dreFrontEndPatientInfo.getPatientId();
         $scope.model = {
           height: 'n/a',
           weight: 'n/a',
@@ -63,35 +64,35 @@ angular.module('dreFrontendApp')
             }
           ]
         };
-        
+
         //init base values
-        dreFrontendObservations.getLastHeight(3768).then(function (lastHeight) {
+        dreFrontendObservations.getLastHeight(patientId).then(function (lastHeight) {
           if (lastHeight && lastHeight.entry && lastHeight.entry.length > 0 && lastHeight.entry[0].valueQuantity) {
             $scope.model.height = lastHeight.entry[0].valueQuantity.value + ' ' + (lastHeight.entry[0].valueQuantity.units || 'inches');
           }
         });
-        dreFrontendObservations.getLastWeight(3768).then(function (lastWeight) {
+        dreFrontendObservations.getLastWeight(patientId).then(function (lastWeight) {
           if (lastWeight && lastWeight.entry && lastWeight.entry.length > 0 && lastWeight.entry[0].valueQuantity) {
             $scope.model.weight = lastWeight.entry[0].valueQuantity.value + ' ' + (lastWeight.entry[0].valueQuantity.units || 'lbs');
           }
         });
-        dreFrontendObservations.getLastBMI(3768).then(function (lastBMI) {
+        dreFrontendObservations.getLastBMI(patientId).then(function (lastBMI) {
           if (lastBMI && lastBMI.entry && lastBMI.entry.length > 0 && lastBMI.entry[0].valueQuantity) {
             $scope.model.BMI = lastBMI.entry[0].valueQuantity.value;
           }
         });
-        dreFrontendObservations.getLastBloodPressureDiastolic(3768).then(function (lastPressure) {
+        dreFrontendObservations.getLastBloodPressureDiastolic(patientId).then(function (lastPressure) {
           if (lastPressure && lastPressure.entry && lastPressure.entry.length > 0 && lastPressure.entry[0].valueQuantity) {
             $scope.model.pressureDiastolic = lastPressure.entry[0].valueQuantity.value;
           }
         });
-        dreFrontendObservations.getLastBloodPressureSystolic(3768).then(function (lastPressure) {
+        dreFrontendObservations.getLastBloodPressureSystolic(patientId).then(function (lastPressure) {
           if (lastPressure && lastPressure.entry && lastPressure.entry.length > 0 && lastPressure.entry[0].valueQuantity) {
             $scope.model.pressureSystolic = lastPressure.entry[0].valueQuantity.value;
           }
         });
         //init graph values
-        dreFrontendObservations.getWeightHistory(3768).then(function (weightHistory) {
+        dreFrontendObservations.getWeightHistory(patientId).then(function (weightHistory) {
           $scope.model.weightData[0].values = [];
           _.forEach(weightHistory.entry, function (entry) {
             var applyDate = entry.appliesDateTime || (entry.issued || entry.meta.lastUpdated);
@@ -102,7 +103,7 @@ angular.module('dreFrontendApp')
 
           });
         });
-        dreFrontendObservations.getBloodPressureDiastolicHistory(3768).then(function (pressureHistory) {
+        dreFrontendObservations.getBloodPressureDiastolicHistory(patientId).then(function (pressureHistory) {
           var data = [];
           _.forEach(pressureHistory.entry, function (entry) {
             var applyDate = entry.appliesDateTime || (entry.issued || entry.meta.lastUpdated);
@@ -113,7 +114,7 @@ angular.module('dreFrontendApp')
           });
           $scope.model.pressureData[0].values = _.sortBy(data,'x');
         });
-        dreFrontendObservations.getBloodPressureSystolicHistory(3768).then(function (pressureHistory) {
+        dreFrontendObservations.getBloodPressureSystolicHistory(patientId).then(function (pressureHistory) {
           var data = [];
           _.forEach(pressureHistory.entry, function (entry) {
             var applyDate = entry.appliesDateTime || (entry.issued || entry.meta.lastUpdated);

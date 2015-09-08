@@ -8,14 +8,17 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-  .controller('MedicationsCtrl', function ($scope,dreFrontendMedications,_) {
+  .controller('MedicationsCtrl', function ($scope,dreFrontendMedications,_, dreFrontEndPatientInfo) {
     $scope.model = {
-      firstName : 'Not implemented',
+      userName : '-',
       lastUpdate: new Date(),
       showInactive: false,
       medicationsList:[]
     };
-    dreFrontendMedications.getByPatientId(3768).then(function(medications){
+        dreFrontEndPatientInfo.getPatientData().then(function (patient) {
+            $scope.model.userName = patient.getOfficialName()[0];
+        });
+    dreFrontendMedications.getByPatientId(dreFrontEndPatientInfo.getPatientId()).then(function(medications){
       $scope.model.medicationsList = [];
       _.forEach(medications.entry, function(entry){
         if(angular.isObject(entry.medication)){
@@ -30,5 +33,4 @@ angular.module('dreFrontendApp')
         }
       });
     });
-    //3768
   });

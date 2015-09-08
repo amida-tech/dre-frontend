@@ -8,9 +8,9 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-  .controller('RecordHistoryCtrl', function ($scope) {
+  .controller('RecordHistoryCtrl', function ($scope,dreFrontEndPatientInfo) {
     $scope.model = {
-      firstName : 'Not implemented',
+        userName : '-',
       lastUpdate: new Date(),
       actionsList:[
         {
@@ -27,4 +27,7 @@ angular.module('dreFrontendApp')
         }
       ]
     };
+        dreFrontEndPatientInfo.getPatientData().then(function (patient) {
+            $scope.model.userName = patient.getOfficialName()[0];
+        });
   });

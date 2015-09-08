@@ -19,13 +19,15 @@ angular.module('dreFrontend.util')
           method: 'POST'
         }).then(function () {
           authData = {
-            isAuthenticated: true
+            isAuthenticated: true,
+            patientId: 3768
           };
-          $rootScope.$emit(dreFrontendGlobals.authEvents.loggedIn);
+          $rootScope.$emit(dreFrontendGlobals.authEvents.loggedIn,authData.patientId);
           return true;
         }).catch(function () {
           authData = {
-            isAuthenticated: false
+            isAuthenticated: false,
+              patientId: undefined
           };
           $rootScope.$emit(dreFrontendGlobals.authEvents.loggedOut);
           return $q.reject(false);
@@ -38,7 +40,8 @@ angular.module('dreFrontend.util')
           method: 'POST'
         }).finally(function () {
           authData = {
-            isAuthenticated: false
+            isAuthenticated: false,
+              patientId: undefined
           };
           $rootScope.$emit(dreFrontendGlobals.authEvents.loggedOut);
           return true;
@@ -53,14 +56,28 @@ angular.module('dreFrontend.util')
           method: 'GET'
         }).then(function (d) {
           var origState = angular.isObject(authData) && authData.isAuthenticated;
-          authData = {isAuthenticated: d.authenticated};
-          if (authData.isAuthenticated != origState) {
-            $rootScope.$emit(authData.isAuthenticated ? dreFrontendGlobals.authEvents.loggedIn : dreFrontendGlobals.authEvents.loggedOut);
-          }
+            if(d.authenticated){
+                authData = {
+                    isAuthenticated: true,
+                    patientId: 3768
+                };
+                if (authData.isAuthenticated != origState) {
+                    $rootScope.$emit(dreFrontendGlobals.authEvents.loggedIn, authData.patientId);
+                }
+            }else{
+                authData = {
+                    isAuthenticated: false,
+                    patientId: undefined
+                };
+                if (authData.isAuthenticated != origState) {
+                    $rootScope.$emit(dreFrontendGlobals.authEvents.loggedOut);
+                }
+            }
           return authData.isAuthenticated;
         }).catch(function () {
           authData = {
-            isAuthenticated: false
+            isAuthenticated: false,
+              patientId: undefined
           };
           return false;
         });

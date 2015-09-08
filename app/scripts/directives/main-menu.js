@@ -7,36 +7,49 @@
  * # mainMenu
  */
 angular.module('dreFrontendApp')
-  .directive('mainMenu', function ($state, dreFrontendAuthService, $rootScope, dreFrontendGlobals) {
-    return {
-      templateUrl: 'views/directives/main-menu.html',
-      restrict: 'AE',
-      scope:{},
-      controller: function ($scope) {
-        $scope.model = {
-          $state: $state,
-          isAuthenticated: false,
-          userName: 'Not Implemented',
-          avatarUrl: 'images/img-demo.jpg'
-        };
-        $scope.logOut = function(){
-          dreFrontendAuthService.logout().finally(function(){
-            $state.go('main');
-          })
-        };
-        var checkAuth = function () {
-          dreFrontendAuthService.isAuthenticated().then(function (isAuthenticated) {
-            $scope.model.isAuthenticated = isAuthenticated;
-          });
-        };
-        checkAuth();
-        var loggedInCleanEvent = $rootScope.$on(dreFrontendGlobals.authEvents.loggedIn, checkAuth);
-        var loggedOutCleanEvent = $rootScope.$on(dreFrontendGlobals.authEvents.loggedOut, checkAuth);
+    .directive('mainMenu', function ($state, dreFrontendAuthService, $rootScope, dreFrontendGlobals, dreFrontEndPatientInfo) {
+        return {
+            templateUrl: 'views/directives/main-menu.html',
+            restrict: 'AE',
+            scope: {},
+            controller: function ($scope) {
+                $scope.model = {
+                    $state: $state,
+                    isAuthenticated: false,
+                    userName: '-',
+                    avatarData: 'https://placeholdit.imgix.net/~text?txtsize=33&txt=Photo&w=100&h=100'
+                };
+                $scope.logOut = function () {
+                    dreFrontendAuthService.logout().finally(function () {
+                        $state.go('main');
+                    })
+                };
+                var checkAuth = function () {
+                    dreFrontendAuthService.isAuthenticated().then(function (isAuthenticated) {
+                        $scope.model.isAuthenticated = isAuthenticated;
+                        if (isAuthenticated) {
+                            dreFrontEndPatientInfo.getPatientData().then(function (patient) {
+                                $scope.model.userName = patient.getOfficialName()[0];
+                                $scope.model.dateOfBorn = new Date(patient.birthDate);
+                                if (patient.photo && patient.photo.length > 0) {
+                                    var photo = patient.photo[0];
+                                    $scope.model.avatarData = 'data:' + photo.contentType + ';base64,' + photo.data;
+                                }
+                            });
+                        } else {
+                            $scope.model.userName = '-';
+                            $scope.model.avatarData = 'https://placeholdit.imgix.net/~text?txtsize=33&txt=Photo&w=100&h=100';
+                        }
+                    });
+                };
+                checkAuth();
+                var loggedInCleanEvent = $rootScope.$on(dreFrontendGlobals.authEvents.loggedIn, checkAuth);
+                var loggedOutCleanEvent = $rootScope.$on(dreFrontendGlobals.authEvents.loggedOut, checkAuth);
 
-        $scope.$on('$destroy', function () {
-          loggedInCleanEvent();
-          loggedOutCleanEvent();
-        });
-      }
-    };
-  });
+                $scope.$on('$destroy', function () {
+                    loggedInCleanEvent();
+                    loggedOutCleanEvent();
+                });
+            }
+        };
+    });
