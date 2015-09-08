@@ -1,19 +1,16 @@
 'use strict';
 
 angular.module('dreFrontend.util')
-  .factory('dreFrontendHttp', function ($http, $log, $q, $rootScope, dreFrontendGlobals, dreFrontendEnvironment) {
+  .factory('dreFrontendHttp', function ($http, $log, $q, dreFrontendUtil) {
 
     var defaults = {
       cache: false,
       withCredentials: true
     };
 
-    var buildServiceUrl = function (apiPath) {
-      return dreFrontendEnvironment.baseServerUrl + apiPath;
-    };
     return function (options) {
       //build service url
-      options.url = buildServiceUrl(options.url);
+      options.url = dreFrontendUtil.buildServiceUrl(options.url);
 
       return $http(angular.extend(angular.copy(defaults), options)).then(
         function (d) {
