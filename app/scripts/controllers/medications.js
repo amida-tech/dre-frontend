@@ -8,20 +8,20 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-  .controller('MedicationsCtrl', function ($scope,dreFrontendMedications,_, dreFrontEndPatientInfo) {
+  .controller('MedicationsCtrl', function ($scope, dreFrontendMedications, _, dreFrontEndPatientInfo) {
     $scope.model = {
-      userName : '-',
+      userName: '-',
       lastUpdate: new Date(),
       showInactive: false,
-      medicationsList:[]
+      medicationsList: []
     };
-        dreFrontEndPatientInfo.getPatientData().then(function (patient) {
-            $scope.model.userName = patient.getOfficialName()[0];
-        });
-    dreFrontendMedications.getByPatientId(dreFrontEndPatientInfo.getPatientId()).then(function(medications){
+    dreFrontEndPatientInfo.getPatientData().then(function (patient) {
+      $scope.model.userName = patient.getOfficialName()[0];
+    });
+    dreFrontendMedications.getByPatientId(dreFrontEndPatientInfo.getPatientId()).then(function (medications) {
       $scope.model.medicationsList = [];
-      _.forEach(medications.entry, function(entry){
-        if(angular.isObject(entry.medication)){
+      _.forEach(medications.entry, function (entry) {
+        if (angular.isObject(entry.medication)) {
           $scope.model.medicationsList.push({
             rawEntry: entry,
             type: entry.resourceType,
