@@ -12,7 +12,10 @@ angular.module('dreFrontendApp')
         return {
             templateUrl: 'views/directives/upload-form.html',
             restrict: 'AE',
-            scope: {},
+            scope: {
+                uploadError: '=',
+                uploadSuccess: '='
+            },
             controller: function ($scope) {
                 var uploader = $scope.uploader = new FileUploader({
                     url:upload_url,
@@ -38,16 +41,13 @@ angular.module('dreFrontendApp')
                     return issues;
                 };
 
-                uploader.onSuccessItem = function(fileItem, response, status, headers) {
-                    var issues = [];
-                    angular.forEach(_.pluck(response.entry, "resource"), function(v,k){
-                        if (v && v.resourceType === "OperationOutcome") {
-                            angular.merge(issues, v.issue);
-                        }
-                    });
-                    $scope.model = {issues: color_issues(issues)};
+                uploader.onBeforeUploadItem = function (item) {
+                    $scope.model = {};
                 };
-                uploader.onErrorItem = function(fileItem, response, status, headers) {
+
+                uploader.onSuccessItem = $scope.uploadSuccess;
+
+                uploader.onErrorItem = $scope.uploadError || function(fileItem, response, status, headers) {
                     $scope.model = {
                         issues: color_issues(response.issue)
                    };

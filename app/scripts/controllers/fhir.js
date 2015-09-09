@@ -148,6 +148,22 @@ angular.module('dreFrontendApp')
                 .catch(fail_handler);
         };
 
+        $scope.uploadError = function(fileItem, response, status, headers) {
+            console.log(response);
+            $scope.response = response.issue;
+            $scope.res_type = "danger";
+        };
+        $scope.uploadSuccess = function(fileItem, response, status, headers) {
+            var issues = [];
+            angular.forEach(_.pluck(response.entry, "resource"), function(v,k){
+                if (v && v.resourceType === "OperationOutcome") {
+                    angular.merge(issues, v.issue);
+                }
+            });
+            $scope.response = issues;
+            $scope.res_type = "success";
+        };
+
         $scope.loadData = function () {
             $scope.response = [];
             $scope.res_type = "success";
