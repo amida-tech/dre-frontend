@@ -8,6 +8,6 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('FilesUploadCtrl', function ($scope,dreFrontendFilesService) {
+    .controller('FilesUploadCtrl', function () {
         angular.noop();
     });

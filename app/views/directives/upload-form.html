@@ -1,12 +1,17 @@
-    <div class="panel-body">
-        <div class="form-group">
-            <h5>Please select the file you intend to upload</h5>
-            <input type="file" class="form-control" name="file" nv-file-select="" uploader="uploader">
-            <div class="progress" >
-                <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
-            </div>
-            <button type="button" class="btn pull-right btn-primary" ng-click="uploader.uploadAll()"
-                    ng-disabled="!uploader.getNotUploadedItems().length"> Continue
-            </button>
+<div class="panel-body">
+    <div class="form-group">
+        <h5>Please select the file you intend to upload</h5>
+        <input type="file" class="form-control" name="file" nv-file-select="" uploader="uploader">
+
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
         </div>
+        <p class="text-info" ng-show="model.error">{{model.error}}</p>
+        <button type="button" class="btn pull-right btn-primary" ng-click="uploader.uploadAll()"
+                ng-disabled="!uploader.getNotUploadedItems().length"> Continue
+        </button>
     </div>
+    <div ng-repeat="issue in model.issues" ng-show="model.issues[0]" class="col-md-10 text-{{issue.severity}}">
+        <i class="fa fa-exclamation-circle"></i> {{issue.details}}
+    </div>
+</div>

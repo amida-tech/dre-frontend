@@ -18,23 +18,48 @@ angular.module('dreFrontendApp')
                     url:upload_url,
                     withCredentials: true,
                     method:"PUT",
+                    removeAfterUpload:1,
                     queueLimit: 1
                 });
 
+                var color_issues = function (issues) {
+                    angular.forEach(issues, function (v, k) {
+                        switch (v.severity) {
+                            case 'error':
+                                issues[k].severity = "danger";
+                                break;
+                            case "success":
+                                issues[k].severity = "success";
+                                break;
+                            default:
+                                issues[k].severity = "info";
+                        }
+                    });
+                    return issues;
+                };
+
                 uploader.onSuccessItem = function(fileItem, response, status, headers) {
-                    console.info('onSuccessItem', fileItem, response, status, headers);
+                    var issues = [];
+                    angular.forEach(_.pluck(response.entry, "resource"), function(v,k){
+                        if (v && v.resourceType === "OperationOutcome") {
+                            angular.merge(issues, v.issue);
+                        }
+                    });
+                    $scope.model = {issues: color_issues(issues)};
                 };
                 uploader.onErrorItem = function(fileItem, response, status, headers) {
-                    console.info('onErrorItem', fileItem, response, status, headers);
+                    $scope.model = {
+                        issues: color_issues(response.issue)
+                   };
                 };
                 uploader.onCancelItem = function(fileItem, response, status, headers) {
-                    console.info('onCancelItem', fileItem, response, status, headers);
+                    /* add handler here */
                 };
                 uploader.onCompleteItem = function(fileItem, response, status, headers) {
-                    console.info('onCompleteItem', fileItem, response, status, headers);
+                    /* add handler here */
                 };
                 uploader.onCompleteAll = function() {
-                    console.info('onCompleteAll');
+                    /* add handler here */
                 };
 
             }
