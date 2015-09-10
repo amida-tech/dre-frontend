@@ -21,6 +21,7 @@ angular.module('dreFrontendApp')
         };
 
         function showTable() {
+	    $log.debug(files);
             $scope.model = {
                 tableParams: new NgTableParams(
                     {
