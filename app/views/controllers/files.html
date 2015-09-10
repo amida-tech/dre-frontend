@@ -10,27 +10,22 @@
             </a>
         </div>
         <div class="col-md-12">
-        <h5 ng-hide="model.total">There are currently no files in the DRE. Upload a file to get started and
-            establish your Master Health Record!</h5>
+            <h5 ng-hide="model.tableParams.total"> There are currently no files in the DRE. Upload a file to get started and establish your Master Health Record! </h5>
         </div>
         <div class="col-sm-12">
-        <table class="table table-responsive table-hover panel" ng-show="model.total" ng-table="model.tableParams">
-            <tr ng-repeat="row in $data">
-                <td>
-                    <a ng-show="row.file_class === 'ccda'"><i class="fa fa-file-code-o"></i></a>
-                    <a ng-show="row.file_class === 'cms'"><i class="fa fa-file-text-o"></i></a>
-                    <a ng-show="row.file_class === 'hl7'"><i class="fa fa-flask"></i></a>
-                </td>
-                <td data-title="'Name'" sortable="'file_name'">
-                    <a href="{{row.url}}">
-                        {{row.file_name}}
-                    </a>
-                </td>
-                <td data-title="'Format'" sortable="'file_class'">{{row.file_class | uppercase }}</td>
-                <td data-title="'Type'">User uploaded record</td>
-                <td data-title="'Modified'" sortable="'file_upload_date'">{{row.file_upload_date | date:'short'}}</td>
-            </tr>
-        </table>
+            <table class="table table-responsive table-hover panel" ng-show="model.tableParams.total"
+                   ng-table="model.tableParams">
+                <tr ng-repeat="row in $data">
+                    <td>
+                        <a ng-show="row.contentType === 'text/xml'"><i class="fa fa-file-code-o"></i></a>
+                        <a ng-show="row.contentType === 'text/plain'"><i class="fa fa-file-text-o"></i></a>
+                    </td>
+                    <td data-title="'Name'" sortable="'title'"><a ng-show="row.url" ng-click="getItemContent(row)">{{row.title}}</a></td>
+                    <td data-title="'Format'" sortable="'contentType'">{{row.contentType}}</td>
+                    <td data-title="'Type'">{{row.display}}</td>
+                    <td data-title="'Modified'" sortable="'indexed'">{{row.indexed | date:'short'}}</td>
+                </tr>
+            </table>
         </div>
     </div>
 </div>

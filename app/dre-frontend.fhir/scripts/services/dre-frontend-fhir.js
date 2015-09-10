@@ -9,27 +9,31 @@ angular.module('dreFrontend.fhir')
             setCount: function _set_page_length(count) {
                 _count = count;
             },
-            $get: function (Restangular, $q, fhirEnv) {
-
-                function _get_params(url) {
-                    var res = {};
-                    var params = url.slice(url.indexOf('?') + 1).split('&');
-                    for (var i = 0; i < params.length; i++) {
-                        var param = params[i].split('=');
-                        res[param[0]] = param[1];
-                    }
-                    return res;
-                }
+            $get: function (Restangular, $q, fhirEnv, dreFrontendUtil) {
 
                 function _add_page_handlers(bundleResource) {
                     if (bundleResource.resourceType == fhirEnv.bundleType) {
                         var handlers = {};
                         angular.forEach(bundleResource.link,
                             function (_link) {
-                                if (_link.relation == "next" || _link.relation == "previous")
+                                if (_link.relation == "next" || _link.relation == "previous") {
+                                    var params = dreFrontendUtil.getURLparams(_link.url);
+                                    params._getpagesoffset *= 1;
+                                    params._count *= 1;
                                     handlers[_link.relation] = function () {
-                                        return Restangular.one('').get(_get_params(_link.url)).then(set_response);
+                                        return Restangular.one('').get(params).then(set_response);
                                     };
+                                    handlers['getPage'] = function (offset) {
+                                        var page_count = bundleResource.total / params._count + 1;
+                                        if (offset >= 0 && offset < page_count) {
+                                            var _params = params;
+                                            _params._getpagesoffset = params._count * offset;
+                                            return Restangular.one('').get(_params).then(set_response);
+                                        } else {
+                                            return $q.reject("incorrect page number");
+                                        }
+                                    }
+                                }
                             }
                         );
                         angular.extend(bundleResource, handlers);
@@ -50,7 +54,7 @@ angular.module('dreFrontend.fhir')
 
                 function set_response(res) {
                     function _omit(r) {
-                        return _.omit(r, ["type", "base", "link", "search", "text"]);
+                        return _.omit(r, ["base", "link", "search", "text"]);
                     }
 
                     if (res.resourceType == fhirEnv.bundleType) {
