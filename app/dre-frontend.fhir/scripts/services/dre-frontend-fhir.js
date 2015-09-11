@@ -144,8 +144,8 @@ angular.module('dreFrontend.fhir')
                         });
                 }
 
-                function _history(resourceType, id, parames) {
-                    return $q.reject("not implemented");
+                function _history(resourceType, id, version, params) {
+                    return Restangular.one(resourceType, id).one("_history", version).get(params).then(set_response);
                 }
 
                 function _create(resourceType, data) {

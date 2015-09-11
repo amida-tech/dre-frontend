@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendDocumentReference', function (dreFrontendFhirService, $q) {
+    .factory('dreFrontendDocumentReference', function (dreFrontendFhirService, $q, $log) {
 
         function DocumentReference(data) {
             this.setData(data);
@@ -13,7 +13,15 @@ angular.module('dreFrontend.fhir')
         };
 
         DocumentReference.prototype.getContent = function () {
-            return $q.resolve("not implemented");
+
+            $log.debug(this);
+            var expr = /([\w\d]+?\/){2}_history\/.+?$/;
+            var query = expr.exec(this.url || this.content[0].url);
+            var parts = query[0].split('/');
+            if (parts && parts.length === 4)
+                return dreFrontendFhirService.history(parts[0],parts[1],parts[3]);
+            else
+                return $q.reject("cannt get content");
         };
 
         return {

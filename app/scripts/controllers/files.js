@@ -8,37 +8,55 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('FilesCtrl', function ($scope, $filter, $q, NgTableParams, dreFrontendDocumentReference, dreFrontEndPatientInfo, $log) {
+    .controller('FilesCtrl', function ($scope, $filter, $q, NgTableParams, dreFrontendDocumentReference, dreFrontEndPatientInfo, FileSaver, $log) {
         var files = [];
         var page_size = 50;
-        $scope.model = { };
+        var patient_id = dreFrontEndPatientInfo.getPatientId();
+
+        function openSaveAsDialog(filename, content, mediaType) {
+            var save_data = {
+                data: [content],
+                filename: filename,
+                options: {type: mediaType}
+            };
+            FileSaver.saveAs(save_data);
+        }
+
+        $scope.model = {};
 
         $scope.getItemContent = function (item){
-            item.getBody()
-                .then(function(binary){
-                    $log.debug(binary);
-                });
+            $log.debug(this);
+            if (!item.binary) {
+                item.getBody()
+                    .then(function (binary) {
+                        item.binary = binary;
+                        openSaveAsDialog(item.title, atob(binary.content), binary.contentType);
+                    });
+            }  else {
+                openSaveAsDialog(item.title, atob(item.binary.content), item.binary.contentType);
+            }
         };
 
         function showTable() {
-	    $log.debug(files);
-            $scope.model = {
-                tableParams: new NgTableParams(
-                    {
-                        page: 1,
-                        count: 10,
-                        sorting: {title: 'asc'}
-                    },
-                    {
-                        total: files.length,
-                        getData: function ($defer, params) {
-                            var orderedData = params.sorting() ?
-                                $filter('orderBy')( files, params.orderBy()) : files;
-                            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+            if (files.length) {
+                $scope.model = {
+                    tableParams: new NgTableParams(
+                        {
+                            page: 1,
+                            count: 10,
+                            sorting: {title: 'asc'}
+                        },
+                        {
+                            total: files.length,
+                            getData: function ($defer, params) {
+                                var orderedData = params.sorting() ?
+                                    $filter('orderBy')(files, params.orderBy()) : files;
+                                $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                            }
                         }
-                    }
-                )
-            };
+                    )
+                };
+            }
         }
 
         function proceedBundle(bundle){
@@ -61,7 +79,7 @@ angular.module('dreFrontendApp')
             });
         }
 
-        dreFrontendDocumentReference.getByPatientId(dreFrontEndPatientInfo.getPatientId(),{_count:page_size})
+        dreFrontendDocumentReference.getByPatientId(patient_id,{_count:page_size})
             .then(function(bundle){
                 proceedBundle(bundle);
 
