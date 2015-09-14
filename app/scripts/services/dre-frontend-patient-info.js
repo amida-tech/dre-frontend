@@ -32,28 +32,26 @@ angular.module('dreFrontendApp')
             clearPatientData: function () {
                 patientData = null;
                 patientId = null;
-                patientIdPromise.reject('logout');
-                patientIdPromise = null;
+                if(patientIdPromise){
+                    patientIdPromise.reject('logout');
+                    patientIdPromise = null;
+                }
             },
             getPatientData: function (force) {
-                //if patient id is not defined, wait it, and only then return patient Info
-                if(!patientId){
-                    return self.getPatientId().then(function(){
-                        return self.getPatientData(force);
+                return self.getPatientId().then(function(patientId){
+                    if (angular.isObject(patientData) && !force) {
+                        patientDataRequest = null;
+                        return $q.when(patientData);
+                    }
+                    if (angular.isObject(patientDataRequest) && !force) {
+                        return patientDataRequest;
+                    }
+                    patientDataRequest = dreFrontendPatient.getById(patientId).then(function (d) {
+                        patientData = d;
+                        return patientData;
                     });
-                }
-                if (angular.isObject(patientData) && !force) {
-                    return $q.when(patientData);
-                }
-                if (angular.isObject(patientDataRequest) && !force) {
                     return patientDataRequest;
-                }
-                patientDataRequest = dreFrontendPatient.getById(patientId).then(function (d) {
-                    patientData = d;
-                    patientDataRequest = null;
-                    return patientData;
                 });
-                return patientDataRequest;
             }
         };
         return self;
