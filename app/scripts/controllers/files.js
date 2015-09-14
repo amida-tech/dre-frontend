@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('FilesCtrl', function ($scope, $filter, $q, $state, NgTableParams, dreFrontendDocumentReference,dreFrontendAuthService, dreFrontEndPatientInfo, FileSaver, $log) {
+    .controller('FilesCtrl', function ($scope, $filter, $q, $state, NgTableParams, dreFrontendDocumentReference, dreFrontendAuthService, dreFrontEndPatientInfo, FileSaver, $log) {
         var files = [];
         var page_size = 50;
 
@@ -23,7 +23,7 @@ angular.module('dreFrontendApp')
 
         $scope.model = {};
 
-        $scope.getItemContent = function (item){
+        $scope.getItemContent = function (item) {
             $log.debug(this);
             if (!item.binary) {
                 item.getBody()
@@ -31,7 +31,7 @@ angular.module('dreFrontendApp')
                         item.binary = binary;
                         openSaveAsDialog(item.title, atob(binary.content), binary.contentType);
                     });
-            }  else {
+            } else {
                 openSaveAsDialog(item.title, atob(item.binary.content), item.binary.contentType);
             }
         };
@@ -58,8 +58,8 @@ angular.module('dreFrontendApp')
             }
         }
 
-        function proceedBundle(bundle){
-            angular.forEach(bundle.entry, function(e){
+        function proceedBundle(bundle) {
+            angular.forEach(bundle.entry, function (e) {
                 var data = {
                     indexed: e.indexed,
                     display: "User uploaded record",
@@ -71,35 +71,32 @@ angular.module('dreFrontendApp')
                 }
 
                 if (e.content[0]) {
-                    angular.extend(data,e.content[0]);
+                    angular.extend(data, e.content[0]);
                 }
 
                 files.push(data);
             });
         }
-        dreFrontendAuthService.isAuthenticated().then(function(is_authenticated){
-            if (is_authenticated) {
-                dreFrontendDocumentReference.getByPatientId(dreFrontEndPatientInfo.getPatientId(), {_count: page_size})
-                    .then(function (bundle) {
-                        proceedBundle(bundle);
 
-                        if (bundle.getPage) {
-                            var pages = [];
-                            for (var i = 1; i < bundle.total / page_size; i++) {
-                                pages.push(bundle.getPage(i));
-                            }
-                            $q.all(pages).then(function (bundles) {
-                                angular.forEach(bundles, function (b) {
-                                    proceedBundle(b);
-                                });
-                                showTable();
-                            });
-                        } else {
-                            showTable();
+        dreFrontEndPatientInfo.getPatientId().then(function (patientId) {
+            dreFrontendDocumentReference.getByPatientId(patientId, {_count: page_size})
+                .then(function (bundle) {
+                    proceedBundle(bundle);
+
+                    if (bundle.getPage) {
+                        var pages = [];
+                        for (var i = 1; i < bundle.total / page_size; i++) {
+                            pages.push(bundle.getPage(i));
                         }
-                    });
-            } else {
-                $state.go('main');
-            }
+                        $q.all(pages).then(function (bundles) {
+                            angular.forEach(bundles, function (b) {
+                                proceedBundle(b);
+                            });
+                            showTable();
+                        });
+                    } else {
+                        showTable();
+                    }
+                });
         });
     });

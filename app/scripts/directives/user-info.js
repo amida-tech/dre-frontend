@@ -20,6 +20,7 @@ angular.module('dreFrontendApp')
                 };
                 var checkPatientData = function () {
                     dreFrontEndPatientInfo.getPatientData().then(function (patient) {
+                        console.log('checkPatientData', patient);
                         $scope.model.userName = patient.getOfficialName()[0];
                         $scope.model.dateOfBorn = new Date(patient.birthDate);
                         if (patient.photo && patient.photo.length > 0) {
@@ -29,13 +30,18 @@ angular.module('dreFrontendApp')
                     });
                 };
                 checkPatientData();
-                var loggedInCleanEvent = $rootScope.$on(dreFrontendGlobals.authEvents.loggedIn, checkPatientData);
-                var loggedOutCleanEvent = $rootScope.$on(dreFrontendGlobals.authEvents.loggedOut, checkPatientData);
+                var loggedOutCleanEvent = $rootScope.$on(dreFrontendGlobals.authEvents.loggedOut, function () {
+                        $scope.model.userName = '-';
+                        $scope.model.avatarData = 'https://placeholdit.imgix.net/~text?txtsize=33&txt=Photo&w=100&h=100';
+                        $scope.model.dateOfBorn = null;
+                    }
+                );
 
                 $scope.$on('$destroy', function () {
-                    loggedInCleanEvent();
                     loggedOutCleanEvent();
                 });
             }
-        };
-    });
+        }
+            ;
+    })
+;
