@@ -20,7 +20,7 @@ angular.module('dreFrontend.util')
         }).then(function () {
           authData = {
             isAuthenticated: true,
-            patientId: 3768
+            patientId: login
           };
           $rootScope.$emit(dreFrontendGlobals.authEvents.loggedIn,authData.patientId);
           return true;
