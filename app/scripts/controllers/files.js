@@ -8,10 +8,9 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('FilesCtrl', function ($scope, $filter, $q, NgTableParams, dreFrontendDocumentReference, dreFrontEndPatientInfo, FileSaver, $log) {
+    .controller('FilesCtrl', function ($scope, $filter, $q, $state, NgTableParams, dreFrontendDocumentReference,dreFrontendAuthService, dreFrontEndPatientInfo, FileSaver, $log) {
         var files = [];
         var page_size = 50;
-        var patient_id = dreFrontEndPatientInfo.getPatientId();
 
         function openSaveAsDialog(filename, content, mediaType) {
             var save_data = {
@@ -78,25 +77,29 @@ angular.module('dreFrontendApp')
                 files.push(data);
             });
         }
+        dreFrontendAuthService.isAuthenticated().then(function(is_authenticated){
+            if (is_authenticated) {
+                dreFrontendDocumentReference.getByPatientId(dreFrontEndPatientInfo.getPatientId(), {_count: page_size})
+                    .then(function (bundle) {
+                        proceedBundle(bundle);
 
-        dreFrontendDocumentReference.getByPatientId(patient_id,{_count:page_size})
-            .then(function(bundle){
-                proceedBundle(bundle);
-
-                if (bundle.getPage) {
-                    var pages = [];
-                    for (var i = 1; i < bundle.total/page_size;i++) {
-                        pages.push(bundle.getPage(i));
-                    }
-                    $q.all(pages).then(function(bundles){
-                        angular.forEach(bundles, function (b) {
-                            proceedBundle(b);
-                        });
-                        showTable();
+                        if (bundle.getPage) {
+                            var pages = [];
+                            for (var i = 1; i < bundle.total / page_size; i++) {
+                                pages.push(bundle.getPage(i));
+                            }
+                            $q.all(pages).then(function (bundles) {
+                                angular.forEach(bundles, function (b) {
+                                    proceedBundle(b);
+                                });
+                                showTable();
+                            });
+                        } else {
+                            showTable();
+                        }
                     });
-                } else {
-                    showTable();
-                }
-            });
-
+            } else {
+                $state.go('main');
+            }
+        });
     });

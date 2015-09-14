@@ -59,7 +59,7 @@ angular.module('dreFrontend.util')
             if(d.authenticated){
                 authData = {
                     isAuthenticated: true,
-                    patientId: 3768
+                    patientId: d.username /*3768*/
                 };
                 if (authData.isAuthenticated != origState) {
                     $rootScope.$emit(dreFrontendGlobals.authEvents.loggedIn, authData.patientId);
