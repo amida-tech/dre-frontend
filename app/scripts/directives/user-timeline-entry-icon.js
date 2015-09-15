@@ -56,7 +56,7 @@ angular.module('dreFrontendApp')
                     /*case 'inhaler':
                      $scope.model.actionClass= 'icon-inhaler';
                      break;*/
-                    case 'DiagnosticReport':
+                    case 'ObservationTestResult':
                         $scope.model.displayClass = 'fa-flask';
                         break;
                     case 'Encounter':

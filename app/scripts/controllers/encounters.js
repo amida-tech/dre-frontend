@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('EncountersCtrl', function ($scope, dreFrontendEncounters, _, dreFrontEndPatientInfo) {
+    .controller('EncountersCtrl', function ($scope, dreFrontendEncounters, _, dreFrontEndPatientInfo, dreFrontendUtil) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
@@ -26,12 +26,13 @@ angular.module('dreFrontendApp')
                             rawEntry: entry,
                             type: entry.resourceType,
                             title: entry.type[0].coding[0].display,
-                            location: 'Test location',//entry.location,
-                            startDate: angular.isObject(entry.period) ? entry.period.start : undefined,
-                            stopDate: angular.isObject(entry.period) ? entry.period.stop : undefined
+                            location: (angular.isArray(entry.location) && entry.location.length > 0 && entry.location[0].location) ? entry.location[0].location.name : undefined,
+                            startDate: angular.isObject(entry.period) ? dreFrontendUtil.formatFhirDate(entry.period.start) : undefined,
+                            stopDate: angular.isObject(entry.period) ? dreFrontendUtil.formatFhirDate(entry.period.end) : undefined
                         })
                     }
                 });
             });
         });
+        var formatDay
     });

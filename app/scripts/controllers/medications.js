@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('MedicationsCtrl', function ($scope, dreFrontendMedications, _, dreFrontEndPatientInfo) {
+    .controller('MedicationsCtrl', function ($scope, dreFrontendMedications, _, dreFrontEndPatientInfo,dreFrontendUtil) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
@@ -28,8 +28,8 @@ angular.module('dreFrontendApp')
                             type: entry.resourceType,
                             isInactive: entry.status != 'active',
                             title: entry.medication.name,
-                            startDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.start : undefined,
-                            stopDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.stop : undefined
+                            startDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? dreFrontendUtil.formatFhirDate(entry.dispense.validityPeriod.start) : undefined,
+                            stopDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? dreFrontendUtil.formatFhirDate(entry.dispense.validityPeriod.stop) : undefined
                         })
                     }
                 });

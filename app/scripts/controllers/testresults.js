@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('TestresultsCtrl', function ($scope, dreFrontendTestresults, _, dreFrontEndPatientInfo) {
+    .controller('TestresultsCtrl', function ($scope, dreFrontendObservations, _, dreFrontEndPatientInfo) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
@@ -18,15 +18,15 @@ angular.module('dreFrontendApp')
             $scope.model.userName = patient.getOfficialName()[0];
         });
         dreFrontEndPatientInfo.getPatientId().then(function (patientId) {
-            dreFrontendTestresults.getByPatientId(patientId).then(function (results) {
+            dreFrontendObservations.getTestResults(patientId).then(function (results) {
                 $scope.model.testresultsList = [];
                 _.forEach(results.entry, function (entry) {
                     if (angular.isObject(entry.code) && angular.isArray(entry.code.coding) && entry.code.coding.length > 0) {
                         $scope.model.testresultsList.push({
                             rawEntry: entry,
-                            type: entry.resourceType,
+                            type: 'ObservationTestResult',
                             title: entry.code.coding[0].display,
-                            date: entry.issued
+                            date: dreFrontendUtil.formatFhirDate(entry.issued)
                         })
                     }
                 });

@@ -29,7 +29,7 @@ angular.module('dreFrontendApp')
                     case 'infoUpdate':
                     case 'medUpdate':
                     case 'MedicationPrescription':
-                    case 'DiagnosticReport':
+                    case 'ObservationTestResult':
                     case 'Encounter':
                         $scope.model.actionTitle = $scope.userTimelineEntryTitle.title;
                         break;
