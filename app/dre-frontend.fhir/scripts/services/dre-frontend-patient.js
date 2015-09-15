@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendPatient', function (dreFrontendFhirService, $q) {
+    .factory('dreFrontendPatient', function (dreFrontendFhirService, $q, _, fhirEnv) {
 
         function Patient(data) {
             this.setData(data);
@@ -17,25 +17,51 @@ angular.module('dreFrontend.fhir')
                 angular.extend(this, data);
         };
 
-        Patient.prototype.getOfficialName = function () {
-            var official_names = (_.filter(this.name, {use: "L"})).concat(_.filter(this.name, {use: "official"}));
+        function _glue_name(parts) {
+            var r = [];
+            if (parts.prefix)
+                r.push(parts.prefix.join(" "));
+
+            if (parts.given)
+                r.push(parts.given.join(" "));
+
+            if (parts.family)
+                r.push(parts.family.join(" "));
+
+            if (parts.suffix)
+                r.push(parts.suffix.join(" "));
+
+            return r.join(" ");
+        }
+
+        Patient.prototype.getNameByType = function (nameType) {
             var result = [];
-            angular.forEach(official_names, function (v) {
-                var r = [];
-                if (v.prefix)
-                    r.push(v.prefix.join(" "));
+            var patient = this;
+            var humanNameType = fhirEnv.humanNames[nameType];
+            if (humanNameType) {
+                var names = [];
+                angular.forEach(humanNameType.codes, function(code){
+                   names = names.concat(_.filter(patient.name, {use: code}));
+                });
 
-                if (v.given)
-                    r.push(v.given.join(" "));
+                angular.forEach(names, function (parts) {
+                    result.push(_glue_name(parts));
+                });
+            }
+            return result;
+        };
 
-                if (v.family)
-                    r.push(v.family.join(" "));
+        Patient.prototype.getOfficialName = function () {
+            return this.getNameByType("official");
+        };
 
-                if (v.suffix)
-                    r.push(v.suffix.join(" "));
+        Patient.prototype.getUsualName = function () {
+            return this.getNameByType("usual");
+        };
 
-                result.push(r.join(" "));
-            });
+        Patient.prototype.getName = function () {
+            var result = this.getUsualName()
+                .concat(this.getOfficialName());
             return result;
         };
 

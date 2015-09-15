@@ -20,7 +20,7 @@ angular.module('dreFrontendApp')
                 };
                 var checkPatientData = function () {
                     dreFrontEndPatientInfo.getPatientData().then(function (patient) {
-                        $scope.model.userName = patient.getOfficialName()[0];
+                        $scope.model.userName = patient.getName()[0];
                         $scope.model.dateOfBorn = new Date(patient.birthDate);
                         if (patient.photo && patient.photo.length > 0) {
                             var photo = patient.photo[0];

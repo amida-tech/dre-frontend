@@ -29,7 +29,7 @@ angular.module('dreFrontendApp')
                         $scope.model.isAuthenticated = isAuthenticated;
                         if (isAuthenticated) {
                             dreFrontEndPatientInfo.getPatientData().then(function (patient) {
-                                $scope.model.userName = patient.getOfficialName()[0];
+                                $scope.model.userName = patient.getName()[0];
                                 if (!angular.isString($scope.model.userName) || $scope.model.userName.length == 0) {
                                     $scope.model.userName = patient.id;
                                 }

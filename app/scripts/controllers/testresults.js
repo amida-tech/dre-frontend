@@ -15,7 +15,7 @@ angular.module('dreFrontendApp')
             testresultsList: []
         };
         dreFrontEndPatientInfo.getPatientData().then(function (patient) {
-            $scope.model.userName = patient.getOfficialName()[0];
+            $scope.model.userName = patient.getName()[0];
         });
         dreFrontEndPatientInfo.getPatientId().then(function (patientId) {
             dreFrontendTestresults.getByPatientId(patientId).then(function (results) {

@@ -16,7 +16,7 @@ angular.module('dreFrontendApp')
             medicationsList: []
         };
         dreFrontEndPatientInfo.getPatientData().then(function (patient) {
-            $scope.model.userName = patient.getOfficialName()[0];
+            $scope.model.userName = patient.getName()[0];
         });
         dreFrontEndPatientInfo.getPatientId().then(function (patientId) {
             dreFrontendMedications.getByPatientId(patientId).then(function (medications) {
