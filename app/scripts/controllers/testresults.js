@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('TestresultsCtrl', function ($scope, dreFrontendObservations, _, dreFrontEndPatientInfo) {
+    .controller('TestresultsCtrl', function ($scope, dreFrontendObservations, _, dreFrontEndPatientInfo, dreFrontendUtil) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
@@ -26,7 +26,7 @@ angular.module('dreFrontendApp')
                             rawEntry: entry,
                             type: 'ObservationTestResult',
                             title: entry.code.coding[0].display,
-                            date: dreFrontendUtil.formatFhirDate(entry.issued)
+                            date: dreFrontendUtil.formatFhirDate(entry.appliesDateTime)
                         })
                     }
                 });

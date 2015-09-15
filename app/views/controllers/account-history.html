@@ -1,49 +1,48 @@
 <div class="panel panel-body">
-  <home-breadcrumbs></home-breadcrumbs>
-  <div class="row">
-    <div class="col-sm-12">
-      <h4 class="ng-binding">Hi {{model.userName}} !</h4>
+    <home-breadcrumbs></home-breadcrumbs>
+    <div class="row">
+        <div class="col-sm-12">
+            <h4 class="ng-binding">Hi {{model.userName}} !</h4>
 
-      <p>Welcome to your Personal Health Record. You can review your record summary and account history from this
-        home page.</p>
+            <p>Welcome to your Personal Health Record. You can review your record summary and account history from this
+                home page.</p>
 
-      <p>Last Login: {{model.lastLogin| date :'short'}}</p>
+            <p>Last Login: {{model.lastLogin| date :'short'}}</p>
 
-      <p>Last Updated: {{model.lastUpdate| date :'short'}}</p>
+            <p>Last Updated: {{model.lastUpdate| date :'short'}}</p>
+        </div>
     </div>
-  </div>
 </div>
 <h4 class="text-center white">Account History</h4>
 
 <div class="panel panel-body">
-  <user-timeline></user-timeline>
-  <div class="blocks">
-    <!-- START -->
-    <div ng-repeat="action in model.actionsList">
-      <div class="row"><i class="col-sm-2 h_line"></i></div>
-      <div class="row">
-        <div class="col-sm-2">
-          <div user-timeline-entry-icon="action"></div>
-        </div>
-        <div class="col-sm-10">
-          <div class="panel panel-body">
-            <div user-timeline-entry-title="action"></div>
+    <user-timeline></user-timeline>
+    <div class="blocks">
+        <!-- START -->
+        <div ng-repeat="action in model.actionsList">
+            <div class="row"><i class="col-sm-2 h_line"></i></div>
             <div class="row">
-              <div class="col-sm-3">
-                <h5 class="text-left">{{action.date | date:'short'}}</h5>
-              </div>
-              <div class="col-sm-9">
-                <h5>
-                  {{action.note}}
-                </h5>
-              </div>
+                <div class="col-sm-2">
+                    <div user-timeline-entry-icon="action"></div>
+                </div>
+                <div class="col-sm-10">
+                    <div class="panel panel-body">
+                        <div user-timeline-entry-title="action"></div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h5 class="text-left">{{action.date | date:'short'}}</h5>
+                            </div>
+                            <div class="col-sm-9">
+                                <h5>
+                                    {{action.note}}
+                                </h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
     </div>
     <h5 ng-hide="model.actionsList" class="col-sm-12 text-center">No Action Entries</h5>
     <!-- END -->
-
-  </div>
 </div>
