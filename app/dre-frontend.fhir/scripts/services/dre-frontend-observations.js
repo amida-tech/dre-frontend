@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendObservations', function (dreFrontendFhirService, fhirEnv) {
+    .factory('dreFrontendObservations', function (dreFrontendFhirService, fhirEnv, _) {
 
         function Observations(data) {
             this.setData(data);
@@ -87,7 +87,7 @@ angular.module('dreFrontend.fhir')
 
                         angular.forEach(response.entry, function (resource) {
                             /* exclude weight, height, blood pressures & BMI resources */
-                            if (_.intersection(_.pluck(resource.code.coding, "code"), exclude_codes).length == 0)
+                            if (resource.code && _.intersection(_.pluck(resource.code.coding, "code"), exclude_codes).length == 0)
                                 new_entry.push(resource);
                         });
 

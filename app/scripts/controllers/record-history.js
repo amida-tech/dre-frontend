@@ -28,6 +28,6 @@ angular.module('dreFrontendApp')
       ]
     };
         dreFrontEndPatientInfo.getPatientData().then(function (patient) {
-            $scope.model.userName = patient.getOfficialName()[0];
+            $scope.model.userName = patient.getName()[0];
         });
   });

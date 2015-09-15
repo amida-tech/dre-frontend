@@ -60,5 +60,28 @@ angular.module('dreFrontend.fhir')
             systolic_blood_pressure: ["8480-6","271649006"],
             diastolic_blood_pressure: ["8462-4","271650006"],
             bmi: ["39156-5","60621009"]
+        },
+        humanNames:{
+            "usual": {
+                codes: ["usual","C","D"]
+            },
+            "official": {
+                codes: ["official","OR","L"]
+            },
+            "temp": {
+                codes: ["temp","T","TEMP"]
+            },
+            "nickname": {
+                codes: ["nickname","P","N"]
+            },
+            "anonymous": {
+                codes: ["anonymous","ANON","S"]
+            },
+            "old": {
+                codes: ["old","OLD","NOUSE","BAD"]
+            },
+            "maiden": {
+                codes: ["maiden", "M"]
+            }
         }
     });

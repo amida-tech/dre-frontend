@@ -16,7 +16,7 @@ angular.module('dreFrontendApp')
       actionsList: []
     };
     dreFrontEndPatientInfo.getPatientData().then(function (patient) {
-      $scope.model.userName = patient.getOfficialName()[0];
+      $scope.model.userName = patient.getName()[0];
     });
     dreFrontendAccountHistoryService.getLastMasterActions().then(function (response) {
       $scope.model.lastLogin = new Date(response.lastLogin);
