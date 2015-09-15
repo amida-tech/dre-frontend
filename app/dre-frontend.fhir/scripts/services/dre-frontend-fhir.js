@@ -9,7 +9,7 @@ angular.module('dreFrontend.fhir')
             setCount: function _set_page_length(count) {
                 _count = count;
             },
-            $get: function (Restangular, $q, fhirEnv, dreFrontendUtil) {
+            $get: function (Restangular, $q, fhirEnv, dreFrontendUtil, $log) {
 
                 function _add_page_handlers(bundleResource) {
                     if (bundleResource.resourceType == fhirEnv.bundleType) {
@@ -110,7 +110,17 @@ angular.module('dreFrontend.fhir')
                         }
                     };
                     /* add loaders into resources */
-                    angular.forEach(resource, f);
+                    angular.forEach(resource, function(prop_val, prop_name){
+
+                        /* add loaders into location array */
+                        if (prop_name == "location" ) {
+                            angular.forEach(prop_val, function(location){
+                                f(location.location);
+                            });
+                        } else {
+                            f(prop_val);
+                        }
+                    });
 
                     /* add loaders into result array */
                     if (resource.result)

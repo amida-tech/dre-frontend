@@ -140,61 +140,61 @@ angular.module('dreFrontendApp')
                 .then(success_handler)
                 .catch(fail_handler);
         };
-        
+
         $scope.getPractitioners = function(){
             dreFrontendPractitioners.getAll()
                 .then(success_handler)
                 .catch(fail_handler);
         };
-        
+
         $scope.getAllergyIntolerance = function(id){
             dreFrontendAllergyIntolerances.getById(id)
                 .then(success_handler)
                 .catch(fail_handler);
         };
-        
+
         $scope.getAllergyIntolerances = function(patient_id){
             dreFrontendAllergyIntolerances.getByPatientId(patient_id)
                 .then(success_handler)
                 .catch(fail_handler);
         };
-        
+
         $scope.getPractitioner = function(id){
             dreFrontendPractitioners.getById(id)
                 .then(success_handler)
                 .catch(fail_handler);
         };
-        
+
         $scope.getCarePlans = function(patient_id){
             dreFrontendCarePlans.getByPatientId(patient_id)
                 .then(success_handler)
                 .catch(fail_handler);
         };
-        
+
         $scope.getCarePlan = function(id){
             dreFrontendCarePlans.getById(id)
                 .then(success_handler)
                 .catch(fail_handler);
         };
-        
+
         $scope.getConditions = function(patient_id){
             dreFrontendConditions.getByPatientId(patient_id)
                 .then(success_handler)
                 .catch(fail_handler);
         };
-        
+
         $scope.getCondition = function(id){
             dreFrontendConditions.getById(id)
                 .then(success_handler)
                 .catch(fail_handler);
         };
-        
+
         $scope.getDiagnosticOrders = function(patient_id){
             dreFrontendDiagnosticOrders.getByPatientId(patient_id)
                 .then(success_handler)
                 .catch(fail_handler);
         };
-        
+
         $scope.getDiagnosticOrder = function(id){
             dreFrontendDiagnosticOrders.getById(id)
                 .then(success_handler)
