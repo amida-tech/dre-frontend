@@ -7,8 +7,7 @@
  */
 
 angular.module('dreFrontendApp')
-    .directive('uploadForm', function (dreFrontendAuthService, dreFrontendEnvironment, $state,FileUploader) {
-        var upload_url = dreFrontendEnvironment.baseServerUrl + '/storage';
+    .directive('uploadForm', function () {
         return {
             templateUrl: 'views/directives/upload-form.html',
             restrict: 'AE',
@@ -16,9 +15,9 @@ angular.module('dreFrontendApp')
                 uploadError: '=',
                 uploadSuccess: '='
             },
-            controller: function ($scope) {
+            controller: function ($scope, dreFrontendEnvironment, FileUploader) {
                 var uploader = $scope.uploader = new FileUploader({
-                    url:upload_url,
+                    url: dreFrontendEnvironment.baseServerUrl + '/storage',
                     withCredentials: true,
                     method:"PUT",
                     removeAfterUpload:1,
