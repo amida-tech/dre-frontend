@@ -162,8 +162,8 @@ angular.module('dreFrontend.fhir')
                     return Restangular.one("").post(resourceType, data);
                 }
 
-                function _update(resourceType, id, data) {
-                    return $q.reject("not implemented");
+                function _update(resourceType, id, resource) {
+                    return Restangular.one(resourceType, id).customPUT(resource);
                 }
 
                 function _delete(resourceType, id) {
