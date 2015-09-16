@@ -18,18 +18,22 @@ angular.module('dreFrontendApp')
                 if(patientId){
                     return $q.when(patientId);
                 }else{
-                    patientIdPromise = $q.defer();
+                    if(patientIdPromise == null){
+                        patientIdPromise = $q.defer();
+                    }
                     return patientIdPromise.promise;
                 }
             },
             setPatientId: function (id) {
                 patientId = id;
                 if(patientIdPromise){
+                    console.log('set data');
                     patientIdPromise.resolve(patientId);
                     patientIdPromise = null;
                 }
             },
             clearPatientData: function () {
+                console.log('clear data');
                 patientData = null;
                 patientId = null;
                 if(patientIdPromise){
