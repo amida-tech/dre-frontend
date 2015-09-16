@@ -4,12 +4,13 @@ angular.module('dreFrontend.fhir')
     .provider("dreFrontendFhirService", function () {
 
         var _count = 10;
+        var _resource_load_deep = 2;
 
         return {
             setCount: function _set_page_length(count) {
                 _count = count;
             },
-            $get: function (Restangular, $q, fhirEnv, dreFrontendUtil, $log) {
+            $get: function (Restangular, $q, fhirEnv, dreFrontendUtil, $log, _) {
 
                 function _add_page_handlers(bundleResource) {
                     if (bundleResource.resourceType == fhirEnv.bundleType) {
@@ -53,78 +54,86 @@ angular.module('dreFrontend.fhir')
                 }
 
                 function set_response(res) {
+                    return recursive_set_response(res, _resource_load_deep);
+                }
+
+                function recursive_set_response(resource, deep) {
                     function _omit(r) {
                         return _.omit(r, ["base", "link", "search", "text"]);
                     }
-
-                    if (res.resourceType == fhirEnv.bundleType) {
-                        _add_page_handlers(res);
-                        angular.forEach(res.entry, function (v) {
-                            if (v.resource)
-                                add_resource_loader(v.resource);
-                        });
-                    } else
-                        add_resource_loader(res);
-
                     /* remove unnecessary data */
 
-                    res = Restangular.stripRestangular(res);
-                    res = _omit(res);
+                    resource = Restangular.stripRestangular(resource);
+                    resource = _omit(resource);
 
-                    if (res.resourceType == fhirEnv.bundleType) {
-                        res.entry = _.pluck(res.entry, "resource");
-                        _.forEach(res.entry, function (e, k) {
-                            res.entry[k] = _omit(e);
+                    if (resource.resourceType === fhirEnv.bundleType) {
+                        _add_page_handlers(resource);
+
+                        resource.entry = _.pluck(resource.entry, "resource");
+
+                        _.forEach(resource.entry, function (e, k) {
+                            resource.entry[k] = _omit(e);
+                            add_resource_loader(e, deep);
                         });
+                    } else {
+                        add_resource_loader(resource, deep);
                     }
 
-                    return res;
+                    return resource;
                 }
 
-                function add_resource_loader(resource) {
-                    var f = function (prop) {
-                        if (prop && typeof prop == "object" && prop.hasOwnProperty("reference")) {
-                            angular.extend(prop, {
-                                load: function () {
-                                    var self = this;
+                function add_resource_loader(resource, deep) {
+                    if (deep) {
+                        var f = function (prop) {
+                            if (prop && typeof prop == "object" && prop.hasOwnProperty("reference")) {
+                                angular.extend(prop, {
+                                    loaded: false,
+                                    load: function () {
+                                        var self = this;
 
-                                    var process_sub_resource = function (sub_resource) {
-                                        sub_resource = set_response(sub_resource);
-                                        angular.extend(self, sub_resource);
-                                        return sub_resource;
-                                    };
+                                        var process_sub_resource = function (sub_resource) {
+                                            sub_resource = recursive_set_response(sub_resource, deep - 1);
+                                            angular.extend(self, sub_resource);
+                                            return sub_resource;
+                                        };
+                                        if (!this.loaded) {
+                                            if (prop.reference.match(/^#.+/)) {
+                                                /* contained resource */
+                                                var data = _.first(_.filter(resource.contains, {"id": prop.reference.substring(1)})) || {};
+                                                this.loaded = true;
+                                                return process_sub_resource(data);
+                                            } else {
+                                                /* relative reference resource */
+                                                var p = prop.reference.split("/");
+                                                this.loaded = true;
+                                                return Restangular.one(p[0], p[1]).get().then(process_sub_resource);
+                                            }
+                                            /*2do: add absolute reference handling */
+                                        } else {
+                                            return $q.resolve(this);
+                                        }
 
-                                    if (prop.reference.match(/^#.+/)) {
-                                        /* contained resource */
-                                        var data = _.first(_.filter(resource.contains, {"id": prop.reference.substring(1)})) || {};
-                                        return process_sub_resource(data);
-                                    } else {
-                                        /* relative reference resource */
-                                        var p = prop.reference.split("/");
-                                        return Restangular.one(p[0], p[1]).get().then(process_sub_resource);
                                     }
-                                    /*2do: add absolute reference handling */
+                                });
+                            }
+                        };
+                        /* add loaders into resources */
+                        angular.forEach(resource, function (prop_val, prop_name) {
 
-                                }
-                            });
-                        }
-                    };
-                    /* add loaders into resources */
-                    angular.forEach(resource, function(prop_val, prop_name){
+                            /* add loaders into location array */
+                            if (prop_name == "location") {
+                                angular.forEach(prop_val, function (location) {
+                                    f(location.location);
+                                });
+                            } else {
+                                f(prop_val);
+                            }
+                        });
 
-                        /* add loaders into location array */
-                        if (prop_name == "location" ) {
-                            angular.forEach(prop_val, function(location){
-                                f(location.location);
-                            });
-                        } else {
-                            f(prop_val);
-                        }
-                    });
-
-                    /* add loaders into result array */
-                    if (resource.result)
-                        angular.forEach(resource.result, f);
+                        /* add loaders into result array */
+                        if (resource.result)
+                            angular.forEach(resource.result, f);
+                    }
                 }
 
                 function _search(resourceType, params) {
