@@ -2,6 +2,7 @@
 angular.module('dreFrontend.fhir')
     .constant('fhirEnv', {
         page_length: 30,
+        max_resource_nesting: 5,
         resourceTypes: [
             "AdverseReaction",
             "Alert",

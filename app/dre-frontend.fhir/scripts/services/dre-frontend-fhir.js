@@ -4,7 +4,6 @@ angular.module('dreFrontend.fhir')
     .provider("dreFrontendFhirService", function () {
 
         var _count = 10;
-        var _resource_load_deep = 2;
 
         return {
             setCount: function _set_page_length(count) {
@@ -41,6 +40,18 @@ angular.module('dreFrontend.fhir')
                     }
                 }
 
+                var loadChildren = function (deep) {
+                    var children = [];
+                    var self = this;
+
+                    proceed_reference(
+                        this,
+                        function (resource) { children.push(resource.load()); },
+                        deep || fhirEnv.max_resource_nesting );
+
+                    return $q.all(children).then(function(){return self;});
+                };
+
                 function _is_valid_resource_type(resourceType) {
                     var res = $q.resolve(resourceType);
 
@@ -53,18 +64,17 @@ angular.module('dreFrontend.fhir')
                     return res;
                 }
 
-                function set_response(res) {
-                    return recursive_set_response(res, _resource_load_deep);
-                }
-
-                function recursive_set_response(resource, deep) {
-                    function _omit(r) {
+                function set_response(resource) {
+                    function f(r) {
+                        angular.extend(r, {
+                            loadAll: loadChildren
+                        });
                         return _.omit(r, ["base", "link", "search", "text"]);
                     }
                     /* remove unnecessary data */
 
                     resource = Restangular.stripRestangular(resource);
-                    resource = _omit(resource);
+                    resource = f(resource);
 
                     if (resource.resourceType === fhirEnv.bundleType) {
                         _add_page_handlers(resource);
@@ -72,68 +82,57 @@ angular.module('dreFrontend.fhir')
                         resource.entry = _.pluck(resource.entry, "resource");
 
                         _.forEach(resource.entry, function (e, k) {
-                            resource.entry[k] = _omit(e);
-                            add_resource_loader(e, deep);
+                            resource.entry[k] = f(e);
                         });
-                    } else {
-                        add_resource_loader(resource, deep);
                     }
+
+                    proceed_reference(resource, add_reference_loader, fhirEnv.max_resource_nesting);
 
                     return resource;
                 }
 
-                function add_resource_loader(resource, deep) {
-                    if (deep) {
-                        var f = function (prop) {
-                            if (prop && typeof prop == "object" && prop.hasOwnProperty("reference")) {
-                                angular.extend(prop, {
-                                    loaded: false,
-                                    load: function () {
-                                        var self = this;
-
-                                        var process_sub_resource = function (sub_resource) {
-                                            sub_resource = recursive_set_response(sub_resource, deep - 1);
-                                            angular.extend(self, sub_resource);
-                                            return sub_resource;
-                                        };
-                                        if (!this.loaded) {
-                                            if (prop.reference.match(/^#.+/)) {
-                                                /* contained resource */
-                                                var data = _.first(_.filter(resource.contains, {"id": prop.reference.substring(1)})) || {};
-                                                this.loaded = true;
-                                                return process_sub_resource(data);
-                                            } else {
-                                                /* relative reference resource */
-                                                var p = prop.reference.split("/");
-                                                this.loaded = true;
-                                                return Restangular.one(p[0], p[1]).get().then(process_sub_resource);
-                                            }
-                                            /*2do: add absolute reference handling */
-                                        } else {
-                                            return $q.resolve(this);
-                                        }
-
-                                    }
-                                });
+                function proceed_reference(node, callback, deep) {
+                    if (deep>=0) {
+                        _.forEach(node, function (v) {
+                            var _type = typeof v;
+                            if (v && _type === "object" && v.hasOwnProperty("reference")) {
+                                if (callback && typeof callback === "function") callback(v);
                             }
-                        };
-                        /* add loaders into resources */
-                        angular.forEach(resource, function (prop_val, prop_name) {
-
-                            /* add loaders into location array */
-                            if (prop_name == "location") {
-                                angular.forEach(prop_val, function (location) {
-                                    f(location.location);
-                                });
-                            } else {
-                                f(prop_val);
-                            }
+                            if (_type === "object" || _type === "array") proceed_reference(v, callback, deep - 1);
                         });
-
-                        /* add loaders into result array */
-                        if (resource.result)
-                            angular.forEach(resource.result, f);
                     }
+                }
+
+                function add_reference_loader(obj) {
+                    angular.extend(obj, {
+                        loaded: false,
+                        load: function () {
+                            var self = this;
+
+                            var process_sub_resource = function (sub_resource) {
+                                sub_resource = set_response(sub_resource);
+                                angular.extend(self, sub_resource);
+                                return sub_resource;
+                            };
+
+                            if (!this.loaded) {
+                                if (obj.reference.match(/^#.+/)) {
+                                    /* contained resource */
+                                    var data = _.first(_.filter(resource.contains, {"id": obj.reference.substring(1)})) || {};
+                                    this.loaded = true;
+                                    return process_sub_resource(data);
+                                } else {
+                                    /* relative reference resource */
+                                    var p = obj.reference.split("/");
+                                    this.loaded = true;
+                                    return Restangular.one(p[0], p[1]).get().then(process_sub_resource);
+                                }
+                                /*2do: add absolute reference handling */
+                            } else {
+                                return $q.resolve(this);
+                            }
+                        }
+                    });
                 }
 
                 function _search(resourceType, params) {

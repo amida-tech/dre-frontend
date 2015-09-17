@@ -71,6 +71,9 @@ angular.module('dreFrontendApp')
 
         $scope.Medications = function (patient_id) {
             dreFrontendMedications.getByPatientId(patient_id)
+                .then(function(bundle){
+                    return bundle.entry[0].loadAll(3).then(function(){return bundle;});
+                })
                 .then(success_handler)
                 .catch(fail_handler);
         };
