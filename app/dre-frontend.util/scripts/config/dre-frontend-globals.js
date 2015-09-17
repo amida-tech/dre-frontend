@@ -6,6 +6,8 @@ angular.module('dreFrontend.util')
     //Default date format
     self.dateFormat = 'MM/dd/yyyy';
 
+    self.monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
     self.defaultErrorMessage = 'An error occurred.';
     self.authEvents = {
       loggedIn: 'dreFrontend:LoggedIn',
