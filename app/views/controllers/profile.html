@@ -1,0 +1,184 @@
+<div class="panel panel-body">
+    <home-breadcrumbs></home-breadcrumbs>
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <h4>My Profile</h4>
+        </div>
+        <div class="col-sm-12">
+             <p>Adjust settings associated with your profile.</p>
+            <p>Providing a detailed profile helps us perform more accurate searches for your records.</p>
+            <p> The information contained here can also be helpful for doctors in emergency situations.</p>
+            <p> Account Settings, such as password changes, can be accessed in <a>account settings</a>.</p>
+        </div>
+    </div>
+</div>
+
+<h4 class="text-center white">Profile<a name="profile"></a> </h4>
+
+<div class="panel panel-body" ng-hide="edit">
+        <div class="row">
+            <div class="form-group col-sm-3">
+                <h5>First Name</h5>
+                <p ng-hide="model.firstName" class="">None entered</p>
+                <p>{{model.firstName}}</p>
+            </div>
+            <div class="form-group col-sm-3 col-sm-offset-1">
+                <h5>Middle Name</h5>
+                <p ng-hide="model.middleName" class="">None entered</p>
+                <p>{{model.middleName}}</p>
+            </div>
+            <div class="form-group col-sm-4 col-sm-offset-1">
+                <h5>Last Name</h5>
+                <p ng-hide="model.lastName" class="">None entered</p>
+                <p>{{model.lastName}}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-3">
+                <h5>Date of Birth</h5>
+                <p ng-hide="model.dateOfBirth" class="">None entered</p>
+                <p>{{monthNames[model.dateOfBirth.getMonth()]}} {{model.dateOfBirth.getDate()}}, {{model.dateOfBirth.getFullYear()}}</p>
+            </div>
+            <div class="form-group col-sm-3 col-sm-offset-1">
+                <h5>Gender</h5>
+                <p ng-hide="model.gender" class="">None entered</p>
+                <p>{{model.gender}}</p>
+            </div>
+            <div class="form-group col-sm-3 col-sm-offset-1">
+                <h5>Primary Email Address</h5>
+                <p ng-hide="model.primaryEmail" class="">None entered</p>
+                <p>{{model.primaryEmail}}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-sm-3">
+                <h5>Race</h5>
+                <p ng-hide="model.race" class="">None entered</p>
+                <p>{{model.race}}</p>
+            </div>
+            <div class="form-group col-sm-3 col-sm-offset-1">
+                <h5>Ethnicity</h5>
+                <p ng-hide="model.ethnicity" class="">None entered</p>
+                <p>{{model.ethnicity}}</p>
+            </div>
+            <div class="form-group col-sm-4 col-sm-offset-1">
+                <h5>Marital Status</h5>
+                <p ng-hide="model.maritalStatus" class="">None entered</p>
+                <p>{{model.maritalStatus}}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4 btn btn-default" ng-click="changeEdit()">
+                <i class="fa fa-edit"> Edit</i>
+            </div>
+        </div>
+</div>
+
+<div class="panel panel-body" ng-show="edit">
+        <h5>* Denotes required fields.</h5>
+        <form role="form" name="profileForm" novalidate>
+
+                <div class="row">
+                    <div class="form-group col-sm-3">
+                        <label for="inputFirst">First Name*</label>
+                        <input type="text" id="inputFirst" class="form-control" name="inputFirst" ng-model="model.firstName" required min="1" max="80">
+                        <p ng-show="profileForm.inputFirst.$invalid" class="help-block">First name must be between 1 and 80 characters.</p>
+                    </div>
+                    <div class="form-group col-sm-3 col-sm-offset-1">
+                        <label for="inputMiddle">Middle Name</label>
+                        <input type="text" id="inputMiddle" class="form-control" name="inputMiddle" ng-model="model.middleName">
+                        <!--<p ng-show="profileForm.inputMiddle.$invalid" class="help-block">Middle name must be under 80 characters.</p>-->
+                    </div>
+                    <div class="form-group col-sm-4 col-sm-offset-1">
+                        <label for="inputLast">Last Name*</label>
+                        <input type="text" id="inputLast" ng-model="model.lastName" class="form-control" name="inputLast" required min="1" max="80">
+                        <p ng-show="profileForm.inputLast.$invalid" class="help-block">Last name must be between 1 and 80 characters.</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-3">
+                        <label for="inputDateOfBirth">Date of Birth*</label>
+                        <input type="date" id="inputDateOfBirth" class="form-control" name="inputDateOfBirth" ng-model="model.dateOfBirth" required>
+                        <p ng-show="profileForm.inputDateOfBirth.$invalid" class="help-block">Must be a valid date.</p>
+                    </div>
+                    <div class="form-group col-sm-3 col-sm-offset-1">
+                        <label for="inputGender">Gender*</label>
+                        <select class="form-control" id="inputGender" name="inputGender" ng-model="model.gender" required>
+                            <option ng-repeat="gender in genders" value="{{gender}}">{{gender.display}}</option>
+                        </select>
+                        <p ng-show="profileForm.inputGender.$invalid" class="help-block">Gender is required.</p>
+                    </div>
+                    <div class="form-group col-sm-4 col-sm-offset-1">
+                        <label for="inputEmail">Primary Email Address*</label>
+                        <input type="email" id="inputEmail" class="form-control" name="inputEmail" ng-model="model.primaryEmail" min="1" required>
+                        <p ng-show="profileForm.inputEmail.$invalid" class="help-block">Must be a valid email address.</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="form-group col-sm-3">
+                        <label for="inputRace">Race</label>
+                        <select class="form-control" name="inputRace" id="inputRace" ng-model="model.race">
+                            <option value="White">White</option>
+                            <option value="Black">Black</option>
+                            <option value="Hispanic">Hispanic</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-3 col-sm-offset-1">
+                        <label for="inputEthnicity">Ethnicity</label>
+                        <select class="form-control" name="inputEthnicity" id="inputEthnicity" ng-model="model.ethnicity">
+                            <option value="Hispanic or Latino">Hispanic or Latino</option>
+                            <option value="Not Hispanic or Latino">Not Hispanic or Latino</option>
+                        </select>
+                    </div>
+                    <div class="form-group col-sm-4 col-sm-offset-1">
+                        <label for="inputMaritalStatus">Marital Status</label>
+                        <select class="form-control" name="inputMaritalStatus" id="inputMaritalStatus" ng-model="model.maritalStatus">
+                            <option ng-repeat="maritalStatus in maritalStatuses" value="{{maritalStatus}}">{{maritalStatus.display}}</option>
+                            <!--<option value="Never Married">Never Married</option>-->
+                            <!--<option value="Married">Married</option>-->
+                            <!--<option value="Divorced">Divorced</option>-->
+                            <!--<option value="Widowed">Widowed</option>-->
+                        </select>
+                    </div>
+                </div>
+
+            <div class="row">
+                <a>
+                    <button type="submit" class="btn btn-default col-sm-2 col-sm-offset-3" ng-disabled="" ng-click="changeEdit()">Cancel</button>
+                </a>
+                <a>
+                    <button type="submit" class="btn btn-primary col-sm-3 col-sm-offset-1" ng-disabled="profileForm.$invalid" ng-click="updateProfile()">Update</button>
+                </a>
+                <div class="text-center">
+                    <!-- ngIf: vm.error -->
+                </div>
+            </div>
+        </form>
+</div>
+
+
+<h4 class="text-center white">Contact Information</h4>
+
+<div class="panel panel-body"><a name="contactInformation"></a>
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <h4>My Profile</h4>
+        </div>
+        <div class="col-sm-12">
+            <span> Adjust settings associated with your profile. Providing a detailed profile helps us perform more accurate searches for your records.
+                The information contained here can also be helpful for doctors in emergency situations.
+                Account Settings, such as password changes, can be accessed in account settings. </span>
+        </div>
+    </div>
+    <br/>
+
+</div>
+
+
+
