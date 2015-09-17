@@ -105,7 +105,7 @@ angular.module('dreFrontend.fhir')
 
                 function add_reference_loader(obj) {
                     angular.extend(obj, {
-                        loaded: false,
+/*                        loaded: false,*/
                         load: function () {
                             var self = this;
 
@@ -115,22 +115,23 @@ angular.module('dreFrontend.fhir')
                                 return sub_resource;
                             };
 
-                            if (!this.loaded) {
+/*                            if (!this.loaded) {*/
                                 if (obj.reference.match(/^#.+/)) {
                                     /* contained resource */
                                     var data = _.first(_.filter(resource.contains, {"id": obj.reference.substring(1)})) || {};
-                                    this.loaded = true;
+/*                                    this.loaded = true;*/
                                     return process_sub_resource(data);
                                 } else {
                                     /* relative reference resource */
                                     var p = obj.reference.split("/");
-                                    this.loaded = true;
+/*                                    this.loaded = true;*/
                                     return Restangular.one(p[0], p[1]).get().then(process_sub_resource);
                                 }
                                 /*2do: add absolute reference handling */
-                            } else {
+/*                            } else {
                                 return $q.resolve(this);
                             }
+                            */
                         }
                     });
                 }
