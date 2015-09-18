@@ -40,8 +40,6 @@ angular.module('dreFrontend.fhir')
                     }
                 }
 
-                var _details = function() {}
-
                 var loadChildren = function (deep, filter, force) {
                     var children = [];
                     var self = this;
@@ -52,12 +50,9 @@ angular.module('dreFrontend.fhir')
                     if (r_type && r_type.hasOwnProperty(filter))
                         a_filter = r_type[filter];
 
-                    $log.debug(this.resourceType, filter, a_filter);
-
                     proceed_reference(
                         this,
                         function (resource, key) {
-                            $log.debug(a_filter.length<1 || a_filter.indexOf(key) !==-1, key);
                             if ( a_filter.length<1 || a_filter.indexOf(key) !== -1)
                                 children.push(resource.load(force));
                         },
