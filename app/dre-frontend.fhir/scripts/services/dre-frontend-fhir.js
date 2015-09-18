@@ -40,13 +40,27 @@ angular.module('dreFrontend.fhir')
                     }
                 }
 
-                var loadChildren = function (deep) {
+                var _details = function() {}
+
+                var loadChildren = function (deep, filter, force) {
                     var children = [];
                     var self = this;
+                    filter = filter || "details";
+                    var a_filter = [];
+                    var r_type = fhirEnv.resourceTypes[this.resourceType];
+
+                    if (r_type && r_type.hasOwnProperty(filter))
+                        a_filter = r_type[filter];
+
+                    $log.debug(this.resourceType, filter, a_filter);
 
                     proceed_reference(
                         this,
-                        function (resource) { children.push(resource.load()); },
+                        function (resource, key) {
+                            $log.debug(a_filter.length<1 || a_filter.indexOf(key) !==-1, key);
+                            if ( a_filter.length<1 || a_filter.indexOf(key) !== -1)
+                                children.push(resource.load(force));
+                        },
                         deep || fhirEnv.max_resource_nesting );
 
                     return $q.all(children).then(function(){return self;});
@@ -56,7 +70,7 @@ angular.module('dreFrontend.fhir')
                     var res = $q.resolve(resourceType);
 
                     if (resourceType) {
-                        if (fhirEnv.resourceTypes.indexOf(resourceType) != -1)
+                        if (fhirEnv.resourceTypes.hasOwnProperty(resourceType))
                             res = $q.resolve(resourceType);
                         else
                             res = $q.reject("unsupported resource type: " + resourceType);
@@ -93,20 +107,19 @@ angular.module('dreFrontend.fhir')
 
                 function proceed_reference(node, callback, deep) {
                     if (deep>=0) {
-                        _.forEach(node, function (v) {
+                        _.forEach(node, function (v,k) {
                             var _type = typeof v;
                             if (v && _type === "object" && v.hasOwnProperty("reference")) {
-                                if (callback && typeof callback === "function") callback(v);
+                                if (callback && typeof callback === "function") callback(v,k);
                             }
                             if (_type === "object" || _type === "array") proceed_reference(v, callback, deep - 1);
                         });
                     }
                 }
 
-                function add_reference_loader(obj) {
+                function add_reference_loader(obj, field) {
                     angular.extend(obj, {
-/*                        loaded: false,*/
-                        load: function () {
+                        load: function (force) {
                             var self = this;
 
                             var process_sub_resource = function (sub_resource) {
@@ -115,23 +128,20 @@ angular.module('dreFrontend.fhir')
                                 return sub_resource;
                             };
 
-/*                            if (!this.loaded) {*/
+                            if (force || !this.resourceType) {
                                 if (obj.reference.match(/^#.+/)) {
                                     /* contained resource */
                                     var data = _.first(_.filter(resource.contains, {"id": obj.reference.substring(1)})) || {};
-/*                                    this.loaded = true;*/
                                     return process_sub_resource(data);
                                 } else {
                                     /* relative reference resource */
                                     var p = obj.reference.split("/");
-/*                                    this.loaded = true;*/
                                     return Restangular.one(p[0], p[1]).get().then(process_sub_resource);
                                 }
                                 /*2do: add absolute reference handling */
-/*                            } else {
+                            } else {
                                 return $q.resolve(this);
                             }
-                            */
                         }
                     });
                 }
