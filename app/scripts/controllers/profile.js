@@ -54,7 +54,7 @@ angular.module('dreFrontendApp')
                 if(patient.maritalStatus != undefined) {
                     if(patient.maritalStatus.coding.length != 0) {
                         if(patient.maritalStatus.coding[0].display != undefined) {
-                            $scope.model.maritalStatus = patient.maritalStatus.coding[0].display
+                            $scope.model.maritalStatus = patient.maritalStatus.coding[0];
                         }
                     }
                 }
@@ -72,9 +72,9 @@ angular.module('dreFrontendApp')
             $scope.model.patientId = patientId;
         });
 
-        $scope.changeEdit = function() {
+        $scope.changeEdit = function(force) {
             $scope.edit = !$scope.edit;
-            $scope.initPatientModel(false);
+            $scope.initPatientModel(force);
         };
 
         $scope.updateProfile = function() {
@@ -83,7 +83,7 @@ angular.module('dreFrontendApp')
             var contact = patient.contact[0];
 
             contact.name.given[0] = model.lastName;
-            contact.name.family = model.firstName + " " + (model.middleName == undefined ? "" : model.middleName == undefined);
+            contact.name.family = model.firstName + " " + (model.middleName);
 
             var hasEmail = false;
             if(patient.telecom != undefined) {
@@ -119,7 +119,7 @@ angular.module('dreFrontendApp')
             patient.gender = model.gender;
 
             dreFrontendFhirService.update(patient.resourceType, patient.id, patient).then(function (r) {
-                $scope.initPatientModel(true);
+                $scope.changeEdit(true);
                 //$scope.response = r;
             });
 

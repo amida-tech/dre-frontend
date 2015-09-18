@@ -43,7 +43,7 @@
             <div class="form-group col-sm-3 col-sm-offset-1">
                 <h5>Gender</h5>
                 <p ng-hide="model.gender" class="">None entered</p>
-                <p>{{model.gender}}</p>
+                <p>{{model.gender.display}}</p>
             </div>
             <div class="form-group col-sm-3 col-sm-offset-1">
                 <h5>Primary Email Address</h5>
@@ -66,12 +66,12 @@
             <div class="form-group col-sm-4 col-sm-offset-1">
                 <h5>Marital Status</h5>
                 <p ng-hide="model.maritalStatus" class="">None entered</p>
-                <p>{{model.maritalStatus}}</p>
+                <p>{{model.maritalStatus.display}}</p>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-sm-4 col-sm-offset-4 btn btn-default" ng-click="changeEdit()">
+            <div class="col-sm-4 col-sm-offset-4 btn btn-default" ng-click="changeEdit(false)">
                 <i class="fa fa-edit"> Edit</i>
             </div>
         </div>
@@ -107,8 +107,9 @@
                     </div>
                     <div class="form-group col-sm-3 col-sm-offset-1">
                         <label for="inputGender">Gender*</label>
-                        <select class="form-control" id="inputGender" name="inputGender" ng-model="model.gender" required>
-                            <option ng-repeat="gender in genders" value="{{gender}}">{{gender.display}}</option>
+                        <select class="form-control" id="inputGender" name="inputGender" ng-model="model.gender"
+                                ng-options="gender as gender.display for gender in genders track by gender.display" required>
+                            <!--<option ng-repeat="gender in genders" value="{{gender}}">{{gender.display}}</option>-->
                         </select>
                         <p ng-show="profileForm.inputGender.$invalid" class="help-block">Gender is required.</p>
                     </div>
@@ -138,19 +139,16 @@
                     </div>
                     <div class="form-group col-sm-4 col-sm-offset-1">
                         <label for="inputMaritalStatus">Marital Status</label>
-                        <select class="form-control" name="inputMaritalStatus" id="inputMaritalStatus" ng-model="model.maritalStatus">
-                            <option ng-repeat="maritalStatus in maritalStatuses" value="{{maritalStatus}}">{{maritalStatus.display}}</option>
-                            <!--<option value="Never Married">Never Married</option>-->
-                            <!--<option value="Married">Married</option>-->
-                            <!--<option value="Divorced">Divorced</option>-->
-                            <!--<option value="Widowed">Widowed</option>-->
+                        <select class="form-control" name="inputMaritalStatus" id="inputMaritalStatus" ng-model="model.maritalStatus"
+                                ng-options="maritalStatus as maritalStatus.display for maritalStatus in maritalStatuses track by maritalStatus.display">
+                            <!--<option ng-repeat="maritalStatus in maritalStatuses" value="{{maritalStatus}}">{{maritalStatus.display}}</option>-->
                         </select>
                     </div>
                 </div>
 
             <div class="row">
                 <a>
-                    <button type="submit" class="btn btn-default col-sm-2 col-sm-offset-3" ng-disabled="" ng-click="changeEdit()">Cancel</button>
+                    <button type="submit" class="btn btn-default col-sm-2 col-sm-offset-3" ng-disabled="" ng-click="changeEdit(false)">Cancel</button>
                 </a>
                 <a>
                     <button type="submit" class="btn btn-primary col-sm-3 col-sm-offset-1" ng-disabled="profileForm.$invalid" ng-click="updateProfile()">Update</button>

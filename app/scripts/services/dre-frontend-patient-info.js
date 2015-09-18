@@ -27,13 +27,11 @@ angular.module('dreFrontendApp')
             setPatientId: function (id) {
                 patientId = id;
                 if(patientIdPromise){
-                    console.log('set data');
                     patientIdPromise.resolve(patientId);
                     patientIdPromise = null;
                 }
             },
             clearPatientData: function () {
-                console.log('clear data');
                 patientData = null;
                 patientId = null;
                 if(patientIdPromise){

@@ -20,7 +20,14 @@ angular.module('dreFrontendApp')
               dreFrontendAllergyIntolerances,
               dreFrontendCarePlans,
               dreFrontendConditions,
-              dreFrontendDiagnosticOrders
+              dreFrontendDiagnosticOrders,
+              dreFrontendDiagnosticReports,
+              dreFrontendImmunizations,
+              dreFrontendMedicationAdministrations,
+              dreFrontendMedicationDispenses,
+              dreFrontendMedicationPrescriptions,
+              dreFrontendMedicationStatements,
+              dreFrontendProcedures
     ) {
 
         function success_handler(response) {
