@@ -6,3 +6,21 @@
     border-right: 4px solid transparent;
     border-top: 4px solid #000;
 }
+.details-table{
+    td.tablesBlock >  .table{
+        border-bottom: 1px solid #ddd;
+    }
+    td{
+        tr:first-child{
+            td{
+                border-top:0 solid transparent;
+            }
+        }
+        table{
+            margin-top: -5px;
+            margin-bottom: -5px;
+        }
+    }
+}
+
+

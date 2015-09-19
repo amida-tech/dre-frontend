@@ -27,6 +27,7 @@
                                     <h5 class="text-left" ng-show="result.date">{{result.date | date:'short'}}</h5>
                                 </div>
                             </div>
+                            <div ng-if="result.isDetailsOpen" entry-details="result.rawEntry"></div>
                         </div>
                     </div>
                 </div>
