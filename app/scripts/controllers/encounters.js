@@ -27,8 +27,8 @@ angular.module('dreFrontendApp')
                             type: entry.resourceType,
                             title: entry.type[0].coding[0].display,
                             location: (angular.isArray(entry.location) && entry.location.length > 0 && entry.location[0].location) ? entry.location[0].location.name : undefined,
-                            startDate: angular.isObject(entry.period) ? dreFrontendUtil.formatFhirDate(entry.period.start) : undefined,
-                            stopDate: angular.isObject(entry.period) ? dreFrontendUtil.formatFhirDate(entry.period.end) : undefined
+                            startDate: angular.isObject(entry.period) ? entry.period.start : undefined,
+                            endDate: angular.isObject(entry.period) ? entry.period.end : undefined
                         })
                     }
                 });

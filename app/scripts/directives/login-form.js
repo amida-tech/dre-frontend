@@ -7,7 +7,7 @@
  * # loginForm
  */
 angular.module('dreFrontendApp')
-  .directive('loginForm', function (dreFrontendAuthService, dreFrontendEnvironment, $state, dreFrontendNotesService) {
+  .directive('loginForm', function (dreFrontendAuthService, dreFrontendEnvironment, $state) {
     return {
       templateUrl: 'views/directives/login-form.html',
       restrict: 'AE',
@@ -21,7 +21,6 @@ angular.module('dreFrontendApp')
         $scope.submitLogin = function () {
           if ($scope.loginForm.$valid) {
             dreFrontendAuthService.login($scope.model.login, $scope.model.password).then(function () {
-              dreFrontendNotesService.getAllNotes();//TODO move to valid place
               $state.go('home');
             }).catch(function () {
               $scope.model.error = 'Please check your Login/Password';

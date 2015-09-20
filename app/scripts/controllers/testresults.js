@@ -22,12 +22,25 @@ angular.module('dreFrontendApp')
                 $scope.model.testresultsList = [];
                 _.forEach(results.entry, function (entry) {
                     if (angular.isObject(entry.code) && angular.isArray(entry.code.coding) && entry.code.coding.length > 0) {
-                        $scope.model.testresultsList.push({
+                        var itemEntry = {
                             rawEntry: entry,
                             type: 'ObservationTestResult',
-                            title: entry.code.coding[0].display,
-                            date: dreFrontendUtil.formatFhirDate(entry.appliesDateTime)
-                        })
+                            title: entry.code.coding[0].display
+                        };
+                        if(angular.isDefined(entry.appliesDateTime)){
+                            itemEntry.startDate = entry.appliesDateTime;
+                        }else{
+                            if(angular.isDefined(entry.appliesPeriod)){
+                                itemEntry.startDate = entry.appliesPeriod.start;
+                                itemEntry.endDate = entry.appliesPeriod.end;
+                            }else{
+                                if(angular.isDefined(entry.issued)){
+                                    itemEntry.startDate = entry.issued;
+                                }
+                            }
+                        }
+
+                        $scope.model.testresultsList.push(itemEntry);
                     }
                 });
             });

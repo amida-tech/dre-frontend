@@ -101,7 +101,6 @@ angular.module('dreFrontendApp')
                     $scope.entryDetails.loadAll().then(function () {
                         $scope.model.data = buildTable($scope.entryDetails);
                         $scope.model.wasLoaded = true;
-                        console.log('ed', $scope.model);
                     });
                 }
             }

@@ -7,35 +7,23 @@
  * # mainMenu
  */
 angular.module('dreFrontendApp')
-    .directive('userTimelineEntryDates', function ($state, dreFrontendAuthService, $rootScope, dreFrontendGlobals) {
+    .directive('userTimelineEntryDates', function (dreFrontendUtil) {
         return {
-            template: ' <h4> <span class="text-left">{{model.actionTitle}}</span></h4>',
+            template: ' <div><strong><span ng-show="model.startDate" ng-bind="model.startDate"></span>' +
+            '<span ng-show="model.endDate || model.isActive"> - </span>' +
+            '<span ng-show="model.isActive">Present</span>' +
+            '<span ng-show="model.endDate && !model.isActive" ng-bind="model.endDate"></span></strong></div>',
             restrict: 'AE',
             scope: {
-                userTimelineEntryTitle: '='
+                userTimelineEntryDates: '='
             },
             controller: function ($scope) {
                 $scope.model = {
-                    actionTitle: ''
+                    startDate: angular.isDefined($scope.userTimelineEntryDates.startDate) ? dreFrontendUtil.formatFhirDate($scope.userTimelineEntryDates.startDate) : undefined,
+                    endDate: angular.isDefined($scope.userTimelineEntryDates.endDate) ? dreFrontendUtil.formatFhirDate($scope.userTimelineEntryDates.endDate) : undefined,
+                    isActive: angular.isDefined($scope.userTimelineEntryDates.isInactive) ? !$scope.userTimelineEntryDates.isInactive : false
                 };
-                switch ($scope.userTimelineEntryTitle.type) {
-                    case 'initAccount':
-                    case 'loggedIn':
-                    case 'loggedOut':
-                    case 'fileUploaded':
-                    case 'fileDownloaded':
-                    case 'labResults':
-                    case 'passwordChange':
-                    case 'infoUpdate':
-                    case 'medUpdate':
-                    case 'MedicationPrescription':
-                    case 'ObservationTestResult':
-                    case 'Encounter':
-                        $scope.model.actionTitle = $scope.userTimelineEntryTitle.title;
-                        break;
-                    default:
-                        $scope.model.actionTitle = '';
-                }
+
             }
         };
     });
