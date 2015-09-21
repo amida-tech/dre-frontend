@@ -43,7 +43,7 @@
             <div class="form-group col-sm-3 col-sm-offset-1">
                 <h5>Gender</h5>
                 <p ng-hide="model.gender" class="">None entered</p>
-                <p>{{model.gender.display}}</p>
+                <p class="capitalize">{{model.gender}}</p>
             </div>
             <div class="form-group col-sm-3 col-sm-offset-1">
                 <h5>Primary Email Address</h5>
@@ -107,8 +107,8 @@
                     </div>
                     <div class="form-group col-sm-3 col-sm-offset-1">
                         <label for="inputGender">Gender*</label>
-                        <select class="form-control" id="inputGender" name="inputGender" ng-model="model.gender"
-                                ng-options="gender as gender.display for gender in view.genders track by gender.display" required>
+                        <select class="form-control capitalize" id="inputGender" name="inputGender" ng-model="model.gender"
+                                ng-options="gender.display as gender.display for gender in view.genders" required>
                             <!--<option ng-repeat="gender in genders" value="{{gender}}">{{gender.display}}</option>-->
                         </select>
                         <p ng-show="profileForm.inputGender.$invalid" class="help-block">Gender is required.</p>

@@ -115,9 +115,9 @@ angular.module('dreFrontend.fhir')
         races: [
         ],
         gender: [
-            { code: "F", display: "Female", definition: "Female"},
-            { code: "M", display: "Male", definition: "Male"},
-            { code: "UN", display: "Undifferentiated", definition: "The gender of a person could not be uniquely defined as male or female, such as hermaphrodite."}
+            { code: "F", display: "female", definition: "Female"},
+            { code: "M", display: "male", definition: "Male"},
+            { code: "UN", display: "other", definition: "The gender of a person could not be uniquely defined as male or female, such as hermaphrodite."}
         ],
         addressCodes: [
             { code: "BAD", display: "bad address", definition: ""},
