@@ -123,10 +123,10 @@ label {
 }
 .timeline{
     position:relative;
-    
+
     .line{
         height:25px;
-        
+
         margin:0 0 10px;
         position:relative;
         &:after{
@@ -186,11 +186,11 @@ label {
                     display:block;
                     left:50%;
                     margin-left:-2px;
-                    
+
                     border-style: solid;
                     border-width: 5px 2px 0 2px;
                     border-color: $timeline-color transparent transparent transparent;
-                    
+
                 }
             }
         }
@@ -198,7 +198,7 @@ label {
 }
 
 .blocks{
-    
+
     > div{
         padding-top:20px;
         position:relative;
@@ -238,13 +238,13 @@ label {
             background:#C1C1C1;
         }
     }
-    
+
     .timeline-entry-icon, .timeline-entry-icon-inactive{
         background: #fff;
         height: 58px;
         width: 58px;
         box-shadow: 0 3px 0 0px rgba(0, 0, 0, 0.05);
-        border:4px solid #6aa6ff; 
+        border:4px solid #6aa6ff;
         line-height: 3.5em;
         position: relative;
         z-index: 100;
@@ -252,7 +252,7 @@ label {
         color: #6aa6ff;
         bottom:-20px;
         i{
-            vertical-align: middle;            
+            vertical-align: middle;
         }
         &:hover{
             color:white;
@@ -280,7 +280,7 @@ label {
             }
         }
     }
-    
+
 }
 .progress {
     overflow: hidden;
@@ -364,7 +364,7 @@ label {
             }
         }
     }
-} 
+}
 
 .nav{
     > .open{
@@ -373,7 +373,7 @@ label {
             cursor:pointer;
             &:hover, &:focus{
                 background-color: #777777;
-                
+
             }
         }
     }
@@ -382,7 +382,7 @@ label {
     border:0;
     li{
         display:block;
-        float:none;     
+        float:none;
         margin:0;
         a{
             display:block;
@@ -432,4 +432,7 @@ label {
 .table .table{
     background-color: transparent;
     margin-bottom: 0px;
+}
+.capitalize {
+    text-transform: capitalize;
 }

@@ -15,7 +15,7 @@
 
 <h4 class="text-center white">Profile<a name="profile"></a> </h4>
 
-<div class="panel panel-body" ng-hide="edit">
+<div class="panel panel-body" ng-hide="view.edit">
         <div class="row">
             <div class="form-group col-sm-3">
                 <h5>First Name</h5>
@@ -38,7 +38,7 @@
             <div class="form-group col-sm-3">
                 <h5>Date of Birth</h5>
                 <p ng-hide="model.dateOfBirth" class="">None entered</p>
-                <p>{{monthNames[model.dateOfBirth.getMonth()]}} {{model.dateOfBirth.getDate()}}, {{model.dateOfBirth.getFullYear()}}</p>
+                <p>{{view.monthNames[model.dateOfBirth.getMonth()]}} {{model.dateOfBirth.getDate()}}, {{model.dateOfBirth.getFullYear()}}</p>
             </div>
             <div class="form-group col-sm-3 col-sm-offset-1">
                 <h5>Gender</h5>
@@ -71,20 +71,20 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-4 col-sm-offset-4 btn btn-default" ng-click="changeEdit(false)">
+            <div class="col-sm-4 col-sm-offset-4 btn btn-default" ng-click="changeEditProfileSection(false)">
                 <i class="fa fa-edit"> Edit</i>
             </div>
         </div>
 </div>
 
-<div class="panel panel-body" ng-show="edit">
+<div class="panel panel-body" ng-show="view.edit">
         <h5>* Denotes required fields.</h5>
         <form role="form" name="profileForm" novalidate>
 
                 <div class="row">
                     <div class="form-group col-sm-3">
                         <label for="inputFirst">First Name*</label>
-                        <input type="text" id="inputFirst" class="form-control" name="inputFirst" ng-model="model.firstName" required min="1" max="80">
+                        <input type="text" id="inputFirst" class="form-control" name="inputFirst" ng-model="model.firstName" required ng-minlength="1" ng-maxlength="80">
                         <p ng-show="profileForm.inputFirst.$invalid" class="help-block">First name must be between 1 and 80 characters.</p>
                     </div>
                     <div class="form-group col-sm-3 col-sm-offset-1">
@@ -94,7 +94,7 @@
                     </div>
                     <div class="form-group col-sm-4 col-sm-offset-1">
                         <label for="inputLast">Last Name*</label>
-                        <input type="text" id="inputLast" ng-model="model.lastName" class="form-control" name="inputLast" required min="1" max="80">
+                        <input type="text" id="inputLast" ng-model="model.lastName" class="form-control" name="inputLast" required ng-minlength="1" ng-maxlength="80">
                         <p ng-show="profileForm.inputLast.$invalid" class="help-block">Last name must be between 1 and 80 characters.</p>
                     </div>
                 </div>
@@ -108,14 +108,14 @@
                     <div class="form-group col-sm-3 col-sm-offset-1">
                         <label for="inputGender">Gender*</label>
                         <select class="form-control" id="inputGender" name="inputGender" ng-model="model.gender"
-                                ng-options="gender as gender.display for gender in genders track by gender.display" required>
+                                ng-options="gender as gender.display for gender in view.genders track by gender.display" required>
                             <!--<option ng-repeat="gender in genders" value="{{gender}}">{{gender.display}}</option>-->
                         </select>
                         <p ng-show="profileForm.inputGender.$invalid" class="help-block">Gender is required.</p>
                     </div>
                     <div class="form-group col-sm-4 col-sm-offset-1">
                         <label for="inputEmail">Primary Email Address*</label>
-                        <input type="email" id="inputEmail" class="form-control" name="inputEmail" ng-model="model.primaryEmail" min="1" required>
+                        <input type="email" id="inputEmail" class="form-control" name="inputEmail" ng-model="model.primaryEmail" ng-minlength="1" required>
                         <p ng-show="profileForm.inputEmail.$invalid" class="help-block">Must be a valid email address.</p>
                     </div>
                 </div>
@@ -140,7 +140,7 @@
                     <div class="form-group col-sm-4 col-sm-offset-1">
                         <label for="inputMaritalStatus">Marital Status</label>
                         <select class="form-control" name="inputMaritalStatus" id="inputMaritalStatus" ng-model="model.maritalStatus"
-                                ng-options="maritalStatus as maritalStatus.display for maritalStatus in maritalStatuses track by maritalStatus.display">
+                                ng-options="maritalStatus as maritalStatus.display for maritalStatus in view.maritalStatuses track by maritalStatus.display">
                             <!--<option ng-repeat="maritalStatus in maritalStatuses" value="{{maritalStatus}}">{{maritalStatus.display}}</option>-->
                         </select>
                     </div>
@@ -148,14 +148,14 @@
 
             <div class="row">
                 <a>
-                    <button type="submit" class="btn btn-default col-sm-2 col-sm-offset-3" ng-disabled="" ng-click="changeEdit(false)">Cancel</button>
+                    <button type="submit" class="btn btn-default col-sm-2 col-sm-offset-3" ng-disabled="" ng-click="changeEditProfileSection(false)">Cancel</button>
                 </a>
                 <a>
                     <button type="submit" class="btn btn-primary col-sm-3 col-sm-offset-1" ng-disabled="profileForm.$invalid" ng-click="updateProfile()">Update</button>
                 </a>
                 <div class="text-center">
                     <!-- ngIf: vm.error -->
-                </div>
+                </div>`
             </div>
         </form>
 </div>
@@ -163,18 +163,148 @@
 
 <h4 class="text-center white">Contact Information</h4>
 
-<div class="panel panel-body"><a name="contactInformation"></a>
-    <div class="row">
-        <div class="col-sm-12 col-md-6">
-            <h4>My Profile</h4>
+<div class="panel panel-body" id="contact" ng-hide="view.addressEdit || view.phoneEdit">
+    <div class="row text-center">
+        <!-- Address section -->
+        <div class="col-sm-5">
+            <h4>Address</h4>
+            <div class="col-sm-12 ng-hide" ng-hide="model.addresses.length">
+                <h5>No address found in your record.</h5>
+            </div>
+            <div class="col-sm-12 ng-scope" ng-repeat="(addressIndex, address) in model.addresses">
+
+                <h5 class="capitalize">{{address.contactType.display}}</h5>
+
+                <p ng-repeat="(lineIndex, line) in address.line">{{line}}</p>
+                <p>{{address.city}}, {{address.state}} {{address.postalCode}}</p>
+            </div>
         </div>
-        <div class="col-sm-12">
-            <span> Adjust settings associated with your profile. Providing a detailed profile helps us perform more accurate searches for your records.
-                The information contained here can also be helpful for doctors in emergency situations.
-                Account Settings, such as password changes, can be accessed in account settings. </span>
+
+        <!--Phone section-->
+        <div class="col-sm-5 col-sm-offset-2">
+            <h4>Phone Number</h4>
+            <div class="col-sm-12" ng-hide="model.phones.length">
+                <h5>No phone numbers found in your record.</h5>
+            </div>
+           <div class="col-sm-12 panel-editable ng-scope" ng-repeat="(phoneIndex, phone) in model.phones">
+                <h5 class="capitalize">{{phone.contactType.display}}</h5>
+                <p>{{phone.value}}</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-sm-5 text-center">
+            <div class="btn btn-default" ng-click="changeEditAddressSection(false)">
+                <i class="fa fa-edit"> Edit Address</i>
+            </div>
+        </div>
+        <div class="col-sm-5 col-sm-offset-2 text-center">
+            <div class="btn btn-default" ng-click="changeEditPhoneSection(false)">
+                <i class="fa fa-edit"> Edit Phone Number</i>
+            </div>
         </div>
     </div>
-    <br/>
+</div>
+<div class="panel panel-body" ng-show="view.addressEdit">
+    <h5>* Denotes required fields.</h5>
+    <form novalidate role="form" name="addressForm" ng-show="model.addresses">
+        <h4>Edit Your Address</h4>
+
+        <div id="address">
+            <div class="row">
+                <div class="form-group col-sm-3 capitalize">
+                    <label for="inputAddressType">Address Type*</label>
+                    <select class="form-control capitalize" id="inputAddressType" name="inputAddressType" ng-model="model.addresses[0].use"
+                            ng-options="addressCode.code as addressCode.display for addressCode in view.addressCodes" required>
+                    </select>
+                    <p ng-show="addressForm.inputAddressType.$invalid" class="help-block">Address Type is required.</p>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="form-group col-sm-5">
+                    <label for="inputAddress">Address Line*</label>
+                    <input type="text" class="form-control" id="inputAddress" name="inputAddress" ng-model="model.addresses[0].line[0]" required>
+                    <p ng-show="addressForm.inputAddress.$invalid" class="help-block">Please enter your street address or P.O. Box.</p>
+                </div>
+
+                <div class="form-group col-sm-5 col-sm-offset-1">
+                    <label for="inputCity">City*</label>
+                    <input type="text" class="form-control" id="inputCity" name="inputCity" ng-model="model.addresses[0].city">
+                    <p ng-show="addressForm.inputCity.$invalid" class="help-block">Please enter a city.</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-sm-5">
+                    <label for="inputState">State*</label>
+                    <input type="text" class="form-control" id="inputState" name="inputState" ng-model="model.addresses[0].state" required ng-minlength="2">
+                    <p ng-show="addressForm.inputState.$invalid" class="help-block">Please enter a state.</p>
+                </div>
+
+                <div class="form-group col-sm-5 col-sm-offset-1">
+                    <label for="inputZip">Zip*</label>
+                    <input type="text" class="form-control" id="inputZip" name="inputZip" ng-model="model.addresses[0].postalCode" required ng-minlength="5" ng-maxlength="11">
+                    <p ng-show="addressForm.inputZip.$invalid" class="help-block">Please enter a five-digit zip.</p>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row">
+            <a>
+                <button type="submit" class="btn btn-default col-sm-2 col-sm-offset-3" ng-click="changeEditAddressSection(false)">Cancel</button>
+            </a>
+            <a>
+                <button type="submit" class="btn btn-primary col-sm-3 col-sm-offset-1" ng-disabled="addressForm.$invalid" ng-click="updateAddress()">Update</button>
+            </a>
+            <div class="text-center">
+                <!-- ngIf: vm.error -->
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="panel panel-body" ng-show="view.phoneEdit">
+
+    <h5>* Denotes required fields.</h5>
+    <form role="form" name="phoneForm" novalidate>
+    <h4>Edit Your Phone Number</h4>
+
+        <!--Phone section-->
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+                <div class="form-group col-sm-12">
+                    <label for="inputPhoneType">Type*</label>
+                    <select class="form-control capitalize" id="inputPhoneType" name="inputPhoneType" ng-model="model.phones[0].use"
+                            ng-options="addressCode.code as addressCode.display for addressCode in view.addressCodes" required>
+                    </select>
+                    <p ng-show="phoneForm.inputPhoneType.$invalid" class="help-block">Phone Type is required.</p>
+                </div>
+
+
+                <div class="form-group col-sm-12">
+                    <label for="inputPhone">Number*</label>
+                    <input type="text" class="form-control" id="inputPhone" name="inputPhone" ng-model="model.phones[0].value" required ng-minlength="10" ng-maxlength="10">
+                    <p ng-show="phoneForm.inputPhone.$invalid " class="help-block">Please enter a 10-digit phone number without spaces or symbols: xxxxxxxxxx.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <a>
+                <button type="submit" class="btn btn-default col-sm-2 col-sm-offset-3" ng-click="changeEditPhoneSection(false)">Cancel</button>
+            </a>
+            <a>
+                <button type="submit" class="btn btn-primary col-sm-3 col-sm-offset-1" ng-disabled="phoneForm.$invalid" ng-click="updatePhone()">Update</button>
+            </a>
+            <div class="text-center">
+                <!-- ngIf: vm.error -->
+            </div>
+        </div>
+    </form>
 
 </div>
 

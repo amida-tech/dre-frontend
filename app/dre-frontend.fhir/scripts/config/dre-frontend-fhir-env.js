@@ -102,5 +102,29 @@ angular.module('dreFrontend.fhir')
             { code: "F", display: "Female", definition: "Female"},
             { code: "M", display: "Male", definition: "Male"},
             { code: "UN", display: "Undifferentiated", definition: "The gender of a person could not be uniquely defined as male or female, such as hermaphrodite."}
-        ]
+        ],
+        addressCodes: [
+            { code: "BAD", display: "bad address", definition: ""},
+            { code: "CONF", display: "confidential address", definition: ""},
+            { code: "H", display: "home address", definition: ""},
+            { code: "HP", display: "primary home", definition: ""},
+            { code: "HV", display: "vacation home", definition: ""},
+            { code: "OLD", display: "no longer in use", definition: ""},
+            { code: "TMP", display: "temporary address", definition: ""},
+            { code: "WP", display: "work place", definition: ""},
+            { code: "DIR", display: "direct", definition: ""},
+            { code: "PUB", display: "public", definition: ""},
+            { code: "PHYS", display: "physical visit address", definition: ""},
+            { code: "PST", display: "postal address", definition: ""},
+            { code: "AS", display: "answering service", definition: ""},
+            { code: "EC", display: "emergency contact", definition: ""},
+            { code: "MC", display: "mobile contact", definition: ""},
+            { code: "PG", display: "pager", definition: ""}
+        ],
+        contactSystemCodes: {
+            phone: "phone",
+            fax: "fax",
+            email: "email",
+            url: "url"
+        }
     });
