@@ -1,0 +1,36 @@
+<div class="panel panel-body">
+    <home-breadcrumbs></home-breadcrumbs>
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <h4>{{model.userName}}'s results</h4>
+
+            <p>Last Updated: {{model.lastUpdate| date :'short'}}</p>
+        </div>
+    </div>
+    <h4 class="text-center white">Vitals</h4>
+
+    <div class="panel panel-body">
+        <user-timeline></user-timeline>
+        <div class="blocks">
+            <!-- START -->
+            <div ng-repeat="vital in model.vitalsList">
+                <div class="row"><i class="col-sm-2 h_line"></i></div>
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div user-timeline-entry-icon="vital"></div>
+                    </div>
+                    <div class="col-sm-10">
+                        <div class="panel panel-body">
+                            <div user-timeline-entry-title="vital"></div>
+                            <div ng-show="vital.value"><span ng-bind="vital.value"></span> <span ng-bind="vital.units"></span></div>
+                            <div user-timeline-entry-dates="vital"></div>
+                            <div user-timeline-entry-menu="vital"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h5 ng-hide="model.vitalsList" class="col-sm-12 text-center">No Vitals Entries</h5>
+        <!-- END -->
+    </div>
+</div>

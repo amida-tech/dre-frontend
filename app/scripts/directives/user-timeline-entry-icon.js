@@ -62,6 +62,9 @@ angular.module('dreFrontendApp')
                     case 'Encounter':
                         $scope.model.displayClass = 'fa-stethoscope';
                         break;
+                    case 'ObservationVital':
+                        $scope.model.displayClass = 'fa-heart';
+                        break;
                     default:
                         $scope.model.displayClass = '';
                 }

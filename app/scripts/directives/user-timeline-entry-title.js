@@ -16,26 +16,8 @@ angular.module('dreFrontendApp')
             },
             controller: function ($scope) {
                 $scope.model = {
-                    actionTitle: ''
+                    actionTitle: $scope.userTimelineEntryTitle.title
                 };
-                switch ($scope.userTimelineEntryTitle.type) {
-                    case 'initAccount':
-                    case 'loggedIn':
-                    case 'loggedOut':
-                    case 'fileUploaded':
-                    case 'fileDownloaded':
-                    case 'labResults':
-                    case 'passwordChange':
-                    case 'infoUpdate':
-                    case 'medUpdate':
-                    case 'MedicationPrescription':
-                    case 'ObservationTestResult':
-                    case 'Encounter':
-                        $scope.model.actionTitle = $scope.userTimelineEntryTitle.title;
-                        break;
-                    default:
-                        $scope.model.actionTitle = '';
-                }
             }
         };
     });

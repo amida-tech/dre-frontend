@@ -140,6 +140,23 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
+        .state('record.vitals', {
+            url: '/record/vitals',
+            parent: 'record',
+            data: {
+                name: 'My Vitals',
+                isPublic: false
+            },
+            views: {
+                'homeMenu@homeRoot': {
+                    templateUrl: "views/controllers/record-menu.html"
+                },
+                'pageBody@homeRoot': {
+                    templateUrl: "views/controllers/vitals.html",
+                    controller: "VitalsCtrl"
+                }
+            }
+        })
         .state('files', {
             url: '/files',
             parent: 'home',
