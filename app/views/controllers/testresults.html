@@ -22,11 +22,8 @@
                     <div class="col-sm-10">
                         <div class="panel panel-body">
                             <div user-timeline-entry-title="result"></div>
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <h5 class="text-left" ng-show="result.date">{{result.date | date:'short'}}</h5>
-                                </div>
-                            </div>
+                            <div user-timeline-entry-dates="result"></div>
+                            <div user-timeline-entry-menu="result"></div>
                         </div>
                     </div>
                 </div>

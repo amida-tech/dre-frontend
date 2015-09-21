@@ -49,16 +49,8 @@
                 <div class="col-sm-10">
                     <div class="panel panel-body">
                         <div user-timeline-entry-title="medication"></div>
-                        <div class="row" ng-if="medication.startDate">
-                            <div class="col-sm-3">
-                                <h5 class="text-left">
-                                    <span>{{medication.startDate}}</span>
-                                    <span ng-if="medication.isInactive && medication.stopDate"> - {{medication.stopDate}}</span>
-                                    <span ng-if="!medication.isInactive"> - Present</span>
-                                </h5>
-                            </div>
-                        </div>
-                        <div ng-show="medication.isDetailsOpen" entry-details="medication.rawEntry"></div>
+                        <div user-timeline-entry-dates="medication"></div>
+                        <div user-timeline-entry-menu="medication"></div>
                     </div>
                 </div>
             </div>
