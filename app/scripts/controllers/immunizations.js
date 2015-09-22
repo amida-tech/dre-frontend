@@ -10,7 +10,7 @@
 angular.module('dreFrontendApp')
     .controller('ImmunizationsCtrl', function ($scope, dreFrontendImmunizations, dreFrontEndPatientInfo, _) {
         $scope.model = {
-            lastUpdated: new Date(),
+            lastUpdate: new Date(),
             userName: '',
             immunizations: []
         };
