@@ -1,0 +1,52 @@
+<div class="panel panel-body">
+    <home-breadcrumbs></home-breadcrumbs>
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <h4>My Account</h4>
+        </div>
+        <div class="col-sm-12">
+            <p>Adjust settings associated with your account.</p>
+            <p>Account settings are for managing how you log in to the system.</p>
+            <p> Profile Settings, such as changes to address information, can be accessed in <a ui-sref="profile">profile settings</a>.</p>
+        </div>
+    </div>
+</div>
+
+<h4 class="text-center white">Reset password<a name="profile"></a> </h4>
+
+<div class="panel panel-body">
+    <h5>* Denotes required fields.</h5>
+    <form role="form" name="accountForm" novalidate>
+
+        <div class="row">
+                <div class="form-group col-sm-5">
+                    <label for="oldPassword">Old Password*</label>
+                    <input type="password" class="form-control" id="oldPassword" name="oldPassword" ng-model="model.oldPassword" ng-minlength="8" ng-maxlength="20" required>
+                    <p ng-show="accountForm.oldPassword.$invalid" class="help-block">Password must be between 8 and 20 characters.</p>
+                </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-sm-5">
+                <label for="newPassword">New Password*</label>
+                <input type="password" class="form-control" id="newPassword" name="newPassword" ng-model="model.newPassword" ng-minlength="8" ng-maxlength="20" required>
+                <p ng-show="accountForm.newPassword.$invalid" class="help-block">Password must be between 8 and 20 characters.</p>
+            </div>
+            <div class="form-group col-sm-5 col-sm-offset-1">
+                <label for="retypeNewPassword"> Repeat New Password*</label>
+                <input type="password" class="form-control" id="retypeNewPassword" name="retypeNewPassword" ng-model="model.retypeNewPassword" ng-minlength="8" ng-maxlength="20" required>
+                <p ng-show="accountForm.retypeNewPassword.$invalid" class="help-block">Password must be between 8 and 20 characters.</p>
+            </div>
+        </div>
+        <div class="row">
+            <a ng-click="updatePassword()">
+                <button type="submit" class="btn btn-primary col-sm-4 col-sm-offset-4" ng-disabled="accountForm.$invalid || !isPasswordEquals()" disabled="disabled">Reset Password</button>
+            </a>
+        </div>
+        <div class="row">
+            <!-- ngIf: vm.error -->
+        </div>
+    </form>
+</div>
+
+
+

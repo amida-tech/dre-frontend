@@ -142,5 +142,9 @@ angular.module('dreFrontend.fhir')
             fax: "fax",
             email: "email",
             url: "url"
-        }
+        },
+        raceExtensionUrl: "http://hl7.org/fhir/Profile/us-core#race",
+        raceCodes: {},
+        ethnicityExtensionUrl: "http://hl7.org/fhir/Profile/us-core#ethnicity"
+
     });

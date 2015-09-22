@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-  .controller('ProfileCtrl', function ($scope, _, dreFrontEndPatientInfo, dreFrontendGlobals, fhirEnv, dreFrontendFhirService) {
+  .controller('ProfileCtrl', function ($scope, _, dreFrontEndPatientInfo, dreFrontendGlobals, fhirEnv, dreFrontendFhirService, $location, $anchorScroll) {
 
         $scope.init = function() {
             $scope.model = {
@@ -150,5 +150,12 @@ angular.module('dreFrontendApp')
             dreFrontendFhirService.update($scope.model.patient.resourceType, $scope.model.patient.id, $scope.model.patient).then(function (response) {
                 $scope.changeEditPhoneSection(true);
             });
+        };
+
+        $scope.scroll = function(link) {
+            var old = $location.hash();
+            $location.hash(link);
+            $anchorScroll();
+            $location.hash(old);
         };
   });

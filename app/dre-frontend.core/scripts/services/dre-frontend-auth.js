@@ -113,6 +113,9 @@ angular.module('dreFrontend.util')
           $log.debug('$log',error);
           return $q.reject(error.message);
         });
+      },
+      changePassword: function(oldpassword, newpassword) {
+
       }
     };
     return self;

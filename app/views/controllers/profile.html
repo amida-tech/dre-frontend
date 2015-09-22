@@ -8,7 +8,7 @@
              <p>Adjust settings associated with your profile.</p>
             <p>Providing a detailed profile helps us perform more accurate searches for your records.</p>
             <p> The information contained here can also be helpful for doctors in emergency situations.</p>
-            <p> Account Settings, such as password changes, can be accessed in <a>account settings</a>.</p>
+            <p> Account Settings, such as password changes, can be accessed in <a ui-sref="account">account settings</a>.</p>
         </div>
     </div>
 </div>
@@ -233,7 +233,7 @@
 
                 <div class="form-group col-sm-5 col-sm-offset-1">
                     <label for="inputCity">City*</label>
-                    <input type="text" class="form-control" id="inputCity" name="inputCity" ng-model="model.addresses[0].city">
+                    <input type="text" class="form-control" id="inputCity" name="inputCity" ng-model="model.addresses[0].city" required>
                     <p ng-show="addressForm.inputCity.$invalid" class="help-block">Please enter a city.</p>
                 </div>
             </div>

@@ -204,6 +204,21 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
+        .state('account', {
+            url: '/account',
+            parent: 'home',
+            data: {
+                name: 'My Account',
+                isPublic: false
+            },
+            views: {
+                'homeMenu@homeRoot': {},
+                'pageBody@homeRoot': {
+                    templateUrl: "views/controllers/account.html",
+                    controller: 'AccountCtrl'
+                }
+            }
+        })
         .state('fhir', {
             url: '/fhir',
             templateUrl: 'views/controllers/fhir.html',
