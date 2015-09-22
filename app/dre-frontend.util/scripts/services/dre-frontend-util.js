@@ -29,7 +29,32 @@ angular.module("dreFrontend.util")
                 }else{
                     return '';
                 }
-            }
+            },
+            buildObjectByPath: function(path, val) {
+                var res, prev, current;
+                var p = path.slice(0);
 
+                var f = function (_path) {
+                    var n = _path.shift();
+
+                    var res;
+                    switch (typeof n) {
+                        case "number":
+                            res=[];
+                            res[n] = f(_path);
+                            break;
+                        case "string":
+                            res = {};
+                            res[n] = f(_path);
+                            break;
+                        default:
+                            res = val;
+                    }
+
+                    return res;
+                };
+
+                return f(p);
+            }
         };
     });

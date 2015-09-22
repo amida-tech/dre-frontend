@@ -1,15 +1,21 @@
 <div class="panel-body">
     <div class="row">
+        <div class="col-sm-6 text-center">
+            <h4>{{model.lhs_type}}</h4>
+        </div>
+        <div class="col-sm-6 text-center">
+            <h4>{{model.rhs_type}}</h4>
+        </div>
+    </div>
+    <div class="row" ng-repeat="diff_entry in model.diff">
         <div class="col-sm-6">
-            <h5>RECORD UPDATES</h5>
-            <div class="panel-body">
-                {{model.lhs | json }}
+            <div class="panel details-table" ng-hide="diff_entry.kind === 'N'">
+                <div entry-details-item="diff_entry.lhs"></div>
             </div>
         </div>
         <div class="col-sm-6">
-            <h5>CURRENT RECORD</h5>
-            <div class="panel-body">
-                {{model.rhs | json }}
+            <div class="panel details-table" ng-hide="diff_entry.kind === 'D'">
+                <div entry-details-item="diff_entry.rhs"></div>
             </div>
         </div>
     </div>

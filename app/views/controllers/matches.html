@@ -1,0 +1,24 @@
+<div class="panel panel-body">
+    <home-breadcrumbs></home-breadcrumbs>
+    <div class="row">
+        <div class="col-sm-12 col-md-8">
+            <h4>{{model.userName}}'s result updates</h4>
+            <p>Entries to the left are possible updates to a current entry in your record, displayed to the right.</p>
+            <p>Use the checkboxes to select updates you wish to apply.</p>
+            <h6>Note:  only differences between the entries are displayed.</h6>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+</div>
+<h4 class="text-center white">Matches</h4>
+<div class="panel panel-body">
+    <div class="row">
+        <div class="col-sm-6 text-center">
+            <h4>Record updates</h4>
+        </div>
+        <div class="col-sm-6 text-center">
+            <h4>Current record</h4>
+        </div>
+        <div diff-form></div>
+    </div>
+</div>

@@ -238,6 +238,21 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
+        .state('record.matches', {
+            url: '/matches',
+            parent: 'record',
+            data: {
+                name: 'Review Updates',
+                isPublic: false
+            },
+            views: {
+                'homeMenu@homeRoot': {},
+                'pageBody@homeRoot': {
+                    templateUrl: "views/controllers/matches.html",
+                    controller: "MatchesCtrl"
+                }
+            }
+        })
         .state('profile', {
             url: '/profile',
             parent: 'home',
