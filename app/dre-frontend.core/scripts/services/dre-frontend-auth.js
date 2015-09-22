@@ -8,7 +8,8 @@ angular.module('dreFrontend.util')
       logout: '/logout',
       checkAuth: '/account',
       validateLogin: '/users',
-      register: '/register'
+      register: '/register',
+      changePassword: '/changepassword'
     };
     var self = {
       login: function (login, password) {
@@ -115,7 +116,19 @@ angular.module('dreFrontend.util')
         });
       },
       changePassword: function(oldpassword, newpassword) {
-
+          return dreFrontendHttp({
+              url: urls.changePassword,
+              data: {
+                  old: oldpassword,
+                  new: newpassword
+              },
+              method: 'POST'
+          }).then(function () {
+              return true;
+          }).catch(function (error) {
+              $log.debug('$log',error);
+              return $q.reject(error);
+          });
       }
     };
     return self;
