@@ -12,7 +12,7 @@ angular.module('dreFrontend.fhir')
                 angular.extend(this, data);
         };
         
-        var Procedures = {
+        var procedures = {
             getByPatientId: function (patient_id) {
                 return dreFrontendFhirService.search("Procedure", {patient: patient_id})
                     .then(function (response) {
@@ -32,5 +32,5 @@ angular.module('dreFrontend.fhir')
                     });
             },
         };
-        return Procedures;
+        return procedures;
 });

@@ -21,11 +21,11 @@ angular.module('dreFrontendApp')
             dreFrontendConditions.getByPatientId(patientId).then(function (results) {
                 $scope.model.conditionsList = [];
                 _.forEach(results.entry, function (entry) {
-                    if (angular.isArray(entry.type) &&entry.type.length>0 && angular.isArray(entry.type[0].coding) && entry.type[0].coding.length > 0) {
+                    if (angular.isObject(entry.code) && angular.isArray(entry.code.coding) && entry.code.coding.length > 0) {
                         $scope.model.conditionsList.push({
                             rawEntry: entry,
                             type: entry.resourceType,
-                            title: angular.isObject(entry.code.coding[0].display)? entry.code.coding[0].display : undefined,
+                            title: entry.code.coding[0].display,
                             additionalInfo: '',
                             startDate: angular.isObject(entry.abatementPeriod) ? entry.abatementPeriod.start : undefined,
                             endDate: angular.isObject(entry.abatementPeriod) ? entry.abatementPeriod.end : undefined
