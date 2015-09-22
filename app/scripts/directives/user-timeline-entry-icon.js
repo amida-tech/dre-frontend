@@ -65,6 +65,12 @@ angular.module('dreFrontendApp')
                     case 'ObservationVital':
                         $scope.model.displayClass = 'fa-heart';
                         break;
+                    case 'ObservationImmunization':
+                        $scope.model.displayClass = 'fa-shield';
+                        break;
+                    case 'ObservationAllergies':
+                        $scope.model.displayClass = 'fa-exclamation-triangle';
+                        break;
                     default:
                         $scope.model.displayClass = '';
                 }

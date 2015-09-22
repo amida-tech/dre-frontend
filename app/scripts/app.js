@@ -157,6 +157,23 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
+        .state('record.immunizations', {
+            url: '/immunizations',
+            parent: 'record',
+            data: {
+                name: 'My Immunizations',
+                isPublic: false
+            },
+            views: {
+                'homeMenu@homeRoot': {
+                    templateUrl: "views/controllers/record-menu.html"
+                },
+                'pageBody@homeRoot': {
+                    templateUrl: "views/controllers/immunizations.html",
+                    controller: "ImmunizationsCtrl"
+                }
+            }
+        })
         .state('files', {
             url: '/files',
             parent: 'home',
