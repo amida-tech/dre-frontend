@@ -90,7 +90,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             }
         })
         .state('record.medications', {
-            url: '/record/medications',
+            url: '/medications',
             parent: 'record',
             data: {
                 name: 'My Medications',
@@ -107,7 +107,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             }
         })
         .state('record.testresults', {
-            url: '/record/results',
+            url: '/results',
             parent: 'record',
             data: {
                 name: 'My Results',
@@ -124,7 +124,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             }
         })
         .state('record.encounters', {
-            url: '/record/encounters',
+            url: '/encounters',
             parent: 'record',
             data: {
                 name: 'My Encounters',
@@ -141,7 +141,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             }
         })
         .state('record.vitals', {
-            url: '/record/vitals',
+            url: '/vitals',
             parent: 'record',
             data: {
                 name: 'My Vitals',

@@ -25,10 +25,10 @@ angular.module('dreFrontendApp')
                         var itemEntry = {
                             rawEntry: entry,
                             type: 'ObservationVital',
-                            value: entry.valueQuantity.value,
-                            units: entry.valueQuantity.units,
+                            additionalInfo: entry.valueQuantity.value+' ' + (angular.isDefined(entry.valueQuantity.units) && entry.valueQuantity.units != '1' ? entry.valueQuantity.units : ''),
                             title: entry.code.coding[0].display
                         };
+                        console.log(entry.valueQuantity.value.toString());
                         if (angular.isDefined(entry.appliesDateTime)) {
                             itemEntry.startDate = entry.appliesDateTime;
                         } else {

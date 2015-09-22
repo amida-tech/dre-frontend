@@ -11,11 +11,10 @@ angular.module('dreFrontendApp')
     return {
       templateUrl: 'views/directives/user-timeline.html',
       restrict: 'AE',
-      scope:{},
+      scope:{
+          userTimeline:'='
+      },
       controller: function ($scope) {
-        $scope.model = {
-
-        };
       }
     };
   });
