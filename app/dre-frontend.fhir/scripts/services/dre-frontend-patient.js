@@ -37,17 +37,20 @@ angular.module('dreFrontend.fhir')
         Patient.prototype.getNameByType = function (nameType) {
             var result = [];
             var patient = this;
-            var humanNameType = fhirEnv.humanNames[nameType];
-            if (humanNameType) {
-                var names = [];
-                angular.forEach(humanNameType.codes, function(code){
-                   names = names.concat(_.filter(patient.name, {use: code}));
-                });
+            var names = [];
 
-                angular.forEach(names, function (parts) {
-                    result.push(_glue_name(parts));
+            if (nameType && fhirEnv.humanNames[nameType]) {
+                angular.forEach(fhirEnv.humanNames[nameType].codes, function (code) {
+                    names = names.concat(_.filter(patient.name, {use: code}));
                 });
+            } else {
+                names = patient.name;
             }
+
+            angular.forEach(names, function (parts) {
+                result.push(_glue_name(parts));
+            });
+
             return result;
         };
 
@@ -61,7 +64,8 @@ angular.module('dreFrontend.fhir')
 
         Patient.prototype.getName = function () {
             var result = this.getUsualName()
-                .concat(this.getOfficialName());
+                .concat(this.getOfficialName())
+                .concat(this.getNameByType());
             return result;
         };
 
