@@ -15,6 +15,13 @@ angular.module('dreFrontend.util')
       inProcess: 'dreFrontend:InProcess',
       notLoggedInError: 'dreFrontend:LoggedInError'
     };
+
+    self.menuRecordTypeEnum = {
+        none : "none",
+        popup : "popup",
+        inline : "inline"
+    };
+
     this.$get = function () {
       return self;
     };

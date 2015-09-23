@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-  .controller('AccountHistoryCtrl', function ($scope, dreFrontendAccountHistoryService, _, dreFrontEndPatientInfo) {
+  .controller('AccountHistoryCtrl', function ($scope, dreFrontendAccountHistoryService, _, dreFrontEndPatientInfo, dreFrontendGlobals) {
     $scope.model = {
       userName: '-',
       lastLogin: '',
@@ -27,7 +27,8 @@ angular.module('dreFrontendApp')
           type: itm.event_type,
           title: itm.type,
           date: new Date(itm.date),
-          note: itm.note
+          note: itm.note,
+          menuType: dreFrontendGlobals.menuRecordTypeEnum.none
         });
       });
     });

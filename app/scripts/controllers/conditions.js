@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('ConditionsCtrl', function ($scope, dreFrontendConditions, _, dreFrontEndPatientInfo, dreFrontendUtil) {
+    .controller('ConditionsCtrl', function ($scope, dreFrontendConditions, _, dreFrontEndPatientInfo, dreFrontendUtil, dreFrontendGlobals) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
@@ -28,7 +28,8 @@ angular.module('dreFrontendApp')
                             title: entry.code.coding[0].display,
                             additionalInfo: '',
                             startDate: angular.isObject(entry.abatementPeriod) ? entry.abatementPeriod.start : undefined,
-                            endDate: angular.isObject(entry.abatementPeriod) ? entry.abatementPeriod.end : undefined
+                            endDate: angular.isObject(entry.abatementPeriod) ? entry.abatementPeriod.end : undefined,
+                            menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
                         })
                     }
                 });

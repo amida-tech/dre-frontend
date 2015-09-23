@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('VitalsCtrl', function ($scope, dreFrontendObservations, _, dreFrontEndPatientInfo, dreFrontendUtil) {
+    .controller('VitalsCtrl', function ($scope, dreFrontendObservations, _, dreFrontEndPatientInfo, dreFrontendUtil, dreFrontendGlobals) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
@@ -26,7 +26,8 @@ angular.module('dreFrontendApp')
                             rawEntry: entry,
                             type: 'ObservationVital',
                             additionalInfo: entry.valueQuantity.value+' ' + (angular.isDefined(entry.valueQuantity.units) && entry.valueQuantity.units != '1' ? entry.valueQuantity.units : ''),
-                            title: entry.code.coding[0].display
+                            title: entry.code.coding[0].display,
+                            menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
                         };
                         console.log(entry.valueQuantity.value.toString());
                         if (angular.isDefined(entry.appliesDateTime)) {

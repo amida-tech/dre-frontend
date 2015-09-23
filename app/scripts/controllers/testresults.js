@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('TestresultsCtrl', function ($scope, dreFrontendObservations, _, dreFrontEndPatientInfo, dreFrontendUtil) {
+    .controller('TestresultsCtrl', function ($scope, dreFrontendObservations, _, dreFrontEndPatientInfo, dreFrontendUtil, dreFrontendGlobals) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
@@ -25,7 +25,8 @@ angular.module('dreFrontendApp')
                         var itemEntry = {
                             rawEntry: entry,
                             type: 'ObservationTestResult',
-                            title: entry.code.coding[0].display
+                            title: entry.code.coding[0].display,
+                            menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
                         };
                         if(angular.isDefined(entry.appliesDateTime)){
                             itemEntry.startDate = entry.appliesDateTime;

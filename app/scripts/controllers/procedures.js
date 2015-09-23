@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('ProceduresCtrl', function ($scope, dreFrontendProcedures, _, dreFrontEndPatientInfo, dreFrontendUtil) {
+    .controller('ProceduresCtrl', function ($scope, dreFrontendProcedures, _, dreFrontEndPatientInfo, dreFrontendUtil, dreFrontendGlobals) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
@@ -28,7 +28,8 @@ angular.module('dreFrontendApp')
                             title: entry.type.coding[0].display,
                             additionalInfo: '',
                             startDate: entry.performedDateTime,
-                            endDate: undefined
+                            endDate: undefined,
+                            menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
                         })
                     }
                 });

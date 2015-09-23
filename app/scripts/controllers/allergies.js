@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-  .controller('AllergiesCtrl', function ($scope, dreFrontendAllergyIntolerances, dreFrontEndPatientInfo, _) {
+  .controller('AllergiesCtrl', function ($scope, dreFrontendAllergyIntolerances, dreFrontEndPatientInfo, _, dreFrontendGlobals) {
         $scope.model = {
             lastUpdate: new Date(),
             userName: '',
@@ -26,7 +26,8 @@ angular.module('dreFrontendApp')
                         additionalInfo: '',
                         title: '',
                         startDate: entry.lastOccurence != undefined ? entry.lastOccurence : null,
-                        endDate: null
+                        endDate: null,
+                        menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
                     };
                     if(angular.isDefined(entry.event)) {
                         if(entry.event.length != 0) {
