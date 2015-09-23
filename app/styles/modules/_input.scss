@@ -1,3 +1,9 @@
 .form-control.input-file {
     height: auto;
 }
+
+.diff-lhs input[type=checkbox] {
+    position: absolute;
+    top: 0;
+    right: 0;
+}

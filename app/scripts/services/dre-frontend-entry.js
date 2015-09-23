@@ -8,7 +8,7 @@
  * Service in the dreFrontendApp.
  */
 angular.module('dreFrontendApp')
-    .factory('dreFrontendEntry', function (_, dreFrontendUtil) {
+    .factory('dreFrontendEntry', function (_, dreFrontendUtil, $log) {
 
         var isValidName = function (name, black_list) {
             return name[0] != '$' && !_.contains(black_list, name);
@@ -38,7 +38,8 @@ angular.module('dreFrontendApp')
                         continue;
                     }
                     //if ISO date
-                    if (!isNaN(Date.parse(dataItem[propertyName]))) {
+                    if (angular.isDate(dataItem[propertyName]) /*!isNaN(Date.parse(dataItem[propertyName]))*/) {
+                        $log.debug(dataItem[propertyName], angular.isDate(dataItem[propertyName]), dreFrontendUtil.formatFhirDate(dataItem[propertyName]));
                         dataItems.push({
                             label: prepareName(propertyName),
                             value: dreFrontendUtil.formatFhirDate(dataItem[propertyName]),

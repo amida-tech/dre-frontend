@@ -62,10 +62,10 @@ angular.module('dreFrontend.fhir')
                 };
 
                 function _is_valid_resource_type(resourceType) {
-                    var res = $q.resolve(resourceType);
+                    var res;
 
                     if (resourceType) {
-                        if (fhirEnv.resourceTypes.hasOwnProperty(resourceType))
+                        if (dreFrontendUtil.isFhirResource(resourceType))
                             res = $q.resolve(resourceType);
                         else
                             res = $q.reject("unsupported resource type: " + resourceType);

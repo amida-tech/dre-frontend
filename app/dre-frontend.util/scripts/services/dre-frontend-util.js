@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module("dreFrontend.util")
-    .factory("dreFrontendUtil", function (dreFrontendEnvironment, $filter) {
+    .factory("dreFrontendUtil", function (dreFrontendEnvironment, $filter, fhirEnv) {
         return {
             capitalise: function (_str) {
                 return _str.charAt(0).toUpperCase() + _str.substr(1).toLowerCase();
@@ -55,6 +55,9 @@ angular.module("dreFrontend.util")
                 };
 
                 return f(p);
+            },
+            isFhirResource: function(resourceType) {
+                return fhirEnv.resourceTypes.hasOwnProperty(resourceType);
             }
         };
     });

@@ -1,0 +1,26 @@
+<div class="panel-body">
+    <div class="row">
+        <div class="col-sm-6 text-center">
+            <h4>{{model.lhs_type}}</h4>
+        </div>
+        <div class="col-sm-6 text-center">
+            <h4>{{model.rhs_type}}</h4>
+        </div>
+    </div>
+    <div class="row match" ng-repeat="diff_entry in model.diff">
+        <div class="col-sm-6 diff-lhs">
+            <span class="label label-success text-capitalize" ng-show="diff_entry.kind === 'N'">new data</span>
+            <div class="panel details-table" ng-hide="diff_entry.kind === 'N'">
+                <div entry-details-item="diff_entry.lhs"></div>
+            </div>
+            <input type="checkbox" ng-model="diff_entry.apply"/>
+        </div>
+        <div class="col-sm-6 diff-rhs">
+            <span class="label label-danger text-capitalize" ng-show="diff_entry.kind === 'D' && diff_entry.apply">deleted</span>
+            <div class="details-table panel" ng-hide="diff_entry.kind === 'D' && diff_entry.apply || diff_entry.kind === 'N' && !diff_entry.apply">
+                 <div entry-details-item="diff_entry.rhs" ng-show="diff_entry.apply"></div>
+                 <div entry-details-item="diff_entry.lhs" ng-show="!diff_entry.apply"></div>
+            </div>
+        </div>
+    </div>
+</div>
