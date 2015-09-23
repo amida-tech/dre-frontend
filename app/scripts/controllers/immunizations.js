@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('ImmunizationsCtrl', function ($scope, dreFrontendImmunizations, dreFrontEndPatientInfo, _, dreFrontendGlobals) {
+    .controller('ImmunizationsCtrl', function ($scope, dreFrontendEntry, dreFrontendImmunizations, dreFrontEndPatientInfo, _, dreFrontendGlobals) {
         $scope.model = {
             lastUpdate: new Date(),
             userName: '',
@@ -24,18 +24,11 @@ angular.module('dreFrontendApp')
                         rawEntry: entry,
                         type: entry.resourceType,
                         additionalInfo: '',
-                        title: '',
+                        title: dreFrontendEntry.getEntryTitle(entry),
                         startDate: entry.date != undefined ? entry.date : null,
                         endDate: null,
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
                     };
-                    if(angular.isDefined(entry.vaccineType)) {
-                        if(angular.isDefined(entry.vaccineType.coding)) {
-                            if(entry.vaccineType.coding.length != 0) {
-                                immunization.title = entry.vaccineType.coding[0].display;
-                            }
-                        }
-                    }
                     $scope.model.immunizations.push(immunization);
                 });
             })

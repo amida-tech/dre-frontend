@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('MedicationsCtrl', function ($scope, dreFrontendMedications, _, dreFrontEndPatientInfo, dreFrontendUtil, dreFrontendGlobals) {
+    .controller('MedicationsCtrl', function ($scope, dreFrontendEntry, dreFrontendMedications, _, dreFrontEndPatientInfo, dreFrontendUtil, dreFrontendGlobals) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
@@ -22,17 +22,15 @@ angular.module('dreFrontendApp')
             dreFrontendMedications.getByPatientId(patientId).then(function (medications) {
                 $scope.model.medicationsList = [];
                 _.forEach(medications.entry, function (entry) {
-                    if (angular.isObject(entry.medication)) {
-                        $scope.model.medicationsList.push({
-                            rawEntry: entry,
-                            type: entry.resourceType,
-                            isInactive: entry.status != 'active',
-                            title: entry.medication.name,
-                            startDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.start : undefined,
-                            stopDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.end : undefined,
-                            menuType: dreFrontendGlobals.menuRecordTypeEnum.popup
-                        })
-                    }
+                    $scope.model.medicationsList.push({
+                        rawEntry: entry,
+                        type: entry.resourceType,
+                        isInactive: entry.status != 'active',
+                        title: dreFrontendEntry.getEntryTitle(entry),
+                        startDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.start : undefined,
+                        stopDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.end : undefined,
+                        menuType: dreFrontendGlobals.menuRecordTypeEnum.popup
+                    })
                 });
             });
         });

@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('ConditionsCtrl', function ($scope, dreFrontendConditions, _, dreFrontEndPatientInfo, dreFrontendUtil, dreFrontendGlobals) {
+    .controller('ConditionsCtrl', function ($scope, dreFrontendEntry, dreFrontendConditions, _, dreFrontEndPatientInfo, dreFrontendUtil, dreFrontendGlobals) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
@@ -25,7 +25,7 @@ angular.module('dreFrontendApp')
                         $scope.model.conditionsList.push({
                             rawEntry: entry,
                             type: entry.resourceType,
-                            title: entry.code.coding[0].display,
+                            title: dreFrontendEntry.getEntryTitle(entry),
                             additionalInfo: '',
                             startDate: angular.isObject(entry.abatementPeriod) ? entry.abatementPeriod.start : undefined,
                             endDate: angular.isObject(entry.abatementPeriod) ? entry.abatementPeriod.end : undefined,
