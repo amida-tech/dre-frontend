@@ -51,7 +51,7 @@ angular.module('dreFrontendApp')
                         break;
                     case 'MedicationPrescription':
                         $scope.model.displayClass = 'icon-pill';
-                        $scope.model.isInactive = $scope.userTimelineEntryIcon.isInactive;
+                        $scope.model.dates.isInactive = $scope.userTimelineEntryIcon.dates.isInactive;
                         break;
                     case 'ObservationTestResult':
                         $scope.model.displayClass = 'fa-flask';

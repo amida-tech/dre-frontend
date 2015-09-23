@@ -25,8 +25,7 @@ angular.module('dreFrontendApp')
                         type: entry.resourceType,
                         additionalInfo: '',
                         title: dreFrontendEntry.getEntryTitle(entry),
-                        startDate: entry.date != undefined ? entry.date : null,
-                        endDate: null,
+                        dates: dreFrontendEntry.getEntryDates(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
                     };
                     $scope.model.immunizations.push(immunization);

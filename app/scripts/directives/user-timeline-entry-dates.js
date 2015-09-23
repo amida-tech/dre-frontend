@@ -19,9 +19,9 @@ angular.module('dreFrontendApp')
             },
             controller: function ($scope) {
                 $scope.model = {
-                    startDate: angular.isDefined($scope.userTimelineEntryDates.startDate) ? dreFrontendUtil.formatFhirDate($scope.userTimelineEntryDates.startDate) : undefined,
-                    endDate: angular.isDefined($scope.userTimelineEntryDates.endDate) ? dreFrontendUtil.formatFhirDate($scope.userTimelineEntryDates.endDate) : undefined,
-                    isActive: angular.isDefined($scope.userTimelineEntryDates.isInactive) ? !$scope.userTimelineEntryDates.isInactive : false
+                    startDate: angular.isDefined($scope.userTimelineEntryDates.dates.startDate) ? dreFrontendUtil.formatFhirDate($scope.userTimelineEntryDates.dates.startDate) : undefined,
+                    endDate: angular.isDefined($scope.userTimelineEntryDates.dates.endDate) ? dreFrontendUtil.formatFhirDate($scope.userTimelineEntryDates.dates.endDate) : undefined,
+                    isActive: angular.isDefined($scope.userTimelineEntryDates.dates.isInactive) ? !$scope.userTimelineEntryDates.dates.isInactive : false
                 };
 
             }

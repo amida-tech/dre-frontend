@@ -25,10 +25,8 @@ angular.module('dreFrontendApp')
                     $scope.model.medicationsList.push({
                         rawEntry: entry,
                         type: entry.resourceType,
-                        isInactive: entry.status != 'active',
                         title: dreFrontendEntry.getEntryTitle(entry),
-                        startDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.start : undefined,
-                        stopDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.end : undefined,
+                        dates: dreFrontendEntry.getEntryDates(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.popup
                     })
                 });

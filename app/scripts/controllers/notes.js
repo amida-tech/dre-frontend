@@ -38,7 +38,8 @@ angular.module('dreFrontendApp')
                         note: entry,
                         date: new Date(entry.datetime),
                         showEntry: false,
-                        entryTitle: undefined
+                        entryTitle: undefined,
+                        dates: {}
                     })
                 });
             });
@@ -88,7 +89,6 @@ angular.module('dreFrontendApp')
         };
 
         $scope.toggleEntry = function (item) {
-            item.showEntry = !item.showEntry;
             if (angular.isUndefined(item.entryTitle)) {
                 var service = undefined;
                 switch (item.type) {
@@ -122,9 +122,13 @@ angular.module('dreFrontendApp')
                         if (item.type == 'MedicationPrescription') {
                             resourceEntry.medication.load().then(function () {
                                 item.entryTitle = dreFrontendEntry.getEntryTitle(resourceEntry);
+                                item.dates = dreFrontendEntry.getEntryDates(resourceEntry);
+                                item.showEntry = !item.showEntry;
                             });
                         } else {
                             item.entryTitle = dreFrontendEntry.getEntryTitle(resourceEntry);
+                            item.dates = dreFrontendEntry.getEntryDates(resourceEntry);
+                            item.showEntry = !item.showEntry;
                         }
                     }
                 })

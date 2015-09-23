@@ -21,25 +21,13 @@ angular.module('dreFrontendApp')
             dreFrontendObservations.getTestResults(patientId).then(function (results) {
                 $scope.model.testresultsList = [];
                 _.forEach(results.entry, function (entry) {
-                    var itemEntry = {
+                    $scope.model.testresultsList.push({
                         rawEntry: entry,
                         type: 'ObservationTestResult',
                         title: dreFrontendEntry.getEntryTitle(entry),
-                        menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
-                    };
-                    if (angular.isDefined(entry.appliesDateTime)) {
-                        itemEntry.startDate = entry.appliesDateTime;
-                    } else {
-                        if (angular.isDefined(entry.appliesPeriod)) {
-                            itemEntry.startDate = entry.appliesPeriod.start;
-                            itemEntry.endDate = entry.appliesPeriod.end;
-                        } else {
-                            if (angular.isDefined(entry.issued)) {
-                                itemEntry.startDate = entry.issued;
-                            }
-                        }
-                    }
-                    $scope.model.testresultsList.push(itemEntry);
+                        menuType: dreFrontendGlobals.menuRecordTypeEnum.inline,
+                        dates: dreFrontendEntry.getEntryDates(entry)
+                    });
                 });
             });
         });

@@ -180,10 +180,70 @@ angular.module('dreFrontendApp')
                 default:
                     return 'Undefined';
             }
+        }
+        var _getEntryDates = function (entry) {
+            var dates = {};
+            switch (entry.resourceType) {
+                case 'MedicationPrescription':
+                    dates = {
+                        startDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.start : undefined,
+                        stopDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.end : undefined,
+                        isInactive: entry.status != 'active'
+                    };
+                    break;
+                case 'Observation':
+                    if (angular.isDefined(entry.appliesDateTime)) {
+                        dates = {startDate: entry.appliesDateTime};
+                    } else {
+                        if (angular.isDefined(entry.appliesPeriod)) {
+                            dates = {
+                                startDate: entry.appliesPeriod.start,
+                                endDate: entry.appliesPeriod.end
+                            };
+                        } else {
+                            if (angular.isDefined(entry.issued)) {
+                                dates = {startDate: entry.issued};
+                            }
+                        }
+                    }
+                    break;
+                case 'Immunization':
+                    dates = {
+                        startDate: entry.date != undefined ? entry.date : null
+                    };
+                    break;
+                case 'Encounter':
+                    dates = {
+                        startDate: angular.isObject(entry.period) ? entry.period.start : undefined,
+                        endDate: angular.isObject(entry.period) ? entry.period.end : undefined
+                    };
+                    break;
+                case 'Condition':
+                    dates = {
+                        startDate: angular.isObject(entry.abatementPeriod) ? entry.abatementPeriod.start : undefined,
+                        endDate: angular.isObject(entry.abatementPeriod) ? entry.abatementPeriod.end : undefined
+                    };
+                    break;
+                case 'Procedure':
+                    dates = {
+                        startDate: entry.performedDateTime
+                    };
+                    break;
+                case 'AllergyIntolerance':
+                    dates = {
+                        startDate: entry.lastOccurence != undefined ? entry.lastOccurence : null
+                    };
+                    break;
+                default:
+                    return {};
+            }
+            return dates;
+
         };
         var self = {
             buildTable: _buildTable,
-            getEntryTitle: _getEntryTitle
+            getEntryTitle: _getEntryTitle,
+            getEntryDates: _getEntryDates
         };
 
         return self;

@@ -21,27 +21,14 @@ angular.module('dreFrontendApp')
             dreFrontendObservations.getVitalSigns(patientId).then(function (results) {
                 $scope.model.vitalsList = [];
                 _.forEach(results.entry, function (entry) {
-                    var itemEntry = {
+                    $scope.model.vitalsList.push({
                         rawEntry: entry,
                         type: 'ObservationVital',
                         additionalInfo: entry.valueQuantity.value + ' ' + (angular.isDefined(entry.valueQuantity.units) && entry.valueQuantity.units != '1' ? entry.valueQuantity.units : ''),
                         title: dreFrontendEntry.getEntryTitle(entry),
-                        menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
-                    };
-                    console.log(entry.valueQuantity.value.toString());
-                    if (angular.isDefined(entry.appliesDateTime)) {
-                        itemEntry.startDate = entry.appliesDateTime;
-                    } else {
-                        if (angular.isDefined(entry.appliesPeriod)) {
-                            itemEntry.startDate = entry.appliesPeriod.start;
-                            itemEntry.endDate = entry.appliesPeriod.end;
-                        } else {
-                            if (angular.isDefined(entry.issued)) {
-                                itemEntry.startDate = entry.issued;
-                            }
-                        }
-                    }
-                    $scope.model.vitalsList.push(itemEntry);
+                        menuType: dreFrontendGlobals.menuRecordTypeEnum.inline,
+                        dates: dreFrontendEntry.getEntryDates(entry)
+                    });
                 });
             });
         });

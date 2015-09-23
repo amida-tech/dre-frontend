@@ -25,8 +25,7 @@ angular.module('dreFrontendApp')
                         type: entry.resourceType,
                         additionalInfo: '',
                         title: dreFrontendEntry.getEntryTitle(entry),
-                        startDate: entry.lastOccurence != undefined ? entry.lastOccurence : null,
-                        endDate: null,
+                        dates: dreFrontendEntry.getEntryDates(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
                     };
                     if (angular.isDefined(entry.event)) {

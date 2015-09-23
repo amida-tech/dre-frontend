@@ -26,8 +26,7 @@ angular.module('dreFrontendApp')
                         type: entry.resourceType,
                         title: dreFrontendEntry.getEntryTitle(entry),
                         additionalInfo: '',
-                        startDate: entry.performedDateTime,
-                        endDate: undefined,
+                        dates: dreFrontendEntry.getEntryDates(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
                     })
                 });

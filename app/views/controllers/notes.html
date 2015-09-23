@@ -72,6 +72,8 @@
                             <div class="col-sm-12">
                                 <h4>Entry Details</h4>
                                 <a href="#" ng-click="goToEntry(item)"><strong ng-bind="item.entryTitle"></strong></a>
+                                <div>{{item.dates | json}}</div>
+                                <div user-timeline-entry-dates="item"></div>
                             </div>
                         </div>
                     </div>
