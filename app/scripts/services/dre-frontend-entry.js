@@ -97,12 +97,11 @@ angular.module('dreFrontendApp')
         };
 
         var _getEntryTitle = function (entry) {
-            console.log('entry', entry);
             switch (entry.resourceType) {
                 case 'MedicationPrescription':
-                    if(angular.isObject(entry.medication)){
+                    if (angular.isObject(entry.medication)) {
                         if (angular.isObject(entry.medication.code)) {
-                            if (angular.isArray(entry.medication.code.coding) && entry.medication.code.coding.length > 0) {
+                            if (angular.isArray(entry.medication.code.coding) && entry.medication.code.coding.length > 0 && entry.medication.code.coding[0].display) {
                                 return entry.medication.code.coding[0].display;
                             }
                             if (angular.isString(entry.medication.code.text)) {
@@ -113,7 +112,7 @@ angular.module('dreFrontendApp')
                     return 'Undefined';
                 case 'Observation':
                     if (angular.isObject(entry.code)) {
-                        if (angular.isArray(entry.code.coding) && entry.code.coding.length > 0) {
+                        if (angular.isArray(entry.code.coding) && entry.code.coding.length > 0 && entry.code.coding[0].display) {
                             return entry.code.coding[0].display;
                         }
                         if (angular.isString(entry.code.text)) {
@@ -123,7 +122,7 @@ angular.module('dreFrontendApp')
                     return 'Undefined';
                 case 'Immunization':
                     if (angular.isObject(entry.vaccineType)) {
-                        if (angular.isArray(entry.vaccineType.coding) && entry.vaccineType.coding.length > 0) {
+                        if (angular.isArray(entry.vaccineType.coding) && entry.vaccineType.coding.length > 0 && entry.vaccineType.coding[0].display) {
                             return entry.vaccineType.coding[0].display;
                         }
                         if (angular.isString(entry.vaccineType.text)) {
@@ -133,14 +132,17 @@ angular.module('dreFrontendApp')
                     return 'Undefined';
                 case 'Encounter':
                     if (angular.isArray(entry.type) && entry.type.length > 0) {
-                        if (angular.isObject(entry.type[0].coding) && entry.type[0].coding.length > 0) {
+                        if (angular.isObject(entry.type[0].coding) && entry.type[0].coding.length > 0 && entry.type[0].coding[0].display) {
                             return entry.type[0].coding[0].display;
+                        }
+                        if (angular.isString(entry.type[0].text)) {
+                            return entry.type[0].text
                         }
                     }
                     return 'Undefined';
                 case 'Condition':
                     if (angular.isObject(entry.code)) {
-                        if (angular.isObject(entry.code.coding) && entry.code.coding.length > 0) {
+                        if (angular.isObject(entry.code.coding) && entry.code.coding.length > 0 && entry.code.coding[0].display) {
                             return entry.code.coding[0].display;
                         }
                         if (angular.isString(entry.code.text)) {
@@ -150,24 +152,25 @@ angular.module('dreFrontendApp')
                     return 'Undefined';
                 case 'Procedure':
                     if (angular.isObject(entry.type)) {
-                        if (angular.isArray(entry.type.coding) && entry.type.coding.length > 0) {
+                        if (angular.isArray(entry.type.coding) && entry.type.coding.length > 0 && entry.type.coding[0].display) {
                             return entry.type.coding[0].display;
                         }
                         if (angular.isString(entry.type.text)) {
-                            return entry.code.text
+                            return entry.type.text
                         }
                     }
                     return 'Undefined';
                 case 'AllergyIntolerance':
-                    if(entry.event.length != 0) {
-                        if(angular.isDefined(entry.event[0].manifestation)) {
-                            if(entry.event[0].manifestation.length > 0) {
-                                if(angular.isDefined(entry.event[0].manifestation[0].coding)) {
-                                    if(entry.event[0].manifestation[0].coding.length != 0) {
-                                        if(angular.isDefined(entry.event[0].manifestation[0].coding[0].display)) {
-                                            return entry.event[0].manifestation[0].coding[0].display;
-                                        }
+                    if (entry.event.length != 0) {
+                        if (angular.isDefined(entry.event[0].manifestation)) {
+                            if (entry.event[0].manifestation.length > 0) {
+                                if (angular.isDefined(entry.event[0].manifestation[0].coding)) {
+                                    if (entry.event[0].manifestation[0].coding.length != 0 && entry.event[0].manifestation[0].coding[0].display) {
+                                        return entry.event[0].manifestation[0].coding[0].display;
                                     }
+                                }
+                                if (angular.isString(entry.event[0].manifestation[0].text)) {
+                                    return entry.event[0].manifestation[0].text
                                 }
                             }
                         }

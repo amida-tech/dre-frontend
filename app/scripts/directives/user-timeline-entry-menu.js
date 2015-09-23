@@ -7,7 +7,7 @@
  * # mainMenu
  */
 angular.module('dreFrontendApp')
-    .directive('userTimelineEntryMenu', function ($state, dreFrontendAuthService, $rootScope, dreFrontendGlobals) {
+    .directive('userTimelineEntryMenu', function () {
         return {
             templateUrl: 'views/directives/user-timeline-entry-menu.html',
             restrict: 'AE',

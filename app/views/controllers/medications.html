@@ -39,6 +39,7 @@
                 </div>
             </div>
         </div>
+
         <div ng-repeat="medication in model.medicationsList | filter: (model.showInactive? {} : {isInactive:false})">
             <div class="row"><i class="col-sm-2 h_line"></i></div>
             <div class="row">

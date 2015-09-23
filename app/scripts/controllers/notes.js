@@ -8,11 +8,14 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('NotesCtrl', function ($scope, $stateParams, dreFrontendNotesService, _, dreFrontendGlobals, dreFrontendUtil) {
+    .controller('NotesCtrl', function ($scope, $state, $stateParams, dreFrontendNotesService, _, dreFrontendGlobals, dreFrontendAllergyIntolerances, dreFrontendEntry,
+                                       dreFrontendConditions, dreFrontendEncounters, dreFrontendImmunizations, dreFrontendMedicationPrescriptions, dreFrontendProcedures, dreFrontendObservations) {
         $scope.model = {
             notesList: [],
-            filterByStar: 'all'
+            filterByStar: 'all',
+            dateSort: ''
         };
+
         var initNotes = function () {
             dreFrontendNotesService.getAllNotes().then(function (notesList) {
                 var noteType = _.find(dreFrontendGlobals.resourceTypes, {alias: $stateParams.noteType});
@@ -33,20 +36,98 @@ angular.module('dreFrontendApp')
                     $scope.model.notesList.push({
                         type: entry.section,
                         note: entry,
-                        date: new Date(entry.datetime)
+                        date: new Date(entry.datetime),
+                        showEntry: false,
+                        entryTitle: undefined
                     })
                 });
             });
         };
+
         initNotes();
+
         $scope.toggleFavorite = function (item) {
             item.note.star = !item.note.star;
             dreFrontendNotesService.toggleFavorite(item.note.star, item.note._id).then(function (note) {
                 initNotes();
             });
         };
+
         $scope.toggleFilter = function (value) {
             $scope.model.filterByStar = value;
             initNotes();
         };
+
+        $scope.goToEntry = function (item) {
+            switch (item.type) {
+                case 'MedicationPrescription':
+                    $state.go('record.medications');
+                    break;
+                case 'ObservationTestResult':
+                    $state.go('record.testresults');
+                    break;
+                case 'ObservationVital':
+                    $state.go('record.vitals');
+                    break;
+                case 'Encounter':
+                    $state.go('record.encounters');
+                    break;
+                case 'Condition':
+                    $state.go('record.conditions');
+                    break;
+                case 'Procedure':
+                    $state.go('record.procedures');
+                    break;
+                case 'AllergyIntolerance':
+                    $state.go('record.allergies');
+                    break;
+                case 'Immunization':
+                    $state.go('record.immunizations');
+                    break;
+            }
+        };
+
+        $scope.toggleEntry = function (item) {
+            item.showEntry = !item.showEntry;
+            if (angular.isUndefined(item.entryTitle)) {
+                var service = undefined;
+                switch (item.type) {
+                    case 'MedicationPrescription':
+                        service = dreFrontendMedicationPrescriptions;
+                        break;
+                    case 'ObservationTestResult':
+                        service = dreFrontendObservations;
+                        break;
+                    case 'ObservationVital':
+                        service = dreFrontendObservations;
+                        break;
+                    case 'Encounter':
+                        service = dreFrontendEncounters;
+                        break;
+                    case 'Condition':
+                        service = dreFrontendConditions;
+                        break;
+                    case 'Procedure':
+                        service = dreFrontendProcedures;
+                        break;
+                    case 'AllergyIntolerance':
+                        service = dreFrontendAllergyIntolerances;
+                        break;
+                    case 'Immunization':
+                        service = dreFrontendImmunizations;
+                        break;
+                }
+                service.getById(item.note.entry).then(function (resourceEntry) {
+                    if (resourceEntry) {
+                        if (item.type == 'MedicationPrescription') {
+                            resourceEntry.medication.load().then(function () {
+                                item.entryTitle = dreFrontendEntry.getEntryTitle(resourceEntry);
+                            });
+                        } else {
+                            item.entryTitle = dreFrontendEntry.getEntryTitle(resourceEntry);
+                        }
+                    }
+                })
+            }
+        }
     });

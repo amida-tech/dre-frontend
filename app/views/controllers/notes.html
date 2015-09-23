@@ -17,14 +17,28 @@
         <div>
             <div class="row"><i class="col-sm-2 h_line"></i></div>
             <div class="row">
-                <div class="col-sm-7 col-sm-offset-5">
-                    <button class="btn pull-right" ng-click="toggleFilter('unStarred')" ng-class="{'btn-success':model.filterByStar == 'unStarred', 'btn-default':model.filterByStar != 'unStarred'}">Unstarred only</button>
-                    <button class="btn pull-right" ng-click="toggleFilter('starred')" ng-class="{'btn-success':model.filterByStar == 'starred', 'btn-default':model.filterByStar != 'starred'}">Starred only</button>
-                    <button class="btn pull-right" ng-click="toggleFilter('all')" ng-class="{'btn-success':model.filterByStar == 'all', 'btn-default':model.filterByStar != 'all'}">All</button>
+                <div class="col-sm-6 col-sm-offset-3">
+                    <button class="btn pull-right" ng-click="toggleFilter('unStarred')"
+                            ng-class="{'btn-success':model.filterByStar == 'unStarred', 'btn-default':model.filterByStar != 'unStarred'}">
+                        Unstarred only
+                    </button>
+                    <button class="btn pull-right" ng-click="toggleFilter('starred')"
+                            ng-class="{'btn-success':model.filterByStar == 'starred', 'btn-default':model.filterByStar != 'starred'}">
+                        Starred only
+                    </button>
+                    <button class="btn pull-right" ng-click="toggleFilter('all')"
+                            ng-class="{'btn-success':model.filterByStar == 'all', 'btn-default':model.filterByStar != 'all'}">
+                        All
+                    </button>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-default" ng-click="model.dateSort==''?model.dateSort='-' : model.dateSort=''">Sort by: Date
+                    <i class="fa" ng-class="{'fa-sort-asc':model.dateSort =='','fa-sort-desc':model.dateSort =='-'}"></i>
+                    </button>
                 </div>
             </div>
         </div>
-        <div ng-repeat="item in model.notesList">
+        <div ng-repeat="item in model.notesList | orderBy: model.dateSort+'date'">
             <div class="row"><i class="col-sm-2 h_line"></i></div>
             <div class="row">
                 <div class="col-sm-2">
@@ -35,7 +49,8 @@
                         <div class="row">
                             <div class="col-xs-1">
                                 <button class="btn- btn-link" ng-click="toggleFavorite(item)">
-                                    <i class="fa" ng-class="{'fa-star-o':!item.note.star, 'fa-star':item.note.star}"></i>
+                                    <i class="fa"
+                                       ng-class="{'fa-star-o':!item.note.star, 'fa-star':item.note.star}"></i>
                                 </button>
                             </div>
                             <div class="col-xs-11">
@@ -43,8 +58,20 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-xs-11 col-xs-offset-1">
+                            <div class="col-xs-5 col-xs-offset-1">
                                 <h5 class="text-left">{{item.date | date:'short'}}</h5>
+                            </div>
+                            <div class="col-xs-6">
+                                <button type="button" class="btn btn-link pull-right" ng-click="toggleEntry(item)"><i
+                                    class="fa fa-ellipsis-h"></i>Entry
+                                </button>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="row" ng-if="item.showEntry">
+                            <div class="col-sm-12">
+                                <h4>Entry Details</h4>
+                                <a href="#" ng-click="goToEntry(item)"><strong ng-bind="item.entryTitle"></strong></a>
                             </div>
                         </div>
                     </div>
