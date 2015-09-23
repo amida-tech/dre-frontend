@@ -225,6 +225,42 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
+        .state('notes', {
+            url: '/notes',
+            parent: 'home',
+            data: {
+                name: 'My Notes',
+                isPublic: false
+            },
+            views: {
+                'homeMenu@homeRoot': {
+                    templateUrl: "views/controllers/notes-menu.html",
+                    controller: "NotesMenuCtrl"
+                },
+                'pageBody@homeRoot': {
+                    templateUrl: "views/controllers/notes.html",
+                    controller: "NotesCtrl"
+                }
+            }
+        })
+        .state('notes', {
+            url: '/{noteType}',
+            parent: 'home',
+            data: {
+                name: 'My Notes',
+                isPublic: false
+            },
+            views: {
+                'homeMenu@homeRoot': {
+                    templateUrl: "views/controllers/notes-menu.html",
+                    controller: "NotesMenuCtrl"
+                },
+                'pageBody@homeRoot': {
+                    templateUrl: "views/controllers/notes.html",
+                    controller: "NotesCtrl"
+                }
+            }
+        })
         .state('files', {
             url: '/files',
             parent: 'home',
