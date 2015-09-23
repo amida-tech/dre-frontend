@@ -53,9 +53,6 @@ angular.module('dreFrontendApp')
                         $scope.model.displayClass = 'icon-pill';
                         $scope.model.isInactive = $scope.userTimelineEntryIcon.isInactive;
                         break;
-                    /*case 'inhaler':
-                     $scope.model.actionClass= 'icon-inhaler';
-                     break;*/
                     case 'ObservationTestResult':
                         $scope.model.displayClass = 'fa-flask';
                         break;
@@ -65,10 +62,16 @@ angular.module('dreFrontendApp')
                     case 'ObservationVital':
                         $scope.model.displayClass = 'fa-heart';
                         break;
-                    case 'ObservationImmunization':
+                    case 'Immunization':
                         $scope.model.displayClass = 'fa-shield';
                         break;
-                    case 'ObservationAllergies':
+                    case 'Condition':
+                        $scope.model.displayClass = 'fa-list';
+                        break;
+                    case 'Procedure':
+                        $scope.model.displayClass = 'fa-medkit';
+                        break;
+                    case 'AllergyIntolerance':
                         $scope.model.displayClass = 'fa-exclamation-triangle';
                         break;
                     default:

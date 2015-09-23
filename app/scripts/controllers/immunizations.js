@@ -22,7 +22,7 @@ angular.module('dreFrontendApp')
                 _.forEach(immunizations.entry, function(entry){
                     var immunization = {
                         rawEntry: entry,
-                        type: 'ObservationImmunization',
+                        type: entry.resourceType,
                         additionalInfo: '',
                         title: '',
                         startDate: entry.date != undefined ? entry.date : null,

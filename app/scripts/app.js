@@ -13,6 +13,8 @@ var app = angular
         'ngTouch', 'ngMessages', 'nvd3', 'dreFrontend.mocks', 'angularFileUpload', 'ngTable', 'ngFileSaver']);
 app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryProvider, $locationProvider, datepickerConfig,
                      datepickerPopupConfig, dreFrontendGlobalsProvider, $urlRouterProvider, $stateProvider) {
+    var dreFrontendGlobals = dreFrontendGlobalsProvider.$get();
+
     //Enable/disable browser log console. Disable only for production release
     $logProvider.debugEnabled(dreFrontendEnvironment.enableDebugLog);
     $urlMatcherFactoryProvider.strictMode(false);
@@ -21,7 +23,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
     datepickerConfig.startingDay = 0;
     datepickerConfig.showWeeks = false;
     datepickerConfig.formatYear = 'yyyy';
-    datepickerPopupConfig.datepickerPopup = dreFrontendGlobalsProvider.$get().dateFormat;
+    datepickerPopupConfig.datepickerPopup = dreFrontendGlobals.dateFormat;
     datepickerPopupConfig.closeText = 'Close';
     //routes
     $stateProvider
@@ -90,7 +92,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             }
         })
         .state('record.medications', {
-            url: '/medications',
+            url: '/'+dreFrontendGlobals.resourceTypes.MedicationPrescription.alias,
             parent: 'record',
             data: {
                 name: 'My Medications',
@@ -107,7 +109,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             }
         })
         .state('record.testresults', {
-            url: '/results',
+            url: '/'+dreFrontendGlobals.resourceTypes.ObservationTestResult.alias,
             parent: 'record',
             data: {
                 name: 'My Results',
@@ -124,7 +126,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             }
         })
         .state('record.encounters', {
-            url: '/encounters',
+            url: '/'+dreFrontendGlobals.resourceTypes.Encounter.alias,
             parent: 'record',
             data: {
                 name: 'My Encounters',
@@ -141,7 +143,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             }
         })
         .state('record.conditions', {
-            url: '/conditions',
+            url: '/'+dreFrontendGlobals.resourceTypes.Condition.alias,
             parent: 'record',
             data: {
                 name: 'My Conditions',
@@ -158,7 +160,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             }
         })
         .state('record.procedures', {
-            url: '/procedures',
+            url: '/'+dreFrontendGlobals.resourceTypes.Procedure.alias,
             parent: 'record',
             data: {
                 name: 'My Procedures',
@@ -175,7 +177,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             }
         })
         .state('record.vitals', {
-            url: '/vitals',
+            url: '/'+dreFrontendGlobals.resourceTypes.ObservationVital.alias,
             parent: 'record',
             data: {
                 name: 'My Vitals',
@@ -192,7 +194,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             }
         })
         .state('record.immunizations', {
-            url: '/immunizations',
+            url: '/'+dreFrontendGlobals.resourceTypes.Immunization.alias,
             parent: 'record',
             data: {
                 name: 'My Immunizations',
@@ -209,7 +211,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             }
         })
         .state('record.allergies', {
-            url: '/allergies',
+            url: '/'+dreFrontendGlobals.resourceTypes.AllergyIntolerance.alias,
             parent: 'record',
             data: {
                 name: 'My Allergies',
@@ -226,25 +228,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             }
         })
         .state('notes', {
-            url: '/notes',
-            parent: 'home',
-            data: {
-                name: 'My Notes',
-                isPublic: false
-            },
-            views: {
-                'homeMenu@homeRoot': {
-                    templateUrl: "views/controllers/notes-menu.html",
-                    controller: "NotesMenuCtrl"
-                },
-                'pageBody@homeRoot': {
-                    templateUrl: "views/controllers/notes.html",
-                    controller: "NotesCtrl"
-                }
-            }
-        })
-        .state('notes', {
-            url: '/{noteType}',
+            url: '/notes/{noteType}',
             parent: 'home',
             data: {
                 name: 'My Notes',

@@ -37,7 +37,7 @@ angular.module('dreFrontendApp')
                 };
                 $scope.createNote = function () {
                     $scope.model.error = '';
-                    dreFrontendNotesService.addNewNote($scope.model.noteText, $scope.entryNote.id, $scope.entryNote.resourceType, $scope.model.isFavorite).then(function (note) {
+                    dreFrontendNotesService.addNewNote($scope.model.noteText, $scope.entryNote.rawItem.id, $scope.entryNote.type, $scope.model.isFavorite).then(function (note) {
                         initNoteDetails(note);
                     }).catch(function (error) {
                         $scope.model.error = error;
@@ -73,7 +73,7 @@ angular.module('dreFrontendApp')
                     }
                 };
                 if ($scope.entryNote) {
-                    dreFrontendNotesService.getNoteForEntry($scope.entryNote.id, $scope.entryNote.resourceType).then(function (note) {
+                    dreFrontendNotesService.getNoteForEntry($scope.entryNote.rawItem.id, $scope.entryNote.type).then(function (note) {
                         initNoteDetails(note);
                     });
                 } else {

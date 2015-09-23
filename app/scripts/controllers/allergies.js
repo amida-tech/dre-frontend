@@ -22,7 +22,7 @@ angular.module('dreFrontendApp')
                 _.forEach(allergies.entry, function(entry){
                     var allergy = {
                         rawEntry: entry,
-                        type: 'ObservationAllergies',
+                        type: entry.resourceType,
                         additionalInfo: '',
                         title: '',
                         startDate: entry.lastOccurence != undefined ? entry.lastOccurence : null,

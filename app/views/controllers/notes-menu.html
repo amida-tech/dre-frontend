@@ -1,4 +1,4 @@
 <div class="sidebar-control" >
-  <a ui-sref="notes" ui-sref-active-eq="active" class="btn">All</a>
-  <a ng-repeat="item in model.notesTypes" ui-sref="notes({id:item.noteType})" ui-sref-active="active" class="btn">{{item.title}}</a>
+  <a ui-sref="notes({noteType:undefined})" ui-sref-active-eq="active" class="btn">All</a>
+  <a ng-repeat="item in model.notesTypes" ui-sref="notes({noteType:item.noteType})" ui-sref-active="active" class="btn">{{item.title}} ({{item.itemCount}})</a>
 </div>
