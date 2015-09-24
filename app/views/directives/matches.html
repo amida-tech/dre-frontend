@@ -1,5 +1,31 @@
-<div ng-repeat="matchObj in model.matches">
-    <div ng-repeat="match_entry in matchObj.matchArray">
-        <div resource-diff="match_entry"></div>
+<div class="panel panel-body" ng-show="model.matches[0]">
+    <div class="row">
+        <div class="col-sm-6 text-center">
+            <h4>Current record</h4>
+        </div>
+        <div class="col-sm-6 text-center">
+            <h4>Updated record</h4>
+        </div>
+        <div ng-repeat="matchObj in model.matches">
+            <div ng-repeat="match_entry in matchObj.matchArray">
+                <div resource-diff="match_entry"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="col-sm-8 col-sm-offset-2">
+                <button class="btn btn-default btn-block" ng-click="undoAllButton()">
+                    <i class="fa fa-undo"></i>&nbsp;Undo All
+                </button>
+                <button class="btn btn-warning btn-block" ng-click="createNewButton()">Create New</button>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="col-sm-8 col-sm-offset-2">
+                <button class="btn btn-primary btn-block" ng-click="submitButton()">Save Updates</button>
+                <button class="btn btn-default btn-block" ng-click="ignoreButton()">Ignore Updates</button>
+            </div>
+        </div>
     </div>
 </div>

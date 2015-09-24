@@ -21,6 +21,23 @@ angular.module('dreFrontendApp')
                 }, true);
             },
             controller: function ($scope) {
+
+                $scope.undoAllButton = function() {
+                    $log.debug("undoAllButton() is not implemented");
+                };
+
+                $scope.createNewButton = function() {
+                    $log.debug("createNewButton() is not implemented");
+                };
+
+                $scope.submitButton = function() {
+                    $log.debug("submitButton() is not implemented");
+                };
+
+                $scope.ignoreButton = function() {
+                    $log.debug("ignoreButton() is not implemented");
+                };
+
                 this.format_matches = function(src_matches) {
                     var matches=[];
 
