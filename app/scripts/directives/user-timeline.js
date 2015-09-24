@@ -27,6 +27,7 @@ angular.module('dreFrontendApp')
                         $scope.showMedicationInfo(item);
                     }
                     if (item.menuType == dreFrontendGlobals.menuRecordTypeEnum.inline) {
+                        console.log('event', item);
                         item.isDetailsOpen = !item.isDetailsOpen;
                     }
                 });

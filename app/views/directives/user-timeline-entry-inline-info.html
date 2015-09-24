@@ -5,13 +5,13 @@
         <button type="button" class="btn btn-link pull-right" ng-click="setTab('details')"><i class="fa fa-ellipsis-h"></i>Details</button>
         <div class="clearfix"></div>
     </div>
-    <div ng-if="userTimelineEntryMenu.isDetailsOpen && model.currentTab == 'details'">
-        <div entry-details="userTimelineEntryMenu.rawEntry"></div>
+    <div ng-if="userTimelineEntryInlineInfo.isDetailsOpen && model.currentTab == 'details'">
+        <div entry-details="userTimelineEntryInlineInfo.rawEntry"></div>
     </div>
-    <div ng-if="userTimelineEntryMenu.isDetailsOpen && model.currentTab == 'notes'">
-        <div entry-note="userTimelineEntryMenu"></div>
+    <div ng-if="userTimelineEntryInlineInfo.isDetailsOpen && model.currentTab == 'notes'">
+        <div entry-note="userTimelineEntryInlineInfo"></div>
     </div>
-    <div ng-if="userTimelineEntryMenu.isDetailsOpen && model.currentTab == 'sources'">
-        <div entry-source="userTimelineEntryMenu.rawEntry"></div>
+    <div ng-if="userTimelineEntryInlineInfo.isDetailsOpen && model.currentTab == 'sources'">
+        <div entry-source="userTimelineEntryInlineInfo.rawEntry"></div>
     </div>
 </div>

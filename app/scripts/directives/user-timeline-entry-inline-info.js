@@ -20,7 +20,7 @@ angular.module('dreFrontendApp')
                 };
                 $scope.setTab = function(tabId){
                     $scope.model.currentTab = tabId;
-                    $scope.userTimelineEntryInlineInfo.isDetailsOpen = true;
+                    $scope.userTimelineEntryInlineInfo.isDetailsOpen = !$scope.userTimelineEntryInlineInfo.isDetailsOpen;
                 }
             }
         };
