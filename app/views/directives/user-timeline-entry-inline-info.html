@@ -1,7 +1,7 @@
 <div>
     <div>
-        <button type="button" class="btn btn-link pull-right" ng-click="setTab('sources')"><i class="fa fa-clock-o"></i>Sources</button>
-        <button type="button" class="btn btn-link pull-right" ng-click="setTab('notes')"><i class="fa fa-comment"></i>Notes</button>
+        <button type="button" class="btn btn-link pull-right" ng-click="setTab('sources')"><i class="fa fa-clock-o"></i>Source</button>
+        <button type="button" class="btn btn-link pull-right" ng-click="setTab('notes')"><i class="fa fa-comment"></i>Note</button>
         <button type="button" class="btn btn-link pull-right" ng-click="setTab('details')"><i class="fa fa-ellipsis-h"></i>Details</button>
         <div class="clearfix"></div>
     </div>
@@ -12,6 +12,6 @@
         <div entry-note="userTimelineEntryMenu"></div>
     </div>
     <div ng-if="userTimelineEntryMenu.isDetailsOpen && model.currentTab == 'sources'">
-        <div entry-sources="userTimelineEntryMenu.rawEntry">Sources will be here</div>
+        <div entry-source="userTimelineEntryMenu.rawEntry"></div>
     </div>
 </div>

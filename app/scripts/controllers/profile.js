@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-  .controller('ProfileCtrl', function ($scope, _, dreFrontEndPatientInfo, dreFrontendGlobals, fhirEnv, dreFrontendFhirService, $location, $anchorScroll) {
+  .controller('ProfileCtrl', function ($scope, _, dreFrontEndPatientInfoService, dreFrontendGlobals, fhirEnv, dreFrontendFhirService, $location, $anchorScroll) {
 
         $scope.init = function() {
             $scope.model = {
@@ -43,7 +43,7 @@ angular.module('dreFrontendApp')
 
         $scope.initPatientModel = function(force) {
             $scope.init();
-            dreFrontEndPatientInfo.getPatientData(force).then(function (patient) {
+            dreFrontEndPatientInfoService.getPatientData(force).then(function (patient) {
                 var model = $scope.model;
                 model.patient = patient;
                 if(patient.name != undefined && patient.name.length != 0) {
@@ -94,7 +94,7 @@ angular.module('dreFrontendApp')
         };
         $scope.initPatientModel(true);
 
-        dreFrontEndPatientInfo.getPatientId().then(function (patientId) {
+        dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
             $scope.model.patientId = patientId;
         });
 

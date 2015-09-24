@@ -8,24 +8,24 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('ImmunizationsCtrl', function ($scope, dreFrontendEntry, dreFrontendImmunizations, dreFrontEndPatientInfo, _, dreFrontendGlobals) {
+    .controller('ImmunizationsCtrl', function ($scope, dreFrontendEntryService, dreFrontendImmunizations, dreFrontEndPatientInfoService, _, dreFrontendGlobals) {
         $scope.model = {
             lastUpdate: new Date(),
             userName: '',
             immunizations: []
         };
-        dreFrontEndPatientInfo.getPatientData().then(function (patient) {
+        dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
         });
-        dreFrontEndPatientInfo.getPatientId().then(function (patientId) {
+        dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
             dreFrontendImmunizations.getByPatientId(patientId).then(function(immunizations) {
                 _.forEach(immunizations.entry, function(entry){
                     var immunization = {
                         rawEntry: entry,
                         type: entry.resourceType,
                         additionalInfo: '',
-                        title: dreFrontendEntry.getEntryTitle(entry),
-                        dates: dreFrontendEntry.getEntryDates(entry),
+                        title: dreFrontendEntryService.getEntryTitle(entry),
+                        dates: dreFrontendEntryService.getEntryDates(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
                     };
                     $scope.model.immunizations.push(immunization);

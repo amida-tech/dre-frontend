@@ -7,12 +7,12 @@
  * # mainMenu
  */
 angular.module('dreFrontendApp')
-    .directive('userTimelineEntryMenu', function () {
+    .directive('userTimelineEntryInlineInfo', function () {
         return {
-            templateUrl: 'views/directives/user-timeline-entry-menu.html',
+            templateUrl: 'views/directives/user-timeline-entry-inline-info.html',
             restrict: 'AE',
             scope: {
-                userTimelineEntryMenu: '='
+                userTimelineEntryInlineInfo: '='
             },
             controller: function ($scope) {
                 $scope.model = {
@@ -20,7 +20,7 @@ angular.module('dreFrontendApp')
                 };
                 $scope.setTab = function(tabId){
                     $scope.model.currentTab = tabId;
-                    $scope.userTimelineEntryMenu.isDetailsOpen = true;
+                    $scope.userTimelineEntryInlineInfo.isDetailsOpen = true;
                 }
             }
         };

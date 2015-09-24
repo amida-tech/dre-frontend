@@ -14,7 +14,7 @@ angular.module('dreFrontendApp')
             scope: {
                 entryDetails: '='
             },
-            controller: function ($scope, dreFrontendEntry) {
+            controller: function ($scope, dreFrontendEntryService) {
                 $scope.model = {
                     data: [],
                     wasLoaded: false,
@@ -24,11 +24,11 @@ angular.module('dreFrontendApp')
                 if (!$scope.model.wasLoaded && $scope.entryDetails) {
                     if ($scope.entryDetails.loadAll) {
                         $scope.entryDetails.loadAll().then(function () {
-                            $scope.model.data = dreFrontendEntry.buildTable($scope.entryDetails, $scope.model.blackList);
+                            $scope.model.data = dreFrontendEntryService.buildTable($scope.entryDetails, $scope.model.blackList);
                             $scope.model.wasLoaded = true;
                         });
                     } else {
-                        $scope.model.data = dreFrontendEntry.buildTable($scope.entryDetails, $scope.model.blackList);
+                        $scope.model.data = dreFrontendEntryService.buildTable($scope.entryDetails, $scope.model.blackList);
                         $scope.model.wasLoaded = true;
                     }
                 }

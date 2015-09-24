@@ -8,24 +8,24 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('AllergiesCtrl', function ($scope, dreFrontendEntry, dreFrontendAllergyIntolerances, dreFrontEndPatientInfo, _, dreFrontendGlobals) {
+    .controller('AllergiesCtrl', function ($scope, dreFrontendEntryService, dreFrontendAllergyIntolerances, dreFrontEndPatientInfoService, _, dreFrontendGlobals) {
         $scope.model = {
             lastUpdate: new Date(),
             userName: '',
             allergies: []
         };
-        dreFrontEndPatientInfo.getPatientData().then(function (patient) {
+        dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
         });
-        dreFrontEndPatientInfo.getPatientId().then(function (patientId) {
+        dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
             dreFrontendAllergyIntolerances.getByPatientId(patientId).then(function (allergies) {
                 _.forEach(allergies.entry, function (entry) {
                     var allergy = {
                         rawEntry: entry,
                         type: entry.resourceType,
                         additionalInfo: '',
-                        title: dreFrontendEntry.getEntryTitle(entry),
-                        dates: dreFrontendEntry.getEntryDates(entry),
+                        title: dreFrontendEntryService.getEntryTitle(entry),
+                        dates: dreFrontendEntryService.getEntryDates(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
                     };
                     if (angular.isDefined(entry.event)) {

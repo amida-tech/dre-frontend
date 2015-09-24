@@ -8,25 +8,25 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('EncountersCtrl', function ($scope, dreFrontendEntry, dreFrontendEncounters, _, dreFrontEndPatientInfo, dreFrontendUtil, dreFrontendGlobals) {
+    .controller('EncountersCtrl', function ($scope, dreFrontendEntryService, dreFrontendEncounters, _, dreFrontEndPatientInfoService, dreFrontendUtil, dreFrontendGlobals) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
             encountersList: []
         };
-        dreFrontEndPatientInfo.getPatientData().then(function (patient) {
+        dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
         });
-        dreFrontEndPatientInfo.getPatientId().then(function (patientId) {
+        dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
             dreFrontendEncounters.getByPatientId(patientId).then(function (results) {
                 $scope.model.encountersList = [];
                 _.forEach(results.entry, function (entry) {
                     $scope.model.encountersList.push({
                         rawEntry: entry,
                         type: entry.resourceType,
-                        title: dreFrontendEntry.getEntryTitle(entry),
+                        title: dreFrontendEntryService.getEntryTitle(entry),
                         additionalInfo: (angular.isArray(entry.location) && entry.location.length > 0 && entry.location[0].location) ? entry.location[0].location.name : undefined,
-                        dates: dreFrontendEntry.getEntryDates(entry),
+                        dates: dreFrontendEntryService.getEntryDates(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
                     })
                 });

@@ -8,13 +8,13 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('MatchesCtrl', function ($http, $scope, dreFrontEndPatientInfo, $log) {
+    .controller('MatchesCtrl', function ($http, $scope, dreFrontEndPatientInfoService, $log) {
         $scope.model = {
             userName: '-',
             matches: []
         };
 
-        dreFrontEndPatientInfo.getPatientData().then(function (patient) {
+        dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
 
             $http({

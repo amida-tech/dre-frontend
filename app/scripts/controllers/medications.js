@@ -8,28 +8,44 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('MedicationsCtrl', function ($scope, dreFrontendEntry, dreFrontendMedications, _, dreFrontEndPatientInfo, dreFrontendUtil, dreFrontendGlobals) {
+    .controller('MedicationsCtrl', function ($scope, dreFrontendEntryService, dreFrontendMedications, _, dreFrontEndPatientInfoService, dreFrontendUtil, dreFrontendGlobals) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
             showInactive: false,
-            medicationsList: []
+            medicationsList: [],
+            filteredMedicationList: []
         };
-        dreFrontEndPatientInfo.getPatientData().then(function (patient) {
+
+        dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
         });
-        dreFrontEndPatientInfo.getPatientId().then(function (patientId) {
+
+        dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
             dreFrontendMedications.getByPatientId(patientId).then(function (medications) {
                 $scope.model.medicationsList = [];
                 _.forEach(medications.entry, function (entry) {
                     $scope.model.medicationsList.push({
                         rawEntry: entry,
                         type: entry.resourceType,
-                        title: dreFrontendEntry.getEntryTitle(entry),
-                        dates: dreFrontendEntry.getEntryDates(entry),
+                        title: dreFrontendEntryService.getEntryTitle(entry),
+                        dates: dreFrontendEntryService.getEntryDates(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.popup
                     })
                 });
+                $scope.filterMedications();
+                if($scope.model.filteredMedicationList.length == 0){
+                    $scope.model.showInactive = true;
+                    $scope.filterMedications();
+                }
             });
         });
+
+        $scope.filterMedications = function () {
+            $scope.model.filteredMedicationList = $scope.model.showInactive
+                ? $scope.model.medicationsList
+                : _.filter($scope.model.medicationsList, function (item) {
+                        return item.dates.isInactive == false;
+                    });
+        }
     });

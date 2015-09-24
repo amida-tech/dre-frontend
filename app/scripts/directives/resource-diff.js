@@ -14,7 +14,7 @@ angular.module('dreFrontendApp')
             scope: {
                 resourceDiff: "="
             },
-            controller: function ($scope, dreFrontendHttp, $log, $http, _, dreFrontendUtil, dreFrontendEntry) {
+            controller: function ($scope, dreFrontendHttp, $log, $http, _, dreFrontendUtil, dreFrontendEntryService) {
                 $scope.model = {};
 
                 function _build_differences(diff) {
@@ -33,8 +33,8 @@ angular.module('dreFrontendApp')
                                 differences.push({
                                     apply: true,
                                     kind: rec.kind,
-                                    lhs: dreFrontendEntry.buildTable(l, []),
-                                    rhs: dreFrontendEntry.buildTable(r, [])
+                                    lhs: dreFrontendEntryService.buildTable(l, []),
+                                    rhs: dreFrontendEntryService.buildTable(r, [])
                                 });
                             } else {
                                 $log.debug("no path", rec);

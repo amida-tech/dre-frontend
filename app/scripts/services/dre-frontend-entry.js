@@ -8,7 +8,7 @@
  * Service in the dreFrontendApp.
  */
 angular.module('dreFrontendApp')
-    .factory('dreFrontendEntry', function (_, dreFrontendUtil, $log) {
+    .factory('dreFrontendEntryService', function (_, dreFrontendUtil, $log) {
 
         var isValidName = function (name, black_list) {
             return name[0] != '$' && !_.contains(black_list, name);
@@ -180,7 +180,7 @@ angular.module('dreFrontendApp')
                 default:
                     return 'Undefined';
             }
-        }
+        };
         var _getEntryDates = function (entry) {
             var dates = {};
             switch (entry.resourceType) {
@@ -234,8 +234,6 @@ angular.module('dreFrontendApp')
                         startDate: entry.lastOccurence != undefined ? entry.lastOccurence : null
                     };
                     break;
-                default:
-                    return {};
             }
             return dates;
 

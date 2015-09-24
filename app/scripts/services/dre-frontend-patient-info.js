@@ -8,7 +8,7 @@
  * Service in the dreFrontendApp.
  */
 angular.module('dreFrontendApp')
-    .service('dreFrontEndPatientInfo', function ($rootScope, $q, dreFrontendPatient) {
+    .service('dreFrontEndPatientInfoService', function ($rootScope, $q, dreFrontendPatient) {
         var patientData = null;
         var patientDataRequest = null;
         var patientId = null;

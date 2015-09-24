@@ -51,7 +51,7 @@ angular.module('dreFrontendApp')
                         break;
                     case 'MedicationPrescription':
                         $scope.model.displayClass = 'icon-pill';
-                        $scope.model.dates.isInactive = $scope.userTimelineEntryIcon.dates.isInactive;
+                        $scope.model.isInactive = $scope.userTimelineEntryIcon.dates.isInactive;
                         break;
                     case 'ObservationTestResult':
                         $scope.model.displayClass = 'fa-flask';
@@ -78,7 +78,7 @@ angular.module('dreFrontendApp')
                         $scope.model.displayClass = '';
                 }
                 $scope.toggleDetails = function () {
-                    $scope.userTimelineEntryIcon.isDetailsOpen = !($scope.userTimelineEntryIcon.isDetailsOpen || false);
+                    $scope.$emit('toggleMenu', $scope.userTimelineEntryIcon);
                 }
             }
         };

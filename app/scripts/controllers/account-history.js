@@ -8,14 +8,14 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-  .controller('AccountHistoryCtrl', function ($scope, dreFrontendAccountHistoryService, _, dreFrontEndPatientInfo, dreFrontendGlobals) {
+  .controller('AccountHistoryCtrl', function ($scope, dreFrontendAccountHistoryService, _, dreFrontEndPatientInfoService, dreFrontendGlobals) {
     $scope.model = {
       userName: '-',
       lastLogin: '',
       lastUpdate: '',
       actionsList: []
     };
-    dreFrontEndPatientInfo.getPatientData().then(function (patient) {
+    dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
       $scope.model.userName = patient.getName()[0];
     });
     dreFrontendAccountHistoryService.getLastMasterActions().then(function (response) {

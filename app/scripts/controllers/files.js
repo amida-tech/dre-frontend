@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('FilesCtrl', function ($scope, $filter, $q, $state, NgTableParams, dreFrontendDocumentReference, dreFrontendAuthService, dreFrontEndPatientInfo, FileSaver, $log) {
+    .controller('FilesCtrl', function ($scope, $filter, $q, $state, NgTableParams, dreFrontendDocumentReference, dreFrontendAuthService, dreFrontEndPatientInfoService, FileSaver, $log) {
         var files = [];
         var page_size = 50;
 
@@ -78,7 +78,7 @@ angular.module('dreFrontendApp')
             });
         }
 
-        dreFrontEndPatientInfo.getPatientId().then(function (patientId) {
+        dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
             dreFrontendDocumentReference.getByPatientId(patientId, {_count: page_size})
                 .then(function (bundle) {
                     proceedBundle(bundle);

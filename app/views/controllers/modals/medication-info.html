@@ -1,0 +1,49 @@
+<div>
+    <div class="modal-header">
+        <button class="close" ng-click="close()" aria-label="Close" data-dismiss="modal" type="button">
+            <span>×</span>
+        </button>
+        <h4 class="modal-title">Details for {{model.medication.title}}</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="sidebar-nav">
+                    <div class="navbar" role="navigation">
+                        <ul class="nav navbar-nav">
+                            <li>
+                                <button  type="button" class="btn btn-link" ng-click="setTab('details')">
+                                    <i class="fa fa-ellipsis-h"></i>Details
+                                </button>
+                            </li>
+                            <li>
+                                <button  type="button" class="btn btn-link" ng-click="setTab('notes')">
+                                    <i class="fa fa-comment"></i>Note
+                                </button>
+                            </li>
+                            <li>
+                                <button  type="button" class="btn btn-link" ng-click="setTab('sources')">
+                                    <i class="fa fa-clock-o"></i>Source
+                                </button>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-9">
+                <div ng-if="model.currentTab == 'details'">
+                    <div entry-details="model.medication.rawEntry"></div>
+                </div>
+                <div ng-if="model.currentTab == 'notes'">
+                    <div entry-note="model.medication"></div>
+                </div>
+                <div ng-if="model.currentTab == 'sources'">
+                    <div entry-source="model.medication.rawEntry"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="close()">Close</button>
+    </div>
+</div>

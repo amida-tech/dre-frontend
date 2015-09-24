@@ -7,7 +7,7 @@
  * # mainMenu
  */
 angular.module('dreFrontendApp')
-    .directive('mainMenu', function ($state, dreFrontendAuthService, $rootScope, dreFrontendGlobals, dreFrontEndPatientInfo) {
+    .directive('mainMenu', function ($state, dreFrontendAuthService, $rootScope, dreFrontendGlobals, dreFrontEndPatientInfoService) {
         return {
             templateUrl: 'views/directives/main-menu.html',
             restrict: 'AE',
@@ -28,7 +28,7 @@ angular.module('dreFrontendApp')
                     dreFrontendAuthService.isAuthenticated().then(function (isAuthenticated) {
                         $scope.model.isAuthenticated = isAuthenticated;
                         if (isAuthenticated) {
-                            dreFrontEndPatientInfo.getPatientData().then(function (patient) {
+                            dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
                                 $scope.model.userName = patient.getName()[0];
                                 if (!angular.isString($scope.model.userName) || $scope.model.userName.length == 0) {
                                     $scope.model.userName = patient.id;

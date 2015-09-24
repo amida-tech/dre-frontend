@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('NotesCtrl', function ($scope, $state, $stateParams, dreFrontendNotesService, _, dreFrontendGlobals, dreFrontendAllergyIntolerances, dreFrontendEntry,
+    .controller('NotesCtrl', function ($scope, $state, $stateParams, dreFrontendNotesService, _, dreFrontendGlobals, dreFrontendAllergyIntolerances, dreFrontendEntryService,
                                        dreFrontendConditions, dreFrontendEncounters, dreFrontendImmunizations, dreFrontendMedicationPrescriptions, dreFrontendProcedures, dreFrontendObservations) {
         $scope.model = {
             notesList: [],
@@ -44,8 +44,6 @@ angular.module('dreFrontendApp')
                 });
             });
         };
-
-        initNotes();
 
         $scope.toggleFavorite = function (item) {
             item.note.star = !item.note.star;
@@ -121,17 +119,31 @@ angular.module('dreFrontendApp')
                     if (resourceEntry) {
                         if (item.type == 'MedicationPrescription') {
                             resourceEntry.medication.load().then(function () {
-                                item.entryTitle = dreFrontendEntry.getEntryTitle(resourceEntry);
-                                item.dates = dreFrontendEntry.getEntryDates(resourceEntry);
+                                item.entryTitle = dreFrontendEntryService.getEntryTitle(resourceEntry);
+                                item.dates = dreFrontendEntryService.getEntryDates(resourceEntry);
                                 item.showEntry = !item.showEntry;
                             });
                         } else {
-                            item.entryTitle = dreFrontendEntry.getEntryTitle(resourceEntry);
-                            item.dates = dreFrontendEntry.getEntryDates(resourceEntry);
+                            item.entryTitle = dreFrontendEntryService.getEntryTitle(resourceEntry);
+                            item.dates = dreFrontendEntryService.getEntryDates(resourceEntry);
                             item.showEntry = !item.showEntry;
                         }
                     }
                 })
+            }else{
+                item.showEntry = !item.showEntry;
             }
-        }
+        };
+
+        initNotes();
+
+        var toggleMenuCleanEvent = $scope.$on('toggleMenu', function(event, item){
+            $scope.toggleEntry(item);
+        });
+
+        $scope.$on('$destroy', function () {
+            toggleMenuCleanEvent();
+        });
+
+
     });

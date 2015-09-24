@@ -7,7 +7,7 @@
  * # mainMenu
  */
 angular.module('dreFrontendApp')
-    .directive('userMeasurements', function ($state, dreFrontendObservations, $filter, _, dreFrontEndPatientInfo) {
+    .directive('userMeasurements', function ($state, dreFrontendObservations, $filter, _, dreFrontEndPatientInfoService) {
         return {
             templateUrl: 'views/directives/user-measurements.html',
             restrict: 'AE',
@@ -63,7 +63,7 @@ angular.module('dreFrontendApp')
                         }
                     ]
                 };
-                dreFrontEndPatientInfo.getPatientId().then(function (patientId) {
+                dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
                     //init base values
                     dreFrontendObservations.getLastHeight(patientId).then(function (lastHeight) {
                         if (lastHeight && lastHeight.entry && lastHeight.entry.length > 0 && lastHeight.entry[0].valueQuantity) {
