@@ -38,12 +38,11 @@
         </div>
     </div>
     <div class="col-sm-9">
-
-        <div class="row" ng-repeat="binary in sources">
-            <button class="btn btn-dark">
+            <ul class="nav panel-default panel" ng-show="sources[0]">
+            <li class="" ng-repeat="binary in sources">
                 <fhir-binary-link doc-ref="binary"/>
-            </button>
-        </div>
+            </li>
+            </ul>
     </div>
     <div class="col-sm-9">
         <pre class="bg-{{res_type}}" style="white-space: pre-wrap;" ng-show="response">{{response | json }}</pre>
