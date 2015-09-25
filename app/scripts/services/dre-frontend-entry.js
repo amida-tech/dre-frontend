@@ -66,7 +66,7 @@ angular.module('dreFrontendApp')
                                 itemsArray.push(item);
                                 type = 'array';
                             } else {
-                                rowItemData = _buildTable(item);
+                                rowItemData = _buildTable(item, blackList);
                                 if (rowItemData.length > 0) {
                                     itemsArray.push(rowItemData);
                                 }
@@ -83,7 +83,7 @@ angular.module('dreFrontendApp')
                     }
                     //if nested object
                     if (angular.isObject(dataItem[propertyName])) {
-                        var rowObjectData = _buildTable(dataItem[propertyName]);
+                        var rowObjectData = _buildTable(dataItem[propertyName], blackList);
                         if (angular.isArray(rowObjectData) && rowObjectData.length > 0) {
                             dataItems.push({
                                 label: prepareName(propertyName),
@@ -181,6 +181,7 @@ angular.module('dreFrontendApp')
                     return 'Undefined';
             }
         };
+
         var _getEntryDates = function (entry) {
             var dates = {};
             switch (entry.resourceType) {
@@ -238,6 +239,7 @@ angular.module('dreFrontendApp')
             return dates;
 
         };
+
         var self = {
             buildTable: _buildTable,
             getEntryTitle: _getEntryTitle,

@@ -22,14 +22,21 @@ angular.module('dreFrontendApp')
                 };
 
                 if (!$scope.model.wasLoaded && $scope.entryDetails) {
-                    if ($scope.entryDetails.loadAll) {
-                        $scope.entryDetails.loadAll().then(function () {
+                    if(angular.isArray($scope.entryDetails.entryDetails)){
+                        $scope.model.data = $scope.entryDetails.entryDetails;
+                        $scope.model.wasLoaded = true;
+                    }else{
+                        if ($scope.entryDetails.loadAll) {
+                            $scope.entryDetails.loadAll().then(function () {
+                                $scope.model.data = dreFrontendEntryService.buildTable($scope.entryDetails, $scope.model.blackList);
+                                $scope.model.wasLoaded = true;
+                                $scope.entryDetails.entryDetails = $scope.model.data;
+                            });
+                        } else {
                             $scope.model.data = dreFrontendEntryService.buildTable($scope.entryDetails, $scope.model.blackList);
                             $scope.model.wasLoaded = true;
-                        });
-                    } else {
-                        $scope.model.data = dreFrontendEntryService.buildTable($scope.entryDetails, $scope.model.blackList);
-                        $scope.model.wasLoaded = true;
+                            $scope.entryDetails.entryDetails = $scope.model.data;
+                        }
                     }
                 }
             }

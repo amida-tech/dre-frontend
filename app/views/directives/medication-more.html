@@ -1,0 +1,14 @@
+<div>
+    <h4>More information</h4>
+
+    <div ng-show="model.wasLoaded && model.links.length > 0">
+        <span>Click on the following link(s) from MedlinePlus Connect to learn more about this medication. </span><br/>
+        <div ng-repeat="link in model.links">
+            <a ng-href="{{link.href}}" target="_blank">{{link.href}}
+            </a>
+        </div>
+    </div>
+    <div ng-show="model.wasLoaded && model.links.length == 0">
+        <span>No MedlinePlus links found</span>
+    </div>
+</div>

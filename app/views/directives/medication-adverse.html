@@ -1,0 +1,20 @@
+<div>
+    <h4>Adverse events</h4>
+
+    <div ng-show="model.wasLoaded && model.events.length > 0">
+        <span>The following adverse events were reported to the FDA for this medication (Source: OpenFDA Adverse Events database)</span><br/>
+        <table class="table">
+            <tr>
+                <td>Term</td>
+                <td>Number reported (out of {{model.total}})</td>
+            </tr>
+            <tr ng-repeat="event in model.events">
+                <td>{{event.term}}</td>
+                <td>{{event.percentage }} %</td>
+            </tr>
+        </table>
+    </div>
+    <div ng-show="model.wasLoaded && model.events.length == 0">
+        <span>No information found in the OpenFDA database.</span>
+    </div>
+</div>

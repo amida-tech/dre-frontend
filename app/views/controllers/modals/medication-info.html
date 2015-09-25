@@ -26,6 +26,21 @@
                                     <i class="fa fa-clock-o"></i>Source
                                 </button>
                             </li>
+                            <li>
+                                <button  type="button" class="btn btn-link" ng-click="setTab('images')">
+                                    <i class="fa fa-picture-o"></i>Images
+                                </button>
+                            </li>
+                            <li>
+                                <button  type="button" class="btn btn-link" ng-click="setTab('adverse')">
+                                    <i class="fa fa-exclamation-triangle"></i>Adverse Events
+                                </button>
+                            </li>
+                            <li>
+                                <button  type="button" class="btn btn-link" ng-click="setTab('moreInfo')">
+                                    <i class="fa fa-question-circle"></i>Learn More
+                                </button>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -39,6 +54,15 @@
                 </div>
                 <div ng-if="model.currentTab == 'sources'">
                     <div entry-source="model.medication.rawEntry"></div>
+                </div>
+                <div ng-if="model.currentTab == 'images'">
+                    <div medication-image="model.medication.rawEntry"></div>
+                </div>
+                <div ng-if="model.currentTab == 'adverse'">
+                    <div medication-adverse="model.medication.rawEntry"></div>
+                </div>
+                <div ng-if="model.currentTab == 'moreInfo'">
+                    <div medication-more="model.medication.rawEntry"></div>
                 </div>
             </div>
         </div>
