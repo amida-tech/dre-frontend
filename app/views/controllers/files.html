@@ -20,8 +20,7 @@
                             <a ng-show="row.contentType === 'text/xml'"><i class="fa fa-file-code-o"></i></a>
                             <a ng-show="row.contentType === 'text/plain'"><i class="fa fa-file-text-o"></i></a>
                         </td>
-                        <td data-title="'Name'" sortable="'title'"><a ng-show="row.url" ng-click="getItemContent(row)">{{row.title}}</a>
-                        </td>
+                        <td data-title="'Name'" sortable="'title'"><fhir-binary-link doc-ref="row"/></td>
                         <td data-title="'Format'" sortable="'contentType'">{{row.contentType}}</td>
                         <td data-title="'Type'">{{row.display}}</td>
                         <td data-title="'Modified'" sortable="'indexed'">{{row.indexed | date:'short'}}</td>

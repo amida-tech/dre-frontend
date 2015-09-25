@@ -58,6 +58,12 @@ angular.module("dreFrontend.util")
             },
             isFhirResource: function(resourceType) {
                 return fhirEnv.resourceTypes.hasOwnProperty(resourceType);
+            },
+            parseResourceReference: function(reference) {
+                var expr = /([\w\d]+?\/){2}(_history)?\/.+?$/;
+                var query = expr.exec(reference);
+
+                return  query[0].split('/');
             }
         };
     });

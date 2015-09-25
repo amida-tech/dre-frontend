@@ -1,5 +1,6 @@
 <div class="">
     <div class="col-sm-3">
+        <button class="btn btn-block btn-primary" ng-click="getSources('Patient', 'test')">getSources</button>
         <button class="btn btn-block btn-primary" ng-click="getPatient('test')">getPatient(test)</button>
         <button class="btn btn-block btn-primary" ng-click="Medications('test')">patient's Medications</button>
         <button class="btn btn-block btn-primary" ng-click="getWeightHistory(3768)">getWeightHistory(3768)</button>
@@ -34,6 +35,14 @@
     <div class="col-sm-9">
         <div class="panel-default panel">
             <div upload-form upload-success="uploadSuccess"></div>
+        </div>
+    </div>
+    <div class="col-sm-9">
+
+        <div class="row" ng-repeat="binary in sources">
+            <button class="btn btn-dark">
+                <fhir-binary-link doc-ref="binary"/>
+            </button>
         </div>
     </div>
     <div class="col-sm-9">

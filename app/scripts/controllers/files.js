@@ -11,6 +11,7 @@ angular.module('dreFrontendApp')
     .controller('FilesCtrl', function ($scope, $filter, $q, $state, NgTableParams, dreFrontendDocumentReference, dreFrontendAuthService, dreFrontEndPatientInfoService, FileSaver, $log) {
         var files = [];
         var page_size = 50;
+        $scope.model = {};
 
         function openSaveAsDialog(filename, content, mediaType) {
             var save_data = {
@@ -21,10 +22,8 @@ angular.module('dreFrontendApp')
             FileSaver.saveAs(save_data);
         }
 
-        $scope.model = {};
 
         $scope.getItemContent = function (item) {
-            $log.debug(this);
             if (!item.binary) {
                 item.getBody()
                     .then(function (binary) {
@@ -58,45 +57,15 @@ angular.module('dreFrontendApp')
             }
         }
 
-        function proceedBundle(bundle) {
-            angular.forEach(bundle.entry, function (e) {
-                var data = {
-                    indexed: e.indexed,
-                    display: "User uploaded record",
-                    getBody: e.getContent
-                };
-
-                if (e.type && e.type.coding[0]) {
-                    angular.extend(data, e.type.coding[0]);
-                }
-
-                if (e.content[0]) {
-                    angular.extend(data, e.content[0]);
-                }
-
-                files.push(data);
+        dreFrontEndPatientInfoService.getPatientId()
+            .then(function (patientId) {
+                return dreFrontendDocumentReference.getByPatientId(patientId, {_count: page_size});
+            })
+            .then(function (bundle) {
+                return dreFrontendDocumentReference.getFileList(bundle);
+            })
+            .then(function (list) {
+                files = list;
+                showTable();
             });
-        }
-
-        dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
-            dreFrontendDocumentReference.getByPatientId(patientId, {_count: page_size})
-                .then(function (bundle) {
-                    proceedBundle(bundle);
-
-                    if (bundle.getPage) {
-                        var pages = [];
-                        for (var i = 1; i < bundle.total / page_size; i++) {
-                            pages.push(bundle.getPage(i));
-                        }
-                        $q.all(pages).then(function (bundles) {
-                            angular.forEach(bundles, function (b) {
-                                proceedBundle(b);
-                            });
-                            showTable();
-                        });
-                    } else {
-                        showTable();
-                    }
-                });
-        });
     });

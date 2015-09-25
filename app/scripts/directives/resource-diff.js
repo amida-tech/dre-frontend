@@ -1,9 +1,9 @@
 "use strict";
 /**
  * @ngdoc directive
- * @name dreFrontendApp.directive:diffForm
+ * @name dreFrontendApp.directive:resourceDiff
  * @description
- * # diffForm
+ * # resourceDiff
  */
 
 angular.module('dreFrontendApp')
