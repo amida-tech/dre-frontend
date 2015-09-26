@@ -323,6 +323,7 @@ label {
             color:white;
         }
     }
+    width: 100% !important;
 }
 .btn-ico{
     color:#6AA6FF;
@@ -439,4 +440,23 @@ label {
 .login-alert {
     color: #d9534f;
     margin: 10px;
+}
+
+.records-menu {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.records-toggle {
+    @extend .navbar-toggle;
+    float: left;
+    margin-right: 0;
+    margin-left: 15px;
+    border-color: white;
+    border-width: 1px;
+}
+
+.records-menu-icon {
+    @extend .icon-bar;
+    background-color: white !important;
 }

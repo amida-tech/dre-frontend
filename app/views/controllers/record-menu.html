@@ -1,12 +1,40 @@
-<div class="sidebar-control" >
-  <a ui-sref="record" ui-sref-active-eq="active" class="btn">All</a>
-  <a ui-sref="record.medications" ui-sref-active="active" class="btn">Medications</a>
-  <a ui-sref="record.testresults" ui-sref-active="active" class="btn">Test Results</a>
-  <a ui-sref="record.encounters"  ui-sref-active="active" class="btn">Encounters</a>
-  <a ui-sref="record.vitals" ui-sref-active="active" class="btn">Vital Signs</a>
-  <a ui-sref="record.immunizations" ui-sref-active="active" class="btn">Immunizations</a>
-  <a ui-sref="record.allergies" ui-sref-active="active" class="btn">Allergies</a>
-  <a ui-sref="record.conditions" ui-sref-active="active" class="btn">Conditions</a>
-  <a ui-sref="record.procedures" ui-sref-active="active" class="btn">Procedures</a>
-  <a href="#" ui-sref-active="active" class="btn">Social History</a>
-</div>
+<!--<div class="sidebar-control" >-->
+  <!--<a ui-sref="record" ui-sref-active-eq="active" class="btn">All</a>-->
+  <!--<a ui-sref="record.medications" ui-sref-active="active" class="btn">Medications</a>-->
+  <!--<a ui-sref="record.testresults" ui-sref-active="active" class="btn">Test Results</a>-->
+  <!--<a ui-sref="record.encounters"  ui-sref-active="active" class="btn">Encounters</a>-->
+  <!--<a ui-sref="record.vitals" ui-sref-active="active" class="btn">Vital Signs</a>-->
+  <!--<a ui-sref="record.immunizations" ui-sref-active="active" class="btn">Immunizations</a>-->
+  <!--<a ui-sref="record.allergies" ui-sref-active="active" class="btn">Allergies</a>-->
+  <!--<a ui-sref="record.conditions" ui-sref-active="active" class="btn">Conditions</a>-->
+  <!--<a ui-sref="record.procedures" ui-sref-active="active" class="btn">Procedures</a>-->
+  <!--<a href="#" ui-sref-active="active" class="btn">Social History</a>-->
+<!--</div>-->
+
+<nav class="navbar">
+    <div class="">
+        <div class="navbar-header">
+            <button type="button" class="records-toggle collapsed" data-toggle="collapse" data-target="#recordsnav">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="records-menu-icon"></span>
+                <span class="records-menu-icon"></span>
+                <span class="records-menu-icon"></span>
+            </button>
+            <!--<div class="sidebar-control"><a class="btn">Record types</a></div>-->
+        </div>
+        <div class="navbar-collapse collapse records-menu" id="recordsnav">
+            <div class="sidebar-control nav navbar-left">
+                <a ui-sref="record" ui-sref-active-eq="active" class="btn">All</a>
+                <a ui-sref="record.medications" ui-sref-active="active" class="btn">Medications</a>
+                <a ui-sref="record.testresults" ui-sref-active="active" class="btn">Test Results</a>
+                <a ui-sref="record.encounters"  ui-sref-active="active" class="btn">Encounters</a>
+                <a ui-sref="record.vitals" ui-sref-active="active" class="btn">Vital Signs</a>
+                <a ui-sref="record.immunizations" ui-sref-active="active" class="btn">Immunizations</a>
+                <a ui-sref="record.allergies" ui-sref-active="active" class="btn">Allergies</a>
+                <a ui-sref="record.conditions" ui-sref-active="active" class="btn">Conditions</a>
+                <a ui-sref="record.procedures" ui-sref-active="active" class="btn">Procedures</a>
+                <a href="#" ui-sref-active="active" class="btn">Social History</a>
+            </div>
+        </div>
+    </div>
+</nav>
