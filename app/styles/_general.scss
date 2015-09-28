@@ -460,3 +460,9 @@ label {
     @extend .icon-bar;
     background-color: white !important;
 }
+
+.medication-btn-info {
+    @extend .btn;
+    padding-top: 5px;
+    padding-bottom: 15px
+}
