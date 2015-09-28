@@ -11,4 +11,9 @@
     </div>
 </div>
 <h4 class="text-center white">Matches</h4>
+<div class="panel panel-body" ng-show="model.isLoading">
+    <div class="col-sm-12 text-center">
+        <h5 us-spinner="model.spin"></h5>
+    </div>
+</div>
 <div matches="model.matches"></div>

@@ -43,6 +43,8 @@ module.exports = function(config) {
       'bower_components/lodash-angular-wrapper/lodash-angular-wrapper.js',
       'bower_components/ng-table/dist/ng-table.min.js',
       'bower_components/restangular/dist/restangular.js',
+      'bower_components/spin.js/spin.js',
+      'bower_components/angular-spinner/angular-spinner.js',
       // endbower
       "app/scripts/**/*.js",
       "test/mock/**/*.js",

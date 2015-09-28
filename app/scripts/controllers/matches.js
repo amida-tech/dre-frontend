@@ -11,7 +11,9 @@ angular.module('dreFrontendApp')
     .controller('MatchesCtrl', function ($http, $scope, dreFrontEndPatientInfoService, $log) {
         $scope.model = {
             userName: '-',
-            matches: []
+            matches: [],
+            spin: {lines: 9, radius: 4, width:2, length: 3},
+            isLoading: true
         };
 
         dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
@@ -22,10 +24,14 @@ angular.module('dreFrontendApp')
                 /* 'mock/diff/p-merge', */
                     'mock/diff/b-0',
                 method: 'GET'
-            }).then(function (resp) {
-                if (resp.data) {
-                    $scope.model.matches = resp.data;
-                }
-            });
+            })
+                .then(function (resp) {
+                    if (resp.data) {
+                        $scope.model.matches = resp.data;
+                    }
+                })
+                .finally(function () {
+                    $scope.model.isLoading = false;
+                });
         });
     });

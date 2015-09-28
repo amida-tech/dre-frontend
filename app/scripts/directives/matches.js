@@ -37,7 +37,8 @@ angular.module('dreFrontendApp')
                 $scope.ignoreButton = function() {
                     $log.debug("ignoreButton() is not implemented");
                 };
-
+                $scope.model = {
+                };
                 this.format_matches = function(src_matches) {
                     var matches=[];
 
@@ -59,9 +60,7 @@ angular.module('dreFrontendApp')
                         }
                     }
 
-                    $scope.model = {
-                        matches: matches
-                    };
+                    $scope.model.matches= matches;
                 };
 
                 this.format_matches($scope.matches);
