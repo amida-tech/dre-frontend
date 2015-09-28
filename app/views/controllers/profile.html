@@ -56,12 +56,12 @@
             <div class="form-group col-sm-3">
                 <h5>Race</h5>
                 <p ng-hide="model.race" class="">None entered</p>
-                <p>{{model.race}}</p>
+                <p>{{model.race.display}}</p>
             </div>
             <div class="form-group col-sm-3 col-sm-offset-1">
                 <h5>Ethnicity</h5>
                 <p ng-hide="model.ethnicity" class="">None entered</p>
-                <p>{{model.ethnicity}}</p>
+                <p>{{model.ethnicity.display}}</p>
             </div>
             <div class="form-group col-sm-4 col-sm-offset-1">
                 <h5>Marital Status</h5>
@@ -123,19 +123,14 @@
                 <div class="row">
                     <div class="form-group col-sm-3">
                         <label for="inputRace">Race</label>
-                        <select class="form-control" name="inputRace" id="inputRace" ng-model="model.race">
-                            <option value="White">White</option>
-                            <option value="Black">Black</option>
-                            <option value="Hispanic">Hispanic</option>
-                            <option value="Other">Other</option>
+                        <select class="form-control" name="inputRace" id="inputRace" ng-model="model.race"
+                                ng-options="raceCode as raceCode.display for raceCode in view.raceCodes track by raceCode.display">
                         </select>
                     </div>
                     <div class="form-group col-sm-3 col-sm-offset-1">
                         <label for="inputEthnicity">Ethnicity</label>
-                        <select class="form-control" name="inputEthnicity" id="inputEthnicity" ng-model="model.ethnicity">
-                            <option value="Hispanic or Latino">Hispanic or Latino</option>
-                            <option value="Not Hispanic or Latino">Not Hispanic or Latino</option>
-                        </select>
+                        <select class="form-control" name="inputEthnicity" id="inputEthnicity" ng-model="model.ethnicity"
+                                ng-options="ethnicityCode as ethnicityCode.display for ethnicityCode in view.ethnicityCodes track by ethnicityCode.display"></select>
                     </div>
                     <div class="form-group col-sm-4 col-sm-offset-1">
                         <label for="inputMaritalStatus">Marital Status</label>

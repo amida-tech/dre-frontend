@@ -36,7 +36,9 @@ angular.module('dreFrontendApp')
             monthNames: dreFrontendGlobals.monthNames,
             maritalStatuses: fhirEnv.maritalStatuses,
             genders: fhirEnv.gender,
-            addressCodes: fhirEnv.addressCodes
+            addressCodes: fhirEnv.addressCodes,
+            ethnicityCodes: fhirEnv.ethnicityCodes,
+            raceCodes: fhirEnv.raceCodes
         };
 
         $scope.contactSystemCodes = fhirEnv.contactSystemCodes;
@@ -75,6 +77,12 @@ angular.module('dreFrontendApp')
                         }
                     }
                 }
+                var extensionInfo;
+                if(patient.extension != undefined) {
+                    if(patient.extension.length != 0) {
+                        extensionInfo = patient.extension;
+                    }
+                }
                 if(patient.birthDate != undefined) {
                     model.dateOfBirth = new Date(patient.birthDate);
                 }
@@ -89,6 +97,29 @@ angular.module('dreFrontendApp')
                 });
                 _.forEach(model.phones, function(entry) {
                     $scope.setContactType(entry);
+                });
+                _.forEach(extensionInfo, function(entry) {
+                    if(entry.url != undefined) {
+                        if(entry.url == fhirEnv.raceExtensionUrl) {
+                            if(entry.valueCodeableConcept != undefined) {
+                                if(entry.valueCodeableConcept.coding != undefined) {
+                                    if(entry.valueCodeableConcept.coding.length != 0) {
+                                        model.race = entry.valueCodeableConcept.coding[0];
+                                    }
+                                }
+                            }
+                        }
+                        if(entry.url == fhirEnv.ethnicityExtensionUrl) {
+                            if(entry.valueCodeableConcept != undefined) {
+                                if(entry.valueCodeableConcept.coding != undefined) {
+                                    if(entry.valueCodeableConcept.coding.length != 0) {
+                                        model.ethnicity = entry.valueCodeableConcept.coding[0];
+                                    }
+                                }
+                            }
+                        }
+
+                    }
                 });
             });
         };
@@ -133,6 +164,46 @@ angular.module('dreFrontendApp')
             patient.maritalStatus = {coding: [model.maritalStatus]};
             patient.birthDate = model.dateOfBirth.toISOString();
             patient.gender = model.gender;
+
+            var extensionInfo;
+            if(patient.extension != undefined) {
+                if(patient.extension.length != 0) {
+                    extensionInfo = patient.extension;
+                }
+            } else {
+                patient.extension = [];
+            }
+            var raceFound = false;
+            var ethnicityFound = false;
+            _.forEach(extensionInfo, function(entry) {
+                if(entry.url != undefined) {
+                    if(entry.url == fhirEnv.raceExtensionUrl) {
+                        entry.valueCodeableConcept = {};
+                        entry.valueCodeableConcept.coding = [model.race];
+                        raceFound = true;
+                    }
+                    if(entry.url == fhirEnv.ethnicityExtensionUrl) {
+                        entry.valueCodeableConcept = {};
+                        entry.valueCodeableConcept.coding = [model.ethnicity];
+                        ethnicityFound = true;
+                    }
+
+                }
+            });
+            if(!raceFound) {
+                var raceObj = {};
+                raceObj.url = fhirEnv.raceExtensionUrl;
+                raceObj.valueCodeableConcept = {};
+                raceObj.valueCodeableConcept.coding = [model.race];
+                patient.extension.push(raceObj);
+            }
+            if(!ethnicityFound) {
+                var ethnicityObj = {};
+                ethnicityObj.url = fhirEnv.ethnicityExtensionUrl;
+                ethnicityObj.valueCodeableConcept = {};
+                ethnicityObj.valueCodeableConcept.coding = [model.ethnicity];
+                patient.extension.push(ethnicityObj);
+            }
 
             dreFrontendFhirService.update(patient.resourceType, patient.id, patient).then(function (response) {
                 $scope.changeEditProfileSection(true);

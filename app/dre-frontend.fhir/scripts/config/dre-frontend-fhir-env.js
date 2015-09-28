@@ -144,7 +144,17 @@ angular.module('dreFrontend.fhir')
             url: "url"
         },
         raceExtensionUrl: "http://hl7.org/fhir/Profile/us-core#race",
-        raceCodes: {},
-        ethnicityExtensionUrl: "http://hl7.org/fhir/Profile/us-core#ethnicity"
-
+        raceCodes: [
+            {code: "1002-5", display: "American Indian or Alaska Native"},
+            {code: "2054-5", display: "Black or African American"},
+            {code: "2028-9", display: "Asian"},
+            {code: "2076-8", display: "Native Hawaiian or Other Pacific Islander"},
+            {code: "2106-3", display: "White"},
+            {code: "2131-1", display: "Other Race"}
+        ],
+        ethnicityExtensionUrl: "http://hl7.org/fhir/Profile/us-core#ethnicity",
+        ethnicityCodes: [
+            {code: "2135-2", display: "Hispanic or Latino"},
+            {code: "2186-5", display: "Not Hispanic or Latino"},
+        ]
     });
