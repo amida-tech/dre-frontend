@@ -14,7 +14,9 @@
                         <div class="col-sm-6 text-right">
                             <pending-updates record-entry="item"></pending-updates>
                         </div>
-                        <div class="col-sm-5" ng-if="item.menuType == menuTypes.popup">
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-right" ng-if="item.menuType == menuTypes.popup">
                             <button class="pull-right btn btn-link" ng-click="showMedicationInfo(item)">
                                 <i class="fa fa-info-circle fa-2x"></i>
                             </button>
