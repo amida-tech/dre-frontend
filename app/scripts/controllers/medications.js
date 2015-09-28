@@ -14,7 +14,10 @@ angular.module('dreFrontendApp')
             lastUpdate: new Date(),
             showInactive: false,
             medicationsList: [],
-            filteredMedicationList: []
+            filteredMedicationList: [],
+            //TODO hardcoded, need to get updates fromo SERVICE
+            updates: 5,
+            entryType: 'medications'
         };
 
         dreFrontEndPatientInfoService.getPatientData().then(function (patient) {

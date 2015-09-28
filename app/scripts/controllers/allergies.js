@@ -12,7 +12,10 @@ angular.module('dreFrontendApp')
         $scope.model = {
             lastUpdate: new Date(),
             userName: '',
-            allergies: []
+            allergies: [],
+            //TODO hardcoded, need to get updates fromo SERVICE
+            updates: 5,
+            entryType: 'allergies'
         };
         dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
