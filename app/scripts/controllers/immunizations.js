@@ -29,7 +29,8 @@ angular.module('dreFrontendApp')
                         additionalInfo: '',
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         dates: dreFrontendEntryService.getEntryDates(entry),
-                        menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
+                        menuType: dreFrontendGlobals.menuRecordTypeEnum.inline,
+                        updates: 1
                     };
                     $scope.model.immunizations.push(immunization);
                 });

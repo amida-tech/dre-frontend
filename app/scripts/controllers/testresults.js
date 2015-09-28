@@ -29,7 +29,8 @@ angular.module('dreFrontendApp')
                         type: 'ObservationTestResult',
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline,
-                        dates: dreFrontendEntryService.getEntryDates(entry)
+                        dates: dreFrontendEntryService.getEntryDates(entry),
+                        updates: 3
                     });
                 });
             });

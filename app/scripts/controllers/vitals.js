@@ -30,7 +30,8 @@ angular.module('dreFrontendApp')
                         additionalInfo: entry.valueQuantity.value + ' ' + (angular.isDefined(entry.valueQuantity.units) && entry.valueQuantity.units != '1' ? entry.valueQuantity.units : ''),
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline,
-                        dates: dreFrontendEntryService.getEntryDates(entry)
+                        dates: dreFrontendEntryService.getEntryDates(entry),
+                        updates: 1
                     });
                 });
             });

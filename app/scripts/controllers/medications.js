@@ -33,7 +33,8 @@ angular.module('dreFrontendApp')
                         type: entry.resourceType,
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         dates: dreFrontendEntryService.getEntryDates(entry),
-                        menuType: dreFrontendGlobals.menuRecordTypeEnum.popup
+                        menuType: dreFrontendGlobals.menuRecordTypeEnum.popup,
+                        updates: 2
                     })
                 });
                 $scope.filterMedications();

@@ -30,7 +30,8 @@ angular.module('dreFrontendApp')
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         additionalInfo: (angular.isArray(entry.location) && entry.location.length > 0 && entry.location[0].location) ? entry.location[0].location.name : undefined,
                         dates: dreFrontendEntryService.getEntryDates(entry),
-                        menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
+                        menuType: dreFrontendGlobals.menuRecordTypeEnum.inline,
+                        updates: 5
                     })
                 });
             });

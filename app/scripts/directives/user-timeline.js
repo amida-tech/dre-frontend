@@ -15,7 +15,6 @@ angular.module('dreFrontendApp')
                 userTimeline: '='
             },
             controller: function ($scope) {
-
                 $scope.menuTypes = dreFrontendGlobals.menuRecordTypeEnum;
 
                 $scope.showMedicationInfo = function (item) {
