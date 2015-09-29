@@ -41,7 +41,7 @@ angular.module('dreFrontendApp')
             });
         });
         $scope.filterSocialHistory = function () {
-            $scope.model.filteredMedicationList = $scope.model.showInactive
+            $scope.model.filteredSocialHistoryList = $scope.model.showInactive
                 ? $scope.model.socialHistoryList
                 : _.filter($scope.model.socialHistoryList, function (item) {
                         return item.dates.isInactive == false;
