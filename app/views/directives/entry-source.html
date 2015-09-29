@@ -1,4 +1,12 @@
 <div>
     <h4>Source</h4>
-    <a href="#">Here will be link to source file</a>
+    <div ng-show="model.links.length > 0">
+        <span>Click on the following link(s) to download source file(s):</span><br/>
+        <div ng-repeat="link in model.links">
+            <fhir-binary-link doc-ref="link"></fhir-binary-link>
+        </div>
+    </div>
+    <div ng-show="model.links.length == 0">
+        <span>No source files found</span>
+    </div>
 </div>

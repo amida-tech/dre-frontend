@@ -7,7 +7,7 @@
  * # mainMenu
  */
 angular.module('dreFrontendApp')
-    .directive('entrySource', function () {
+    .directive('entrySource', function (dreFrontendProvenance) {
         return {
             templateUrl: 'views/directives/entry-source.html',
             restrict: 'AE',
@@ -15,7 +15,16 @@ angular.module('dreFrontendApp')
                 entrySource: '='
             },
             controller: function ($scope) {
-
+                $scope.model = {
+                    links: []
+                };
+                if ($scope.entrySource) {
+                    dreFrontendProvenance.getResourceSources($scope.entrySource.resourceType, $scope.entrySource.id).then(function (sources) {
+                        $scope.model.links = sources;
+                    });
+                }else{
+                    $scope.model.links = [];
+                }
             }
         };
     });
