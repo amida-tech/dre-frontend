@@ -16,10 +16,6 @@
             <div ng-show="model.tableParams.total">
                 <table class="table table-responsive table-hover panel" ng-table="model.tableParams">
                     <tr ng-repeat="row in $data">
-                        <td>
-                            <a ng-show="row.contentType === 'text/xml'"><i class="fa fa-file-code-o"></i></a>
-                            <a ng-show="row.contentType === 'text/plain'"><i class="fa fa-file-text-o"></i></a>
-                        </td>
                         <td data-title="'Name'" sortable="'title'"><fhir-binary-link doc-ref="row"/></td>
                         <td data-title="'Format'" sortable="'contentType'">{{row.contentType}}</td>
                         <td data-title="'Type'">{{row.display}}</td>

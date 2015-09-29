@@ -9,7 +9,7 @@
 angular.module('dreFrontendApp')
     .directive('fhirBinaryLink', function () {
         return {
-            template: '<a ng-click="getContent()">{{docRef.title}}</a>',
+            template: '<a ng-click="getContent()"><i class="fa {{getIcon(docRef.contentType)}}"></i> {{docRef.title}}</a>',
             restrict: 'AE',
             scope: {
                 docRef: "="
@@ -25,6 +25,19 @@ angular.module('dreFrontendApp')
                     FileSaver.saveAs(save_data);
                 }
 
+                $scope.getIcon = function (mimeType) {
+                    var res = "fa-file-o";
+                    var parts = mimeType.split('/');
+                    switch(parts[0]){
+                        case "text":
+                            res = (parts[1] === "xml")?"fa-file-code-o":"fa-file-text-o";
+                            break;
+                        case "image":
+                            res = "fa-file-image-o";
+                            break;
+                    }
+                    return res;
+                };
 
                 $scope.getContent = function () {
                     if (!$scope.docRef.binary) {
