@@ -25,74 +25,77 @@ angular.module('dreFrontendApp')
         var _buildTable = function (dataItem, blackList) {
             var dataItems = [];
             blackList = blackList || [];
-            for (var propertyName in dataItem) {
-                if (dataItem.hasOwnProperty(propertyName) && isValidName(propertyName, blackList)) {
 
-                    //number value
-                    if (angular.isNumber(dataItem[propertyName]) || !isNaN(parseFloat(dataItem[propertyName]))) {
-                        dataItems.push({
-                            label: prepareName(propertyName),
-                            value: dataItem[propertyName],
-                            type: 'string'
-                        });
-                        continue;
-                    }
-                    //if ISO date
-                    if (angular.isDate(dataItem[propertyName]) /*!isNaN(Date.parse(dataItem[propertyName]))*/) {
-                        $log.debug(dataItem[propertyName], angular.isDate(dataItem[propertyName]), dreFrontendUtil.formatFhirDate(dataItem[propertyName]));
-                        dataItems.push({
-                            label: prepareName(propertyName),
-                            value: dreFrontendUtil.formatFhirDate(dataItem[propertyName]),
-                            type: 'string'
-                        });
-                        continue;
-                    }
-                    //String value
-                    if (angular.isString(dataItem[propertyName])) {
-                        dataItems.push({
-                            label: prepareName(propertyName),
-                            value: dataItem[propertyName],
-                            type: 'string'
-                        });
-                        continue;
-                    }
-                    //if nested array of objects
-                    if (angular.isArray(dataItem[propertyName])) {
-                        var itemsArray = [];
-                        var type = 'objectsList';
-                        dataItem[propertyName].forEach(function (item) {
-                            var rowItemData = [];
-                            if (angular.isString(item)) {
-                                itemsArray.push(item);
-                                type = 'array';
-                            } else {
-                                rowItemData = _buildTable(item, blackList);
-                                if (rowItemData.length > 0) {
-                                    itemsArray.push(rowItemData);
-                                }
+            var prepareValue = function (propertyName, propertyValue) {
+                //number value
+                if (angular.isNumber(propertyValue) || !isNaN(parseFloat(propertyValue))) {
+                    dataItems.push({
+                        label: prepareName(propertyName),
+                        value: propertyValue,
+                        type: 'string'
+                    });
+                } else
+                //if ISO date
+                if (angular.isDate(propertyValue) /*!isNaN(Date.parse(propertyValue))*/) {
+                    dataItems.push({
+                        label: prepareName(propertyName),
+                        value: dreFrontendUtil.formatFhirDate(propertyValue),
+                        type: 'string'
+                    });
+                } else
+                //String value
+                if (angular.isString(propertyValue)) {
+                    dataItems.push({
+                        label: prepareName(propertyName),
+                        value: propertyValue,
+                        type: 'string'
+                    });
+                } else
+                //if nested array of objects
+                if (angular.isArray(propertyValue)) {
+                    var itemsArray = [];
+                    var type = 'objectsList';
+                    propertyValue.forEach(function (item) {
+                        var rowItemData = [];
+                        if (angular.isString(item)) {
+                            itemsArray.push(item);
+                            type = 'array';
+                        } else {
+                            rowItemData = _buildTable(item, blackList);
+                            if (rowItemData.length > 0) {
+                                itemsArray.push(rowItemData);
                             }
+                        }
+                    });
+                    if (angular.isArray(itemsArray) && itemsArray.length > 0) {
+                        dataItems.push({
+                            label: prepareName(propertyName),
+                            value: itemsArray,
+                            type: type
                         });
-                        if (angular.isArray(itemsArray) && itemsArray.length > 0) {
-                            dataItems.push({
-                                label: prepareName(propertyName),
-                                value: itemsArray,
-                                type: type
-                            });
-                        }
-                        continue;
                     }
-                    //if nested object
-                    if (angular.isObject(dataItem[propertyName])) {
-                        var rowObjectData = _buildTable(dataItem[propertyName], blackList);
-                        if (angular.isArray(rowObjectData) && rowObjectData.length > 0) {
-                            dataItems.push({
-                                label: prepareName(propertyName),
-                                value: rowObjectData,
-                                type: 'object'
-                            });
-                        }
+                } else
+                //if nested object
+                if (angular.isObject(propertyValue)) {
+                    var rowObjectData = _buildTable(propertyValue, blackList);
+                    if (angular.isArray(rowObjectData) && rowObjectData.length > 0) {
+                        dataItems.push({
+                            label: prepareName(propertyName),
+                            value: rowObjectData,
+                            type: 'object'
+                        });
                     }
                 }
+            };
+
+            if (typeof dataItem === "array" || typeof dataItem === "object") {
+                for (var propertyName in dataItem) {
+                    if (dataItem.hasOwnProperty(propertyName) && isValidName(propertyName, blackList)) {
+                        prepareValue(propertyName, dataItem[propertyName]);
+                    }
+                }
+            } else {
+                prepareValue("", dataItem);
             }
             return dataItems;
         };

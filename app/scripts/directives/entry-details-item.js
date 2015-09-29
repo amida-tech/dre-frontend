@@ -28,34 +28,29 @@ angular.module('dreFrontendApp')
             link: function ($scope, element) {
 
                 if (angular.isObject($scope.entryDetailsItemMember)) {
-                    if ($scope.entryDetailsItemMember.type == 'string') {
-                        element.append(
-                            "<td><strong ng-bind='entryDetailsItemMember.label'></strong></td>" +
-                            "<td><span>{{entryDetailsItemMember.value}}</span></td>"
-                            );
-                        $compile(element.contents())($scope)
+                    if ($scope.entryDetailsItemMember.label) {
+                        element.append("<td><strong ng-bind='entryDetailsItemMember.label'></strong></td>");
                     }
-                    if ($scope.entryDetailsItemMember.type == 'object') {
-                        element.append(
-                            "<td><strong ng-bind='entryDetailsItemMember.label'></strong></td>" +
-                            "<td><div entry-details-item='entryDetailsItemMember.value'></div></td>"
-                            );
-                        $compile(element.contents())($scope)
+                    var val;
+                    switch ($scope.entryDetailsItemMember.type) {
+                        case "string":
+                            element.append("<td><span>{{entryDetailsItemMember.value}}</span></td>");
+                            break;
+
+                        case 'object':
+                            element.append("<td><div entry-details-item='entryDetailsItemMember.value'></div></td>");
+                            break;
+
+                        case 'objectsList':
+                            element.append("<td ng-class='{tablesBlock:entryDetailsItemMember.value.length > 1}'><div ng-repeat='item in entryDetailsItemMember.value' entry-details-item='item'></div></td>");
+                            break;
+
+                        case 'array':
+                            element.append("<td><div ng-repeat='item in entryDetailsItemMember.value'><span>{{item}}</span><br/></div></td>");
+                            break;
                     }
-                    if ($scope.entryDetailsItemMember.type == 'objectsList') {
-                        element.append(
-                            "<td><strong ng-bind='entryDetailsItemMember.label'></strong></td>" +
-                            "<td ng-class='{tablesBlock:entryDetailsItemMember.value.length > 1}'><div ng-repeat='item in entryDetailsItemMember.value' entry-details-item='item'></div></td>"
-                        );
-                        $compile(element.contents())($scope)
-                    }
-                    if ($scope.entryDetailsItemMember.type == 'array') {
-                        element.append(
-                            "<td><strong ng-bind='entryDetailsItemMember.label'></strong></td>" +
-                            "<td><div ng-repeat='item in entryDetailsItemMember.value'><span>{{item}}</span><br/></div></td>"
-                        );
-                        $compile(element.contents())($scope)
-                    }
+///                    element.append(val);
+                    $compile(element.contents())($scope);
 
                 }
             }

@@ -26,16 +26,18 @@ angular.module('dreFrontendApp')
                             angular.forEach(rec,f);
                         } else if (angular.isObject(rec)) {
                             if (rec.path) {
-                                var r, l;
-                                r = dreFrontendUtil.buildObjectByPath(rec.path, rec.rhs);
-                                l = dreFrontendUtil.buildObjectByPath(rec.path, rec.lhs);
+                                var r = dreFrontendUtil.buildObjectByPath(rec.path, rec.rhs);
+                                var l = dreFrontendUtil.buildObjectByPath(rec.path, rec.lhs);
+                                var path = dreFrontendUtil.buildObjectByPath(rec.path, "");
 
                                 differences.push({
                                     apply: true,
                                     kind: rec.kind,
-                                    lhs: dreFrontendEntryService.buildTable(l, []),
-                                    rhs: dreFrontendEntryService.buildTable(r, [])
+                                    path: dreFrontendEntryService.buildTable(path, []),
+                                    lhs: dreFrontendEntryService.buildTable(rec.lhs, []),
+                                    rhs: dreFrontendEntryService.buildTable(rec.rhs, [])
                                 });
+                                $log.debug(path,rec.lhs,rec.rhs);
                             } else {
                                 $log.debug("no path", rec);
                             }
