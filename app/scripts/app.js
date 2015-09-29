@@ -159,6 +159,23 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
+        .state('record.social-history', {
+            url: '/'+dreFrontendGlobals.resourceTypes.SocialHistory.alias,
+            parent: 'record',
+            data: {
+                name: 'My Socail History',
+                isPublic: false
+            },
+            views: {
+                'homeMenu@homeRoot': {
+                    templateUrl: "views/controllers/record-menu.html"
+                },
+                'pageBody@homeRoot': {
+                    templateUrl: "views/controllers/social-history.html",
+                    controller: "SocialHistoryCtrl"
+                }
+            }
+        })
         .state('record.procedures', {
             url: '/'+dreFrontendGlobals.resourceTypes.Procedure.alias,
             parent: 'record',

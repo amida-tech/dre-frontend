@@ -48,6 +48,11 @@ angular.module('dreFrontend.util')
                 title: 'Conditions',
                 type: 'Condition'
             },
+            SocialHistory: {
+                alias: 'social-history',
+                title: 'SocialHistory',
+                type: 'SocialHistory'
+            },
             Procedure: {
                 alias: 'procedures',
                 title: 'Procedures',

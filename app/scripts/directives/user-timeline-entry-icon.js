@@ -68,6 +68,9 @@ angular.module('dreFrontendApp')
                     case 'Condition':
                         $scope.model.displayClass = 'fa-list';
                         break;
+                    case 'SocialHistory':
+                        $scope.model.displayClass = 'fa-group';
+                        break;
                     case 'Procedure':
                         $scope.model.displayClass = 'fa-medkit';
                         break;
