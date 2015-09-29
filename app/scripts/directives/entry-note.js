@@ -53,7 +53,7 @@ angular.module('dreFrontendApp')
                 };
                 $scope.deleteNote = function () {
                     $scope.model.error = '';
-                    dreFrontendNotesService.deleteNote().then(function () {
+                    dreFrontendNotesService.deleteNote($scope.model.noteId).then(function () {
                         initNoteDetails(null);
                     }).catch(function (error) {
                         $scope.model.error = error;
@@ -68,6 +68,10 @@ angular.module('dreFrontendApp')
                         $scope.model.isEditMode = false;
                         $scope.model.isNew = false;
                     } else {
+                        $scope.model.noteId = '';
+                        $scope.model.noteText = '';
+                        $scope.model.isFavorite = false;
+                        $scope.model.lastUpdateDate = null;
                         $scope.model.isEditMode = true;
                         $scope.model.isNew = true;
                     }

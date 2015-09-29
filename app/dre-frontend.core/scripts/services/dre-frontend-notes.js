@@ -66,8 +66,9 @@ angular.module('dreFrontend.util')
                         id: noteId
                     },
                     method: 'POST'
-                }).then(function (note) {
-                    return note;
+                }).then(function () {
+                    _.remove(notesList, {_id:noteId});
+                    return true;
                 });
             },
             toggleFavorite: function (starred, noteId) {
