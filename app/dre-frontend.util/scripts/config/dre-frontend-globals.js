@@ -72,7 +72,7 @@ angular.module('dreFrontend.util')
                 fhirType: 'AllergyIntolerance'
             },
             Immunization: {
-                alias: 'immunization',
+                alias: 'immunizations',
                 title: 'Immunizations',
                 type: 'Immunization',
                 fhirType: 'Immunization'

@@ -59,7 +59,8 @@ angular.module('dreFrontend.fhir')
                         var data = {
                             indexed: doc_ref.indexed,
                             display: "User uploaded record",
-                            getBody: doc_ref.getContent
+                            getBody: doc_ref.getContent,
+                            status: doc_ref.status
                         };
 
                         if (doc_ref.type && doc_ref.type.coding[0]) {

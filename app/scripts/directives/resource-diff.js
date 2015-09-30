@@ -37,7 +37,6 @@ angular.module('dreFrontendApp')
                                     lhs: dreFrontendEntryService.buildTable(rec.lhs, []),
                                     rhs: dreFrontendEntryService.buildTable(rec.rhs, [])
                                 });
-                                $log.debug(path,rec.lhs,rec.rhs);
                             } else {
                                 $log.debug("no path", rec);
                             }

@@ -1,10 +1,16 @@
 <div>
     <h4>Source</h4>
     <div ng-show="model.links.length > 0">
-        <span>Click on the following link(s) to download source file(s):</span><br/>
-        <div ng-repeat="link in model.links">
-            <fhir-binary-link doc-ref="link"></fhir-binary-link>
-        </div>
+        <table class="table table-condensed table-hover">
+            <thead><tr><td>Source</td><td>Status</td><td>Indexed</td></tr></thead>
+            <tbody>
+            <tr ng-repeat="link in model.links">
+                <td><fhir-binary-link doc-ref="link"/></td>
+                <td class="text-capitalize">{{link.status}}</td>
+                <td>{{link.indexed | date:'short'}}</td>
+            </tr>
+            </tbody>
+        </table>
     </div>
     <div ng-show="model.links.length == 0">
         <span>No source files found</span>
