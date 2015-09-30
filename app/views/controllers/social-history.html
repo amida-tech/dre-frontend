@@ -27,8 +27,9 @@
                 </div>
             </div>
         </div>
-        <div user-timeline="model.socialHistoryList"></div>
-        
+        <div class="blocks">
+            <div ng-repeat="item in model.socialHistoryList" user-timeline-entry="item"></div>
+        </div>
         <h5 ng-hide="model.socialHistoryList" class="col-sm-12 text-center">No Social History Entries</h5>
     </div>
 </div>

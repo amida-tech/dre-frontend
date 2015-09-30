@@ -7,33 +7,12 @@
  * # mainMenu
  */
 angular.module('dreFrontendApp')
-    .directive('userTimeline', function ($state, dreFrontendAuthService, $rootScope, dreFrontendGlobals, dreFrontendModalsService) {
+    .directive('userTimeline', function () {
         return {
-            templateUrl: 'views/directives/user-timeline.html',
+            template: '<div class="blocks"><div ng-repeat="item in userTimeline" user-timeline-entry="item"></div></div>',
             restrict: 'AE',
             scope: {
                 userTimeline: '='
-            },
-            controller: function ($scope) {
-                $scope.menuTypes = dreFrontendGlobals.menuRecordTypeEnum;
-
-                $scope.showMedicationInfo = function (item) {
-                    dreFrontendModalsService.showMedicationInfo(item);
-                };
-
-                var toggleMenuCleanEvent = $scope.$on('toggleMenu', function (event, item) {
-                    if (item.menuType == dreFrontendGlobals.menuRecordTypeEnum.popup) {
-                        $scope.showMedicationInfo(item);
-                    }
-                    if (item.menuType == dreFrontendGlobals.menuRecordTypeEnum.inline) {
-                        console.log('event', item);
-                        item.isDetailsOpen = !item.isDetailsOpen;
-                    }
-                });
-
-                $scope.$on('$destroy', function () {
-                    toggleMenuCleanEvent();
-                });
             }
         };
     });

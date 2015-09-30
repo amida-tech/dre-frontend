@@ -37,6 +37,8 @@
             </div>
         </div>
     </div>
-    <div user-timeline="model.filteredMedicationList"></div>
+    <div class="blocks">
+        <div ng-repeat="item in model.medicationsList" user-timeline-entry="item"></div>
+    </div>
     <h5 ng-hide="model.medicationsList && model.showInactive" class="col-sm-12 text-center">No Medication Entries</h5>
 </div>

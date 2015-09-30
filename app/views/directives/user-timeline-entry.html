@@ -1,0 +1,27 @@
+<div class="row"><i class="col-sm-2 h_line"></i></div>
+<div class="row">
+    <div class="col-sm-2">
+        <div user-timeline-entry-icon="userTimelineEntry"></div>
+    </div>
+    <div class="col-sm-10">
+        <div class="panel panel-body">
+            <div class="row">
+                <div class="col-sm-6">
+                    <h4><span class="text-left" ng-bind="userTimelineEntry.title"></span></h4>
+                </div>
+                <div class="col-sm-6">
+                    <div class="text-right" ng-if="userTimelineEntry.menuType == menuTypes.popup">
+                        <button class="pull-right medication-btn-info btn-link" ng-click="showMedicationInfo()">
+                            <i class="fa fa-info-circle fa-2x"></i>
+                        </button>
+                    </div>
+                    <pending-updates record-entry="userTimelineEntry"></pending-updates>
+                </div>
+            </div>
+            <div ng-show="userTimelineEntry.additionalInfo"><span ng-bind="userTimelineEntry.additionalInfo"></span></div>
+            <div user-timeline-entry-dates="userTimelineEntry"></div>
+            <div ng-if="userTimelineEntry.menuType == menuTypes.inline" user-timeline-entry-inline-info="userTimelineEntry"></div>
+        </div>
+    </div>
+</div>
+

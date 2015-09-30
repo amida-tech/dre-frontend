@@ -58,11 +58,11 @@ angular.module('dreFrontendApp')
         };
 
         $scope.goToEntry = function (item) {
-            var alias = dreFrontendGlobals.resourceTypes[item.type].alias;
+            var alias = _.find(dreFrontendGlobals.resourceTypes,{type:item.type}).alias;
             if(alias == dreFrontendGlobals.resourceTypes.Insurance.alias || alias == dreFrontendGlobals.resourceTypes.Claim.alias){
-                $state.go('billing.' + alias);
+                $state.go('billing.' + alias,{id:item.note.entry});
             }else{
-                $state.go('record.' + alias);
+                $state.go('record.' + alias,{id:item.note.entry});
             }
         };
 

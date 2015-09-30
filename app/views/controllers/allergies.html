@@ -11,7 +11,9 @@
     <h4 class="text-center white">Allergies</h4>
 
     <div class="panel panel-body">
-        <div user-timeline="model.allergies"></div>
+        <div class="blocks">
+            <div ng-repeat="item in model.allergies" user-timeline-entry="item"></div>
+        </div>
         <h5 ng-hide="model.allergies" class="col-sm-12 text-center">No Immunization Entries</h5>
     </div>
 </div>

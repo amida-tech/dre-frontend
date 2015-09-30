@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('RecordsMenuCtrl', function ($scope, dreFrontendGlobals, _) {
+    .controller('RecordsMenuCtrl', function ($scope, dreFrontendGlobals, _, $state) {
         $scope.model = {
             menuItems: [
                 dreFrontendGlobals.resourceTypes.MedicationPrescription,
@@ -24,5 +24,5 @@ angular.module('dreFrontendApp')
         };
         _.forEach($scope.model.menuItems, function (item) {
             item.url = 'record.' + item.alias;
-        })
+        });
     });

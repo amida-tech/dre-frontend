@@ -75,7 +75,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             }
         })
         .state('record', {
-            url: '/record',
+            url: '/record?id',
             parent: 'home',
             data: {
                 name: 'My Records',
@@ -282,7 +282,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             }
         })
         .state('billing', {
-            url: '/billing',
+            url: '/billing?id',
             parent: 'home',
             data: {
                 name: 'My Billings',

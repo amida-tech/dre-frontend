@@ -10,6 +10,8 @@
 </div>
 <h4 class="text-center white">Claims</h4>
 <div class="panel panel-body">
-    <div user-timeline="model.claimsList"></div>
+    <div class="blocks">
+        <div ng-repeat="item in model.claimsList" user-timeline-entry="item"></div>
+    </div>
     <h5 ng-hide="model.claimsList" class="col-sm-12 text-center">No Claim Entries</h5>
 </div>
