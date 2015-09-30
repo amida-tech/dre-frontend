@@ -26,7 +26,7 @@ angular.module('dreFrontendApp')
                 _.forEach(results.entry, function (entry) {
                     $scope.model.testresultsList.push({
                         rawEntry: entry,
-                        type: 'ObservationTestResult',
+                        type: dreFrontendGlobals.resourceTypes.TestResult.type,
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline,
                         dates: dreFrontendEntryService.getEntryDates(entry),

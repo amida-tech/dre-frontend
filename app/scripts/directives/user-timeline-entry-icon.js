@@ -49,33 +49,39 @@ angular.module('dreFrontendApp')
                     case 'medUpdate':
                         $scope.model.displayClass = 'icon-pill';
                         break;
-                    case 'MedicationPrescription':
+                    case dreFrontendGlobals.resourceTypes.MedicationPrescription.type:
                         $scope.model.displayClass = 'icon-pill';
                         $scope.model.isInactive = $scope.userTimelineEntryIcon.dates.isInactive;
                         break;
-                    case 'ObservationTestResult':
+                    case dreFrontendGlobals.resourceTypes.TestResult.type:
                         $scope.model.displayClass = 'fa-flask';
                         break;
-                    case 'Encounter':
+                    case dreFrontendGlobals.resourceTypes.Encounter.type:
                         $scope.model.displayClass = 'fa-stethoscope';
                         break;
-                    case 'ObservationVital':
+                    case dreFrontendGlobals.resourceTypes.Vital.type:
                         $scope.model.displayClass = 'fa-heart';
                         break;
-                    case 'Immunization':
+                    case dreFrontendGlobals.resourceTypes.Immunization.type:
                         $scope.model.displayClass = 'fa-shield';
                         break;
-                    case 'Condition':
+                    case dreFrontendGlobals.resourceTypes.Condition.type:
                         $scope.model.displayClass = 'fa-list';
                         break;
-                    case 'SocialHistory':
+                    case dreFrontendGlobals.resourceTypes.SocialHistory.type:
                         $scope.model.displayClass = 'fa-group';
                         break;
-                    case 'Procedure':
+                    case dreFrontendGlobals.resourceTypes.Procedure.type:
                         $scope.model.displayClass = 'fa-medkit';
                         break;
-                    case 'AllergyIntolerance':
+                    case dreFrontendGlobals.resourceTypes.AllergyIntolerance.type:
                         $scope.model.displayClass = 'fa-exclamation-triangle';
+                        break;
+                    case dreFrontendGlobals.resourceTypes.Insurance.type:
+                        $scope.model.displayClass = 'fa-pencil';
+                        break;
+                    case dreFrontendGlobals.resourceTypes.Claim.type:
+                        $scope.model.displayClass = 'fa-pencil';
                         break;
                     default:
                         $scope.model.displayClass = '';

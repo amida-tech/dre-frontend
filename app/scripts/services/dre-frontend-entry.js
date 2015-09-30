@@ -195,7 +195,7 @@ angular.module('dreFrontendApp')
                         isInactive: entry.status != 'active'
                     };
                     break;
-                case 'Observation':
+                case 'Observation'://todo inactive social history
                     if (angular.isDefined(entry.appliesDateTime)) {
                         dates = {startDate: entry.appliesDateTime};
                     } else {

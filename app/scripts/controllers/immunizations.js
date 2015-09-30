@@ -25,7 +25,7 @@ angular.module('dreFrontendApp')
                 _.forEach(immunizations.entry, function(entry){
                     var immunization = {
                         rawEntry: entry,
-                        type: entry.resourceType,
+                        type: dreFrontendGlobals.resourceTypes.Immunization.type,
                         additionalInfo: '',
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         dates: dreFrontendEntryService.getEntryDates(entry),

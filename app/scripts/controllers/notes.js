@@ -58,31 +58,11 @@ angular.module('dreFrontendApp')
         };
 
         $scope.goToEntry = function (item) {
-            switch (item.type) {
-                case 'MedicationPrescription':
-                    $state.go('record.medications');
-                    break;
-                case 'ObservationTestResult':
-                    $state.go('record.testresults');
-                    break;
-                case 'ObservationVital':
-                    $state.go('record.vitals');
-                    break;
-                case 'Encounter':
-                    $state.go('record.encounters');
-                    break;
-                case 'Condition':
-                    $state.go('record.conditions');
-                    break;
-                case 'Procedure':
-                    $state.go('record.procedures');
-                    break;
-                case 'AllergyIntolerance':
-                    $state.go('record.allergies');
-                    break;
-                case 'Immunization':
-                    $state.go('record.immunizations');
-                    break;
+            var alias = dreFrontendGlobals.resourceTypes[item.type].alias;
+            if(alias == dreFrontendGlobals.resourceTypes.Insurance.alias || alias == dreFrontendGlobals.resourceTypes.Claim.alias){
+                $state.go('billing.' + alias);
+            }else{
+                $state.go('record.' + alias);
             }
         };
 
@@ -90,30 +70,42 @@ angular.module('dreFrontendApp')
             if (angular.isUndefined(item.entryTitle)) {
                 var service = undefined;
                 switch (item.type) {
-                    case 'MedicationPrescription':
+                    case dreFrontendGlobals.resourceTypes.MedicationPrescription.type:
                         service = dreFrontendMedicationPrescriptions;
                         break;
-                    case 'ObservationTestResult':
+                    case dreFrontendGlobals.resourceTypes.TestResult.type:
                         service = dreFrontendObservations;
                         break;
-                    case 'ObservationVital':
+                    case dreFrontendGlobals.resourceTypes.Vital.type:
                         service = dreFrontendObservations;
                         break;
-                    case 'Encounter':
+                    case dreFrontendGlobals.resourceTypes.Encounter.type:
                         service = dreFrontendEncounters;
                         break;
-                    case 'Condition':
+                    case dreFrontendGlobals.resourceTypes.Condition.type:
                         service = dreFrontendConditions;
                         break;
-                    case 'Procedure':
+                    case dreFrontendGlobals.resourceTypes.Procedure.type:
                         service = dreFrontendProcedures;
                         break;
-                    case 'AllergyIntolerance':
+                    case dreFrontendGlobals.resourceTypes.AllergyIntolerance.type:
                         service = dreFrontendAllergyIntolerances;
                         break;
-                    case 'Immunization':
+                    case dreFrontendGlobals.resourceTypes.Immunization.type:
                         service = dreFrontendImmunizations;
                         break;
+                    case dreFrontendGlobals.resourceTypes.SocialHistory.type:
+                        service = dreFrontendObservations;
+                        break;
+                    case dreFrontendGlobals.resourceTypes.Insurance.type:
+                        throw  new Error('Not implemented');
+                        service = {};
+                        break;
+                    case dreFrontendGlobals.resourceTypes.Claim.type:
+                        throw  new Error('Not implemented');
+                        service = {};
+                        break;
+
                 }
                 service.getById(item.note.entry).then(function (resourceEntry) {
                     if (resourceEntry) {

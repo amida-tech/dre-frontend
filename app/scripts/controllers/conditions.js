@@ -27,7 +27,7 @@ angular.module('dreFrontendApp')
                     if (angular.isObject(entry.code) && angular.isArray(entry.code.coding) && entry.code.coding.length > 0) {
                         $scope.model.conditionsList.push({
                             rawEntry: entry,
-                            type: entry.resourceType,
+                            type: dreFrontendGlobals.resourceTypes.Condition.type,
                             title: dreFrontendEntryService.getEntryTitle(entry),
                             additionalInfo: '',
                             dates: dreFrontendEntryService.getEntryDates(entry),

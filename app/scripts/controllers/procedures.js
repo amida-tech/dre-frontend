@@ -26,7 +26,7 @@ angular.module('dreFrontendApp')
                 _.forEach(results.entry, function (entry) {
                     $scope.model.proceduresList.push({
                         rawEntry: entry,
-                        type: entry.resourceType,
+                        type: dreFrontendGlobals.resourceTypes.Procedure.type,
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         additionalInfo: '',
                         dates: dreFrontendEntryService.getEntryDates(entry),

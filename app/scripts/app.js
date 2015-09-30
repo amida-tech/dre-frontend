@@ -91,8 +91,8 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
-        .state('record.medications', {
-            url: '/'+dreFrontendGlobals.resourceTypes.MedicationPrescription.alias,
+        .state('record.' + dreFrontendGlobals.resourceTypes.MedicationPrescription.alias, {
+            url: '/' + dreFrontendGlobals.resourceTypes.MedicationPrescription.alias,
             parent: 'record',
             data: {
                 name: 'My Medications',
@@ -108,8 +108,8 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
-        .state('record.testresults', {
-            url: '/'+dreFrontendGlobals.resourceTypes.ObservationTestResult.alias,
+        .state('record.' + dreFrontendGlobals.resourceTypes.TestResult.alias, {
+            url: '/' + dreFrontendGlobals.resourceTypes.TestResult.alias,
             parent: 'record',
             data: {
                 name: 'My Results',
@@ -125,8 +125,8 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
-        .state('record.encounters', {
-            url: '/'+dreFrontendGlobals.resourceTypes.Encounter.alias,
+        .state('record.' + dreFrontendGlobals.resourceTypes.Encounter.alias, {
+            url: '/' + dreFrontendGlobals.resourceTypes.Encounter.alias,
             parent: 'record',
             data: {
                 name: 'My Encounters',
@@ -142,8 +142,8 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
-        .state('record.conditions', {
-            url: '/'+dreFrontendGlobals.resourceTypes.Condition.alias,
+        .state('record.' + dreFrontendGlobals.resourceTypes.Condition.alias, {
+            url: '/' + dreFrontendGlobals.resourceTypes.Condition.alias,
             parent: 'record',
             data: {
                 name: 'My Conditions',
@@ -159,8 +159,8 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
-        .state('record.social-history', {
-            url: '/'+dreFrontendGlobals.resourceTypes.SocialHistory.alias,
+        .state('record.' + dreFrontendGlobals.resourceTypes.SocialHistory.alias, {
+            url: '/' + dreFrontendGlobals.resourceTypes.SocialHistory.alias,
             parent: 'record',
             data: {
                 name: 'My Socail History',
@@ -176,8 +176,8 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
-        .state('record.procedures', {
-            url: '/'+dreFrontendGlobals.resourceTypes.Procedure.alias,
+        .state('record.' + dreFrontendGlobals.resourceTypes.Procedure.alias, {
+            url: '/' + dreFrontendGlobals.resourceTypes.Procedure.alias,
             parent: 'record',
             data: {
                 name: 'My Procedures',
@@ -193,8 +193,8 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
-        .state('record.vitals', {
-            url: '/'+dreFrontendGlobals.resourceTypes.ObservationVital.alias,
+        .state('record.' + dreFrontendGlobals.resourceTypes.Vital.alias, {
+            url: '/' + dreFrontendGlobals.resourceTypes.Vital.alias,
             parent: 'record',
             data: {
                 name: 'My Vitals',
@@ -210,8 +210,8 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
-        .state('record.immunizations', {
-            url: '/'+dreFrontendGlobals.resourceTypes.Immunization.alias,
+        .state('record.' + dreFrontendGlobals.resourceTypes.Immunization.alias, {
+            url: '/' + dreFrontendGlobals.resourceTypes.Immunization.alias,
             parent: 'record',
             data: {
                 name: 'My Immunizations',
@@ -227,8 +227,8 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
-        .state('record.allergies', {
-            url: '/'+dreFrontendGlobals.resourceTypes.AllergyIntolerance.alias,
+        .state('record.' + dreFrontendGlobals.resourceTypes.AllergyIntolerance.alias, {
+            url: '/' + dreFrontendGlobals.resourceTypes.AllergyIntolerance.alias,
             parent: 'record',
             data: {
                 name: 'My Allergies',
@@ -307,6 +307,57 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
+        .state('billing', {
+            url: '/billing',
+            parent: 'home',
+            data: {
+                name: 'My Billings',
+                isPublic: false
+            },
+            views: {
+                'homeMenu@homeRoot': {
+                    templateUrl: "views/controllers/billing-menu.html"
+                },
+                'pageBody@homeRoot': {
+                    templateUrl: "views/controllers/billing-history.html",
+                    controller: "BillingHistoryCtrl"
+                }
+            }
+        })
+        .state('billing.'  + dreFrontendGlobals.resourceTypes.Insurance.alias, {
+            url: '/' + dreFrontendGlobals.resourceTypes.Insurance.alias,
+            parent: 'billing',
+            data: {
+                name: 'My Insurance',
+                isPublic: false
+            },
+            views: {
+                'homeMenu@homeRoot': {
+                    templateUrl: "views/controllers/billing-menu.html"
+                },
+                'pageBody@homeRoot': {
+                    templateUrl: "views/controllers/insurance.html",
+                    controller: "InsuranceCtrl"
+                }
+            }
+        })
+        .state('billing.'+ dreFrontendGlobals.resourceTypes.Claim.alias, {
+            url: '/' + dreFrontendGlobals.resourceTypes.Claim.alias,
+            parent: 'billing',
+            data: {
+                name: 'My Claims',
+                isPublic: false
+            },
+            views: {
+                'homeMenu@homeRoot': {
+                    templateUrl: "views/controllers/billing-menu.html"
+                },
+                'pageBody@homeRoot': {
+                    templateUrl: "views/controllers/claims.html",
+                    controller: "ClaimsCtrl"
+                }
+            }
+        })
         .state('profile', {
             url: '/profile',
             parent: 'home',
@@ -360,7 +411,6 @@ app.run(function ($rootScope, $state, dreFrontendAuthService, dreFrontEndPatient
             return;
         }
         //Check auth
-        //TODO maybe replace with function without promise
         dreFrontendAuthService.isAuthenticated().then(function (isAuthenticated) {
             //if private state and user is not authenticated
             if (!to.data.isPublic && !isAuthenticated) {

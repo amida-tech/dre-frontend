@@ -1,0 +1,19 @@
+<nav class="navbar">
+    <div class="">
+        <div class="navbar-header">
+            <button type="button" class="records-toggle collapsed" data-toggle="collapse" data-target="#billingsnav">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="records-menu-icon"></span>
+                <span class="records-menu-icon"></span>
+                <span class="records-menu-icon"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse records-menu" id="billingsnav">
+            <div class="sidebar-control nav navbar-left">
+                <a ui-sref="billing" ui-sref-active-eq="active" class="btn">All</a>
+                <a ui-sref="billing.insurance" ui-sref-active="active" class="btn">Insurance</a>
+                <a ui-sref="billing.claims" ui-sref-active="active" class="btn">Claims</a>
+            </div>
+        </div>
+    </div>
+</nav>

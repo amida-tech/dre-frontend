@@ -26,7 +26,7 @@ angular.module('dreFrontendApp')
                 _.forEach(results.entry, function (entry) {
                     $scope.model.vitalsList.push({
                         rawEntry: entry,
-                        type: 'ObservationVital',
+                        type: dreFrontendGlobals.resourceTypes.Vital.type,
                         additionalInfo: entry.valueQuantity.value + ' ' + (angular.isDefined(entry.valueQuantity.units) && entry.valueQuantity.units != '1' ? entry.valueQuantity.units : ''),
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline,

@@ -25,7 +25,7 @@ angular.module('dreFrontendApp')
                 _.forEach(allergies.entry, function (entry) {
                     var allergy = {
                         rawEntry: entry,
-                        type: entry.resourceType,
+                        type: dreFrontendGlobals.resourceTypes.AllergyIntolerance.type,
                         additionalInfo: '',
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         dates: dreFrontendEntryService.getEntryDates(entry),

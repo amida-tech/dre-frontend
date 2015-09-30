@@ -26,11 +26,11 @@ angular.module('dreFrontendApp')
                 _.forEach(results.entry, function (entry) {
                     $scope.model.socialHistoryList.push({
                         rawEntry: entry,
-                        type: 'SocialHistory',
+                        type: dreFrontendGlobals.resourceTypes.SocialHistory.type,
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         additionalInfo: 'some info here',
                         dates: dreFrontendEntryService.getEntryDates(entry),
-                        menuType: dreFrontendGlobals.menuRecordTypeEnum.inline,
+                        menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
                     })
                 });
                 $scope.filterSocialHistory();
@@ -46,6 +46,5 @@ angular.module('dreFrontendApp')
                 : _.filter($scope.model.socialHistoryList, function (item) {
                         return item.dates.isInactive == false;
                     });
-        }
-        var formatDay
+        };
     });

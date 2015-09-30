@@ -30,7 +30,7 @@ angular.module('dreFrontendApp')
                 _.forEach(medications.entry, function (entry) {
                     $scope.model.medicationsList.push({
                         rawEntry: entry,
-                        type: entry.resourceType,
+                        type: dreFrontendGlobals.resourceTypes.MedicationPrescription.type,
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         dates: dreFrontendEntryService.getEntryDates(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.popup,

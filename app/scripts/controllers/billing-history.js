@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-  .controller('RecordHistoryCtrl', function ($scope, dreFrontendEntryService, dreFrontEndPatientInfoService, dreFrontendGlobals) {
+  .controller('BillingHistoryCtrl', function ($scope, dreFrontendEntryService, dreFrontEndPatientInfoService, dreFrontendGlobals) {
         $scope.model = {
             userName : '-',
             lastUpdate: new Date(),
@@ -21,25 +21,22 @@ angular.module('dreFrontendApp')
             $scope.model.actionsList = [
                 {
                     rawEntry: {},
-                    type: dreFrontendGlobals.resourceTypes.Vital.type,
-                    title: 'New vital sign',
-                    additionalInfo: '',
+                    type: dreFrontendGlobals.resourceTypes.Insurance.type,
+                    title: 'duplicate payer',
                     dates: {startDate: 'February 15, 2011'},
                     menuType: dreFrontendGlobals.menuRecordTypeEnum.none
                 },
                 {
                     rawEntry: {},
-                    type: dreFrontendGlobals.resourceTypes.TestResult.type,
-                    title: 'New test result',
-                    additionalInfo: '',
+                    type: dreFrontendGlobals.resourceTypes.Insurance.type,
+                    title: 'new payer ',
                     dates: {startDate: 'February 14, 2011'},
                     menuType: dreFrontendGlobals.menuRecordTypeEnum.none
                 },
                 {
                     rawEntry: {},
-                    type: dreFrontendGlobals.resourceTypes.Procedure.type,
-                    title: 'New procedure',
-                    additionalInfo: '',
+                    type: dreFrontendGlobals.resourceTypes.Claim.type,
+                    title: 'new claim ',
                     dates: {startDate: 'February 13, 2011'},
                     menuType: dreFrontendGlobals.menuRecordTypeEnum.none
                 }

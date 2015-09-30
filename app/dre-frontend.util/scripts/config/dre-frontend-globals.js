@@ -26,47 +26,68 @@ angular.module('dreFrontend.util')
             MedicationPrescription: {
                 alias: 'medications',
                 title: 'Medications',
-                type: 'MedicationPrescription'
+                type: 'MedicationPrescription',
+                fhirType: 'MedicationPrescription'
             },
-            ObservationTestResult: {
+            TestResult: {
                 alias: 'testresults',
                 title: 'Results',
-                type: 'ObservationTestResult'
+                type: 'ObservationTestResult',
+                fhirType: 'Observation'
             },
-            ObservationVital: {
+            Vital: {
                 alias: 'vitals',
                 title: 'Vitals',
-                type: 'ObservationVital'
+                type: 'ObservationVital',
+                fhirType: 'Observation'
             },
             Encounter: {
                 alias: 'encounters',
                 title: 'Encounters',
-                type: 'Encounter'
+                type: 'Encounter',
+                fhirType: 'Encounter'
             },
             Condition: {
                 alias: 'conditions',
                 title: 'Conditions',
-                type: 'Condition'
+                type: 'Condition',
+                fhirType: 'Condition'
             },
             SocialHistory: {
                 alias: 'social-history',
                 title: 'SocialHistory',
-                type: 'SocialHistory'
+                type: 'SocialHistory',
+                fhirType: 'SocialHistory'
             },
             Procedure: {
                 alias: 'procedures',
                 title: 'Procedures',
-                type: 'Procedure'
+                type: 'Procedure',
+                fhirType: 'Procedure'
             },
             AllergyIntolerance: {
                 alias: 'allergies',
                 title: 'Allergies',
-                type: 'AllergyIntolerance'
+                type: 'AllergyIntolerance',
+                fhirType: 'AllergyIntolerance'
             },
             Immunization: {
                 alias: 'immunization',
                 title: 'Immunizations',
-                type: 'Immunization'
+                type: 'Immunization',
+                fhirType: 'Immunization'
+            },
+            Insurance: {
+                alias: 'insurances',
+                title: 'Insurance',
+                type: 'Insurance',
+                fhirType: 'Insurance'
+            },
+            Claim: {
+                alias: 'claims',
+                title: 'Claims',
+                type: 'Claims',
+                fhirType: 'Claims'
             }
         };
 
