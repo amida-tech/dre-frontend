@@ -83,7 +83,8 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             },
             views: {
                 'homeMenu@homeRoot': {
-                    templateUrl: "views/controllers/record-menu.html"
+                    templateUrl: "views/controllers/record-menu.html",
+                    controller: "RecordsMenuCtrl"
                 },
                 'pageBody@homeRoot': {
                     templateUrl: "views/controllers/record-history.html",
@@ -99,9 +100,6 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {
-                    templateUrl: "views/controllers/record-menu.html"
-                },
                 'pageBody@homeRoot': {
                     templateUrl: "views/controllers/medications.html",
                     controller: "MedicationsCtrl"
@@ -116,9 +114,6 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {
-                    templateUrl: "views/controllers/record-menu.html"
-                },
                 'pageBody@homeRoot': {
                     templateUrl: "views/controllers/testresults.html",
                     controller: "TestresultsCtrl"
@@ -133,9 +128,6 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {
-                    templateUrl: "views/controllers/record-menu.html"
-                },
                 'pageBody@homeRoot': {
                     templateUrl: "views/controllers/encounters.html",
                     controller: "EncountersCtrl"
@@ -150,9 +142,6 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {
-                    templateUrl: "views/controllers/record-menu.html"
-                },
                 'pageBody@homeRoot': {
                     templateUrl: "views/controllers/conditions.html",
                     controller: "ConditionsCtrl"
@@ -163,13 +152,10 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             url: '/' + dreFrontendGlobals.resourceTypes.SocialHistory.alias,
             parent: 'record',
             data: {
-                name: 'My Socail History',
+                name: 'My Social History',
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {
-                    templateUrl: "views/controllers/record-menu.html"
-                },
                 'pageBody@homeRoot': {
                     templateUrl: "views/controllers/social-history.html",
                     controller: "SocialHistoryCtrl"
@@ -184,9 +170,6 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {
-                    templateUrl: "views/controllers/record-menu.html"
-                },
                 'pageBody@homeRoot': {
                     templateUrl: "views/controllers/procedures.html",
                     controller: "ProceduresCtrl"
@@ -201,9 +184,6 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {
-                    templateUrl: "views/controllers/record-menu.html"
-                },
                 'pageBody@homeRoot': {
                     templateUrl: "views/controllers/vitals.html",
                     controller: "VitalsCtrl"
@@ -218,9 +198,6 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {
-                    templateUrl: "views/controllers/record-menu.html"
-                },
                 'pageBody@homeRoot': {
                     templateUrl: "views/controllers/immunizations.html",
                     controller: "ImmunizationsCtrl"
@@ -235,9 +212,6 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {
-                    templateUrl: "views/controllers/record-menu.html"
-                },
                 'pageBody@homeRoot': {
                     templateUrl: "views/controllers/allergies.html",
                     controller: "AllergiesCtrl"
@@ -316,7 +290,8 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             },
             views: {
                 'homeMenu@homeRoot': {
-                    templateUrl: "views/controllers/billing-menu.html"
+                    templateUrl: "views/controllers/billing-menu.html",
+                    controller: "BillingMenuCtrl"
                 },
                 'pageBody@homeRoot': {
                     templateUrl: "views/controllers/billing-history.html",
@@ -332,9 +307,6 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {
-                    templateUrl: "views/controllers/billing-menu.html"
-                },
                 'pageBody@homeRoot': {
                     templateUrl: "views/controllers/insurance.html",
                     controller: "InsuranceCtrl"
@@ -349,9 +321,6 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {
-                    templateUrl: "views/controllers/billing-menu.html"
-                },
                 'pageBody@homeRoot': {
                     templateUrl: "views/controllers/claims.html",
                     controller: "ClaimsCtrl"

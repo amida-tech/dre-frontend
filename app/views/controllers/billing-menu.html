@@ -11,8 +11,7 @@
         <div class="navbar-collapse collapse records-menu" id="billingsnav">
             <div class="sidebar-control nav navbar-left">
                 <a ui-sref="billing" ui-sref-active-eq="active" class="btn">All</a>
-                <a ui-sref="billing.insurance" ui-sref-active="active" class="btn">Insurance</a>
-                <a ui-sref="billing.claims" ui-sref-active="active" class="btn">Claims</a>
+                <a ng-repeat="item in model.menuItems" ui-sref="{{item.url}}" ui-sref-active="active" class="btn">{{item.title}}</a>
             </div>
         </div>
     </div>

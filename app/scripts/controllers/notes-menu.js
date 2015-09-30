@@ -17,8 +17,8 @@ angular.module('dreFrontendApp')
             $scope.model.notesTypes = [];
             _.forEach(rawMenuTypes, function (noteType) {
                 $scope.model.notesTypes.push({
-                    title: dreFrontendGlobals.resourceTypes[_.first(noteType).section].title,
-                    noteType: dreFrontendGlobals.resourceTypes[_.first(noteType).section].alias,
+                    title: _.find(dreFrontendGlobals.resourceTypes, {type:_.first(noteType).section}).title,
+                    noteType: _.find(dreFrontendGlobals.resourceTypes, {type:_.first(noteType).section}).alias,
                     itemCount: noteType.length});
             })
         })

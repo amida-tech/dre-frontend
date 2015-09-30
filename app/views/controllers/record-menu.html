@@ -1,16 +1,3 @@
-<!--<div class="sidebar-control" >-->
-  <!--<a ui-sref="record" ui-sref-active-eq="active" class="btn">All</a>-->
-  <!--<a ui-sref="record.medications" ui-sref-active="active" class="btn">Medications</a>-->
-  <!--<a ui-sref="record.testresults" ui-sref-active="active" class="btn">Test Results</a>-->
-  <!--<a ui-sref="record.encounters"  ui-sref-active="active" class="btn">Encounters</a>-->
-  <!--<a ui-sref="record.vitals" ui-sref-active="active" class="btn">Vital Signs</a>-->
-  <!--<a ui-sref="record.immunizations" ui-sref-active="active" class="btn">Immunizations</a>-->
-  <!--<a ui-sref="record.allergies" ui-sref-active="active" class="btn">Allergies</a>-->
-  <!--<a ui-sref="record.conditions" ui-sref-active="active" class="btn">Conditions</a>-->
-  <!--<a ui-sref="record.procedures" ui-sref-active="active" class="btn">Procedures</a>-->
-  <!--<a href="#" ui-sref-active="active" class="btn">Social History</a>-->
-<!--</div>-->
-
 <nav class="navbar">
     <div class="">
         <div class="navbar-header">
@@ -25,15 +12,7 @@
         <div class="navbar-collapse collapse records-menu" id="recordsnav">
             <div class="sidebar-control nav navbar-left">
                 <a ui-sref="record" ui-sref-active-eq="active" class="btn">All</a>
-                <a ui-sref="record.medications" ui-sref-active="active" class="btn">Medications</a>
-                <a ui-sref="record.testresults" ui-sref-active="active" class="btn">Test Results</a>
-                <a ui-sref="record.encounters"  ui-sref-active="active" class="btn">Encounters</a>
-                <a ui-sref="record.vitals" ui-sref-active="active" class="btn">Vital Signs</a>
-                <a ui-sref="record.immunizations" ui-sref-active="active" class="btn">Immunizations</a>
-                <a ui-sref="record.allergies" ui-sref-active="active" class="btn">Allergies</a>
-                <a ui-sref="record.conditions" ui-sref-active="active" class="btn">Conditions</a>
-                <a ui-sref="record.procedures" ui-sref-active="active" class="btn">Procedures</a>
-                <a ui-sref="record.social-history" ui-sref-active="active" class="btn">Social History</a>
+                <a ng-repeat="item in model.menuItems" ui-sref="{{item.url}}" ui-sref-active="active" class="btn">{{item.title}}</a>
             </div>
         </div>
     </div>
