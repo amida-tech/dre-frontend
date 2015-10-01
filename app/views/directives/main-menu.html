@@ -27,9 +27,9 @@
         </li>
       </ul>
       <ul ng-hide="model.isAuthenticated" class="nav navbar-nav navbar-right ">
-        <li><a ui-sref="register">Sign Up</a>
+        <li><a ui-sref="register" ui-sref-opts="{inherit : true}">Sign Up</a>
         </li>
-        <li><a ui-sref="login">Log In</a>
+        <li><a ui-sref="login" ui-sref-opts="{inherit : true}">Log In</a>
         </li>
       </ul>
       <ul ng-show="model.isAuthenticated" class="nav navbar-nav navbar-right">

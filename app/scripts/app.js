@@ -28,7 +28,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
     //routes
     $stateProvider
         .state('main', {
-            url: '/',
+            url: '/?returnTo',
             templateUrl: 'views/controllers/main.html',
             controller: 'MainCtrl',
             data: {
@@ -37,7 +37,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             }
         })
         .state('login', {
-            url: '/login',
+            url: '/login?returnTo',
             templateUrl: 'views/controllers/login.html',
             controller: 'LoginCtrl',
             data: {
@@ -46,7 +46,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             }
         })
         .state('register', {
-            url: '/register',
+            url: '/register?returnTo',
             templateUrl: 'views/controllers/register.html',
             controller: 'RegisterCtrl',
             data: {
@@ -371,20 +371,27 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
     $urlRouterProvider.otherwise('/');
 
 });
-app.run(function ($rootScope, $state, dreFrontendAuthService, dreFrontEndPatientInfoService, dreFrontendGlobals, dreFrontendNotesService) {
+app.run(function ($rootScope, $state, $stateParams, dreFrontendAuthService, dreFrontEndPatientInfoService, dreFrontendGlobals, dreFrontendNotesService) {
     $rootScope.$on("$stateChangeError", console.log.bind(console));
     $rootScope.$state = $state;
-    $rootScope.$on('$stateChangeStart', function (e, to) {
+    $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
         //if rule not defined
-        if (!angular.isDefined(to.data.isPublic)) {
+        if (!angular.isDefined(toState.data.isPublic)) {
             return;
         }
         //Check auth
         dreFrontendAuthService.isAuthenticated().then(function (isAuthenticated) {
             //if private state and user is not authenticated
-            if (!to.data.isPublic && !isAuthenticated) {
-                e.preventDefault();
-                $state.go('main');
+            if (!toState.data.isPublic) {
+                if (!isAuthenticated) {
+                    e.preventDefault();
+                    $stateParams.returnTo = toState.name;
+                    $state.go('main');
+                } else {
+                    if (fromParams.returnTo && fromParams.returnTo !== toState.name) {
+                        $state.go(fromParams.returnTo,{reload:true});
+                    }
+                }
             }
         });
     });
