@@ -28,6 +28,7 @@ angular.module('dreFrontendApp')
                         }
                     });
                 };
+                $scope.$on(dreFrontendGlobals.profileEvents.updated, checkPatientData);
                 checkPatientData();
                 var loggedOutCleanEvent = $rootScope.$on(dreFrontendGlobals.authEvents.loggedOut, function () {
                         $scope.model.userName = '-';

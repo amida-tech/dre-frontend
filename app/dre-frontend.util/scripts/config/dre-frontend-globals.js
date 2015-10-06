@@ -15,6 +15,9 @@ angular.module('dreFrontend.util')
             inProcess: 'dreFrontend:InProcess',
             notLoggedInError: 'dreFrontend:LoggedInError'
         };
+        self.profileEvents = {
+            updated: 'dreFrontend:ProfileUpdated'
+        };
 
         self.menuRecordTypeEnum = {
             none: "none",

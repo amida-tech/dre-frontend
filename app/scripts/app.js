@@ -10,7 +10,7 @@
  */
 var app = angular
     .module('dreFrontendApp', ['ui.router', 'ui.bootstrap', 'dreFrontend.core', 'dreFrontend.fhir', 'dreFrontend.util',
-        'ngTouch', 'ngMessages', 'nvd3', 'dreFrontend.mocks', 'angularFileUpload', 'ngTable', 'ngFileSaver', 'angularSpinner']);
+        'ngTouch', 'ngMessages', 'nvd3', 'dreFrontend.mocks', 'angularFileUpload', 'ngTable', 'ngFileSaver', 'angularSpinner', 'ngImgCrop']);
 app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryProvider, $locationProvider, datepickerConfig,
                      datepickerPopupConfig, dreFrontendGlobalsProvider, $urlRouterProvider, $stateProvider) {
     var dreFrontendGlobals = dreFrontendGlobalsProvider.$get();
@@ -336,11 +336,26 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             },
             views: {
                 'homeMenu@homeRoot': {
-                    templateUrl: "views/controllers/profile-menu.html"
+                    templateUrl: "views/controllers/profile-menu.html",
+                    controller: 'ProfileMenuCtrl'
                 },
                 'pageBody@homeRoot': {
                     templateUrl: "views/controllers/profile.html",
                     controller: 'ProfileCtrl'
+                }
+            }
+        })
+        .state('profile.photo',{
+            url: '/photo',
+            parent: 'profile',
+            data: {
+                name: 'Photo',
+                isPublic: false
+            },
+            views: {
+                'pageBody@homeRoot': {
+                    templateUrl: "views/controllers/profile-photo.html",
+                    controller: 'ProfilePhotoCtrl'
                 }
             }
         })

@@ -1,81 +1,87 @@
-<div class="">
-    <div class="col-sm-3">
-        <button class="btn btn-block btn-primary" ng-click="getSources('Patient', 'test')">getSources</button>
-        <button class="btn btn-block btn-primary" ng-click="getPatient('test')">getPatient(test)</button>
-        <button class="btn btn-block btn-primary" ng-click="Medications('test')">patient's Medications</button>
-        <button class="btn btn-block btn-primary" ng-click="getWeightHistory(3768)">getWeightHistory(3768)</button>
-        <button class="btn btn-block btn-primary" ng-click="getHeightHistory(3768)">getHeightHistory(3768)</button>
-        <button class="btn btn-block btn-primary" ng-click="getLastHeight(3768)">getLastHeight(3768)</button>
-        <button class="btn btn-block btn-primary" ng-click="getLastWeight(3768)">getLastWeight(3768)</button>
-        <button class="btn btn-block btn-primary" ng-click="getLastBMI(3768)">getLastBMI(3768)</button>
-        <button class="btn btn-block btn-primary" ng-click="getBMIHistory(3768)">getBMIHistory(3768)</button>
-        <button class="btn btn-block btn-primary" ng-click="getBloodPressureSystolicHistory(3768)">
-            getBloodPressureSystolicHistory(3768)
-        </button>
-        <button class="btn btn-block btn-primary" ng-click="getBloodPressureDiastolicHistory(3768)">
-            getBloodPressureDiastolicHistory(3768)
-        </button>
-        <button class="btn btn-block btn-primary" ng-click="getLastBloodPressureSystolic(3768)">
-            getLastBloodPressureSystolic(3768)
-        </button>
-        <button class="btn btn-block btn-primary" ng-click="getLastBloodPressureDiastolic(3768)">
-            getLastBloodPressureDiastolic(3768)
-        </button>
-        <button class="btn btn-block btn-primary" ng-click="getEncounters(3768)">getEncounters(3768)</button>
-        <button class="btn btn-block btn-primary" ng-click="getTestResults('test')">Test RESULTS</button>
-        <button class="btn btn-block btn-primary" ng-click="getVitalSigns(3768)">vital signs</button>
-        <hr/>
-        <button class="btn btn-block btn-primary" ng-click="getPractitioners()">getPractitioners()</button>
-        <button class="btn btn-block btn-primary" ng-click="getPractitioner(16524)">getPractitioner(16524)</button>
-        <hr/>
-        <button class="btn btn-block btn-primary" ng-click="getAllergyIntolerance(16795)">getAllergyIntolerance(16795)
-        </button>
-        <button class="btn btn-block btn-primary" ng-click="getAllergyIntolerances('test')">
-            getAllergyIntolerances(test)
-        </button>
-        <hr/>
-        <button class="btn btn-block btn-primary" ng-click="getCarePlan(16516)">getCarePlan(16516)</button>
-        <button class="btn btn-block btn-primary" ng-click="getCarePlans('test')">getCarePlans(test)</button>
-        <hr/>
-        <button class="btn btn-block btn-primary" ng-click="getCondition(16525)">getCondition(16525)</button>
-        <button class="btn btn-block btn-primary" ng-click="getConditions('test')">getConditions(test)</button>
-        <hr/>
-        <button class="btn btn-block btn-primary" ng-click="getDiagnosticOrder(17755)">getDiagnosticOrder(17755)
-        </button>
-        <button class="btn btn-block btn-primary" ng-click="getDiagnosticOrders('test')">getDiagnosticOrders(test)
-        </button>
-    </div>
-    <div class="col-sm-9">
-        <div class="panel-default panel">
-            <div upload-form upload-success="uploadSuccess"></div>
+<div class="container">
+    <div class="row">
+        <div class="col-sm-3">
+            <button class="btn btn-block btn-primary" ng-click="getSources('Patient', 'test')">getSources</button>
+            <button class="btn btn-block btn-primary" ng-click="getPatient('test')">getPatient(test)</button>
+            <button class="btn btn-block btn-primary" ng-click="Medications('test')">patient's Medications</button>
+            <button class="btn btn-block btn-primary" ng-click="getWeightHistory(3768)">getWeightHistory(3768)</button>
+            <button class="btn btn-block btn-primary" ng-click="getHeightHistory(3768)">getHeightHistory(3768)</button>
+            <button class="btn btn-block btn-primary" ng-click="getLastHeight(3768)">getLastHeight(3768)</button>
+            <button class="btn btn-block btn-primary" ng-click="getLastWeight(3768)">getLastWeight(3768)</button>
+            <button class="btn btn-block btn-primary" ng-click="getLastBMI(3768)">getLastBMI(3768)</button>
+            <button class="btn btn-block btn-primary" ng-click="getBMIHistory(3768)">getBMIHistory(3768)</button>
+            <button class="btn btn-block btn-primary" ng-click="getBloodPressureSystolicHistory(3768)">
+                getBloodPressureSystolicHistory(3768)
+            </button>
+            <button class="btn btn-block btn-primary" ng-click="getBloodPressureDiastolicHistory(3768)">
+                getBloodPressureDiastolicHistory(3768)
+            </button>
+            <button class="btn btn-block btn-primary" ng-click="getLastBloodPressureSystolic(3768)">
+                getLastBloodPressureSystolic(3768)
+            </button>
+            <button class="btn btn-block btn-primary" ng-click="getLastBloodPressureDiastolic(3768)">
+                getLastBloodPressureDiastolic(3768)
+            </button>
+            <button class="btn btn-block btn-primary" ng-click="getEncounters(3768)">getEncounters(3768)</button>
+            <button class="btn btn-block btn-primary" ng-click="getTestResults('test')">Test RESULTS</button>
+            <button class="btn btn-block btn-primary" ng-click="getVitalSigns(3768)">vital signs</button>
+            <hr/>
+            <button class="btn btn-block btn-primary" ng-click="getPractitioners()">getPractitioners()</button>
+            <button class="btn btn-block btn-primary" ng-click="getPractitioner(16524)">getPractitioner(16524)</button>
+            <hr/>
+            <button class="btn btn-block btn-primary" ng-click="getAllergyIntolerance(16795)">
+                getAllergyIntolerance(16795)
+            </button>
+            <button class="btn btn-block btn-primary" ng-click="getAllergyIntolerances('test')">
+                getAllergyIntolerances(test)
+            </button>
+            <hr/>
+            <button class="btn btn-block btn-primary" ng-click="getCarePlan(16516)">getCarePlan(16516)</button>
+            <button class="btn btn-block btn-primary" ng-click="getCarePlans('test')">getCarePlans(test)</button>
+            <hr/>
+            <button class="btn btn-block btn-primary" ng-click="getCondition(16525)">getCondition(16525)</button>
+            <button class="btn btn-block btn-primary" ng-click="getConditions('test')">getConditions(test)</button>
+            <hr/>
+            <button class="btn btn-block btn-primary" ng-click="getDiagnosticOrder(17755)">getDiagnosticOrder(17755)
+            </button>
+            <button class="btn btn-block btn-primary" ng-click="getDiagnosticOrders('test')">getDiagnosticOrders(test)
+            </button>
         </div>
-    </div>
-    <div class="col-sm-9">
-        <div class="panel panel-default" ng-show="sources[0]">
-            <table class="table table-condensed table-hover">
-                <thead>
-                <tr>
-                    <td>Source</td>
-                    <td>Status</td>
-                    <td>Indexed</td>
-                </tr>
-                </thead>
-                <tbody>
-                <tr ng-repeat="binary in sources">
-                    <td><fhir-binary-link doc-ref="binary"/></td>
-                    <td class="text-capitalize">{{binary.status}}</td>
-                    <td>{{binary.indexed | date:'short'}}</td>
-                </tr>
-                </tbody>
-            </table>
+
+        <div class="col-sm-9">
+            <div class="panel-default panel">
+                <div upload-form upload-success="uploadSuccess"></div>
+            </div>
         </div>
-        <ul class="nav panel-default panel" ng-show="sources[0]">
-            <li class="" ng-repeat="binary in sources">
-                <fhir-binary-link doc-ref="binary"/>
-            </li>
-        </ul>
-    </div>
-    <div class="col-sm-9">
-        <pre class="bg-{{res_type}}" style="white-space: pre-wrap;" ng-show="response">{{response | json }}</pre>
+        <div class="col-sm-9">
+            <div class="panel panel-default" ng-show="sources[0]">
+                <table class="table table-condensed table-hover">
+                    <thead>
+                    <tr>
+                        <td>Source</td>
+                        <td>Status</td>
+                        <td>Indexed</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="binary in sources">
+                        <td>
+                            <fhir-binary-link doc-ref="binary"/>
+                        </td>
+                        <td class="text-capitalize">{{binary.status}}</td>
+                        <td>{{binary.indexed | date:'short'}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <ul class="nav panel-default panel" ng-show="sources[0]">
+                <li class="" ng-repeat="binary in sources">
+                    <fhir-binary-link doc-ref="binary"/>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-9">
+            <pre class="bg-{{res_type}}" style="white-space: pre-wrap;" ng-show="response">{{response | json }}</pre>
+        </div>
     </div>
 </div>

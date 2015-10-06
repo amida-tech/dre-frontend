@@ -34,12 +34,14 @@ angular.module('dreFrontendApp')
     ) {
 
         function success_handler(response) {
+            $log.debug(response);
             $scope.response = response;
             $scope.res_type = "success";
             return response;
         }
 
         function fail_handler(response) {
+            $log.debug(response);
             $scope.response = response;
             $scope.res_type = "danger";
             return response;
@@ -47,24 +49,13 @@ angular.module('dreFrontendApp')
 
         $scope.getPatients = function () {
             dreFrontendPatient.getAll()
-                .then(function (bundle) {
-                    bundle.entry[0].official_name = bundle.entry[0].getOfficialName();
-                    $scope.response = bundle;
-                    $scope.res_type = "success";
-                    return bundle;
-                })
+                .then(success_handler)
                 .catch(fail_handler);
         };
 
         $scope.getPatient = function (id) {
             dreFrontendPatient.getById(id)
-                .then(function (patient) {
-                    patient.getSources();
-                    $scope.response = patient;
-                    $scope.response.official_name = patient.getName();
-                    $scope.res_type = "success";
-                    return patient;
-                })
+                .then(success_handler)
                 .catch(fail_handler);
         };
 

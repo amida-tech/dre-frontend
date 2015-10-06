@@ -152,7 +152,6 @@ angular.module('dreFrontendApp')
             });
         };
 
-
         //TODO Check for bad response, SHOW IT in the GUI
         $scope.updateProfile = function() {
             var model = $scope.model;
@@ -222,11 +221,4 @@ angular.module('dreFrontendApp')
                 $scope.changeEditPhoneSection(true);
             });
         };
-
-        $scope.scroll = function(link) {
-            var old = $location.hash();
-            $location.hash(link);
-            $anchorScroll();
-            $location.hash(old);
-        };
-  });
+    });

@@ -45,6 +45,7 @@ module.exports = function(config) {
       'bower_components/restangular/dist/restangular.js',
       'bower_components/spin.js/spin.js',
       'bower_components/angular-spinner/angular-spinner.js',
+      'bower_components/ngImgCrop/compile/minified/ng-img-crop.js',
       // endbower
       "app/scripts/**/*.js",
       "test/mock/**/*.js",

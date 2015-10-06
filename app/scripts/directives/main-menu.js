@@ -46,6 +46,7 @@ angular.module('dreFrontendApp')
                     });
                 };
                 checkAuth();
+                $scope.$on(dreFrontendGlobals.profileEvents.updated, checkAuth);
                 var loggedInCleanEvent = $rootScope.$on(dreFrontendGlobals.authEvents.loggedIn, checkAuth);
                 var loggedOutCleanEvent = $rootScope.$on(dreFrontendGlobals.authEvents.loggedOut, checkAuth);
 

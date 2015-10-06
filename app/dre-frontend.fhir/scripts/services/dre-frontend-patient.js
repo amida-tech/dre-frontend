@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendPatient', function (dreFrontendFhirService, $q, _, fhirEnv) {
+    .factory('dreFrontendPatient', function (dreFrontendFhirService, $q, _, fhirEnv, $log) {
 
         function Patient(data) {
             this.setData(data);
@@ -67,6 +67,19 @@ angular.module('dreFrontend.fhir')
                 .concat(this.getOfficialName())
                 .concat(this.getNameByType());
             return result;
+        };
+
+        Patient.prototype.setBase64Photo = function (contentType,data) {
+            this.photo[0] = {
+                contentType: contentType,
+                data: data
+            };
+            return this;
+        };
+
+        Patient.prototype.update = function () {
+            var _data = angular.fromJson(angular.toJson(this));
+            return dreFrontendFhirService.update(_data.resourceType,_data.id, _data);
         };
 
         var patient = {
