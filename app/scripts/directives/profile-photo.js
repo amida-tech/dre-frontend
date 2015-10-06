@@ -9,7 +9,7 @@
 angular.module('dreFrontendApp')
     .directive('profilePhoto', function (dreFrontendGlobals,$rootScope, $log) {
         return {
-            templateUrl: '../../views/directives/profile-photo.html',
+            templateUrl: 'views/directives/profile-photo.html',
             restrict: 'AE',
             scope: {
                 patient:'='
