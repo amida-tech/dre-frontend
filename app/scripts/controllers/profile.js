@@ -89,7 +89,7 @@ angular.module('dreFrontendApp')
                 if(patient.gender != undefined) {
                     model.gender = patient.gender;
                 }
-                if(patient.address.length != 0) {
+                if(patient.address && patient.address.length != 0) {
                     model.addresses = patient.address;
                 }
                 _.forEach(model.addresses, function(entry) {

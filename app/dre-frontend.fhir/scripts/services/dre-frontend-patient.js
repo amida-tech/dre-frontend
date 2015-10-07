@@ -70,6 +70,7 @@ angular.module('dreFrontend.fhir')
         };
 
         Patient.prototype.setBase64Photo = function (contentType,data) {
+            if (!this.photo || typeof this.photo !== 'array'){this.photo=[];}
             this.photo[0] = {
                 contentType: contentType,
                 data: data
