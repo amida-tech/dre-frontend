@@ -8,15 +8,16 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('MedicationsCtrl', function ($scope, dreFrontendEntryService, dreFrontendMedications, _, dreFrontEndPatientInfoService, dreFrontendUtil, dreFrontendGlobals) {
+    .controller('MedicationsCtrl', function ($scope, dreFrontendEntryService, dreFrontendMedications, _,
+                                             dreFrontEndPatientInfoService, dreFrontendUtil, dreFrontendGlobals,
+                                             dreFrontendModalsService) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
             showInactive: false,
             medicationsList: [],
             filteredMedicationList: [],
-            //TODO hardcoded, need to get updates fromo SERVICE
-            updates: 5,
+            updates: 5, //TODO hardcoded, need to get updates fromo SERVICE
             entryType: 'medications'
         };
 
@@ -51,5 +52,8 @@ angular.module('dreFrontendApp')
                 : _.filter($scope.model.medicationsList, function (item) {
                         return item.dates.isInactive == false;
                     });
+        }
+        $scope.showMedicationEdit = function() {
+            dreFrontendModalsService.showMedicationEdit();
         }
     });

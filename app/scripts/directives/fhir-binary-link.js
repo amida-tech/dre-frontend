@@ -27,14 +27,16 @@ angular.module('dreFrontendApp')
 
                 $scope.getIcon = function (mimeType) {
                     var res = "fa-file-o";
-                    var parts = mimeType.split('/');
-                    switch(parts[0]){
-                        case "text":
-                            res = (parts[1] === "xml")?"fa-file-code-o":"fa-file-text-o";
-                            break;
-                        case "image":
-                            res = "fa-file-image-o";
-                            break;
+                    if (mimeType) {
+                        var parts = mimeType.split('/');
+                        switch (parts[0]) {
+                            case "text":
+                                res = (parts[1] === "xml") ? "fa-file-code-o" : "fa-file-text-o";
+                                break;
+                            case "image":
+                                res = "fa-file-image-o";
+                                break;
+                        }
                     }
                     return res;
                 };

@@ -1,0 +1,34 @@
+<div>
+    <div class="modal-header">
+        <button class="close" ng-click="close()" aria-label="Close" data-dismiss="modal" type="button">
+            <span>×</span>
+        </button>
+        <h3 class="modal-title">Medication Entry</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row" ng-if="model.step==='0'">
+            <div class="col-sm-12"><h3>Select a drug type:</h3></div>
+            <div class="col-sm-6 col-sm-offset-3 col-md-offset-0 btn-group btn-group-justified" role="group">
+                <div class="btn-group" role="group">
+                    <button class="btn btn-default col-sm-12" data-toggle="tab" data-target="#medinfo" aria-controls="medinfo" ng-click="initInfoSearch('prescription')">Prescription</button>
+                </div>
+                <div class="btn-group" role="group">
+                    <button class="btn btn-default col-sm-12" data-toggle="tab" data-target="#medinfo" aria-controls="medinfo" ng-click="initInfoSearch('otc')">Over the Counter</button>
+                </div>
+            </div>
+        </div>
+        <div class="row" ng-if="model.step==='1'">
+            <div class="col-sm-12"><h3>Medication Information</h3></div>
+        </div>
+        <div class="row" ng-if="model.step==='2'">
+            <div class="col-sm-12"><h3>Medication Information</h3></div>
+        </div>
+        <div class="row" ng-if="model.step==='3'">
+            <div class="col-sm-12"><h3>Medication Information</h3></div>
+        </div>
+        <div class="row" ng-if="model.step==='4'">
+            <div class="col-sm-12"><h3>Medication Information</h3></div>
+        </div>
+    </div>
+    <div class="modal-footer"></div>
+</div>

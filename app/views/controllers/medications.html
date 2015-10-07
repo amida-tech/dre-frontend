@@ -8,9 +8,9 @@
         </div>
 
         <div class="col-sm-3 col-sm-offset-3">
-            <button class="btn btn-default" data-toggle="modal" data-target="#myModal3">
+            <button class="btn btn-default" ng-click="showMedicationEdit()">
                 <div class="text-left" style="text-transform: none;">
-                    <div class="pull-right">
+                    <div class="pull-right b">
                         <h5 style="margin-top: 0px; margin-bottom: 0px; font-size: 1.5em;">Add Medication</h5>
                     </div>
                 </div>
@@ -40,5 +40,5 @@
     <div class="blocks">
         <div ng-repeat="item in model.medicationsList" user-timeline-entry="item"></div>
     </div>
-    <h5 ng-hide="model.medicationsList && model.showInactive" class="col-sm-12 text-center">No Medication Entries</h5>
+    <h5 ng-hide="model.medicationsList" class="col-sm-12 text-center">No Medication Entries</h5>
 </div>

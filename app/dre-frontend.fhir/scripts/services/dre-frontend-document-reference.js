@@ -13,12 +13,15 @@ angular.module('dreFrontend.fhir')
         };
 
         DocumentReference.prototype.getContent = function () {
-
-            var parts = dreFrontendUtil.parseResourceReference(this.url || this.content[0].url);
-            if (parts && parts.length === 4)
-                return dreFrontendFhirService.history(parts[0],parts[1],parts[3]);
-            else
-                return $q.reject("cannt get content");
+            var parts;
+            if (this.url || this.content) {
+                parts = dreFrontendUtil.parseResourceReference(this.url || this.content[0].url);
+            }
+            if (parts && parts.length === 4) {
+                return dreFrontendFhirService.history(parts[0], parts[1], parts[3]);
+            } else {
+                return $q.reject("can't get content");
+            }
         };
 
         return {
@@ -67,7 +70,7 @@ angular.module('dreFrontend.fhir')
                             angular.extend(data, doc_ref.type.coding[0]);
                         }
 
-                        if (doc_ref.content[0]) {
+                        if (doc_ref.content && doc_ref.content[0]) {
                             angular.extend(data, doc_ref.content[0]);
                         }
 

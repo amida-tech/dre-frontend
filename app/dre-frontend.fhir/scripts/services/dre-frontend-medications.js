@@ -1,26 +1,25 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendMedications', function (dreFrontendFhirService, $q, $log) {
+    .factory('dreFrontendMedications', function (dreFrontendFhirService, $q) {
 
-        function Medications(data) {
-            this.setData(data);
+        function setData(obj,data) {
+            if (data)
+                angular.extend(obj,data);
         }
 
-        Medications.prototype.setData = function (data) {
-            if (data)
-                angular.extend(this, data);
-        };
+        function Medications(data) {
+            setData(this,data);
+        }
 
         var medications = {
             getByPatientId: function (patient_id) {
-                return dreFrontendFhirService.search("MedicationPrescription", {patient: patient_id})
+                return dreFrontendFhirService.search("MedicationOrder", {patient: patient_id})
                     .then(function (response) {
-                        $log.debug(response);
                         var medicationsArray = [];
                         angular.forEach(response.entry, function (resource) {
-                            if (resource.medication) {
-                                medicationsArray.push(resource.medication.load());
+                            if (resource.medicationReference) {
+                                medicationsArray.push(resource.medicationReference.load());
                             }
                         });
                         return $q.all(medicationsArray).then(function () {

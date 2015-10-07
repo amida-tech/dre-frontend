@@ -22,6 +22,18 @@ angular.module('dreFrontendApp')
                         }
                     }
                 });
+            },
+            showMedicationEdit: function (item) {
+                return $modal.open({
+                    templateUrl: 'views/controllers/modals/medication-edit.html',
+                    controller: 'MedicationEditCtrl',
+                    size: 'lg',
+                    resolve: {
+                        item: function() {
+                            return item;
+                        }
+                    }
+                });
             }
         };
 

@@ -103,13 +103,16 @@ angular.module('dreFrontendApp')
         var _getEntryTitle = function (entry) {
             switch (entry.resourceType) {
                 case 'MedicationPrescription':
-                    if (angular.isObject(entry.medication)) {
-                        if (angular.isObject(entry.medication.code)) {
-                            if (angular.isArray(entry.medication.code.coding) && entry.medication.code.coding.length > 0 && entry.medication.code.coding[0].display) {
-                                return entry.medication.code.coding[0].display;
+                case 'MedicationOrder':
+                    var paramName = (entry.resourceType === 'MedicationOrder')?'medicationReference':'medication';
+
+                    if (angular.isObject(entry[paramName])) {
+                        if (angular.isObject(entry[paramName].code)) {
+                            if (angular.isArray(entry[paramName].code.coding) && entry[paramName].code.coding.length > 0 && entry[paramName].code.coding[0].display) {
+                                return entry[paramName].code.coding[0].display;
                             }
-                            if (angular.isString(entry.medication.code.text)) {
-                                return entry.code.text
+                            if (angular.isString(entry[paramName].code.text)) {
+                                return entry[paramName].code.text;
                             }
                         }
                     }
