@@ -12,10 +12,11 @@ angular.module('dreFrontendApp')
         $scope.model = {
             lastUpdate: new Date(),
             userName: '',
-            immunizations: [],
+            list: [],
             //TODO hardcoded, need to get updates fromo SERVICE
             updates: 5,
-            entryType: 'immunizations'
+            entryType: dreFrontendGlobals.resourceTypes.Immunization.type,
+            title: dreFrontendGlobals.resourceTypes.Immunization.title
         };
         dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
@@ -23,7 +24,7 @@ angular.module('dreFrontendApp')
         dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
             dreFrontendImmunizations.getByPatientId(patientId).then(function(immunizations) {
                 _.forEach(immunizations.entry, function(entry){
-                    var immunization = {
+                    $scope.model.list.push({
                         rawEntry: entry,
                         type: dreFrontendGlobals.resourceTypes.Immunization.type,
                         additionalInfo: '',
@@ -31,8 +32,7 @@ angular.module('dreFrontendApp')
                         dates: dreFrontendEntryService.getEntryDates(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline,
                         updates: 1
-                    };
-                    $scope.model.immunizations.push(immunization);
+                    });
                 });
             })
         });

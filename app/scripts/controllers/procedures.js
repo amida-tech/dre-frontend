@@ -12,19 +12,20 @@ angular.module('dreFrontendApp')
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
-            proceduresList: [],
+            list: [],
             //TODO hardcoded, need to get updates fromo SERVICE
             updates: 5,
-            entryType: 'procedures'
+            entryType: dreFrontendGlobals.resourceTypes.Procedure.type,
+            title: dreFrontendGlobals.resourceTypes.Procedure.title
         };
         dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
         });
         dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
             dreFrontendProcedures.getByPatientId(patientId).then(function (results) {
-                $scope.model.proceduresList = [];
+                $scope.model.list = [];
                 _.forEach(results.entry, function (entry) {
-                    $scope.model.proceduresList.push({
+                    $scope.model.list.push({
                         rawEntry: entry,
                         type: dreFrontendGlobals.resourceTypes.Procedure.type,
                         title: dreFrontendEntryService.getEntryTitle(entry),

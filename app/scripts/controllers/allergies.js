@@ -12,10 +12,11 @@ angular.module('dreFrontendApp')
         $scope.model = {
             lastUpdate: new Date(),
             userName: '',
-            allergies: [],
+            list: [],
             //TODO hardcoded, need to get updates fromo SERVICE
             updates: 5,
-            entryType: 'allergies'
+            entryType: 'Allergies',//dreFrontendGlobals.resourceTypes.AllergyIntolerance.type,
+            title: dreFrontendGlobals.resourceTypes.AllergyIntolerance.title
         };
         dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
@@ -47,7 +48,7 @@ angular.module('dreFrontendApp')
                             }
                         }
                     }
-                    $scope.model.allergies.push(allergy);
+                    $scope.model.list.push(allergy);
                 });
             })
         });

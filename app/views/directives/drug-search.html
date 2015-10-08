@@ -1,0 +1,90 @@
+<form novalidate role="form" class="form-horizontal">
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Drug name (REQUIRED)</label>
+
+        <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="model.search.query" ng-disabled="model.search.active">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-3 control-label">Dose (e.g. 20 MG)</label>
+
+        <div class="col-sm-9">
+            <input type="text" class="form-control" ng-model="model.search.filter">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            <button style="width: initial" class="btn btn-default form-control pull-right"
+                    ng-click="search()" ng-disabled="model.search.active">Search
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="alert alert-danger" role="alert" ng-show="model.error">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span> {{model.error}}
+        </div>
+        <div class="alert alert-warning" role="alert" ng-show="model.warning">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Warning:</span> {{model.warning}}
+            <ul ng-show="model.drugSpells">
+                <li ng-repeat="drugSpell in model.drugSpells"><a
+                    ng-click="search(drugSpell)">{{drugSpell}}</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="row" ng-show="rxnormResults">
+        <h4>RxNorm Results ({{drugSet.length}})</h4>
+
+        <div class="form-group" ng-show="rxnormResults.dfg">
+            <label class="col-sm-4 control-label">Filter Search Results by Medication Type:</label>
+
+            <div class="col-sm-2">
+                <select class="form-control" ng-model="pDrugFilter.$" ng-disabled="!rxnormResults.dfg">
+                    <option></option>
+                    <option ng-repeat="dfg in rxnormResults.dfg">{{dfg}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-4 control-label">Filter Search Results by Medication Brand:</label>
+
+            <div class="col-sm-2">
+                <select class="form-control" ng-model="pBrandFilter.$"
+                        ng-disabled="!rxnormResults.brand">
+                    <option></option>
+                    <option ng-repeat="brand in rxnormResults.brand">{{brand}}</option>
+                </select>
+            </div>
+        </div>
+        <h5>Please select one of the drugs in the table below:</h5>
+        <table class="table table-bordered table-hover" style="cursor:pointer">
+            <thead>
+            <tr>
+                <th style="text-align: center"><span><i class="fa fa-check"
+                                                        style="color: black"></i></span>
+                </th>
+                <th>Brand</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>RxId</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-class="{info: rxdrug.selected}"
+                ng-repeat="rxdrug in rxnormResults.compiled | filter:pDrugFilter:strict | filter:pBrandFilter:strict"
+                ng-click="setSelectedDrug()">
+                <td style="text-align: center"><span ng-show="rxdrug.selected"><i class="fa fa-check"
+                                                                                  style="color: green"></i></span>
+                </td>
+                <td>{{rxdrug.brand}}</td>
+                <td title="{{rxdrug.synonym}}">{{rxdrug.modifiedname}}</td>
+                <td><span ng-repeat="dfgName in rxdrug.dfg">{{dfgName}}</span><span
+                    ng-show=" !{{$last}} ">, </span></td>
+                <td>{{rxdrug.rxcui}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</form>

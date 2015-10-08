@@ -34,7 +34,7 @@ angular.module('dreFrontend.util')
             },
             TestResult: {
                 alias: 'testresults',
-                title: 'Results',
+                title: 'Test Results',
                 type: 'ObservationTestResult',
                 fhirType: 'Observation'
             },

@@ -115,7 +115,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             },
             views: {
                 'pageBody@homeRoot': {
-                    templateUrl: "views/controllers/testresults.html",
+                    templateUrl: "views/controllers/records-common.html",
                     controller: "TestresultsCtrl"
                 }
             }
@@ -129,7 +129,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             },
             views: {
                 'pageBody@homeRoot': {
-                    templateUrl: "views/controllers/encounters.html",
+                    templateUrl: "views/controllers/records-common.html",
                     controller: "EncountersCtrl"
                 }
             }
@@ -143,7 +143,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             },
             views: {
                 'pageBody@homeRoot': {
-                    templateUrl: "views/controllers/conditions.html",
+                    templateUrl: "views/controllers/records-common.html",
                     controller: "ConditionsCtrl"
                 }
             }
@@ -171,7 +171,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             },
             views: {
                 'pageBody@homeRoot': {
-                    templateUrl: "views/controllers/procedures.html",
+                    templateUrl: "views/controllers/records-common.html",
                     controller: "ProceduresCtrl"
                 }
             }
@@ -185,7 +185,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             },
             views: {
                 'pageBody@homeRoot': {
-                    templateUrl: "views/controllers/vitals.html",
+                    templateUrl: "views/controllers/records-common.html",
                     controller: "VitalsCtrl"
                 }
             }
@@ -199,7 +199,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             },
             views: {
                 'pageBody@homeRoot': {
-                    templateUrl: "views/controllers/immunizations.html",
+                    templateUrl: "views/controllers/records-common.html",
                     controller: "ImmunizationsCtrl"
                 }
             }
@@ -213,7 +213,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             },
             views: {
                 'pageBody@homeRoot': {
-                    templateUrl: "views/controllers/allergies.html",
+                    templateUrl: "views/controllers/records-common.html",
                     controller: "AllergiesCtrl"
                 }
             }
