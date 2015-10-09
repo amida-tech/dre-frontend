@@ -3,47 +3,46 @@
         <label class="col-sm-3 control-label">Drug name (REQUIRED)</label>
 
         <div class="col-sm-9">
-            <input type="text" class="form-control" ng-model="model.search.query" ng-disabled="model.search.active">
+            <input type="text" class="form-control" ng-model="model.query" ng-disabled="model.active">
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-3 control-label">Dose (e.g. 20 MG)</label>
 
         <div class="col-sm-9">
-            <input type="text" class="form-control" ng-model="model.search.filter">
+            <input type="text" class="form-control" ng-model="model.drug.name">
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
             <button style="width: initial" class="btn btn-default form-control pull-right"
-                    ng-click="search()" ng-disabled="model.search.active">Search
+                    ng-click="search(model.query)" ng-disabled="model.active">Search
             </button>
         </div>
     </div>
-    <div class="row">
-        <div class="alert alert-danger" role="alert" ng-show="model.error">
+    <div>
+        <div class="alert alert-danger" role="alert" ng-show="model.err">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span class="sr-only">Error:</span> {{model.error}}
+            <span class="sr-only">Error:</span> {{model.err}}
         </div>
-        <div class="alert alert-warning" role="alert" ng-show="model.warning">
+        <div class="alert alert-warning" role="alert" ng-show="model.warn">
             <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span class="sr-only">Warning:</span> {{model.warning}}
-            <ul ng-show="model.drugSpells">
-                <li ng-repeat="drugSpell in model.drugSpells"><a
-                    ng-click="search(drugSpell)">{{drugSpell}}</a></li>
+            <span class="sr-only">Warning:</span> {{model.warn}}
+            <ul ng-show="model.suggestions">
+                <li ng-repeat="drug in model.suggestions"><a ng-click="search(drug)">{{drug}}</a></li>
             </ul>
         </div>
     </div>
-    <div class="row" ng-show="rxnormResults">
-        <h4>RxNorm Results ({{drugSet.length}})</h4>
+    <div class="" ng-show="model.rxgroup">
+        <h4>RxNorm Results ({{model.drugCount}})</h4>
 
-        <div class="form-group" ng-show="rxnormResults.dfg">
+        <div class="form-group" ng-show="model.rxgroup.dfg">
             <label class="col-sm-4 control-label">Filter Search Results by Medication Type:</label>
 
             <div class="col-sm-2">
-                <select class="form-control" ng-model="pDrugFilter.$" ng-disabled="!rxnormResults.dfg">
+                <select class="form-control" ng-model="model.drug.$" ng-disabled="!model.rxgroup.dfg">
                     <option></option>
-                    <option ng-repeat="dfg in rxnormResults.dfg">{{dfg}}</option>
+                    <option ng-repeat="dfg in model.rxgroup.dfg">{{dfg}}</option>
                 </select>
             </div>
         </div>
@@ -51,20 +50,17 @@
             <label class="col-sm-4 control-label">Filter Search Results by Medication Brand:</label>
 
             <div class="col-sm-2">
-                <select class="form-control" ng-model="pBrandFilter.$"
-                        ng-disabled="!rxnormResults.brand">
+                <select class="form-control" ng-model="model.brand.$" ng-disabled="!model.rxgroup.brand">
                     <option></option>
-                    <option ng-repeat="brand in rxnormResults.brand">{{brand}}</option>
+                    <option ng-repeat="brand in model.rxgroup.brand">{{brand}}</option>
                 </select>
             </div>
         </div>
         <h5>Please select one of the drugs in the table below:</h5>
-        <table class="table table-bordered table-hover" style="cursor:pointer">
+        <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th style="text-align: center"><span><i class="fa fa-check"
-                                                        style="color: black"></i></span>
-                </th>
+                <th class="text-center"><span><i class="fa fa-check"></i></span></th>
                 <th>Brand</th>
                 <th>Name</th>
                 <th>Type</th>
@@ -73,15 +69,16 @@
             </thead>
             <tbody>
             <tr ng-class="{info: rxdrug.selected}"
-                ng-repeat="rxdrug in rxnormResults.compiled | filter:pDrugFilter:strict | filter:pBrandFilter:strict"
-                ng-click="setSelectedDrug()">
-                <td style="text-align: center"><span ng-show="rxdrug.selected"><i class="fa fa-check"
-                                                                                  style="color: green"></i></span>
+                ng-repeat="rxdrug in model.rxgroup.compiled | filter:model.drug:strict | filter:model.brand:strict"
+                ng-click="selectDrug()">
+                <td class="text-center">
+                    <span ng-show="rxdrug.selected"><i class="fa fa-check text-success"></i></span>
                 </td>
                 <td>{{rxdrug.brand}}</td>
                 <td title="{{rxdrug.synonym}}">{{rxdrug.modifiedname}}</td>
-                <td><span ng-repeat="dfgName in rxdrug.dfg">{{dfgName}}</span><span
-                    ng-show=" !{{$last}} ">, </span></td>
+                <td>
+                    <span ng-repeat="dfgName in rxdrug.dfg">{{dfgName}}<span ng-show="!$last">, </span></span>
+                </td>
                 <td>{{rxdrug.rxcui}}</td>
             </tr>
             </tbody>

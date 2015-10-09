@@ -18,83 +18,74 @@ angular.module('dreFrontendApp')
                 prescriber: null,
                 step: 0,
                 maxStep: 4,
-                error: null,
-                warning: null
+                err: null,
+                warn: null
             };
         };
 
         initModel();
 
-        var nextStep = function() {
+        var nextStep = function () {
             switch ($scope.model.step) {
                 case 1:
                     if (!$scope.model.drug) {
-                        $scope.model.error = "You must select a drug";
+                        $scope.model.err = "You must select a drug";
                     } else {
-                        if ($scope.model.drugType === 'prescription') {
-                            $scope.model.step = 2;
-                        } else {
-                            $scope.model.step = 3;
-                        }
-                        /* move into directive
-                        medapi.findImages($scope.selectedDrug.rxcui, function (err, imageData) {
-                            if (err) {
-                                console.log("Err: " + err);
-                            } else {
-                                $scope.rximageResults = imageData;
-                            }
-                        });
-                        */
+                        $scope.model.step = ($scope.model.drugType === 'prescription') ? 2 : 3;
                     }
                     break;
                 case 2:
                     if (!$scope.model.prescriber) {
-                        $scope.error = "You must select a prescriber";
+                        $scope.model.err = "You must select a prescriber";
                     } else {
                         $scope.model.step = 3;
                     }
                     break;
                 case 3:
                     /*
-                    if (!_.has($scope, 'pStart')) {
-                        $scope.error = "You must enter a start date";
-                    } else {
-                        enteredObject(function () {
-                            format.formatDate($scope.enteredMedication.date_time.low);
-                            if ($scope.enteredMedication.date_time.high) {
-                                format.formatDate($scope.enteredMedication.date_time.high);
-                            }
-                            if ($scope.enteredMedication.performer) {
-                                if ($scope.enteredMedication.performer.address) {
-                                    format.formatAddress($scope.enteredMedication.performer.address[0]);
-                                }
-                                if ($scope.enteredMedication.performer.name) {
-                                    format.formatName($scope.enteredMedication.performer.name[0]);
-                                }
-                            }
-                            console.log($scope.enteredMedication);
-                            $scope.medication = $scope.enteredMedication;
-                            $scope.model.step = 4;
-                        });
-                    }
-                    */
+                     if (!_.has($scope, 'pStart')) {
+                     $scope.error = "You must enter a start date";
+                     } else {
+                     enteredObject(function () {
+                     format.formatDate($scope.enteredMedication.date_time.low);
+                     if ($scope.enteredMedication.date_time.high) {
+                     format.formatDate($scope.enteredMedication.date_time.high);
+                     }
+                     if ($scope.enteredMedication.performer) {
+                     if ($scope.enteredMedication.performer.address) {
+                     format.formatAddress($scope.enteredMedication.performer.address[0]);
+                     }
+                     if ($scope.enteredMedication.performer.name) {
+                     format.formatName($scope.enteredMedication.performer.name[0]);
+                     }
+                     }
+                     console.log($scope.enteredMedication);
+                     $scope.medication = $scope.enteredMedication;
+                     $scope.model.step = 4;
+                     });
+                     }
+                     */
                     break;
                 default:
                     $scope.model.step++;
             }
         };
 
-        var prevStep = function() {
-            if ($scope.model.step > 0) {
-                $scope.model.step--;
+        var prevStep = function () {
+            if ($scope.entryStep === 3 && $scope.medSearchType !== 'prescription') {
+                $scope.entryStep = 1;
+            } else {
+                if ($scope.model.step > 0) {
+                    $scope.model.step--;
+                }
             }
         };
 
         $scope.reset = initModel;
 
-        $scope.next = nextStep();
+        $scope.next = nextStep;
 
-        $scope.prev = prevStep();
+        $scope.prev = prevStep;
 
         $scope.close = function () {
             $modalInstance.dismiss('cancel');
@@ -104,8 +95,8 @@ angular.module('dreFrontendApp')
             $scope.model.step = step;
         };
 
-        $scope.setSearchType = function (searchType) {
-            $scope.model.searchType = searchType;
+        $scope.setDrugType = function (drugType) {
+            $scope.model.drugType = drugType;
             nextStep();
         };
         /*** old conroller
@@ -121,14 +112,6 @@ angular.module('dreFrontendApp')
             $event.preventDefault();
             $event.stopPropagation();
             $scope.opened = true;
-        };
-
-         $scope.previousStep = function previousStep() {
-            if ($scope.entryStep === 3 && $scope.medSearchType !== 'prescription') {
-                $scope.entryStep = 1;
-            } else {
-                $scope.entryStep--;
-            }
         };
 
          function enteredObject(callback) {
@@ -161,7 +144,7 @@ angular.module('dreFrontendApp')
                 pmed_product = {
                     "name": $scope.selectedDrug.synonym,
                     "code": $scope.selectedDrug.rxcui,
-                    "code_system_name": 'RxNorm'
+                    "code_system_name": 'rxgroup'
                 };
                 _.deepSet($scope.enteredMedication, 'product.identifiers[0].rxcui', $scope.selectedDrug.rxcui);
                 _.deepSet($scope.enteredMedication, 'product.product', pmed_product);
@@ -217,7 +200,7 @@ angular.module('dreFrontendApp')
                 pmed_product = {
                     "name": $scope.selectedDrug.synonym,
                     "code": $scope.selectedDrug.rxcui,
-                    "code_system_name": 'RxNorm'
+                    "code_system_name": 'rxgroup'
                 };
                 _.deepSet($scope.enteredMedication, 'product.identifiers[0].rxcui', $scope.selectedDrug.rxcui);
                 _.deepSet($scope.enteredMedication, 'product.product', pmed_product);
@@ -251,10 +234,6 @@ angular.module('dreFrontendApp')
             callback();
         }
 
-         $scope.nextStep = function nextStep() {
-
-        };
-
          function saveMedication() {
             medications.addMedication($scope.enteredMedication, function (err, results) {
                 if (err) {
@@ -270,84 +249,6 @@ angular.module('dreFrontendApp')
                 }
             });
         }
-         $scope.drugSearch = function drugSearch(drugName) {
-            $scope.drugSearchActive = true;
-            console.log("drugname: " + drugName);
-            if ($scope.selectedDrug) {
-                $scope.selectedDrug = null;
-            }
-            if ($scope.rxnormResults) {
-                $scope.rxnormResults = null;
-            }
-            if ($scope.rximagesResults) {
-                $scope.rximagesResults = null;
-            }
-            $scope.pDrugName = drugName;
-            $scope.drugError = null;
-            $scope.drugWarning = null;
-            $scope.drugSpelling = null;
-            medapi.findRxNormGroup(drugName, function (err, data) {
-                //console.log("rxnormgroup data: "+JSON.stringify(data));
-                $scope.drugSearchActive = false;
-                if (err) {
-                    console.log("Err: " + err);
-                } else {
-                    if (data.drugGroup.conceptGroup === undefined || data.drugGroup.conceptGroup === null) {
-                        //$scope.rxnormResults = "No match found";
-                        medapi.findRxNormSpelling(drugName, function (err2, data2) {
-                            if (err2) {
-                                console.log("Err: " + err2);
-                                $scope.drugError = "No matches found.  Please Try Something Else";
-                            } else {
-                                if (data2.suggestionGroup !== null) {
-                                    if (data2.suggestionGroup.suggestionList !== null) {
-                                        if (data2.suggestionGroup.suggestionList.suggestion !== null) {
-                                            if (data2.suggestionGroup.suggestionList.suggestion.length > 0) {
-                                                $scope.drugWarning = "No matches found... did you mean one of these: ";
-                                                $scope.drugSpelling = data2.suggestionGroup.suggestionList.suggestion;
-                                            } else {
-                                                $scope.drugError = "No matches found.  Please Try Something Else";
-                                            }
-                                        } else {
-                                            $scope.drugError = "No matches found.  Please Try Something Else";
-                                        }
-                                    } else {
-                                        $scope.drugError = "No matches found.  Please Try Something Else";
-                                    }
-                                } else {
-                                    $scope.drugError = "No matches found.  Please Try Something Else";
-                                }
-                            }
-                        });
-                    } else {
-                        $scope.rxnormResults = data;
-                        var drugCount = 0;
-                        for (var j = 0; j < data.drugGroup.conceptGroup.length; j++) {
-                            if (data.drugGroup.conceptGroup[j].conceptProperties) {
-                                drugCount += data.drugGroup.conceptGroup[j].conceptProperties.length;
-                            }
-                        }
-                        $scope.drugError = null;
-                        $scope.drugCount = drugCount;
-                    }
-                }
-            });
-        };
-
-         $scope.setSelectedDrug = function setSelectedDrug() {
-            if (this.rxdrug.selected) {
-                this.rxdrug.selected = false;
-                $scope.selectedDrug = null;
-            } else {
-                if ($scope.rxnormResults.compiled !== null) {
-                    for (var j = 0; j < $scope.rxnormResults.compiled.length; j++) {
-                        $scope.rxnormResults.compiled[j].selected = false;
-                    }
-                }
-                this.rxdrug.selected = true;
-                $scope.selectedDrug = this.rxdrug;
-            }
-        };
 
          $scope.setSelectedPrescriber = function setSelectedPrescriber() {
             if (this.prescriber.selected) {
@@ -375,50 +276,6 @@ angular.module('dreFrontendApp')
             }
         };
 
-         $scope.prescriberSearch = function prescriberSearch(firstName, lastName, state) {
-            $scope.prescriberSearchActive = true;
-            $scope.prescriberResults = null;
-            $scope.prescriberCount = null;
-            $scope.prescriberError = null;
-            var searchTest = false;
-            var searchObj = {};
-            $scope.selectedPrescriber = null;
-            if (firstName) {
-                _.deepSet(searchObj, 'name[0].first', firstName);
-            }
-            if (lastName) {
-                _.deepSet(searchObj, 'name[0].last', lastName);
-            }
-            if (state) {
-                _.deepSet(searchObj, 'address[0].state', state);
-            }
-            if (!_.isEmpty(searchObj)) {
-                console.log('searchObj ', searchObj);
-                npiapi.findNPI(searchObj, function (err, data) {
-                    $scope.prescriberSearchActive = false;
-                    if (err) {
-                        console.log("Martz err: " + err);
-                        $scope.prescriberError = "No matches found, please try again";
-                    } else {
-                        if (data.length >= 100) {
-                            if (_.isEmpty(state)) {
-                                $scope.prescriberError = "More than 100 matches found, please enter a state";
-                            } else {
-                                $scope.prescriberError = "More than 100 matches found, please adjust your search terms";
-                            }
-                        } else {
-                            console.log("prescriberError ", state, data.length);
-                            $scope.prescriberResults = data;
-                            $scope.prescriberCount = data.length;
-                            $scope.prescriberError = null;
-                        }
-                    }
-                });
-            } else {
-                $scope.prescriberError = "Please enter search terms";
-                $scope.prescriberSearchActive = false;
-            }
-        };
 
          $scope.initInfoSearch = function (sType) {
             if (sType === 'prescription') {

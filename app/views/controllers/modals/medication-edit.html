@@ -3,7 +3,7 @@
         <button class="close" ng-click="close()" aria-label="Close" data-dismiss="modal" type="button">
             <span>×</span>
         </button>
-        <h3 class="modal-title">Medication Entry</h3>
+        <h3 class="modal-title">Medication Entry (step: {{model.step}})</h3>
     </div>
     <div class="modal-body">
         <div class="row" ng-if="model.step===0">
@@ -11,12 +11,12 @@
             <div class="col-sm-6 col-sm-offset-3 col-md-offset-0 btn-group btn-group-justified" role="group">
                 <div class="btn-group" role="group">
                     <button class="btn btn-default col-sm-12" data-toggle="tab" data-target="#medinfo"
-                            aria-controls="medinfo" ng-click="setSearchType('prescription')">Prescription
+                            aria-controls="medinfo" ng-click="setDrugType('prescription')">Prescription
                     </button>
                 </div>
                 <div class="btn-group" role="group">
                     <button class="btn btn-default col-sm-12" data-toggle="tab" data-target="#medinfo"
-                            aria-controls="medinfo" ng-click="setSearchType('otc')">Over the Counter
+                            aria-controls="medinfo" ng-click="setDrugType('otc')">Over the Counter
                     </button>
                 </div>
             </div>
@@ -24,49 +24,38 @@
         <div class="row" ng-if="model.step===1">
             <div class="col-sm-12">
                 <h3>Medication Information</h3>
-                <drug-search resultDrug="model.drug"></drug-search>
+                <drug-search result-drug="model.drug"></drug-search>
             </div>
         </div>
         <div class="row" ng-if="model.step===2">
-            <div class="col-sm-12"><h3>Medication Information</h3></div>
+            <div class="col-sm-12"><h3>Prescriber Information</h3></div>
+            <div class="col-sm-12">
+                <prescriber-search result-prescriber="model.prescriber"></prescriber-search>
+            </div>
         </div>
         <div class="row" ng-if="model.step===3">
-            <div class="col-sm-12"><h3>Medication Information</h3></div>
+            <div class="col-sm-12"><h3>Not implemented</h3></div>
+            <div medication-image rxcui="model.drug.rxcui"></div>
+
         </div>
         <div class="row" ng-if="model.step===4">
-            <div class="col-sm-12"><h3>Medication Information</h3></div>
+            <div class="col-sm-12"><h3>not implemented</h3></div>
         </div>
     </div>
-    <div class="modal-footer" ng-if="model.step===1">
-        <button class="btn btn-danger" data-toggle="tab" data-target="#medtype" aria-controls="medtype"
-                ng-click="reset()">Reset
+    <div class="modal-footer">
+        <div>
+            <div class="alert alert-danger" role="alert" ng-show="model.err">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error: </span>{{model.err}}
+            </div>
+        </div>
+        <button class="btn btn-danger" ng-click="reset()" ng-show="[1,3,4].indexOf(model.step) > -1">
+            Reset
         </button>
-        <button class="btn btn-primary" ng-click="next()" ng-disabled="!model.drug">Next</button>
-    </div>
-    <div class="modal-footer" ng-if="model.step===2">
-        <button class="btn btn-default" data-toggle="tab" data-target="#medinfo" aria-controls="medinfo"
-                ng-click="prev()">Back
-        </button>
-        <button class="btn btn-primary" ng-click="next()" ng-disabled="!selectedPrescriber">Next</button>
-    </div>
-    <div class="modal-footer" ng-if="model.step===3">
-        <button class="btn btn-danger" data-toggle="tab" data-target="#medtype" aria-controls="medtype"
-                ng-click="reset()">Reset
-        </button>
-        <button class="btn btn-default" data-toggle="tab" data-target="#medinfo" aria-controls="medinfo"
-                ng-click="prev()">Back
-        </button>
-        <button class="btn btn-primary" data-toggle="tab" data-target="#summary" aria-controls="summary"
-                ng-click="next()">Next
-        </button>
-    </div>
-    <div class="modal-footer" ng-if="model.step===4">
-        <button class="btn btn-danger" data-toggle="tab" data-target="#medtype" aria-controls="medtype"
-                ng-click="reset()">Reset
-        </button>
-        <button class="btn btn-default" data-toggle="tab" data-target="#addinfo" aria-controls="addinfo"
-                ng-click="prev()">Back
-        </button>
-        <button class="btn btn-primary" ng-click="saveMedication()">Submit</button>
+        <button class="btn btn-default" ng-click="prev()" ng-show="[2,3,4].indexOf(model.step) > -1">Back</button>
+        <button class="btn btn-primary" ng-click="next()"
+                ng-show="[1,2,3].indexOf(model.step) > -1"
+                ng-disabled="!model.drug && model.step === 1 || !model.prescriber && model.step === 2">Next</button>
+        <button class="btn btn-primary" ng-click="saveMedication()" ng-show="model.step === 4">Submit</button>
     </div>
 </div>

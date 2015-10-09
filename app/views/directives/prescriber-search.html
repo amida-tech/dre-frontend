@@ -1,0 +1,60 @@
+<form novalidate role="form" class="form-horizontal">
+    <div class="form-group">
+        <label class="col-sm-5 control-label">First name (REQUIRED)</label>
+        <div class="col-sm-7">
+            <input type="text" class="form-control" ng-model="pFirstName" ng-disabled="prescriberSearchActive">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-5 control-label">Last name (REQUIRED)</label>
+        <div class="col-sm-7">
+            <input type="text" class="form-control" ng-model="pLastName" ng-disabled="prescriberSearchActive">
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-sm-5 control-label">State (Please use the abbreviation i.e. CA for California)</label>
+        <div class="col-sm-5">
+            <input type="search" class="form-control" ng-model="pState" placeholder="" minlength="2" maxlength="2" ng-disabled="prescriberSearchActive">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-9">
+            <button style="width: initial" class="btn btn-default pull-right" ng-click="prescriberSearch(pFirstName, pLastName, pState)" ng-disabled="prescriberSearchActive">Search</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="alert alert-danger" role="alert" ng-show="prescriberError">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+            <span class="sr-only">Error:</span> {{prescriberError}}
+        </div>
+    </div>
+    <div class="row" ng-show="prescriberResults" ng-if="medSearchType=='prescription'">
+        <h4>Prescriber Results ({{prescriberCount}})</h4>
+        <h5>Please select your prescriber by clicking on one of the rows below:</h5>
+        <table class="table table-bordered table-hover" style="cursor:pointer">
+            <thead>
+            <tr>
+                <th style="text-align: center"><span><i class="fa fa-check" style="color: black"></i></span></th>
+                <th>Name</th>
+                <th>Practice</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-class="{info: prescriber.selected}" ng-repeat="prescriber in prescriberResults" ng-click="setSelectedPrescriber()">
+                <td style="text-align: center"><span ng-show="prescriber.selected"><i class="fa fa-check" style="color: green"></i></span></td>
+                <td title="NPI: {{prescriber.npi}}">
+                    <span>{{prescriber.first_name}} {{prescriber.last_name}}, {{prescriber.credential}}</span>
+                    <br/>
+                    <span class="text-muted">NPI: {{prescriber.npi}}</span>
+                </td>
+                <td>
+                    <span ng-show="prescriber.practice_address">{{prescriber.practice_address.address_line}}, {{prescriber.practice_address.address_details_line}}</span>
+                    <br/>
+                    <span ng-show="prescriber.practice_address">{{prescriber.practice_address.city}}, {{prescriber.practice_address.state}} {{prescriber.practice_address.zip}}</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+        <!--<pre>{{prescriberResults}}</pre>-->
+    </div>
+</form>
