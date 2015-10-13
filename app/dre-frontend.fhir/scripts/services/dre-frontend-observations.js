@@ -32,80 +32,9 @@ angular.module('dreFrontend.fhir')
 
         var observations = {
             getSocialHistory: function(patient_id){
-                return dreFrontendFhirService.search("Observation", {patient: patient_id})
+                return dreFrontendFhirService.search("Observation", {patient: patient_id, category: 'social-history'})
                     .then(function (response) {
-                        return new Observations({
-                            "entry":[
-                                {
-                                    "resourceType":"Observation",
-                                    "id":"18467",
-                                    "meta":{
-                                        "versionId":"1",
-                                        "lastUpdated":"2015-09-11T15:51:59.149+03:00"
-                                    },
-                                    "code":{
-                                        "coding":[
-                                            {
-                                                "system":"http://loinc.org",
-                                                "code":"3141-9",
-                                                "display":"Tobacco use and exposure"
-                                            }
-                                        ]
-                                    },
-                                    "valueQuantity":{
-                                        "value":160,
-                                        "units":"[lb_av]"
-                                    },
-                                    "appliesDateTime":"2012-10-02",
-                                    "status":"completed",
-                                    "identifier":[
-                                        {
-                                            "value":"1.3.6.1.4.1.22812.3.99930.3.4.6"
-                                        },
-                                        {
-                                            "value":"1.3.6.1.4.1.22812.3.99930.3.4.6"
-                                        }
-                                    ],
-                                    "subject":{
-                                        "reference":"Patient/test"
-                                    }
-                                },
-                                {
-                                    "resourceType":"Observation",
-                                    "id":"18467",
-                                    "meta":{
-                                        "versionId":"1",
-                                        "lastUpdated":"2015-09-11T15:51:59.149+03:00"
-                                    },
-                                    "code":{
-                                        "coding":[
-                                            {
-                                                "system":"http://loinc.org",
-                                                "code":"3141-9",
-                                                "display":"Tobacco use and exposure"
-                                            }
-                                        ]
-                                    },
-                                    "valueQuantity":{
-                                        "value":160,
-                                        "units":"[lb_av]"
-                                    },
-                                    "appliesDateTime":"2012-10-01",
-                                    "status":"inactive",
-                                    "identifier":[
-                                        {
-                                            "value":"1.3.6.1.4.1.22812.3.99930.3.4.6"
-                                        },
-                                        {
-                                            "value":"1.3.6.1.4.1.22812.3.99930.3.4.6"
-                                        }
-                                    ],
-                                    "subject":{
-                                        "reference":"Patient/test"
-                                    }
-                                }
-                            ]
-                        });
+                        return new Observations(response);
                     });
             },
             getBMIHistory: function (patient_id, count) {
