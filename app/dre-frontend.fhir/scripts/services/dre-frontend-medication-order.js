@@ -3,13 +3,6 @@
 angular.module('dreFrontend.fhir')
     .factory('dreFrontendMedicationOrder', function (dreFrontendFhirService, $q) {
 
-        var err_messages = {
-            test_err: 'Called method is not imlemented yet in MedicationOrder',
-            patient_unset: 'Patient data undefined',
-            drug_save_error: 'Error while saving medication',
-            prescriber_err: 'Error while saving prescriber'
-        };
-
         function setData(obj, data) {
             if (data)
                 angular.extend(obj, data);
@@ -19,8 +12,8 @@ angular.module('dreFrontend.fhir')
             setData(this, data);
         }
 
-        MedicationOrder.prototype.baseTemplate = function () {
-            return {
+        MedicationOrder.prototype.setBaseTemplate = function () {
+            angular.extend(this, {
                 "resourceType": "MedicationOrder",
                 "dateWritten": "", // When prescription was authorized <dateTime>
                 "status": "", // active | on-hold | completed | entered-in-error | stopped | draft
@@ -29,7 +22,7 @@ angular.module('dreFrontend.fhir')
                 "prescriber": {}, // Who ordered the medication(s) Reference(Practitioner)
                 "note": "", // Information about the prescription
                 "medicationReference": {} // Reference(Medication)
-            };
+            });
         };
 
         MedicationOrder.prototype.createEntry = function () {
@@ -42,7 +35,7 @@ angular.module('dreFrontend.fhir')
 
         var medications = {
             getEmpty: function () {
-                return new MedicationOrder();
+                return new MedicationOrder().setBaseTemplate();
             },
             getByPatientId: function (patient_id) {
                 return dreFrontendFhirService.search("MedicationOrder", {patient: patient_id})
@@ -81,7 +74,7 @@ angular.module('dreFrontend.fhir')
                 if (!data.entry) {
 
                     if (!res) {
-                        res = $q.reject(err_messages.test_err);
+                        res = $q.reject("empty MedicationOrder.save()");
                     }
                     return res;
                 }

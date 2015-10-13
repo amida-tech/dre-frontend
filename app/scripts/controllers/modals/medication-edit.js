@@ -8,17 +8,25 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('MedicationEditCtrl', function ($scope, $modalInstance, item, $log, dreFrontendEntryService, dreFrontendMedicationOrderService) {
+    .controller('MedicationEditCtrl', function ($scope, $modalInstance, item, $log, $q, dreFrontendEntryService,
+                                                dreFrontEndPatientInfoService, dreFrontendMedicationOrder,
+                                                dreFrontendPractitioners, dreFrontendMedication) {
+        var err_messages = {
+            test_err: 'Called method is not imlemented yet in MedicationEditCtrl',
+            patient_unset: 'Patient data undefined',
+            drug_save_error: 'Error while saving medication',
+            prescriber_err: 'Error while saving prescriber'
+        };
+
 
         var initModel = function () {
             $scope.model = {
-                isActive:false,
+                isActive: false,
                 step: 0,
                 maxStep: 4,
                 err: null,
                 warn: null,
                 saveState: null,
-                medication: item,
                 drug: null,
                 drugNote: null,
                 drugPeriod: {
@@ -39,7 +47,8 @@ angular.module('dreFrontendApp')
                     required: false
                 },
                 maxEndDate: new Date(),
-                summary: null            };
+                summary: null
+            };
         };
 
         initModel();
@@ -61,6 +70,7 @@ angular.module('dreFrontendApp')
                         isCurrent: true
                     };
             }
+            $scope.model.isActive = false;
         }
 
         function isValidDates() {
@@ -141,32 +151,41 @@ angular.module('dreFrontendApp')
 
         $scope.saveMedication = function () {
             $scope.model.isActive = true;
-            dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
-                if (!item) {
-                    /* create new MedicationOrder */
+            dreFrontEndPatientInfoService.getPatientData()
+                .then(function (patient) {
+                    var result;
+                    if (!patient.id) {
+                        return result = $q.reject(err_messages.patient_unset);
+                    }
 
-                } else {
-                    /* update MedicationOrder */
-                }
-
-                var data = {
-                    patient: patient,
-                    entry: item,
-                    medication: $scope.model.drug,
-                    period: $scope.model.drugPeriod,
-                    note: $scope.model.drugNote,
-                    prescriber: $scope.model.prescriber
-                };
-                $log.debug(data);
-                return dreFrontendMedicationOrderService.save(data);
-            })
-                .then(function (res) {
+                    if (!item) {
+                        /* create new MedicationOrder */
+                        result = dreFrontendMedicationOrder.getEmpty();
+                        result.patient = { reference: 'Patient/'.patient.id };
+                    } else {
+                        /* update MedicationOrder */
+                        result = item;
+                    }
+                    if (!result) {
+                        result = $q.reject(err_messages.test_err);
+                    }
+                    return result;
+                })
+                .then(function(medOrder){
+                    var result;
+                    /* set Medication Data */
+                    if (!result) {
+                        result = $q.reject(err_messages.test_err);
+                    }
+                    return result;
+                })
+                .then(function(res){
                     $scope.model.saveState = "success";
                 })
                 .catch(function (err) {
                     $log.debug(err);
                     $scope.model.saveState = "error";
-                    $scope.model.err = err;
+                    $scope.model.err = err.toString();
                 })
                 .finally(function () {
                     $scope.model.isActive = false;
