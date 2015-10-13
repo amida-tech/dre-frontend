@@ -8,7 +8,7 @@ angular.module('dreFrontend.fhir')
                 angular.extend(obj, data);
         }
 
-        function Medications(data) {
+        function Medication(data) {
             setData(this, data);
         }
 
@@ -24,22 +24,27 @@ angular.module('dreFrontend.fhir')
             };
         };
 
+        function proceedBundle(bundle){
+            for(var n=0; n<bundle.entry.lenght; n++){
+                bundle.entry[n] = new Medication(bundle.entry[n]);
+            }
+            return bundle;
+        }
+
         var medications = {
             getById: function (id) {
                 return dreFrontendFhirService.read('Medication', id)
-                    .then(function (response) {
-                        return new Medications(response);
+                    .then(function(medication){
+                        return new Medication(medication);
                     });
             },
             getAll: function () {
                 return dreFrontendFhirService.read('Medication')
-                    .then(function (response) {
-                        return new Medications(response);
-                    });
+                    .then(proceedBundle);
             },
-            getByData: function (data, autoCreate) {
-                console.log(data);
-                return dreFrontendFhirService.search('Medication', {code: data.rxcui})
+            getByCode: function (code, autoCreate) {
+                return dreFrontendFhirService.search('Medication', {code: code})
+                    .then(proceedBundle);
             }
         };
 
