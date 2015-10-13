@@ -11,7 +11,7 @@ angular.module('dreFrontend.fhir')
             if (data)
                 angular.extend(this, data);
         };
-        
+
         var medicationPrescriptions = {
             getByPatientId: function (patient_id) {
                 return dreFrontendFhirService.search("MedicationPrescription", {patient: patient_id})
@@ -30,7 +30,7 @@ angular.module('dreFrontend.fhir')
                     .then(function (response) {
                         return new MedicationPrescriptions(response);
                     });
-            },
+            }
         };
         return medicationPrescriptions;
 });

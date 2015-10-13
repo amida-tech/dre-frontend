@@ -12,9 +12,15 @@ angular.module('dreFrontendApp')
 
         var initModel = function () {
             $scope.model = {
+                isActive:false,
+                step: 0,
+                maxStep: 4,
+                err: null,
+                warn: null,
+                saveState: null,
                 medication: item,
                 drug: null,
-                drugDetails: null,
+                drugNote: null,
                 drugPeriod: {
                     isCurrent: true,
                     start: null,
@@ -22,10 +28,6 @@ angular.module('dreFrontendApp')
                 },
                 drugType: null,
                 prescriber: null,
-                step: 0,
-                maxStep: 4,
-                err: null,
-                warn: null,
                 startDateOpts: {
                     placeholder: 'MM/DD/YYYY',
                     format: 'MM/dd/yyyy',
@@ -37,9 +39,7 @@ angular.module('dreFrontendApp')
                     required: false
                 },
                 maxEndDate: new Date(),
-                summary: null,
-                saveState: null
-            };
+                summary: null            };
         };
 
         initModel();
@@ -139,17 +139,26 @@ angular.module('dreFrontendApp')
             nextStep();
         };
 
-        $scope.prepareDetails = function () {
-            var summary = {};
-            return
-        };
-
         $scope.saveMedication = function () {
-            $log.debug($scope.model.drug, $scope.model.prescriber);
-            dreFrontendMedicationOrderService.save({
-                entry: item,
-                medication: $scope.model.drug,
-                prescriber: $scope.model.prescriber
+            $scope.model.isActive = true;
+            dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
+                if (!item) {
+                    /* create new MedicationOrder */
+
+                } else {
+                    /* update MedicationOrder */
+                }
+
+                var data = {
+                    patient: patient,
+                    entry: item,
+                    medication: $scope.model.drug,
+                    period: $scope.model.drugPeriod,
+                    note: $scope.model.drugNote,
+                    prescriber: $scope.model.prescriber
+                };
+                $log.debug(data);
+                return dreFrontendMedicationOrderService.save(data);
             })
                 .then(function (res) {
                     $scope.model.saveState = "success";
@@ -160,12 +169,7 @@ angular.module('dreFrontendApp')
                     $scope.model.err = err;
                 })
                 .finally(function () {
-
+                    $scope.model.isActive = false;
                 });
-
-            /* get Medication */
-            /* get Prescriber */
-            /* fill MedicationOrder */
-            /* save changes */
         };
     });
