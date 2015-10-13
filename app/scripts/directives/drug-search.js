@@ -10,7 +10,7 @@
  * # drugSearch
  */
 angular.module('dreFrontendApp')
-    .directive('drugSearch', function ($log) {
+    .directive('drugSearch', function () {
         return {
             templateUrl: 'views/directives/drug-search.html',
             restrict: 'AE',
@@ -61,7 +61,6 @@ angular.module('dreFrontendApp')
                             return res;
                         })
                         .catch(function () {
-                            $log.debug("here");
                             return dreFrontendMedicationService.getSpelling(query)
                                 .then(function (res) {
                                     $scope.model.warn = "No matches found... did you mean one of these:";
@@ -87,7 +86,6 @@ angular.module('dreFrontendApp')
                         unselectDrugs();
                         this.rxdrug.selected = true;
                         $scope.resultDrug = this.rxdrug;
-                        $log.debug(this.rxdrug);
                     }
                 };
             }

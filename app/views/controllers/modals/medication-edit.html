@@ -3,11 +3,11 @@
         <button class="close" ng-click="close()" aria-label="Close" data-dismiss="modal" type="button">
             <span>×</span>
         </button>
-        <h3 class="modal-title">Medication Entry (step: {{model.step}})</h3>
+        <h3 class="modal-title">Medication Entry</h3>
     </div>
     <div class="modal-body">
         <div class="row" ng-if="model.step===0">
-            <div class="col-sm-12"><h3>Select a drug type:</h3></div>
+            <div class="col-sm-12"><h4>Select a drug type:</h4></div>
             <div class="col-sm-6 col-sm-offset-3 col-md-offset-0 btn-group btn-group-justified" role="group">
                 <div class="btn-group" role="group">
                     <button class="btn btn-default col-sm-12" data-toggle="tab" data-target="#medinfo"
@@ -23,23 +23,90 @@
         </div>
         <div class="row" ng-if="model.step===1">
             <div class="col-sm-12">
-                <h3>Medication Information</h3>
+                <h4>Medication Information</h4>
                 <drug-search result-drug="model.drug"></drug-search>
             </div>
         </div>
         <div class="row" ng-if="model.step===2">
-            <div class="col-sm-12"><h3>Prescriber Information</h3></div>
+            <div class="col-sm-12"><h4>Prescriber Information</h4></div>
             <div class="col-sm-12">
                 <prescriber-search result-prescriber="model.prescriber"></prescriber-search>
             </div>
         </div>
         <div class="row" ng-if="model.step===3">
-            <div class="col-sm-12"><h3>Not implemented</h3></div>
-            <div medication-image rxcui="model.drug.rxcui"></div>
+            <div class="col-sm-12">
+                <h4>Info so far:</h4>
 
+                <div class="row">
+                    <h5 class="col-sm-5">DRUG NAME: </h5>
+                    <div class="col-sm-7">{{model.drug.synonym}}</div>
+                </div>
+                <div class="row"  ng-show="model.prescriber">
+                    <h5 class="col-sm-5">PRESCRIBER: </h5>
+
+                    <div class="col-sm-7">
+                        <div>{{model.prescriber.first_name}} {{model.prescriber.last_name}}, {{model.prescriber.credential}}</div>
+                        <div>{{model.prescriber.practice_address.address_line}}, {{model.prescriber.practice_address.address_details_line}}</div>
+                        <div>{{model.prescriber.practice_address.city}}, {{model.prescriber.practice_address.state}} {{model.prescriber.practice_address.zip}}</div>
+                    </div>
+                </div>
+                <h4>Additional Info</h4>
+
+                <div class="form-group row">
+                    <label class="col-sm-5 control-label">When did you start taking it?</label>
+
+                    <div class="col-sm-6">
+                        <select-date options="model.startDateOpts" result-date="model.drugPeriod.start" max-date="getMaxStartDate()"></select-date>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 control-label">Is this a current medication?</label>
+
+                    <div class="col-sm-7">
+                        <div class="radio-inline">
+                            <input type="radio" ng-model="model.drugPeriod.isCurrent" id="currentRadioYes"
+                                   ng-value="true"> Yes
+                        </div>
+                        <div class="radio-inline">
+                            <input type="radio" ng-model="model.drugPeriod.isCurrent" id="currentRadioNo"
+                                   ng-value="false"> No
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group row" ng-hide="model.drugPeriod.isCurrent">
+                    <label class="col-sm-5 control-label">When was your last dose?</label>
+
+                    <div class="col-sm-6">
+                        <select-date
+                            options="model.endDateOpts"
+                            result-date="model.drugPeriod.end"
+                            min-date="model.drugPeriod.start"
+                            max-date="model.maxEndDate"></select-date>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label class="col-sm-5 control-label">Details e.g. Dose amount, instructions, etc:</label>
+
+                    <div class="col-sm-6">
+                        <textarea ng-model="model.drugDetails" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div medication-image rxcui="model.drug.rxcui"></div>
+            </div>
         </div>
         <div class="row" ng-if="model.step===4">
-            <div class="col-sm-12"><h3>not implemented</h3></div>
+            <div class="col-sm-12">
+            <h3>Summary</h3>
+            <div class="col-sm-12">
+                <h4>{{model.drug.synonym}}</h4>
+                <div ng-show="model.drugPeriod.isCurrent">Date: {{model.drugPeriod.start | date:'short' }} - Present</div>
+                <div ng-hide="model.drugPeriod.isCurrent">Date: {{model.drugPeriod.start | date:'short'}} - {{model.drugPeriod.end | date:'short'}}</div>
+                <div entry-details-item="model.summary"></div>
+            </div>
+            <div ng-if="model.saveStatus==='error'">
+                <span>There was an error saving the medication.</span>
+            </div>
+            <div ng-if="model.saveStatus==='success'" ng-init="$hide()"></div>
         </div>
     </div>
     <div class="modal-footer">
@@ -55,7 +122,8 @@
         <button class="btn btn-default" ng-click="prev()" ng-show="[2,3,4].indexOf(model.step) > -1">Back</button>
         <button class="btn btn-primary" ng-click="next()"
                 ng-show="[1,2,3].indexOf(model.step) > -1"
-                ng-disabled="!model.drug && model.step === 1 || !model.prescriber && model.step === 2">Next</button>
+                ng-disabled="!model.drug && model.step === 1 || !model.prescriber && model.step === 2">Next
+        </button>
         <button class="btn btn-primary" ng-click="saveMedication()" ng-show="model.step === 4">Submit</button>
     </div>
 </div>

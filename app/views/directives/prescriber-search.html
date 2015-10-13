@@ -2,59 +2,53 @@
     <div class="form-group">
         <label class="col-sm-5 control-label">First name (REQUIRED)</label>
         <div class="col-sm-7">
-            <input type="text" class="form-control" ng-model="pFirstName" ng-disabled="prescriberSearchActive">
+            <input type="text" class="form-control" ng-model="model.name.first" ng-disabled="model.active">
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-5 control-label">Last name (REQUIRED)</label>
         <div class="col-sm-7">
-            <input type="text" class="form-control" ng-model="pLastName" ng-disabled="prescriberSearchActive">
+            <input type="text" class="form-control" ng-model="model.name.last" ng-disabled="model.active">
         </div>
     </div>
     <div class="form-group">
         <label class="col-sm-5 control-label">State (Please use the abbreviation i.e. CA for California)</label>
         <div class="col-sm-5">
-            <input type="search" class="form-control" ng-model="pState" placeholder="" minlength="2" maxlength="2" ng-disabled="prescriberSearchActive">
+            <input type="search" class="form-control" ng-model="model.address.state" placeholder="" minlength="2" maxlength="2" ng-disabled="model.active">
         </div>
     </div>
     <div class="form-group">
         <div class="col-sm-offset-3 col-sm-9">
-            <button style="width: initial" class="btn btn-default pull-right" ng-click="prescriberSearch(pFirstName, pLastName, pState)" ng-disabled="prescriberSearchActive">Search</button>
+            <button style="width: initial" class="btn btn-default pull-right" ng-click="search()" ng-disabled="model.active">Search</button>
         </div>
     </div>
-    <div class="row">
-        <div class="alert alert-danger" role="alert" ng-show="prescriberError">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span class="sr-only">Error:</span> {{prescriberError}}
-        </div>
+    <div class="alert alert-danger" role="alert" ng-show="model.err">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span> {{model.err}}
     </div>
-    <div class="row" ng-show="prescriberResults" ng-if="medSearchType=='prescription'">
-        <h4>Prescriber Results ({{prescriberCount}})</h4>
+    <div ng-show="model.result.length > 0">
+        <h4>Prescriber Results ({{model.result.length}})</h4>
         <h5>Please select your prescriber by clicking on one of the rows below:</h5>
-        <table class="table table-bordered table-hover" style="cursor:pointer">
+        <table class="table table-bordered table-hover">
             <thead>
             <tr>
-                <th style="text-align: center"><span><i class="fa fa-check" style="color: black"></i></span></th>
+                <th class="text-center"><span><i class="fa fa-check"></i></span></th>
                 <th>Name</th>
                 <th>Practice</th>
             </tr>
             </thead>
             <tbody>
-            <tr ng-class="{info: prescriber.selected}" ng-repeat="prescriber in prescriberResults" ng-click="setSelectedPrescriber()">
-                <td style="text-align: center"><span ng-show="prescriber.selected"><i class="fa fa-check" style="color: green"></i></span></td>
+            <tr class="selectable" ng-class="{info: prescriber.selected}" ng-repeat="prescriber in model.result" ng-click="select(prescriber)">
+                <td class="text-center"><span ng-show="prescriber.selected"><i class="fa fa-check text-success"></i></span></td>
                 <td title="NPI: {{prescriber.npi}}">
-                    <span>{{prescriber.first_name}} {{prescriber.last_name}}, {{prescriber.credential}}</span>
-                    <br/>
-                    <span class="text-muted">NPI: {{prescriber.npi}}</span>
+                    <div>{{prescriber.getName()}}</div>
+                    <div class="text-muted">NPI: {{prescriber.npi}}</div>
                 </td>
                 <td>
-                    <span ng-show="prescriber.practice_address">{{prescriber.practice_address.address_line}}, {{prescriber.practice_address.address_details_line}}</span>
-                    <br/>
-                    <span ng-show="prescriber.practice_address">{{prescriber.practice_address.city}}, {{prescriber.practice_address.state}} {{prescriber.practice_address.zip}}</span>
+                    <div ng-show="prescriber.practice_address" ng-repeat="addr_row in prescriber.getPracticeAddress()">{{addr_row}}</div>
                 </td>
             </tr>
             </tbody>
         </table>
-        <!--<pre>{{prescriberResults}}</pre>-->
     </div>
 </form>

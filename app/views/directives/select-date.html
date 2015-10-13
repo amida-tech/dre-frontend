@@ -1,0 +1,28 @@
+<form name="dateForm">
+    <p class="input-group">
+        <input type="text" class="form-control" name="dateInput"
+               datepicker-popup="{{model.format}}"
+               ng-model="resultDate"
+               is-open="model.opened"
+               min-date="minDate"
+               max-date="maxDate"
+               datepicker-options="{{model.dateOptions}}"
+               ng-required="{{model.required}}"
+               required="{{model.required}}"
+               close-text="{{model.closeText}}"
+               placeholder="{{model.placeholder}}"
+            />
+    <span class="input-group-btn">
+        <button type="button" class="btn btn-default btn-calendar" ng-click="open($event)"><i
+            class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+
+    </p>
+    <div class="alert alert-danger" role="alert"
+         ng-show="dateForm.dateInput.$error.date || dateForm.dateInput.$error.required">
+        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+        <span class="sr-only">Error:</span>
+        <span class="error" ng-show="dateForm.dateInput.$error.required">Required!</span>
+        <span class="error" ng-show="dateForm.dateInput.$error.date">Not a valid date!</span>
+    </div>
+</form>

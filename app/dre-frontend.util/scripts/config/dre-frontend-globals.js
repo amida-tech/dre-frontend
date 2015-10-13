@@ -26,6 +26,12 @@ angular.module('dreFrontend.util')
         };
 
         self.resourceTypes = {
+            MedicationOrder: {
+                alias: 'medications',
+                title: 'Medications',
+                type: 'MedicationOrder',
+                fhirType: 'MedicationOrder'
+            },
             MedicationPrescription: {
                 alias: 'medications',
                 title: 'Medications',

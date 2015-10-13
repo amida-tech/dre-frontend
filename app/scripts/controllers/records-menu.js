@@ -11,7 +11,7 @@ angular.module('dreFrontendApp')
     .controller('RecordsMenuCtrl', function ($scope, dreFrontendGlobals, _, $state) {
         $scope.model = {
             menuItems: [
-                dreFrontendGlobals.resourceTypes.MedicationPrescription,
+                dreFrontendGlobals.resourceTypes.MedicationOrder,
                 dreFrontendGlobals.resourceTypes.TestResult,
                 dreFrontendGlobals.resourceTypes.Encounter,
                 dreFrontendGlobals.resourceTypes.Vital,

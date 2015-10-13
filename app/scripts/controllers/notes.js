@@ -70,6 +70,9 @@ angular.module('dreFrontendApp')
             if (angular.isUndefined(item.entryTitle)) {
                 var service = undefined;
                 switch (item.type) {
+                    case dreFrontendGlobals.resourceTypes.MedicationOrder.type:
+                        service = dreFrontendMedicationOrder;
+                        break;
                     case dreFrontendGlobals.resourceTypes.MedicationPrescription.type:
                         service = dreFrontendMedicationPrescriptions;
                         break;

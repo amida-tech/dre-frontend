@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendMedications', function (dreFrontendFhirService, $q) {
+    .factory('dreFrontendMedicationOrder', function (dreFrontendFhirService, $q) {
 
         function setData(obj,data) {
             if (data)
@@ -28,16 +28,19 @@ angular.module('dreFrontend.fhir')
                     });
             },
             getById: function (id) {
-                return dreFrontendFhirService.read('Medication', id)
+                return dreFrontendFhirService.read('MedicationOrder', id)
                     .then(function (response) {
                         return new Medications(response);
                     });
             },
             getAll: function () {
-                return dreFrontendFhirService.read('Medication')
+                return dreFrontendFhirService.read('MedicationOrder')
                     .then(function (response) {
                         return new Medications(response);
                     });
+            },
+            save: function(entry, medication, prescriber) {
+
             }
         };
 

@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('MedicationsCtrl', function ($scope, dreFrontendEntryService, dreFrontendMedications, _,
+    .controller('MedicationsCtrl', function ($scope, dreFrontendEntryService, dreFrontendMedicationOrder, _,
                                              dreFrontEndPatientInfoService, dreFrontendUtil, dreFrontendGlobals,
                                              dreFrontendModalsService) {
         $scope.model = {
@@ -26,12 +26,12 @@ angular.module('dreFrontendApp')
         });
 
         dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
-            dreFrontendMedications.getByPatientId(patientId).then(function (medications) {
+            dreFrontendMedicationOrder.getByPatientId(patientId).then(function (medications) {
                 $scope.model.medicationsList = [];
                 _.forEach(medications.entry, function (entry) {
                     $scope.model.medicationsList.push({
                         rawEntry: entry,
-                        type: dreFrontendGlobals.resourceTypes.MedicationPrescription.type,
+                        type: dreFrontendGlobals.resourceTypes.MedicationOrder.type,
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         dates: dreFrontendEntryService.getEntryDates(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.popup,

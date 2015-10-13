@@ -68,7 +68,8 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-class="{info: rxdrug.selected}"
+            <tr class="selectable"
+                ng-class="{info: rxdrug.selected}"
                 ng-repeat="rxdrug in model.rxgroup.compiled | filter:model.drug:strict | filter:model.brand:strict"
                 ng-click="selectDrug()">
                 <td class="text-center">

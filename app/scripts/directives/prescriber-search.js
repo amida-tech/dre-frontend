@@ -18,57 +18,109 @@ angular.module('dreFrontendApp')
                 resultPrescriber: '='
             },
             controller: function ($scope, dreFrontendPrescriberService) {
+                var query = {};
                 $scope.model = {
-                    query: null,
-                    active: false
+                    name: {
+                        first: '',
+                        last: ''
+                    },
+                    address: {
+                        state: ''
+                    },
+                    active: false,
+                    err: null,
+                    result: {
+                        qty: 0,
+                        data: []
+                    }
                 };
 
-/*
-                $scope.prescriberSearch = function prescriberSearch(firstName, lastName, state) {
-                    $scope.prescriberSearchActive = true;
-                    $scope.prescriberResults = null;
-                    $scope.prescriberCount = null;
-                    $scope.prescriberError = null;
-                    var searchTest = false;
-                    var searchObj = {};
-                    $scope.selectedPrescriber = null;
-                    if (firstName) {
-                        _.deepSet(searchObj, 'name[0].first', firstName);
+                function setQueryParam(param_name) {
+                    var param_val = _.pick($scope.model[param_name], _.identity);
+                    if (!_.isEmpty(param_val)) {
+                        query[param_name] = [];
+                        query[param_name][0] = param_val;
                     }
-                    if (lastName) {
-                        _.deepSet(searchObj, 'name[0].last', lastName);
+
+                }
+
+                function NpiPrescriber(data) {
+                    if (data)
+                        angular.extend(this, data);
+                }
+
+                NpiPrescriber.prototype.getPracticeAddress = function () {
+                    var res = [];
+                    var pa = this.practice_address;
+
+                    if (pa) {
+                        res.push (pa.address_line + ((pa.address_details_line)?', ' + pa.address_details_line:''));
+                        res.push (pa.city + ', ' + pa.state + ' ' + pa.zip);
+
                     }
-                    if (state) {
-                        _.deepSet(searchObj, 'address[0].state', state);
+                    return res;
+                };
+
+                NpiPrescriber.prototype.getName = function () {
+                    var res = '';
+                    if (this.first_name) {
+                        res += this.first_name;
                     }
-                    if (!_.isEmpty(searchObj)) {
-                        console.log('searchObj ', searchObj);
-                        npiapi.findNPI(searchObj, function (err, data) {
-                            $scope.prescriberSearchActive = false;
-                            if (err) {
-                                console.log("Martz err: " + err);
-                                $scope.prescriberError = "No matches found, please try again";
-                            } else {
-                                if (data.length >= 100) {
-                                    if (_.isEmpty(state)) {
-                                        $scope.prescriberError = "More than 100 matches found, please enter a state";
-                                    } else {
-                                        $scope.prescriberError = "More than 100 matches found, please adjust your search terms";
-                                    }
-                                } else {
-                                    console.log("prescriberError ", state, data.length);
-                                    $scope.prescriberResults = data;
-                                    $scope.prescriberCount = data.length;
-                                    $scope.prescriberError = null;
+                    if (this.last_name) {
+                        res += ' ' + this.last_name;
+                    }
+                    if (this.credential) {
+                        res += ', ' + this.credential;
+                    }
+                    return res;
+                };
+
+                $scope.search = function () {
+                    $scope.model.active = true;
+                    $scope.model.err = null;
+                    $scope.model.result = {
+                        qty: 0,
+                        data: []
+                    };
+                    setQueryParam('name');
+                    setQueryParam('address');
+
+                    if (!_.isEmpty(query)) {
+                        dreFrontendPrescriberService.findnpi(query)
+                            .then(function (npidata) {
+                                $scope.model.result = [];
+                                for (var n = 0; n < npidata.length; n++) {
+                                    $scope.model.result.push(new NpiPrescriber(npidata[n]));
                                 }
-                            }
-                        });
+                            })
+                            .catch(function (err) {
+                                $scope.model.err = err;
+                            })
+                            .finally(function () {
+                                $scope.model.active = false;
+                            });
                     } else {
-                        $scope.prescriberError = "Please enter search terms";
-                        $scope.prescriberSearchActive = false;
+                        $scope.model.err = "Please enter search terms";
+                        $scope.model.active = false;
                     }
                 };
-*/
+
+                function unselectPrescribers() {
+                    for (var p = 0; p < $scope.model.result.length; p++) {
+                        $scope.model.result[p].selected = false;
+                    }
+                }
+
+                $scope.select = function (prescriber) {
+                    if (prescriber.selected) {
+                        prescriber.selected = false;
+                        $scope.resultPrescriber = null;
+                    } else {
+                        unselectPrescribers();
+                        prescriber.selected = true;
+                        $scope.resultPrescriber = prescriber;
+                    }
+                };
             }
         }
     });

@@ -92,8 +92,8 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
-        .state('record.' + dreFrontendGlobals.resourceTypes.MedicationPrescription.alias, {
-            url: '/' + dreFrontendGlobals.resourceTypes.MedicationPrescription.alias,
+        .state('record.' + dreFrontendGlobals.resourceTypes.MedicationOrder.alias, {
+            url: '/' + dreFrontendGlobals.resourceTypes.MedicationOrder.alias,
             parent: 'record',
             data: {
                 name: 'My Medications',

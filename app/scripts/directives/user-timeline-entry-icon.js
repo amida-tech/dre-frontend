@@ -49,7 +49,7 @@ angular.module('dreFrontendApp')
                     case 'medUpdate':
                         $scope.model.displayClass = 'icon-pill';
                         break;
-                    case dreFrontendGlobals.resourceTypes.MedicationPrescription.type:
+                    case dreFrontendGlobals.resourceTypes.MedicationOrder.type:
                         $scope.model.displayClass = 'icon-pill';
                         $scope.model.isInactive = $scope.userTimelineEntryIcon.dates.isInactive;
                         break;
