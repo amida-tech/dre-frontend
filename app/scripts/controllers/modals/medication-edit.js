@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('MedicationEditCtrl', function ($scope, $modalInstance, item, $log, $q, dreFrontendEntryService,
+    .controller('MedicationEditCtrl', function ($scope, $modalInstance, item, $log, $q, $state, dreFrontendEntryService,
                                                 dreFrontEndPatientInfoService, dreFrontendMedicationOrder,
                                                 dreFrontendPractitioners, dreFrontendMedication) {
         var err_messages = {
@@ -150,7 +150,6 @@ angular.module('dreFrontendApp')
 
         $scope.saveMedication = function () {
             $scope.model.isActive = true;
-            $log.debug($scope.model);
             dreFrontEndPatientInfoService.getPatientData()
                 .then(function (patient) {
                     var result;
@@ -202,6 +201,7 @@ angular.module('dreFrontendApp')
                 .then(function (medOrder) {
                     return medOrder.save().then(function (res) {
                         $modalInstance.dismiss('cancel');
+                        $state.reload();
                         return (res);
                     });
                 })
