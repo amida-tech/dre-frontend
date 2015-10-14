@@ -269,22 +269,17 @@ angular.module('dreFrontendApp')
 
         /* paste data in array below */
         var fhir_data = [ {
-            "fullUrl":"http://dre.ntrlab.ru:8080/fhir/baseDstu2/Observation/104972",
-            "resource":{
                 "resourceType":"Observation",
                 "id":"104972",
-                "meta":{
-                    "versionId":"2",
-                    "lastUpdated":"2015-10-13T16:55:25.333+03:00"
-                },
                 "text":{
                     "status":"generated",
                     "div":"<div xmlns=\"http://www.w3.org/1999/xhtml\">2009-05-14: weight = 88.133 kg</div>"
                 },
                 "status":"final",
-                category: {
-                  coding:[{
-
+                "category": {
+                  "coding":[{
+                      "code": "vital-signs",
+                      "display": "Vital Signs"
                   }]
                 },
                 "code":{
@@ -307,9 +302,5 @@ angular.module('dreFrontendApp')
                     "system":"http://unitsofmeasure.org",
                     "code":"kg"
                 }
-            },
-            "search":{
-                "mode":"match"
-            }
-        }];
+            }];
     });
