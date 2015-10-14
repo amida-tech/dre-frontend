@@ -1,4 +1,33 @@
 "use strict";
+/*
+2do: implement it in angular-way with factory
+function FhirResource(data){
+    this.setData(data);
+}
+
+FhirResource.prototype.setData = function(data) {
+    if (data) {
+        angular.extend(this.data);
+    }
+};
+
+FhirResource.prototype.save = function () {
+    var _data = angular.fromJson(angular.toJson(this));
+    var self = this;
+
+    var proceedEntry = function (resp){
+        return self.setData(resp);
+    };
+
+    if (_data.id) {
+        return dreFrontendFhirService.create(_data.resourceType, _data)
+            .then(proceedEntry);
+    } else {
+        return dreFrontendFhirService.update(_data.resourceType,_data.id, _data)
+            .then(proceedEntry);
+    }
+};
+*/
 
 angular.module('dreFrontend.fhir')
     .provider("dreFrontendFhirService", function () {
@@ -173,7 +202,16 @@ angular.module('dreFrontend.fhir')
                 }
 
                 function _create(resourceType, data) {
-                    return Restangular.one("").post(resourceType, data);
+                    $log.debug(resourceType, data);
+                    return Restangular.one(resourceType).customPOST(data)
+                        .then(function(operationOutcome){
+                            $log.debug(operationOutcome);
+                            var issue = operationOutcome.issue[0];
+                            var expr = /["'](.+)\/(.+)\/_history\/(.+)["']/;
+                            var ref = dreFrontendUtil.parseResourceReference(issue.diagnostics);
+                            $log.debug(ref);
+                            return _read(ref[0],ref[1]);
+                        });
                 }
 
                 function _update(resourceType, id, resource) {

@@ -26,7 +26,6 @@ angular.module('dreFrontendApp')
                 maxStep: 4,
                 err: null,
                 warn: null,
-                saveState: null,
                 drug: null,
                 drugNote: null,
                 drugPeriod: {
@@ -151,6 +150,7 @@ angular.module('dreFrontendApp')
 
         $scope.saveMedication = function () {
             $scope.model.isActive = true;
+            $log.debug($scope.model);
             dreFrontEndPatientInfoService.getPatientData()
                 .then(function (patient) {
                     var result;
@@ -161,30 +161,52 @@ angular.module('dreFrontendApp')
                     if (!item) {
                         /* create new MedicationOrder */
                         result = dreFrontendMedicationOrder.getEmpty();
-                        result.patient = { reference: 'Patient/'.patient.id };
+                        result.setBaseTemplate();
+                        angular.extend(result, {
+                            patient: {reference: 'Patient/' + patient.id},
+                            status: $scope.model.drugPeriod.isCurrent ? 'active' : 'stopped',
+                            dateWritten: $scope.model.drugPeriod.start,
+                            dateEnded: $scope.model.drugPeriod.end,
+                            note: $scope.model.drugNote
+                        });
                     } else {
                         /* update MedicationOrder */
                         result = item;
                     }
+
                     if (!result) {
                         result = $q.reject(err_messages.test_err);
                     }
                     return result;
                 })
-                .then(function(medOrder){
-                    var result;
+                .then(function (medOrder) {
                     /* set Medication Data */
-                    if (!result) {
-                        result = $q.reject(err_messages.test_err);
-                    }
-                    return result;
+                    return dreFrontendMedication.getByRxNormData($scope.model.drug, true)
+                        .then(function (medication) {
+                            medOrder.medicationReference = {reference: 'Medication/' + medication.id};
+                            return medOrder;
+                        });
                 })
-                .then(function(res){
-                    $scope.model.saveState = "success";
+                .then(function (medOrder) {
+                    /* define practitioneer reference if exist*/
+                    if ($scope.model.prescriber) {
+                        return dreFrontendPractitioners.getByNpiData($scope.model.prescriber, true)
+                            .then(function (practitioner) {
+                                medOrder.prescriber = {reference: 'Practitioner/' + practitioner.id};
+                                return medOrder;
+                            });
+                    } else {
+                        return medOrder;
+                    }
+                })
+                .then(function (medOrder) {
+                    return medOrder.save().then(function (res) {
+                        $modalInstance.dismiss('cancel');
+                        return (res);
+                    });
                 })
                 .catch(function (err) {
                     $log.debug(err);
-                    $scope.model.saveState = "error";
                     $scope.model.err = err.toString();
                 })
                 .finally(function () {

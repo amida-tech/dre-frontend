@@ -12,6 +12,17 @@ angular.module('dreFrontend.fhir')
             setData(this, data);
         }
 
+        function proceedBundle(bundle) {
+            for (var n = 0; n < bundle.entry.length; n++) {
+                bundle.entry[n] = new MedicationOrder(bundle.entry[n]);
+            }
+            return bundle;
+        }
+
+        function proceedEntry(entry) {
+            return new MedicationOrder(entry);
+        }
+
         MedicationOrder.prototype.setBaseTemplate = function () {
             angular.extend(this, {
                 "resourceType": "MedicationOrder",
@@ -25,17 +36,20 @@ angular.module('dreFrontend.fhir')
             });
         };
 
-        MedicationOrder.prototype.createEntry = function () {
-
-        };
-
-        MedicationOrder.prototype.update = function () {
-
+        MedicationOrder.prototype.save = function () {
+            var _data = angular.fromJson(angular.toJson(this));
+            if (_data.id) {
+                return dreFrontendFhirService.update(_data.resourceType, _data.id, _data)
+                    .then(proceedEntry);
+            } else {
+                return dreFrontendFhirService.create(_data.resourceType, _data)
+                    .then(proceedEntry);
+            }
         };
 
         var medications = {
             getEmpty: function () {
-                return new MedicationOrder().setBaseTemplate();
+                return new MedicationOrder();
             },
             getByPatientId: function (patient_id) {
                 return dreFrontendFhirService.search("MedicationOrder", {patient: patient_id})
@@ -47,37 +61,17 @@ angular.module('dreFrontend.fhir')
                             }
                         });
                         return $q.all(medicationsArray).then(function () {
-                            return new MedicationOrder(response);
+                            return proceedBundle(response);
                         });
                     });
             },
             getById: function (id) {
                 return dreFrontendFhirService.read('MedicationOrder', id)
-                    .then(function (response) {
-                        return new MedicationOrder(response);
-                    });
+                    .then(proceedEntry);
             },
             getAll: function () {
                 return dreFrontendFhirService.read('MedicationOrder')
-                    .then(function (response) {
-                        return new MedicationOrder(response);
-                    });
-            },
-            save: function (data) {
-                var fhir_medication, fhir_prescriber;
-                var res;
-
-                if (!data.patient || !data.patient.id) {
-                    res = $q.reject(err_messages.patient_unset);
-                }
-
-                if (!data.entry) {
-
-                    if (!res) {
-                        res = $q.reject("empty MedicationOrder.save()");
-                    }
-                    return res;
-                }
+                    .then(proceedBundle);
             }
         };
         return medications;

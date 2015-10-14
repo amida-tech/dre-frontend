@@ -116,33 +116,32 @@
                 </div>
                 <div entry-details-item="model.summary"></div>
             </div>
-            <div ng-if="model.saveStatus==='error'">
-                <span>There was an error saving the medication.</span>
+            <div ng-if="model.saveState==='success'" ng-init="$hide()"></div>
+        </div>
+    </div>
+    <div class="row" ng-show="model.err">
+        <div class="col-sm-12">
+            <div class="alert alert-danger" role="alert">
+                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                <span class="sr-only">Error: </span>{{model.err}}
             </div>
-            <div ng-if="model.saveStatus==='success'" ng-init="$hide()"></div>
         </div>
     </div>
-    <div class="row">
-        <div class="alert alert-danger" role="alert" ng-show="model.err">
-            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-            <span class="sr-only">Error: </span>{{model.err}}
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-danger" ng-click="reset()" ng-show="[1,3,4].indexOf(model.step) > -1"
-                ng-disabled="model.isActive">
-            Reset
-        </button>
-        <button class="btn btn-default" ng-click="prev()" ng-show="[2,3,4].indexOf(model.step) > -1"
-                ng-disabled="model.isActive">Back
-        </button>
-        <button class="btn btn-primary" ng-click="next()"
-                ng-show="[1,2,3].indexOf(model.step) > -1"
-                ng-disabled="model.isActive || !model.drug && model.step === 1 || !model.prescriber && model.step === 2">
-            Next
-        </button>
-        <button class="btn btn-primary" ng-click="saveMedication()" ng-show="model.step === 4"
-                ng-disabled="model.isActive">Submit
-        </button>
-    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-danger" ng-click="reset()" ng-show="[1,3,4].indexOf(model.step) > -1"
+            ng-disabled="model.isActive">
+        Reset
+    </button>
+    <button class="btn btn-default" ng-click="prev()" ng-show="[2,3,4].indexOf(model.step) > -1"
+            ng-disabled="model.isActive">Back
+    </button>
+    <button class="btn btn-primary" ng-click="next()"
+            ng-show="[1,2,3].indexOf(model.step) > -1"
+            ng-disabled="model.isActive || !model.drug && model.step === 1 || !model.prescriber && model.step === 2">
+        Next
+    </button>
+    <button class="btn btn-primary" ng-click="saveMedication()" ng-show="model.step === 4"
+            ng-disabled="model.isActive">Submit
+    </button>
 </div>
