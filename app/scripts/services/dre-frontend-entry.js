@@ -168,7 +168,7 @@ angular.module('dreFrontendApp')
                     }
                     return 'Undefined';
                 case 'AllergyIntolerance':
-                    if (entry.event.length != 0) {
+                    if (entry.event && entry.event.length != 0) {
                         if (angular.isDefined(entry.event[0].manifestation)) {
                             if (entry.event[0].manifestation.length > 0) {
                                 if (angular.isDefined(entry.event[0].manifestation[0].coding)) {
@@ -183,6 +183,10 @@ angular.module('dreFrontendApp')
                         }
                     }
                     return 'Undefined';
+                case 'Claim':
+                    if (entry.identifier && entry.identifier.value ) {
+                        return entry.identifier.value;
+                    }
                 default:
                     return 'Undefined';
             }
@@ -195,6 +199,13 @@ angular.module('dreFrontendApp')
                     dates = {
                         startDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.start : undefined,
                         stopDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.end : undefined,
+                        isInactive: entry.status != 'active'
+                    };
+                    break;
+                case 'MedicationOrder':
+                    dates = {
+                        startDate: entry.dateWritten?entry.dateWritten:null,
+                        stopDate: entry.dateEnded?entry.dateEnded:null,
                         isInactive: entry.status != 'active'
                     };
                     break;
@@ -239,6 +250,11 @@ angular.module('dreFrontendApp')
                 case 'AllergyIntolerance':
                     dates = {
                         startDate: entry.lastOccurence != undefined ? entry.lastOccurence : null
+                    };
+                    break;
+                case 'Claim':
+                    dates = {
+                        startDate: entry.created != undefined ? entry.created : null
                     };
                     break;
             }

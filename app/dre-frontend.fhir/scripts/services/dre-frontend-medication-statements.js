@@ -1,36 +1,30 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendMedicationStatements', function (dreFrontendFhirService, fhirEnv) {
-
-        function MedicationStatements(data) {
-            this.setData(data);
+    .factory('dreFrontendMedicationStatements', function (dreFrontendFhirService, FhirResource) {
+        function proceedBundle(bundle) {
+            for (var n = 0; n < bundle.entry.length; n++) {
+                bundle.entry[n] = new FhirResource(bundle.entry[n]);
+            }
+            return bundle;
         }
 
-        MedicationStatements.prototype.setData = function (data) {
-            if (data)
-                angular.extend(this, data);
-        };
-        
-        var medicationStatements = {
+        function proceedEntry(entry) {
+            return new FhirResource(entry);
+        }
+
+        return {
             getByPatientId: function (patient_id) {
                 return dreFrontendFhirService.search("MedicationStatement", {patient: patient_id})
-                    .then(function (response) {
-                        return new MedicationStatements(response);
-                    });
+                    .then(proceedBundle);
             },
             getById: function (id) {
                 return dreFrontendFhirService.read('MedicationStatement', id)
-                    .then(function (response) {
-                        return new MedicationStatements(response);
-                    });
+                    .then(proceedEntry);
             },
             getAll: function () {
                 return dreFrontendFhirService.read('MedicationStatement')
-                    .then(function (response) {
-                        return new MedicationStatements(response);
-                    });
-            },
+                    .then(proceedBundle);
+            }
         };
-        return medicationStatements;
-});
+    });

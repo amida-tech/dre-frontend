@@ -10,7 +10,7 @@
  */
 var app = angular
     .module('dreFrontendApp', ['ui.router', 'ui.bootstrap', 'dreFrontend.core', 'dreFrontend.fhir', 'dreFrontend.util',
-        'ngTouch', 'ngMessages', 'nvd3', 'dreFrontend.mocks', 'angularFileUpload', 'ngTable', 'ngFileSaver', 'angularSpinner', 'ngImgCrop']);
+        'ngTouch', 'ngMessages', 'nvd3', 'dreFrontend.mocks', 'angularFileUpload', 'ngTable', 'ngFileSaver', 'angularSpinner', 'ngImgCrop', 'dreFrontend.resource']);
 app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryProvider, $locationProvider, datepickerConfig,
                      datepickerPopupConfig, dreFrontendGlobalsProvider, $urlRouterProvider, $stateProvider) {
     var dreFrontendGlobals = dreFrontendGlobalsProvider.$get();
@@ -322,7 +322,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             },
             views: {
                 'pageBody@homeRoot': {
-                    templateUrl: "views/controllers/claims.html",
+                    templateUrl: "views/controllers/records-common.html",
                     controller: "ClaimsCtrl"
                 }
             }

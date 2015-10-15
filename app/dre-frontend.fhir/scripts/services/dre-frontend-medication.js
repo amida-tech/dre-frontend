@@ -1,49 +1,19 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendMedication', function (dreFrontendFhirService, $q, $log) {
-
+    .factory('dreFrontendMedication', function (dreFrontendFhirService, $q, FhirMedication) {
         function proceedBundle(bundle) {
             for (var n = 0; n < bundle.entry.length; n++) {
-                bundle.entry[n] = new Medication(bundle.entry[n]);
+                bundle.entry[n] = new FhirMedication(bundle.entry[n]);
             }
             return bundle;
         }
 
         function proceedEntry(entry) {
-            return new Medication(entry);
+            return new FhirMedication(entry);
         }
 
-        function setData(obj, data) {
-            if (data)
-                angular.extend(obj, data);
-        }
-
-        function Medication(data) {
-            setData(this, data);
-        }
-
-        Medication.prototype.setBaseTemplate = function () {
-            angular.extend(this, {
-                "resourceType": "Medication",
-                "code": {}, // Codes that identify this medication CodeableConcept
-                "isBrand": null, // True if a brand <boolean>
-                "manufacturer": {} // Manufacturer of the item Reference(Organization)
-            });
-        };
-
-        Medication.prototype.save = function () {
-            var _data = angular.fromJson(angular.toJson(this));
-            if (_data.id) {
-                return dreFrontendFhirService.update(_data.resourceType, _data.id, _data)
-                    .then(proceedEntry);
-            } else {
-                return dreFrontendFhirService.create(_data.resourceType, _data)
-                    .then(proceedEntry);
-            }
-        };
-
-        var medications = {
+        return {
             getById: function (id) {
                 return dreFrontendFhirService.read('Medication', id)
                     .then(proceedEntry);
@@ -63,7 +33,7 @@ angular.module('dreFrontend.fhir')
 
                         if (bundle.entry.length < 1) {
                             if (forceCreate) {
-                                var medication = new Medication();
+                                var medication = new FhirMedication();
                                 medication.setBaseTemplate();
                                 angular.extend(medication, {
                                     code: {
@@ -82,12 +52,10 @@ angular.module('dreFrontend.fhir')
                                 result = $q.reject('No medication data found');
                             }
                         } else {
-                            result = new Medication(bundle.entry[0]);
+                            result = new FhirMedication(bundle.entry[0]);
                         }
                         return result;
                     });
             }
         };
-
-        return medications;
     });

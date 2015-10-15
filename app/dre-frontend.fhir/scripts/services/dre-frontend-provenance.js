@@ -1,35 +1,17 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendProvenance', function (dreFrontendFhirService, dreFrontendUtil, dreFrontendDocumentReference, $q, $log) {
-
-        function Provenance(data) {
-            this.setData(data);
+    .factory('dreFrontendProvenance', function (dreFrontendFhirService, dreFrontendUtil, dreFrontendDocumentReference, $q, FhirProvenance) {
+        function proceedBundle(bundle) {
+            for (var n = 0; n < bundle.entry.length; n++) {
+                bundle.entry[n] = new FhirProvenance(bundle.entry[n]);
+            }
+            return bundle;
         }
 
-        Provenance.prototype.setData = function (data) {
-            if (data)
-                angular.extend(this, data);
-        };
-
-        Provenance.prototype.getDocReferences = function () {
-            var doc_refs = [];
-
-            if (this.entity) {
-                angular.forEach(this.entity, function(entity){
-                    var path = dreFrontendUtil.parseResourceReference(entity.reference);
-                    if (path && path.length === 4) {
-                        doc_refs.push(dreFrontendFhirService.history(path[0], path[1], path[3])
-                            .then(function (doc_ref) {
-                                return dreFrontendDocumentReference.DocumentReference(doc_ref);
-                            }));
-                    }
-                });
-                return $q.all(doc_refs);
-            } else {
-                return $q.resolve(doc_refs);
-            }
-        };
+        function proceedEntry(entry) {
+            return new FhirProvenance(entry);
+        }
 
         var get_for_resource = function(resourceType, resourceId) {
             var res = $q.reject("cannt get sources");
@@ -38,12 +20,7 @@ angular.module('dreFrontend.fhir')
                 var params = {};
                 params["target:" + resourceType] = resourceId;
                 res = dreFrontendFhirService.search("Provenance", params)
-                    .then(function(provenance_bundle) {
-                        angular.forEach(provenance_bundle.entry, function(provenance, k){
-                            provenance_bundle.entry[k] = new Provenance(provenance);
-                        });
-                        return provenance_bundle;
-                    });
+                    .then(proceedBundle);
             }
             return res;
         };
@@ -69,19 +46,11 @@ angular.module('dreFrontend.fhir')
             getForResource: get_for_resource,
             getById: function (id) {
                 return dreFrontendFhirService.read('Provenance', id)
-                    .then(function (response) {
-                        return new Provenance(response);
-                    });
+                    .then(proceedEntry);
             },
             getAll: function () {
-                var patients = [];
                 return dreFrontendFhirService.read('Provenance')
-                    .then(function (bundle) {
-                        angular.forEach(bundle.entry, function (v, k) {
-                            bundle.entry[k] = new Provenance(v);
-                        });
-                        return bundle;
-                    });
+                    .then(proceedBundle);
             }
         };
     });

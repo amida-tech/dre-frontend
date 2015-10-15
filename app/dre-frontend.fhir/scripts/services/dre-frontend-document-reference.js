@@ -1,63 +1,39 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendDocumentReference', function (dreFrontendFhirService,dreFrontendUtil, $q, $log) {
-
-        function DocumentReference(data) {
-            this.setData(data);
+    .factory('dreFrontendDocumentReference', function (dreFrontendFhirService, dreFrontendUtil, $q, FhirDocumentReference) {
+        function proceedBundle(bundle) {
+            for (var n = 0; n < bundle.entry.length; n++) {
+                bundle.entry[n] = new FhirDocumentReference(bundle.entry[n]);
+            }
+            return bundle;
         }
 
-        DocumentReference.prototype.setData = function (data) {
-            if (data)
-                angular.extend(this, data);
-        };
-
-        DocumentReference.prototype.getContent = function () {
-            var parts;
-            if (this.url || this.content) {
-                parts = dreFrontendUtil.parseResourceReference(this.url || this.content[0].url);
-            }
-            if (parts && parts.length === 4) {
-                return dreFrontendFhirService.history(parts[0], parts[1], parts[3]);
-            } else {
-                return $q.reject("can't get content");
-            }
-        };
+        function proceedEntry(entry) {
+            return new FhirDocumentReference(entry);
+        }
 
         return {
             DocumentReference: function (data) {
                 return new DocumentReference(data);
             },
-            getByPatientId: function(patient_id,params) {
-                angular.extend(params,{author:patient_id});
-                return dreFrontendFhirService.search("DocumentReference",params                                                                                                                                                                                                                                         )
-                    .then(function(bundle){
-                        angular.forEach(bundle.entry, function (v, k) {
-                            bundle.entry[k] = new DocumentReference(v);
-                        });
-                        return bundle;
-                    });
+            getByPatientId: function (patient_id, params) {
+                angular.extend(params, {author: patient_id});
+                return dreFrontendFhirService.search("DocumentReference", params)
+                    .then(proceedBundle);
             },
             getById: function (id) {
                 return dreFrontendFhirService.read('DocumentReference', id)
-                    .then(function (response) {
-                        return new DocumentReference(response);
-                    });
+                    .then(proceedEntry);
             },
             getAll: function () {
-                var patients = [];
                 return dreFrontendFhirService.read('DocumentReference')
-                    .then(function (bundle) {
-                        angular.forEach(bundle.entry, function (v, k) {
-                            bundle.entry[k] = new DocumentReference(v);
-                        });
-                        return bundle;
-                    });
+                    .then(proceedBundle);
             },
-            getFileList: function(documentReferenceBundle) {
+            getFileList: function (documentReferenceBundle) {
                 var files = [];
 
-                function proceedBundle(bundle) {
+                function _proceedBundle(bundle) {
                     angular.forEach(bundle.entry, function (doc_ref) {
                         var data = {
                             indexed: doc_ref.indexed,
@@ -78,7 +54,7 @@ angular.module('dreFrontend.fhir')
                     });
                 }
 
-                proceedBundle(documentReferenceBundle);
+                _proceedBundle(documentReferenceBundle);
 
                 if (documentReferenceBundle.getPage) {
                     var pages = [];
@@ -87,7 +63,7 @@ angular.module('dreFrontend.fhir')
                     }
                     return $q.all(pages).then(function (bundles) {
                         angular.forEach(bundles, function (b) {
-                            proceedBundle(b);
+                            _proceedBundle(b);
                         });
                         return files;
                     });

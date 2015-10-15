@@ -9,7 +9,7 @@
  */
 angular.module('dreFrontendApp')
     .controller('NotesCtrl', function ($scope, $state, $stateParams, dreFrontendNotesService, _, dreFrontendGlobals, dreFrontendAllergyIntolerances, dreFrontendEntryService,
-                                       dreFrontendConditions, dreFrontendEncounters, dreFrontendImmunizations, dreFrontendMedicationPrescriptions, dreFrontendProcedures, dreFrontendObservations) {
+                                       dreFrontendConditions, dreFrontendEncounters, dreFrontendImmunizations, dreFrontendMedicationOrder, dreFrontendProcedures, dreFrontendObservations) {
         $scope.model = {
             notesList: [],
             filterByStar: 'all',
@@ -73,9 +73,6 @@ angular.module('dreFrontendApp')
                     case dreFrontendGlobals.resourceTypes.MedicationOrder.type:
                         service = dreFrontendMedicationOrder;
                         break;
-                    case dreFrontendGlobals.resourceTypes.MedicationPrescription.type:
-                        service = dreFrontendMedicationPrescriptions;
-                        break;
                     case dreFrontendGlobals.resourceTypes.TestResult.type:
                         service = dreFrontendObservations;
                         break;
@@ -105,8 +102,7 @@ angular.module('dreFrontendApp')
                         service = {};
                         break;
                     case dreFrontendGlobals.resourceTypes.Claim.type:
-                        throw  new Error('Not implemented');
-                        service = {};
+                        service = dreFrontendClaim;
                         break;
 
                 }

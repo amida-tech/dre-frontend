@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendAllergyIntolerances', function (dreFrontendFhirService, FhirResource) {
+    .factory('dreFrontendClaim', function (dreFrontendFhirService, $log, FhirResource) {
         function proceedBundle(bundle) {
             for (var n = 0; n < bundle.entry.length; n++) {
                 bundle.entry[n] = new FhirResource(bundle.entry[n]);
@@ -14,16 +14,16 @@ angular.module('dreFrontend.fhir')
         }
 
         return {
-            getByPatientId: function (patient_id) {
-                return dreFrontendFhirService.search("AllergyIntolerance", {patient: patient_id})
-                    .then(proceedBundle);
-            },
             getById: function (id) {
-                return dreFrontendFhirService.read('AllergyIntolerance', id)
+                return dreFrontendFhirService.read('Claim', id)
                     .then(proceedEntry);
             },
             getAll: function () {
-                return dreFrontendFhirService.read('AllergyIntolerance')
+                return dreFrontendFhirService.read('Claim')
+                    .then(proceedBundle);
+            },
+            getByPatientId: function (patientId) {
+                return dreFrontendFhirService.search('Claim', {patient: patientId})
                     .then(proceedBundle);
             }
         };

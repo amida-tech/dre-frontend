@@ -157,8 +157,8 @@
 
 <!-- build:js({.tmp,app}) scripts/dre-frontend.fhir.js -->
 <script src="dre-frontend.fhir/dre-frontend.fhir.js"></script>
+<script src="dre-frontend.fhir/scripts/config/dre-frontend-fhir-env.js"></script>
 <script src="dre-frontend.fhir/scripts/services/dre-frontend-fhir.js"></script>
-<script src="dre-frontend.fhir/scripts/services/dre-frontend-medication-order.js"></script>
 <script src="dre-frontend.fhir/scripts/services/dre-frontend-observations.js"></script>
 <script src="dre-frontend.fhir/scripts/services/dre-frontend-patient.js"></script>
 <script src="dre-frontend.fhir/scripts/services/dre-frontend-encounters.js"></script>
@@ -173,13 +173,11 @@
 <script src="dre-frontend.fhir/scripts/services/dre-frontend-medication.js"></script>
 <script src="dre-frontend.fhir/scripts/services/dre-frontend-medication-administrations.js"></script>
 <script src="dre-frontend.fhir/scripts/services/dre-frontend-medication-dispenses.js"></script>
-<script src="dre-frontend.fhir/scripts/services/dre-frontend-medication-prescriptions.js"></script>
-<script src="dre-frontend.fhir/scripts/services/dre-frontend-medication-statements.js"></script>
 <script src="dre-frontend.fhir/scripts/services/dre-frontend-medication-order.js"></script>
+<script src="dre-frontend.fhir/scripts/services/dre-frontend-medication-statements.js"></script>
 <script src="dre-frontend.fhir/scripts/services/dre-frontend-procedures.js"></script>
 <script src="dre-frontend.fhir/scripts/services/dre-frontend-provenance.js"></script>
-
-<script src="dre-frontend.fhir/scripts/config/dre-frontend-fhir-env.js"></script>
+<script src="dre-frontend.fhir/scripts/services/dre-frontend-claim.js"></script>
 <!-- endbuild -->
 <!-- build:js({.tmp,app}) scripts/dre-frontend.core.js -->
 <script src="dre-frontend.core/dre-frontend.core.js"></script>
@@ -196,6 +194,16 @@
 <script src="dre-frontend.mocks/scripts/services/dre-frontend-notes-mocks.js"></script>
 <script src="dre-frontend.mocks/scripts/services/dre-frontend-fhir-mocks.js"></script>
 <script src="dre-frontend.mocks/scripts/services/dre-frontend-diff-mocks.js"></script>
+<!-- endbuild -->
+<!-- build:js({.tmp,app}) scripts/dre-frontend.resource.js -->
+<script src="dre-frontend.resource/dre-frontend.resource.js"></script>
+<script src="dre-frontend.resource/scripts/services/fhir-resource.js"></script>
+<script src="dre-frontend.resource/scripts/services/fhir-document-reference.js"></script>
+<script src="dre-frontend.resource/scripts/services/fhir-medication.js"></script>
+<script src="dre-frontend.resource/scripts/services/fhir-medication-order.js"></script>
+<script src="dre-frontend.resource/scripts/services/fhir-patient.js"></script>
+<script src="dre-frontend.resource/scripts/services/fhir-practitioner.js"></script>
+<script src="dre-frontend.resource/scripts/services/fhir-provenance.js"></script>
 <!-- endbuild -->
 </body>
 </html>

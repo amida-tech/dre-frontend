@@ -1,45 +1,41 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendEncounters', function (dreFrontendFhirService, $q, fhirEnv) {
-
-        function Encounters(data) {
-            this.setData(data);
+    .factory('dreFrontendEncounters', function (dreFrontendFhirService, $q, FhirResource) {
+        function proceedBundle(bundle) {
+            for (var n = 0; n < bundle.entry.length; n++) {
+                bundle.entry[n] = new FhirResource(bundle.entry[n]);
+            }
+            return bundle;
         }
 
-        Encounters.prototype.setData = function (data) {
-            if (data)
-                angular.extend(this, data);
-        };
+        function proceedEntry(entry) {
+            return new FhirResource(entry);
+        }
 
-        var encounters = {
+        return {
             getByPatientId: function (patient_id) {
                 return dreFrontendFhirService.search("Encounter", {patient: patient_id})
                     .then(function (bundle) {
                         var locations = [];
-                        angular.forEach(bundle.entry, function(res,res_key){
-                            angular.forEach(res.location, function(location_entry){
+                        angular.forEach(bundle.entry, function (res, res_key) {
+                            angular.forEach(res.location, function (location_entry) {
                                 if (location_entry.location)
                                     locations.push(location_entry.location.load());
                             });
                         });
-                        return $q.all(locations).then(function(){
-                            return new Encounters(bundle);
+                        return $q.all(locations).then(function () {
+                            return proceedBundle(bundle);
                         });
                     });
             },
             getById: function (id) {
                 return dreFrontendFhirService.read('Encounter', id)
-                    .then(function (response) {
-                        return new Encounters(response);
-                    });
+                    .then(proceedEntry);
             },
             getAll: function () {
                 return dreFrontendFhirService.read('Encounter')
-                    .then(function (response) {
-                        return new Encounters(response);
-                    });
-            },
+                    .then(proceedBundle);
+            }
         };
-        return encounters;
-});
+    });

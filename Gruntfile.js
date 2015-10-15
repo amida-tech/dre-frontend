@@ -131,7 +131,8 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/scripts/{,*/}*.js',
           '<%= yeoman.app %>/dre-frontend.core/scripts/{,*/}*.js',
           '<%= yeoman.app %>/dre-frontend.fhir/scripts/{,*/}*.js',
-          '<%= yeoman.app %>/dre-frontend.util/scripts/{,*/}*.js'
+          '<%= yeoman.app %>/dre-frontend.util/scripts/{,*/}*.js',
+          '<%= yeoman.app %>/dre-frontend.resource/scripts/{,*/}*.js'
         ]
       },
       test: {

@@ -26,7 +26,6 @@ angular.module('dreFrontendApp')
               dreFrontendImmunizations,
               dreFrontendMedicationAdministrations,
               dreFrontendMedicationDispenses,
-              dreFrontendMedicationPrescriptions,
               dreFrontendMedicationStatements,
               dreFrontendProcedures,
               dreFrontendProvenance,

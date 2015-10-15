@@ -1,50 +1,17 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendPractitioners', function (dreFrontendFhirService, $log) {
-
-        function Practitioner(data) {
-            this.setData(data);
-        }
-
-        Practitioner.prototype.setData = function (data) {
-            if (data)
-                angular.extend(this, data);
-        };
-
+    .factory('dreFrontendPractitioners', function (dreFrontendFhirService, FhirPractitioner) {
         function proceedBundle(bundle) {
             for (var n = 0; n < bundle.entry.length; n++) {
-                bundle.entry[n] = new Practitioner(bundle.entry[n]);
+                bundle.entry[n] = new FhirPractitioner(bundle.entry[n]);
             }
             return bundle;
         }
 
         function proceedEntry(entry) {
-            console.log(entry);
-            return new Practitioner(entry);
+            return new FhirPractitioner(entry);
         }
-
-        Practitioner.prototype.setBaseTemplate = function () {
-            angular.extend(this, {
-                "resourceType": "Practitioner",
-                "active": null, // Whether this practitioner's record is in active use  <boolean>
-                "name": {}, // A name associated with the person HumanName
-                "telecom": [], // A contact detail for the practitioner ContactPoint
-                "address": [], // Where practitioner can be found/visited Address
-                "gender": '' // male | female | other | unknown "<code>"
-            });
-        };
-
-        Practitioner.prototype.save = function () {
-            var _data = angular.fromJson(angular.toJson(this));
-            if (_data.id) {
-                return dreFrontendFhirService.update(_data.resourceType, _data.id, _data)
-                    .then(proceedEntry);
-            } else {
-                return dreFrontendFhirService.create(_data.resourceType, _data)
-                    .then(proceedEntry);
-            }
-        };
 
         function convertNpiAddress(_use, _type, addr) {
             return {
@@ -77,14 +44,13 @@ angular.module('dreFrontend.fhir')
                     .then(proceedBundle);
             },
             getByNpiData: function (data,forceCreate) {
-                $log.debug(data,forceCreate);
                 return dreFrontendFhirService.search('Practitioner', {identifier: "NPI|" + data.npi})
                     .then(function (bundle) {
                         var result;
 
                         if (bundle.entry.length < 1) {
                             if (forceCreate) {
-                                var obj = new Practitioner();
+                                var obj = new FhirPractitioner();
                                 obj.setBaseTemplate();
                                 angular.extend(obj, {
                                     name: {
@@ -114,7 +80,7 @@ angular.module('dreFrontend.fhir')
                                 result = $q.reject('No Practitioner data found');
                             }
                         } else {
-                            result = new Practitioner(bundle.entry[0]);
+                            result = new FhirPractitioner(bundle.entry[0]);
                         }
                         return result;
                     });
