@@ -184,9 +184,10 @@ angular.module('dreFrontendApp')
                     }
                     return 'Undefined';
                 case 'Claim':
-                    if (entry.identifier && entry.identifier.value ) {
-                        return entry.identifier.value;
+                    if (entry.identifier && entry.identifier[0] && entry.identifier[0].value ) {
+                        return entry.identifier[0].value;
                     }
+                    return 'Undefined';
                 default:
                     return 'Undefined';
             }
@@ -253,8 +254,9 @@ angular.module('dreFrontendApp')
                     };
                     break;
                 case 'Claim':
+                    $log.debug(entry.created);
                     dates = {
-                        startDate: entry.created != undefined ? entry.created : null
+                        startDate: entry.created != undefined ? dreFrontendUtil.formatFhirDate(entry.created) : null
                     };
                     break;
             }

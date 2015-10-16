@@ -32,23 +32,7 @@ angular.module('dreFrontendApp')
                         updates: 2
                     })
                 });
-
+                console.log($scope.model.list);
             });
-            $scope.model.claimsList = [
-                {
-                    rawEntry: {},
-                    type: dreFrontendGlobals.resourceTypes.Claim.type,
-                    title: 'medicare',
-                    dates: {startDate: 'February 15, 2011'},
-                    menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
-                },
-                {
-                    rawEntry: {},
-                    type: dreFrontendGlobals.resourceTypes.Claim.type,
-                    title: 'medicare',
-                    dates: {startDate: 'February 14, 2011', endDate: 'February 15, 2011'},
-                    menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
-                }
-            ];
         });
   });
