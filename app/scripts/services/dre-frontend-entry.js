@@ -199,14 +199,14 @@ angular.module('dreFrontendApp')
                 case 'MedicationPrescription':
                     dates = {
                         startDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.start : undefined,
-                        stopDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.end : undefined,
+                        endDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.end : undefined,
                         isInactive: entry.status != 'active'
                     };
                     break;
                 case 'MedicationOrder':
                     dates = {
                         startDate: entry.dateWritten?entry.dateWritten:null,
-                        stopDate: entry.dateEnded?entry.dateEnded:null,
+                        endDate: entry.dateEnded?entry.dateEnded:null,
                         isInactive: entry.status != 'active'
                     };
                     break;

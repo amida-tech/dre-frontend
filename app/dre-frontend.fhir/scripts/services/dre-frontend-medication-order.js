@@ -18,7 +18,7 @@ angular.module('dreFrontend.fhir')
                 return new FhirMedicationOrder();
             },
             getByPatientId: function (patient_id) {
-                return dreFrontendFhirService.search("MedicationOrder", {patient: patient_id})
+                return dreFrontendFhirService.search("MedicationOrder", {patient: patient_id, "_sort:desc":"datewritten"})
                     .then(function (response) {
                         var medicationsArray = [];
                         angular.forEach(response.entry, function (resource) {

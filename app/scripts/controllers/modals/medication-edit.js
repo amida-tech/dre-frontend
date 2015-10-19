@@ -102,12 +102,17 @@ angular.module('dreFrontendApp')
                     break;
                 case 3:
                     if (isValidDates()) {
-                        $scope.model.summary = dreFrontendEntryService.buildTable({
+                        var data = {
                             productCode: $scope.model.drug.rxcui,
-                            productCodeSystem: 'RxNorm',
-                            performerName: $scope.model.prescriber.getName(),
-                            performerAddress: $scope.model.prescriber.getPracticeAddress().join(', ')
-                        }, []);
+                            productCodeSystem: 'RxNorm'
+                        };
+                        if ($scope.model.prescriber) {
+                            angular.extend(data,{
+                                performerName: $scope.model.prescriber.getName(),
+                                performerAddress: $scope.model.prescriber.getPracticeAddress().join(', ')
+                            });
+                        }
+                        $scope.model.summary = dreFrontendEntryService.buildTable(data, []);
                         $scope.model.step = 4;
                     }
                     break;

@@ -50,9 +50,9 @@ angular.module('dreFrontendApp')
             $scope.model.filteredMedicationList = $scope.model.showInactive
                 ? $scope.model.medicationsList
                 : _.filter($scope.model.medicationsList, function (item) {
-                        return item.dates.isInactive == false;
+                        return item.dates.isInactive === false;
                     });
-        }
+        };
         $scope.showMedicationEdit = function() {
             dreFrontendModalsService.showMedicationEdit();
         }
