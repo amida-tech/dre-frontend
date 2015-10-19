@@ -7,14 +7,10 @@
             <p>Last Updated: {{model.lastUpdate| date :'short'}}</p>
         </div>
 
-        <div class="col-sm-3 col-sm-offset-3">
-            <button class="btn btn-default" ng-click="showMedicationEdit()">
-                <div class="text-left" style="text-transform: none;">
-                    <div class="pull-right b">
-                        <h5 style="margin-top: 0px; margin-bottom: 0px; font-size: 1.5em;">Add Medication</h5>
-                    </div>
-                </div>
-            </button>
+        <div class="col-md-3 col-md-offset-3">
+            <div class="btn-group pull-right">
+                <button class="btn btn-default" ng-click="showMedicationEdit()">Add Medication</button>
+            </div>
         </div>
     </div>
     <review-updates updates="model.updates" entry-type="model.entryType"></review-updates>
