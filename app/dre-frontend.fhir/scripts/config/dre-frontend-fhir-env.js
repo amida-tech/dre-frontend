@@ -129,7 +129,7 @@ angular.module('dreFrontend.fhir')
             "SupplyDelivery": {dstu: 2},
             "TestScript": {dstu: 2},
             "ValueSet": {dstu: 2},
-            "VisionPrescription": {dstu: 2},
+            "VisionPrescription": {dstu: 2}
         },
         bundleType: "Bundle",
         vital_signs: {
@@ -162,53 +162,6 @@ angular.module('dreFrontend.fhir')
                 codes: ["maiden", "M"]
             }
         },
-        maritalStatuses: [
-            {
-                code: "A",
-                display: "Annulled",
-                definition: "Marriage contract has been declared null and to not have existed"
-            },
-            {code: "D", display: "Divorced", definition: "Marriage contract has been declared dissolved and inactive"},
-            {code: "I", display: "Interlocutory", definition: "Subject to an Interlocutory Decree"},
-            {code: "L", display: "Legally", definition: "Separated"},
-            {code: "M", display: "Married", definition: "A current marriage contract is active"},
-            {code: "P", display: "Polygamous", definition: "More than 1 current spouse"},
-            {code: "S", display: "Never Married", definition: "No marriage contract has ever been entered"},
-            {
-                code: "T",
-                display: "Domestic partner",
-                definition: "Person declares that a domestic partner relationship exists."
-            },
-            {code: "W", display: "Widowed", definition: "The spouse has died"}
-        ],
-        races: [],
-        gender: [
-            {code: "F", display: "female", definition: "Female"},
-            {code: "M", display: "male", definition: "Male"},
-            {
-                code: "UN",
-                display: "other",
-                definition: "The gender of a person could not be uniquely defined as male or female, such as hermaphrodite."
-            }
-        ],
-        addressCodes: [
-            {code: "BAD", display: "bad address", definition: ""},
-            {code: "CONF", display: "confidential address", definition: ""},
-            {code: "H", display: "home address", definition: ""},
-            {code: "HP", display: "primary home", definition: ""},
-            {code: "HV", display: "vacation home", definition: ""},
-            {code: "OLD", display: "no longer in use", definition: ""},
-            {code: "TMP", display: "temporary address", definition: ""},
-            {code: "WP", display: "work place", definition: ""},
-            {code: "DIR", display: "direct", definition: ""},
-            {code: "PUB", display: "public", definition: ""},
-            {code: "PHYS", display: "physical visit address", definition: ""},
-            {code: "PST", display: "postal address", definition: ""},
-            {code: "AS", display: "answering service", definition: ""},
-            {code: "EC", display: "emergency contact", definition: ""},
-            {code: "MC", display: "mobile contact", definition: ""},
-            {code: "PG", display: "pager", definition: ""}
-        ],
         contactSystemCodes: {
             phone: "phone",
             fax: "fax",
@@ -227,6 +180,6 @@ angular.module('dreFrontend.fhir')
         ethnicityExtensionUrl: "http://hl7.org/fhir/Profile/us-core#ethnicity",
         ethnicityCodes: [
             {code: "2135-2", display: "Hispanic or Latino"},
-            {code: "2186-5", display: "Not Hispanic or Latino"},
+            {code: "2186-5", display: "Not Hispanic or Latino"}
         ]
     });

@@ -210,7 +210,7 @@
                 <div class="form-group col-sm-3 capitalize">
                     <label for="inputAddressType">Address Type*</label>
                     <select class="form-control capitalize" id="inputAddressType" name="inputAddressType" ng-model="model.addresses[0].use"
-                            ng-options="addressCode.code as addressCode.display for addressCode in view.addressCodes" required>
+                            ng-options="addressType.code as addressType.display for addressType in view.addressTypes" required>
                     </select>
                     <p ng-show="addressForm.inputAddressType.$invalid" class="help-block">Address Type is required.</p>
                 </div>
@@ -273,7 +273,7 @@
                 <div class="form-group col-sm-12">
                     <label for="inputPhoneType">Type*</label>
                     <select class="form-control capitalize" id="inputPhoneType" name="inputPhoneType" ng-model="model.phones[0].use"
-                            ng-options="addressCode.code as addressCode.display for addressCode in view.addressCodes" required>
+                            ng-options="addressCode.code as addressCode.display for addressCode in view.contactUse" required>
                     </select>
                     <p ng-show="phoneForm.inputPhoneType.$invalid" class="help-block">Phone Type is required.</p>
                 </div>

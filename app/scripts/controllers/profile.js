@@ -8,7 +8,8 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-  .controller('ProfileCtrl', function ($scope, _, dreFrontEndPatientInfoService, dreFrontendGlobals, fhirEnv, dreFrontendFhirService, $location, $anchorScroll) {
+  .controller('ProfileCtrl', function ($scope, _, dreFrontEndPatientInfoService, dreFrontendGlobals, fhirEnv,
+                                       dreFrontendFhirService, fhirValueSet, $log) {
 
         $scope.init = function() {
             $scope.model = {
@@ -34,12 +35,33 @@ angular.module('dreFrontendApp')
             addressEdit: false,
             phoneEdit: false,
             monthNames: dreFrontendGlobals.monthNames,
-            maritalStatuses: fhirEnv.maritalStatuses,
-            genders: fhirEnv.gender,
-            addressCodes: fhirEnv.addressCodes,
+            maritalStatuses: [],
+            genders: [],
             ethnicityCodes: fhirEnv.ethnicityCodes,
-            raceCodes: fhirEnv.raceCodes
+            raceCodes: fhirEnv.raceCodes,
+            addressTypes: [],
+            contactUse:[]
         };
+
+        fhirValueSet.get("AddressType")
+            .then(function(data){
+                $scope.view.addressTypes = data;
+            });
+
+        fhirValueSet.get("ContactPointUse")
+            .then(function(data){
+                $scope.view.contactUse = data;
+            });
+
+        fhirValueSet.get("AdministrativeGender")
+            .then(function(data){
+                $scope.view.genders = data;
+            });
+
+        fhirValueSet.get("v3 Code System MaritalStatus")
+            .then(function(data){
+                $scope.view.maritalStatuses = data;
+            });
 
         $scope.contactSystemCodes = fhirEnv.contactSystemCodes;
 
