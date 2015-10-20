@@ -4,7 +4,7 @@
 "use strict";
 
 angular.module('dreFrontend.resource')
-    .factory('FhirMedicationOrder',function(FhirResource){
+    .factory('FhirMedicationOrder',function(FhirResource, $q){
 
         // reuse the original constructor
         var FhirMedicationOrder = function() {
@@ -29,6 +29,13 @@ angular.module('dreFrontend.resource')
             });
         };
 
+        FhirMedicationOrder.prototype.loadMedication = function () {
+            if (this.medicationReference.load) {
+                return this.medicationReference.load();
+            } else {
+                return $q.reject("Cant load medication data");
+            }
+        };
         return FhirMedicationOrder;
     });
 

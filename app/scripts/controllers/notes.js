@@ -58,11 +58,11 @@ angular.module('dreFrontendApp')
         };
 
         $scope.goToEntry = function (item) {
-            var alias = _.find(dreFrontendGlobals.resourceTypes,{type:item.type}).alias;
-            if(alias == dreFrontendGlobals.resourceTypes.Insurance.alias || alias == dreFrontendGlobals.resourceTypes.Claim.alias){
-                $state.go('billing.' + alias,{id:item.note.entry});
-            }else{
-                $state.go('record.' + alias,{id:item.note.entry});
+            var alias = _.find(dreFrontendGlobals.resourceTypes, {type: item.type}).alias;
+            if (alias == dreFrontendGlobals.resourceTypes.Insurance.alias || alias == dreFrontendGlobals.resourceTypes.Claim.alias) {
+                $state.go('billing.' + alias, {id: item.note.entry});
+            } else {
+                $state.go('record.' + alias, {id: item.note.entry});
             }
         };
 
@@ -108,12 +108,13 @@ angular.module('dreFrontendApp')
                 }
                 service.getById(item.note.entry).then(function (resourceEntry) {
                     if (resourceEntry) {
-                        if (item.type == 'MedicationPrescription') {
-                            resourceEntry.medication.load().then(function () {
-                                item.entryTitle = dreFrontendEntryService.getEntryTitle(resourceEntry);
-                                item.dates = dreFrontendEntryService.getEntryDates(resourceEntry);
-                                item.showEntry = !item.showEntry;
-                            });
+                        if (item.type == 'MedicationOrder') {
+                            resourceEntry.loadMedication()
+                                .then(function () {
+                                    item.entryTitle = dreFrontendEntryService.getEntryTitle(resourceEntry);
+                                    item.dates = dreFrontendEntryService.getEntryDates(resourceEntry);
+                                    item.showEntry = !item.showEntry;
+                                });
                         } else {
                             item.entryTitle = dreFrontendEntryService.getEntryTitle(resourceEntry);
                             item.dates = dreFrontendEntryService.getEntryDates(resourceEntry);
@@ -121,14 +122,14 @@ angular.module('dreFrontendApp')
                         }
                     }
                 })
-            }else{
+            } else {
                 item.showEntry = !item.showEntry;
             }
         };
 
         initNotes();
 
-        var toggleMenuCleanEvent = $scope.$on('toggleMenu', function(event, item){
+        var toggleMenuCleanEvent = $scope.$on('toggleMenu', function (event, item) {
             $scope.toggleEntry(item);
         });
 
