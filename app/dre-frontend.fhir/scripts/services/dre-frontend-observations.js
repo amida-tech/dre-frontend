@@ -1,16 +1,16 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendObservations', function (dreFrontendFhirService, fhirEnv, _, FhirResource) {
+    .factory('dreFrontendObservations', function (dreFrontendFhirService, fhirEnv, _, FhirObservation) {
         function proceedBundle(bundle) {
             for (var n = 0; n < bundle.entry.length; n++) {
-                bundle.entry[n] = new FhirResource(bundle.entry[n]);
+                bundle.entry[n] = new FhirObservation(bundle.entry[n]);
             }
             return bundle;
         }
 
         function proceedEntry(entry) {
-            return new FhirResource(entry);
+            return new FhirObservation(entry);
         }
 
 
@@ -27,7 +27,15 @@ angular.module('dreFrontend.fhir')
                 params._count = count;
 
             return dreFrontendFhirService.search("Observation", params)
-                .then(proceedEntry);
+                .then(proceedBundle);
+        }
+
+        function getFirst(bundle) {
+            if (bundle.entry.length > 0) {
+                return bundle.entry[0];
+            } else {
+                return null;
+            }
         }
 
         return {
@@ -39,31 +47,36 @@ angular.module('dreFrontend.fhir')
                 return searchData("bmi", patient_id);
             },
             getLastBMI: function (patient_id) {
-                return searchData("bmi", patient_id, 1);
+                return searchData("bmi", patient_id, 1)
+                    .then(getFirst);
             },
             getBloodPressureSystolicHistory: function (patient_id, count) {
                 return searchData("systolic_blood_pressure", patient_id);
             },
             getLastBloodPressureSystolic: function (patient_id) {
-                return searchData("systolic_blood_pressure", patient_id, 1);
+                return searchData("systolic_blood_pressure", patient_id, 1)
+                    .then(getFirst);
             },
             getBloodPressureDiastolicHistory: function (patient_id, count) {
                 return searchData("diastolic_blood_pressure", patient_id);
             },
             getLastBloodPressureDiastolic: function (patient_id) {
-                return searchData("diastolic_blood_pressure", patient_id, 1);
+                return searchData("diastolic_blood_pressure", patient_id, 1)
+                    .then(getFirst);
             },
             getWeightHistory: function (patient_id, count) {
                 return searchData("body_weight", patient_id);
             },
             getLastWeight: function (patient_id) {
-                return searchData("body_weight", patient_id, 1);
+                return searchData("body_weight", patient_id, 1)
+                    .then(getFirst);
             },
             getHeightHistory: function (patient_id, count) {
                 return searchData("body_height", patient_id);
             },
             getLastHeight: function (patient_id) {
-                return searchData("body_height", patient_id, 1);
+                return searchData("body_height", patient_id, 1)
+                    .then(getFirst);
             },
             getByPatientId: function (patient_id) {
                 return dreFrontendFhirService.search("Observation", {patient: patient_id})

@@ -23,3 +23,22 @@
 .btn-calendar {
     font-size: 14px;
 }
+@media (max-width: 768px) {
+    .btn-responsive {
+        padding:3px 6px;
+        border-radius:3px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+    .btn-responsive {
+        padding:3px 6px;
+        font-size:77%;
+        line-height: 1.2;
+    }
+}
+@media (min-width: 992px) and (max-width: 1200px) {
+    .btn-responsive {
+        padding: 7px 14px;
+    }
+}

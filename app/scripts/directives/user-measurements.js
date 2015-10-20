@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc directive
- * @name dreFrontendApp.directive:mainMenu
+ * @name dreFrontendApp.directive:userMeasurements
  * @description
- * # mainMenu
+ * # userMeasurements
  */
 angular.module('dreFrontendApp')
-    .directive('userMeasurements', function ($state, dreFrontendObservations, $filter, _, dreFrontEndPatientInfoService) {
+    .directive('userMeasurements', function ($state, dreFrontendObservations, $filter, _, dreFrontEndPatientInfoService,$timeout) {
         return {
             templateUrl: 'views/directives/user-measurements.html',
             restrict: 'AE',
@@ -19,11 +19,16 @@ angular.module('dreFrontendApp')
                     BMI: 'n/a',
                     pressureDiastolic: 'n/a',
                     pressureSystolic: 'n/a',
+                    bpApi: null,
+                    wApi: null,
                     chartOptions: {
                         chart: {
                             type: "lineChart",
                             height: 220,
-                            width: 390,
+                            margin: {
+                                right: 20
+                            },
+                            dispatch: {},
                             useInteractiveGuideline: true,
                             x: function (d) {
                                 return d.x.getTime();
@@ -63,69 +68,73 @@ angular.module('dreFrontendApp')
                         }
                     ]
                 };
+
+                function prepareValues(bundle) {
+                    var values = [];
+                    _.forEach(bundle.entry, function (observation) {
+                        values.push({
+                            y: observation.measurement(),
+                            x: new Date(observation.dateTime())
+                        });
+                    });
+                    return values;
+                }
+
                 dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
                     //init base values
                     dreFrontendObservations.getLastHeight(patientId).then(function (lastHeight) {
-                        if (lastHeight && lastHeight.entry && lastHeight.entry.length > 0 && lastHeight.entry[0].valueQuantity) {
-                            $scope.model.height = lastHeight.entry[0].valueQuantity.value + ' ' + (lastHeight.entry[0].valueQuantity.units || 'inches');
+                        if (lastHeight) {
+                            $scope.model.height = lastHeight.measurement(true);
                         }
                     });
-                    dreFrontendObservations.getLastWeight(patientId).then(function (lastWeight) {
-                        if (lastWeight && lastWeight.entry && lastWeight.entry.length > 0 && lastWeight.entry[0].valueQuantity) {
-                            $scope.model.weight = lastWeight.entry[0].valueQuantity.value + ' ' + (lastWeight.entry[0].valueQuantity.units || 'lbs');
-                        }
-                    });
-                    dreFrontendObservations.getLastBMI(patientId).then(function (lastBMI) {
-                        if (lastBMI && lastBMI.entry && lastBMI.entry.length > 0 && lastBMI.entry[0].valueQuantity) {
-                            $scope.model.BMI = lastBMI.entry[0].valueQuantity.value;
-                        }
-                    });
-                    dreFrontendObservations.getLastBloodPressureDiastolic(patientId).then(function (lastPressure) {
-                        if (lastPressure && lastPressure.entry && lastPressure.entry.length > 0 && lastPressure.entry[0].valueQuantity) {
-                            $scope.model.pressureDiastolic = lastPressure.entry[0].valueQuantity.value;
-                        }
-                    });
-                    dreFrontendObservations.getLastBloodPressureSystolic(patientId).then(function (lastPressure) {
-                        if (lastPressure && lastPressure.entry && lastPressure.entry.length > 0 && lastPressure.entry[0].valueQuantity) {
-                            $scope.model.pressureSystolic = lastPressure.entry[0].valueQuantity.value;
-                        }
-                    });
-                    //init graph values
-                    dreFrontendObservations.getWeightHistory(patientId).then(function (weightHistory) {
-                        $scope.model.weightData[0].values = [];
-                        _.forEach(weightHistory.entry, function (entry) {
-                            var applyDate = entry.appliesDateTime || (entry.issued || entry.meta.lastUpdated);
-                            $scope.model.weightData[0].values.push({
-                                y: entry.valueQuantity.value,
-                                x: new Date(applyDate)
-                            });
 
+                    dreFrontendObservations.getLastWeight(patientId)
+                        .then(function (wght) {
+                            if (wght) {
+                                $scope.model.weight = wght.measurement(true);
+                            }
                         });
+
+                    dreFrontendObservations.getLastBMI(patientId).then(function (lastBMI) {
+                        if (lastBMI) {
+                            $scope.model.BMI = lastBMI.measurement();
+                        }
                     });
-                    dreFrontendObservations.getBloodPressureDiastolicHistory(patientId).then(function (pressureHistory) {
-                        var data = [];
-                        _.forEach(pressureHistory.entry, function (entry) {
-                            var applyDate = entry.appliesDateTime || (entry.issued || entry.meta.lastUpdated);
-                            data.push({
-                                y: entry.valueQuantity.value,
-                                x: new Date(applyDate)
-                            });
+
+                    dreFrontendObservations.getLastBloodPressureDiastolic(patientId).then(function (lastPressure) {
+                        if (lastPressure) {
+                            $scope.model.pressureDiastolic = lastPressure.measurement(true);
+                        }
+                    });
+
+                    dreFrontendObservations.getLastBloodPressureSystolic(patientId).then(function (lastPressure) {
+                        if (lastPressure) {
+                            $scope.model.pressureSystolic = lastPressure.measurement(true);
+                        }
+                    });
+
+                    //init graph values
+                    dreFrontendObservations.getWeightHistory(patientId)
+                        .then(function (bundle) {
+                            $scope.model.weightData[0].values = prepareValues(bundle);
                         });
-                        $scope.model.pressureData[0].values = _.sortBy(data, 'x');
-                    });
-                    dreFrontendObservations.getBloodPressureSystolicHistory(patientId).then(function (pressureHistory) {
-                        var data = [];
-                        _.forEach(pressureHistory.entry, function (entry) {
-                            var applyDate = entry.appliesDateTime || (entry.issued || entry.meta.lastUpdated);
-                            data.push({
-                                y: entry.valueQuantity.value,
-                                x: new Date(applyDate)
-                            });
+
+                    dreFrontendObservations.getBloodPressureDiastolicHistory(patientId)
+                        .then(function (bundle) {
+                            $scope.model.pressureData[0].values = _.sortBy(prepareValues(bundle), 'x');
                         });
-                        $scope.model.pressureData[1].values = _.sortBy(data, 'x');
-                    });
+
+                    dreFrontendObservations.getBloodPressureSystolicHistory(patientId)
+                        .then(function (bundle) {
+                            $scope.model.pressureData[1].values = _.sortBy(prepareValues(bundle), 'x');
+                        });
                 });
 
+                $scope.updateChart = function (api) {
+                    if (api) {
+                        $timeout(function(){api.refresh()},0);
+                    }
+                }
             }
         };
     });

@@ -41,11 +41,11 @@
     </div>
     <div class="col-sm-6">
       <tabset>
-        <tab heading="Weight">
-          <nvd3 options="model.chartOptions" data="model.weightData"class="with-3d-shadow with-transitions"></nvd3>
+        <tab heading="Weight" select="updateChart(model.wApi)">
+          <nvd3 options="model.chartOptions" api="model.wApi" data="model.weightData"class="with-3d-shadow with-transitions"></nvd3>
         </tab>
-        <tab heading="Blood Pressure">
-          <nvd3 options="model.chartOptions" data="model.pressureData" class="with-3d-shadow with-transitions"></nvd3>
+        <tab heading="Blood Pressure" select="updateChart(model.bpApi)">
+          <nvd3 options="model.chartOptions" api="model.bpApi" data="model.pressureData" class="with-3d-shadow with-transitions"></nvd3>
         </tab>
       </tabset>
     </div>

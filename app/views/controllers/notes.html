@@ -17,23 +17,27 @@
         <div>
             <div class="row"><i class="col-sm-2 h_line"></i></div>
             <div class="row">
-                <div class="col-sm-6 col-sm-offset-3">
-                    <button class="btn pull-right" ng-click="toggleFilter('unStarred')"
-                            ng-class="{'btn-success':model.filterByStar == 'unStarred', 'btn-default':model.filterByStar != 'unStarred'}">
-                        Unstarred only
-                    </button>
-                    <button class="btn pull-right" ng-click="toggleFilter('starred')"
-                            ng-class="{'btn-success':model.filterByStar == 'starred', 'btn-default':model.filterByStar != 'starred'}">
-                        Starred only
-                    </button>
-                    <button class="btn pull-right" ng-click="toggleFilter('all')"
-                            ng-class="{'btn-success':model.filterByStar == 'all', 'btn-default':model.filterByStar != 'all'}">
-                        All
-                    </button>
+                <div class="col-sm-7 col-sm-offset-2 col-xs-12">
+                    <div class="btn-group">
+                        <button class="btn btn-responsive" ng-click="toggleFilter('all')"
+                                ng-class="{'btn-success':model.filterByStar == 'all', 'btn-default':model.filterByStar != 'all'}">
+                            All
+                        </button>
+                        <button class="btn btn-responsive" ng-click="toggleFilter('starred')"
+                                ng-class="{'btn-success':model.filterByStar == 'starred', 'btn-default':model.filterByStar != 'starred'}">
+                            Starred only
+                        </button>
+                        <button class="btn btn-responsive" ng-click="toggleFilter('unStarred')"
+                                ng-class="{'btn-success':model.filterByStar == 'unStarred', 'btn-default':model.filterByStar != 'unStarred'}">
+                            Unstarred only
+                        </button>
+                    </div>
                 </div>
-                <div class="col-sm-2">
-                    <button class="btn btn-default" ng-click="model.dateSort==''?model.dateSort='-' : model.dateSort=''">Sort by: Date
-                    <i class="fa" ng-class="{'fa-sort-asc':model.dateSort =='','fa-sort-desc':model.dateSort =='-'}"></i>
+                <div class="col-sm-3 col-xs-12">
+                    <button class="btn btn-default btn-responsive pull-right"
+                            ng-click="model.dateSort==''?model.dateSort='-' : model.dateSort=''">Sort by: Date
+                        <i class="fa"
+                           ng-class="{'fa-sort-asc':model.dateSort =='','fa-sort-desc':model.dateSort =='-'}"></i>
                     </button>
                 </div>
             </div>
@@ -72,6 +76,7 @@
                             <div class="col-sm-12">
                                 <h4>Entry Details</h4>
                                 <a href="#" ng-click="goToEntry(item)"><strong ng-bind="item.entryTitle"></strong></a>
+
                                 <div user-timeline-entry-dates="item"></div>
                             </div>
                         </div>
