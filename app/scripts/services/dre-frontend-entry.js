@@ -104,11 +104,11 @@ angular.module('dreFrontendApp')
             var title;
             if (angular.isObject(entry)) {
                 switch (entry.resourceType) {
-                    case 'MedicationPrescription':
-                        title = entry.codableConceptTitle(entry.medication);
-                        break;
                     case 'MedicationOrder':
-                        title = entry.codableConceptTitle(entry.medicationReference);
+                        title = entry.codableConceptTitle(entry.medicationCodeableConcept);
+                        if (!title && entry.medicationReference && entry.medicationReference.code) {
+                            title = entry.codableConceptTitle(entry.medicationReference.code);
+                        }
                         break;
                     case 'Observation':
                         title = entry.codableConceptTitle(entry.code);
