@@ -501,6 +501,18 @@ module.exports = function (grunt) {
             enableDebugLog:true
           }
         }
+      },
+      localqa: {
+        options: {
+        },
+        constants: {
+          dreFrontendEnvironment: {
+            name: 'localqa',
+            baseServerUrl:'http://localhost:3000/api/v1',
+            fhirServerUrl:'http://dev.ntrlab.ru:8080/fhir/baseDstu2',
+            enableDebugLog:true
+          }
+        }
       }
     },
     // Test settings
@@ -571,7 +583,10 @@ module.exports = function (grunt) {
     'ngconstant:mock',
     'build'
   ]);
-  grunt.registerTask('default', [
+  grunt.registerTask('buildLocalQa', [
+    'ngconstant:localqa',
+    'build'
+  ]);  grunt.registerTask('default', [
     'newer:jshint',
     'test',
     'build'
