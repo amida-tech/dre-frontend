@@ -124,7 +124,6 @@ angular.module('dreFrontendApp')
                         break;
                     case 'Procedure':
                         title = entry.codableConceptTitle(entry.code);
-                        $log.debug(entry,title);
                         break;
                     case 'AllergyIntolerance':
                         title = entry.codableConceptTitle(entry.substance);
