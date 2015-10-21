@@ -764,8 +764,41 @@ angular.module('dreFrontend.mocks')
                             }
                         ]
                     }
-                }
+                },
 
+                {
+                    "resourceType":"Procedure",
+                    "id":"109391",
+                    "meta":{
+                        "versionId":"1",
+                        "lastUpdated":"2015-10-16T18:43:33.510+03:00"
+                    },
+                    "subject":{
+                        "reference":"Patient/test"
+                    },
+                    "code": {
+                        "coding":[
+                            {
+                                "system":"http://snomed.info/sct",
+                                "code":"2488002",
+                                "display": "Prescription, fitting and dispensing of contact lens (procedure)"
+                            }
+                        ],
+                        "test": "Prescription, fitting and dispensing of contact lens (procedure)"
+                    },
+                    "status":"completed",
+                    "performedDateTime":"1942-01-27",
+                    "focalDevice":[
+                        {
+                            "action":{
+                                "text":"Artificial Eye Lenses"
+                            },
+                            "manipulated":{
+                                "reference":"Device/109390"
+                            }
+                        }
+                    ]
+                }
             ];
 
             //isAuthenticated

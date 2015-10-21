@@ -101,96 +101,45 @@ angular.module('dreFrontendApp')
         };
 
         var _getEntryTitle = function (entry) {
-            switch (entry.resourceType) {
-                case 'MedicationPrescription':
-                case 'MedicationOrder':
-                    var paramName = (entry.resourceType === 'MedicationOrder')?'medicationReference':'medication';
-
-                    if (angular.isObject(entry[paramName])) {
-                        if (angular.isObject(entry[paramName].code)) {
-                            if (angular.isArray(entry[paramName].code.coding) && entry[paramName].code.coding.length > 0 && entry[paramName].code.coding[0].display) {
-                                return entry[paramName].code.coding[0].display;
-                            }
-                            if (angular.isString(entry[paramName].code.text)) {
-                                return entry[paramName].code.text;
-                            }
+            var title;
+            if (angular.isObject(entry)) {
+                switch (entry.resourceType) {
+                    case 'MedicationPrescription':
+                        title = entry.codableConceptTitle(entry.medication);
+                        break;
+                    case 'MedicationOrder':
+                        title = entry.codableConceptTitle(entry.medicationReference);
+                        break;
+                    case 'Observation':
+                        title = entry.codableConceptTitle(entry.code);
+                        break;
+                    case 'Immunization':
+                        title = entry.title();
+                        break;
+                    case 'Encounter':
+                        title = entry.codableConceptTitle(entry.type);
+                        break;
+                    case 'Condition':
+                        title = entry.codableConceptTitle(entry.code);
+                        break;
+                    case 'Procedure':
+                        title = entry.codableConceptTitle(entry.code);
+                        $log.debug(entry,title);
+                        break;
+                    case 'AllergyIntolerance':
+                        title = entry.codableConceptTitle(entry.substance);
+                        break;
+                    case 'Claim':
+                        if (entry.identifier && entry.identifier[0] && entry.identifier[0].value) {
+                            title = entry.identifier[0].value;
                         }
-                    }
-                    return 'Undefined';
-                case 'Observation':
-                    if (angular.isObject(entry.code)) {
-                        if (angular.isArray(entry.code.coding) && entry.code.coding.length > 0 && entry.code.coding[0].display) {
-                            return entry.code.coding[0].display;
-                        }
-                        if (angular.isString(entry.code.text)) {
-                            return entry.code.text
-                        }
-                    }
-                    return 'Undefined';
-                case 'Immunization':
-                    if (angular.isObject(entry.vaccineType)) {
-                        if (angular.isArray(entry.vaccineType.coding) && entry.vaccineType.coding.length > 0 && entry.vaccineType.coding[0].display) {
-                            return entry.vaccineType.coding[0].display;
-                        }
-                        if (angular.isString(entry.vaccineType.text)) {
-                            return entry.vaccineType.text
-                        }
-                    }
-                    return 'Undefined';
-                case 'Encounter':
-                    if (angular.isArray(entry.type) && entry.type.length > 0) {
-                        if (angular.isObject(entry.type[0].coding) && entry.type[0].coding.length > 0 && entry.type[0].coding[0].display) {
-                            return entry.type[0].coding[0].display;
-                        }
-                        if (angular.isString(entry.type[0].text)) {
-                            return entry.type[0].text
-                        }
-                    }
-                    return 'Undefined';
-                case 'Condition':
-                    if (angular.isObject(entry.code)) {
-                        if (angular.isObject(entry.code.coding) && entry.code.coding.length > 0 && entry.code.coding[0].display) {
-                            return entry.code.coding[0].display;
-                        }
-                        if (angular.isString(entry.code.text)) {
-                            return entry.code.text
-                        }
-                    }
-                    return 'Undefined';
-                case 'Procedure':
-                    if (angular.isObject(entry.type)) {
-                        if (angular.isArray(entry.type.coding) && entry.type.coding.length > 0 && entry.type.coding[0].display) {
-                            return entry.type.coding[0].display;
-                        }
-                        if (angular.isString(entry.type.text)) {
-                            return entry.type.text
-                        }
-                    }
-                    return 'Undefined';
-                case 'AllergyIntolerance':
-                    if (entry.event && entry.event.length != 0) {
-                        if (angular.isDefined(entry.event[0].manifestation)) {
-                            if (entry.event[0].manifestation.length > 0) {
-                                if (angular.isDefined(entry.event[0].manifestation[0].coding)) {
-                                    if (entry.event[0].manifestation[0].coding.length != 0 && entry.event[0].manifestation[0].coding[0].display) {
-                                        return entry.event[0].manifestation[0].coding[0].display;
-                                    }
-                                }
-                                if (angular.isString(entry.event[0].manifestation[0].text)) {
-                                    return entry.event[0].manifestation[0].text
-                                }
-                            }
-                        }
-                    }
-                    return 'Undefined';
-                case 'Claim':
-                    if (entry.identifier && entry.identifier[0] && entry.identifier[0].value ) {
-                        return entry.identifier[0].value;
-                    }
-                    return 'Undefined';
-                default:
-                    return 'Undefined';
+                        break;
+                }
             }
+            if (!title) {
+                title = 'Undefined';
+            }
+            return title;
         };
 
         var _getEntryDates = function (entry) {
@@ -205,8 +154,8 @@ angular.module('dreFrontendApp')
                     break;
                 case 'MedicationOrder':
                     dates = {
-                        startDate: entry.dateWritten?entry.dateWritten:null,
-                        endDate: entry.dateEnded?entry.dateEnded:null,
+                        startDate: entry.dateWritten ? entry.dateWritten : null,
+                        endDate: entry.dateEnded ? entry.dateEnded : null,
                         isInactive: entry.status != 'active'
                     };
                     break;
@@ -254,7 +203,6 @@ angular.module('dreFrontendApp')
                     };
                     break;
                 case 'Claim':
-                    $log.debug(entry.created);
                     dates = {
                         startDate: entry.created != undefined ? dreFrontendUtil.formatFhirDate(entry.created) : null
                     };
