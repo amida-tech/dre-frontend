@@ -17,15 +17,15 @@ angular.module('dreFrontend.resource')
         /* extend prototype */
 
         FhirObservation.prototype.dateTime = function () {
-            return this.issued || this.effectiveDateTime || entry.meta.lastUpdated;
+            return this.issued || this.effectiveDateTime || this.meta.lastUpdated;
         };
 
         FhirObservation.prototype.getQuantity = function (withUnit) {
             var res;
             if (this.valueQuantity) {
                 res = this.valueQuantity.value;
-                if (withUnit) {
-                    res += ' ' + this.valueQuantity.unit;
+                if (withUnit && (this.valueQuantity.unit || this.valueQuantity.code)) {
+                    res += ' ' + (this.valueQuantity.unit || this.valueQuantity.code);
                 }
             }
             return res;

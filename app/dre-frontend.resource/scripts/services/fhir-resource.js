@@ -32,6 +32,18 @@ angular.module('dreFrontend.resource')
             }
         };
 
+        FhirResource.prototype.codableConceptTitle = function(cc_data) {
+            var res;
+            if (cc_data) {
+                if (cc_data.coding && cc_data.coding[0]){
+                    res = cc_data.coding[0].display || cc_data.coding[0].code;
+                } else {
+                    res = cc_data.text;
+                }
+            }
+            return res;
+        };
+
         /* do nothing. extend in childs */
         FhirResource.prototype.setBaseTemplate = function () {
             angular.extend(this, { });

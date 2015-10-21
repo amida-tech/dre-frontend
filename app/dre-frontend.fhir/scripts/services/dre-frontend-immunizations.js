@@ -1,16 +1,16 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendImmunizations', function (dreFrontendFhirService, FhirResource) {
+    .factory('dreFrontendImmunizations', function (dreFrontendFhirService, FhirImmunization) {
         function proceedBundle(bundle) {
             for (var n = 0; n < bundle.entry.length; n++) {
-                bundle.entry[n] = new FhirResource(bundle.entry[n]);
+                bundle.entry[n] = new FhirImmunization(bundle.entry[n]);
             }
             return bundle;
         }
 
         function proceedEntry(entry) {
-            return new FhirResource(entry);
+            return new FhirImmunization(entry);
         }
 
         return {
