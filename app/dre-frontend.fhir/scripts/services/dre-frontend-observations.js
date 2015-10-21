@@ -19,7 +19,7 @@ angular.module('dreFrontend.fhir')
 
             var params = {
                 "code": codes.join(','),
-                "subject:Patient": patient_id,
+                "patient": patient_id,
                 "_sort:desc": "date"
             };
 

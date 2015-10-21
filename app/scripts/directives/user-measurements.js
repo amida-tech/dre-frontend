@@ -97,7 +97,7 @@ angular.module('dreFrontendApp')
 
                     dreFrontendObservations.getLastBMI(patientId).then(function (lastBMI) {
                         if (lastBMI) {
-                            $scope.model.BMI = lastBMI.measurement();
+                            $scope.model.BMI = lastBMI.measurement(true);
                         }
                     });
 
