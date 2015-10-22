@@ -4,7 +4,7 @@
  * @ngdoc function
  * @name dreFrontendApp.controller:MedicationInfoCtrl
  * @description
- * # AccountCtrl
+ * # MedicationInfoCtrl
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')

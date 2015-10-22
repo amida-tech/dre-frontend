@@ -132,7 +132,7 @@ angular.module('dreFrontendApp')
 
                 $scope.updateChart = function (api) {
                     if (api) {
-                        $timeout(function(){api.refresh()},0);
+                        $timeout(function(){api.refresh()},50);
                     }
                 }
             }

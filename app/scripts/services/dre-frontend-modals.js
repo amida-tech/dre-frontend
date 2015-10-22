@@ -9,8 +9,7 @@
  */
 angular.module('dreFrontendApp')
     .service('dreFrontendModalsService', function ($modal) {
-
-        var self = {
+        return {
             showMedicationInfo: function (item) {
                 return $modal.open({
                     templateUrl: 'views/controllers/modals/medication-info.html',
@@ -29,13 +28,18 @@ angular.module('dreFrontendApp')
                     controller: 'MedicationEditCtrl',
                     size: 'lg',
                     resolve: {
-                        item: function() {
+                        item: function () {
                             return item;
                         }
                     }
                 });
+            },
+            showPrintDlg: function () {
+                return $modal.open({
+                    templateUrl: 'views/controllers/modals/print-dlg.html',
+                    controller: 'PrintDlgCtrl',
+                    size: 'lg'
+                });
             }
         };
-
-        return self;
     });
