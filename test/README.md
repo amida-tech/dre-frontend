@@ -32,3 +32,4 @@ new_tab "Redis" "redis-server"
 new_tab "webdriver" "webdriver-manager start --standalone"
 ```
 If you have dre-frontend and DRE-services installed locally.
+Test report and screenshots of failed tests can be found in the folder "target/screenshots".
