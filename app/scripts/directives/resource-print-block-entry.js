@@ -8,12 +8,19 @@ angular.module('dreFrontendApp')
             templateUrl: 'views/directives/resource-print-block-entry.html',
             restrict: 'AE',
             scope: {
-                data: "="
+                data: "=",
+                showUserData:"=",
+                type: "="
             },
-            controller: function ($scope, dreFrontendHttp, $log, $http, _, dreFrontendUtil, dreFrontendEntryService) {
+            controller: function ($scope, $injector, dreFrontendEntryService) {
                 $scope.model = {
-
+                    type: $scope.type,
+                    title: dreFrontendEntryService.getEntryTitle($scope.data),
+                    additionalInfo: dreFrontendEntryService.getEntryAddInfo($scope.data),
+                    dates: dreFrontendEntryService.getEntryDates($scope.data),
+                    rawEntry: $scope.data
                 };
             }
+
         };
     });

@@ -28,7 +28,7 @@ angular.module('dreFrontendApp')
                     $scope.model.list.push({
                         rawEntry: entry,
                         type: dreFrontendGlobals.resourceTypes.Vital.type,
-                        additionalInfo: entry.measurement(true),
+                        additionalInfo: dreFrontendEntryService.getEntryAddInfo(entry),
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline,
                         dates: dreFrontendEntryService.getEntryDates(entry),

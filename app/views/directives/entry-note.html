@@ -1,5 +1,5 @@
-<div>
-    <h4>Note</h4>
+<div ng-hide="model.isNew && readOnly">
+    <h4 ng-hide="withoutHeader">Note</h4>
     <div class="row container-fluid panel-body" ng-form="noteEditForm" name="noteEditForm">
         <div class="col-sm-1">
             <button class="btn- btn-link" ng-click="toggleFavorite()">
@@ -19,7 +19,7 @@
             <div class="form-group" ng-show="model.isNew && model.isEditMode">
                 <button class="btn btn-primary pull-right" ng-click="createNote()">Add Note</button>
             </div>
-            <div class="form-group" ng-hide="model.isNew">
+            <div class="form-group" ng-hide="model.isNew || readOnly">
                 <button class="btn btn-primary pull-right" ng-hide="model.isEditMode" ng-click="model.isEditMode = true">Edit</button>
                 <button type="button" class="btn btn-danger pull-left" ng-click="deleteNote()" ng-show="model.isEditMode">Delete note</button>
                 <button type="button" class="btn btn-default pull-right" ng-show="model.isEditMode" ng-click="model.isEditMode = false">Cancel</button>

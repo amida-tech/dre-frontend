@@ -16,10 +16,14 @@ angular.module('dreFrontendApp')
             var rawMenuTypes = _.groupBy(notesList, 'section');
             $scope.model.notesTypes = [];
             _.forEach(rawMenuTypes, function (noteType) {
-                $scope.model.notesTypes.push({
-                    title: _.find(dreFrontendGlobals.resourceTypes, {type:_.first(noteType).section}).title,
-                    noteType: _.find(dreFrontendGlobals.resourceTypes, {type:_.first(noteType).section}).alias,
-                    itemCount: noteType.length});
+                var resourceType = _.find(dreFrontendGlobals.resourceTypes, {type:_.first(noteType).section});
+                if (resourceType) {
+                    $scope.model.notesTypes.push({
+                        title: resourceType.title,
+                        noteType: resourceType.alias,
+                        itemCount: noteType.length
+                    });
+                }
             })
         })
     });

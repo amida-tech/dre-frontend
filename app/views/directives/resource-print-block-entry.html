@@ -1,6 +1,12 @@
-<div class="col-sm-3">
-    entry title
-</div>
-<div class="col-sm-9">
-    entry body
+<div class="row panel">
+    <div class="col-xs-3">
+        <h4><span class="text-left" ng-bind="model.title"></span></h4>
+        <div ng-show="model.additionalInfo"><span ng-bind="model.additionalInfo"></span></div>
+        <div user-timeline-entry-dates="model"></div>
+    </div>
+    <div class="col-xs-9">
+        <div entry-details="model.rawEntry" without-header="true"></div>
+        <div read-only="true" entry-note="model" ng-show="showUserData"></div>
+        <div without-header="true" entry-source="model.rawEntry"></div>
+    </div>
 </div>

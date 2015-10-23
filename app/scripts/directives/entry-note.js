@@ -12,7 +12,9 @@ angular.module('dreFrontendApp')
             templateUrl: 'views/directives/entry-note.html',
             restrict: 'AE',
             scope: {
-                entryNote: '='
+                entryNote: '=',
+                readOnly: '=',
+                withoutHeader: '='
             },
             controller: function ($scope) {
                 $scope.model = {
@@ -26,13 +28,15 @@ angular.module('dreFrontendApp')
                 };
                 $scope.toggleFavorite = function () {
                     $scope.model.error = '';
-                    $scope.model.isFavorite = !$scope.model.isFavorite;
-                    if ($scope.model.noteId) {
-                        dreFrontendNotesService.toggleFavorite($scope.model.isFavorite, $scope.model.noteId).then(function (note) {
-                            initNoteDetails(note);
-                        }).catch(function (error) {
-                            $scope.model.error = error;
-                        });
+                    if (!$scope.readOnly) {
+                        $scope.model.isFavorite = !$scope.model.isFavorite;
+                        if ($scope.model.noteId) {
+                            dreFrontendNotesService.toggleFavorite($scope.model.isFavorite, $scope.model.noteId).then(function (note) {
+                                initNoteDetails(note);
+                            }).catch(function (error) {
+                                $scope.model.error = error;
+                            });
+                        }
                     }
                 };
                 $scope.createNote = function () {
@@ -77,9 +81,11 @@ angular.module('dreFrontendApp')
                     }
                 };
                 if ($scope.entryNote) {
-                    dreFrontendNotesService.getNoteForEntry($scope.entryNote.rawEntry.id, $scope.entryNote.type).then(function (note) {
-                        initNoteDetails(note);
-                    });
+                    dreFrontendNotesService.getNoteForEntry($scope.entryNote.rawEntry.id, $scope.entryNote.type)
+                        .then(function (note) {
+
+                            initNoteDetails(note);
+                        });
                 } else {
                     initNoteDetails(null);
                 }

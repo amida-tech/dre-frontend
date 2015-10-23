@@ -1,0 +1,12 @@
+<div class="container-fluid">
+    <div class="panel panel-default print-block">
+        <div class="panel-heading"><h4 class="text-center">{{model.profileTitle}}</h4></div>
+        <div class="row">
+            <div class="col-xs-3">
+                <user-info></user-info>
+            </div>
+        </div>
+    </div>
+    <resource-print-block data="block" patient-id="model.patient.id"
+                          ng-repeat="block in model.data"></resource-print-block>
+</div>

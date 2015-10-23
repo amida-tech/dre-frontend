@@ -27,7 +27,7 @@ angular.module('dreFrontendApp')
                     $scope.model.list.push({
                         rawEntry: entry,
                         type: dreFrontendGlobals.resourceTypes.Immunization.type,
-                        additionalInfo: '',
+                        additionalInfo: dreFrontendEntryService.getEntryAddInfo(entry),
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         dates: dreFrontendEntryService.getEntryDates(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline,

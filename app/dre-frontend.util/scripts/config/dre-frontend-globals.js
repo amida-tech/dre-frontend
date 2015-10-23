@@ -30,73 +30,78 @@ angular.module('dreFrontend.util')
                 alias: 'medications',
                 title: 'Medications',
                 type: 'MedicationOrder',
-                fhirType: 'MedicationOrder'
-            },
-            MedicationPrescription: {
-                alias: 'medications',
-                title: 'Medications',
-                type: 'MedicationPrescription',
-                fhirType: 'MedicationPrescription'
+                fhirType: 'MedicationOrder',
+                serviceName: 'dreFrontendMedicationOrder'
             },
             TestResult: {
                 alias: 'testresults',
                 title: 'Test Results',
                 type: 'ObservationTestResult',
-                fhirType: 'Observation'
+                fhirType: 'Observation',
+                serviceName: 'dreFrontendObservations'
             },
             Vital: {
                 alias: 'vitals',
                 title: 'Vitals',
                 type: 'ObservationVital',
-                fhirType: 'Observation'
+                fhirType: 'Observation',
+                serviceName: 'dreFrontendObservations'
             },
             Encounter: {
                 alias: 'encounters',
                 title: 'Encounters',
                 type: 'Encounter',
-                fhirType: 'Encounter'
+                fhirType: 'Encounter',
+                serviceName: 'dreFrontendEncounters'
             },
             Condition: {
                 alias: 'conditions',
                 title: 'Conditions',
                 type: 'Condition',
-                fhirType: 'Condition'
+                fhirType: 'Condition',
+                serviceName: 'dreFrontendConditions'
             },
             SocialHistory: {
                 alias: 'social-history',
                 title: 'SocialHistory',
                 type: 'SocialHistory',
-                fhirType: 'SocialHistory'
+                fhirType: 'Observation',
+                serviceName: 'dreFrontendObservations'
             },
             Procedure: {
                 alias: 'procedures',
                 title: 'Procedures',
                 type: 'Procedure',
-                fhirType: 'Procedure'
+                fhirType: 'Procedure',
+                serviceName: 'dreFrontendProcedures'
             },
             AllergyIntolerance: {
                 alias: 'allergies',
                 title: 'Allergies',
                 type: 'AllergyIntolerance',
-                fhirType: 'AllergyIntolerance'
+                fhirType: 'AllergyIntolerance',
+                serviceName: 'dreFrontendAllergyIntolerances'
             },
             Immunization: {
                 alias: 'immunizations',
                 title: 'Immunizations',
                 type: 'Immunization',
-                fhirType: 'Immunization'
+                fhirType: 'Immunization',
+                serviceName: 'dreFrontendImmunizations'
             },
             Insurance: {
                 alias: 'insurances',
                 title: 'Insurance',
                 type: 'Insurance',
-                fhirType: 'Insurance'
+                fhirType: 'Insurance',
+                serviceName: null
             },
             Claim: {
                 alias: 'claims',
                 title: 'Claims',
                 type: 'Claims',
-                fhirType: 'Claims'
+                fhirType: 'Claims',
+                serviceName: 'dreFrontendClaim'
             }
         };
 

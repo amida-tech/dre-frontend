@@ -28,7 +28,7 @@ angular.module('dreFrontendApp')
                         rawEntry: entry,
                         type: dreFrontendGlobals.resourceTypes.SocialHistory.type,
                         title: dreFrontendEntryService.getEntryTitle(entry),
-                        additionalInfo: 'some info here',
+                        additionalInfo: dreFrontendEntryService.getEntryAddInfo(entry),
                         dates: dreFrontendEntryService.getEntryDates(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
                     })
