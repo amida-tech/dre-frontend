@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <button class="close" ng-click="close()" aria-label="Close" data-dismiss="modal" type="button">
+        <span>×</span>
+    </button>
+    <h3 class="modal-title">Print My Record</h3>
+</div>
+<div class="modal-body">
+    <div class="row" ng-hide="model.data.length >0">
+        <div class="col-sm-12 text-center">
+            <h3>Would you like to include the additional data you've entered?</h3>
+            <h5>This would include your notes and the medications you've added yourself</h5>
+        </div>
+    </div>
+    <div class="row" ng-hide="model.data.length >0">
+        <div class="col-sm-4 col-sm-offset-1">
+            <button ng-click="printRecord(false)" class="btn btn-default col-sm-12">No</button>
+        </div>
+        <div class="col-sm-4 col-sm-offset-2">
+            <button ng-click="printRecord(true)" class="btn btn-primary col-sm-12">Yes</button>
+        </div>
+    </div>
+    <div class="row" hg-show="model.data.length >0">
+        <resource-print-block data="block" ng-repeat="block in model.data"></resource-print-block>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="printDiv()" ng-show="model.data.length >0"
+            ng-disabled="model.isDone">Print
+    </button>
+</div>

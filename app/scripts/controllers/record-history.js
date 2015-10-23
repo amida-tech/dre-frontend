@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-  .controller('RecordHistoryCtrl', function ($scope, dreFrontendEntryService, dreFrontEndPatientInfoService, dreFrontendGlobals) {
+  .controller('RecordHistoryCtrl', function ($scope, dreFrontendEntryService, dreFrontEndPatientInfoService, dreFrontendGlobals, dreFrontendModalsService) {
         $scope.model = {
             userName : '-',
             lastUpdate: new Date(),
@@ -45,4 +45,6 @@ angular.module('dreFrontendApp')
                 }
             ];
         });
+
+        $scope.showPrintDlg = dreFrontendModalsService.showPrintDlg;
   });
