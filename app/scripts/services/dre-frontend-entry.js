@@ -144,13 +144,6 @@ angular.module('dreFrontendApp')
         var _getEntryDates = function (entry) {
             var dates = {};
             switch (entry.resourceType) {
-                case 'MedicationPrescription':
-                    dates = {
-                        startDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.start : undefined,
-                        endDate: angular.isDefined(entry.dispense) && angular.isDefined(entry.dispense.validityPeriod) ? entry.dispense.validityPeriod.end : undefined,
-                        isInactive: entry.status != 'active'
-                    };
-                    break;
                 case 'MedicationOrder':
                     dates = {
                         startDate: entry.dateWritten ? entry.dateWritten : null,
@@ -211,11 +204,50 @@ angular.module('dreFrontendApp')
 
         };
 
-        var self = {
-            buildTable: _buildTable,
-            getEntryTitle: _getEntryTitle,
-            getEntryDates: _getEntryDates
+        var _getEntryAddInfo = function(entry) {
+            var info = '';
+            switch (entry.resourceType) {
+                case 'MedicationOrder':
+                    break;
+                case 'Observation':
+                    info = entry.measurement(true);
+                    break;
+                case 'Immunization':
+                    break;
+                case 'Encounter':
+                    info = (angular.isArray(entry.location) && entry.location.length > 0 && entry.location[0].location) ? entry.location[0].location.name : undefined;
+                    break;
+                case 'Condition':
+                    break;
+                case 'Procedure':
+                    break;
+                case 'AllergyIntolerance':
+                    if (angular.isDefined(entry.event)) {
+                        if (entry.event.length != 0) {
+                            if (angular.isDefined(entry.event[0].manifestation)) {
+                                if (entry.event[0].manifestation.length == 2) {
+                                    if (angular.isDefined(entry.event[0].manifestation[1].coding)) {
+                                        if (entry.event[0].manifestation[1].coding.length != 0) {
+                                            if (angular.isDefined(entry.event[0].manifestation[1].coding[0].display)) {
+                                                info = entry.event[0].manifestation[1].coding[0].display;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+                case 'Claim':
+                    break;
+            }
+            return info;
         };
 
-        return self;
+        return {
+            buildTable: _buildTable,
+            getEntryTitle: _getEntryTitle,
+            getEntryDates: _getEntryDates,
+            getEntryAddInfo: _getEntryAddInfo
+        };
     });

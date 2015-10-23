@@ -12,7 +12,8 @@ angular.module('dreFrontendApp')
             templateUrl: 'views/directives/entry-details.html',
             restrict: 'AE',
             scope: {
-                entryDetails: '='
+                entryDetails: '=',
+                withoutHeader: '='
             },
             controller: function ($scope, dreFrontendEntryService) {
                 $scope.model = {

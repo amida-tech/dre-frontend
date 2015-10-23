@@ -281,6 +281,16 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
+        .state('printMyrecord', {
+            url: '/home/record/print',
+            params: {additionalData:null},
+            templateUrl: "views/controllers/print-myrecord.html",
+            controller: "PrintMyrecordCtrl",
+            data: {
+                name: 'Print',
+                isPublic: false
+            }
+        })
         .state('billing', {
             url: '/billing?id',
             parent: 'home',
@@ -299,7 +309,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
-        .state('billing.'  + dreFrontendGlobals.resourceTypes.Insurance.alias, {
+        .state('billing.' + dreFrontendGlobals.resourceTypes.Insurance.alias, {
             url: '/' + dreFrontendGlobals.resourceTypes.Insurance.alias,
             parent: 'billing',
             data: {
@@ -313,7 +323,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
-        .state('billing.'+ dreFrontendGlobals.resourceTypes.Claim.alias, {
+        .state('billing.' + dreFrontendGlobals.resourceTypes.Claim.alias, {
             url: '/' + dreFrontendGlobals.resourceTypes.Claim.alias,
             parent: 'billing',
             data: {
@@ -345,7 +355,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
-        .state('profile.photo',{
+        .state('profile.photo', {
             url: '/photo',
             parent: 'profile',
             data: {
@@ -404,7 +414,7 @@ app.run(function ($rootScope, $state, $stateParams, dreFrontendAuthService, dreF
                     $state.go('main');
                 } else {
                     if (fromParams.returnTo && fromParams.returnTo !== toState.name) {
-                        $state.go(fromParams.returnTo,{reload:true});
+                        $state.go(fromParams.returnTo, {reload: true});
                     }
                 }
             }

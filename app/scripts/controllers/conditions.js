@@ -30,7 +30,7 @@ angular.module('dreFrontendApp')
                             rawEntry: entry,
                             type: dreFrontendGlobals.resourceTypes.Condition.type,
                             title: dreFrontendEntryService.getEntryTitle(entry),
-                            additionalInfo: '',
+                            additionalInfo: dreFrontendEntryService.getEntryAddInfo(entry),
                             dates: dreFrontendEntryService.getEntryDates(entry),
                             menuType: dreFrontendGlobals.menuRecordTypeEnum.inline,
                             updates: 3

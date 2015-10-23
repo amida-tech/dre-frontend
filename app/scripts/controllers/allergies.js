@@ -24,31 +24,15 @@ angular.module('dreFrontendApp')
         dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
             dreFrontendAllergyIntolerances.getByPatientId(patientId).then(function (allergies) {
                 _.forEach(allergies.entry, function (entry) {
-                    var allergy = {
+                    $scope.model.list.push({
                         rawEntry: entry,
                         type: dreFrontendGlobals.resourceTypes.AllergyIntolerance.type,
-                        additionalInfo: '',
+                        additionalInfo: dreFrontendEntryService.getEntryAddInfo(entry),
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         dates: dreFrontendEntryService.getEntryDates(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline,
                         updates: 1
-                    };
-                    if (angular.isDefined(entry.event)) {
-                        if (entry.event.length != 0) {
-                            if (angular.isDefined(entry.event[0].manifestation)) {
-                                if (entry.event[0].manifestation.length == 2) {
-                                    if (angular.isDefined(entry.event[0].manifestation[1].coding)) {
-                                        if (entry.event[0].manifestation[1].coding.length != 0) {
-                                            if (angular.isDefined(entry.event[0].manifestation[1].coding[0].display)) {
-                                                allergy.additionalInfo = entry.event[0].manifestation[1].coding[0].display;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    $scope.model.list.push(allergy);
+                    });
                 });
             })
         });

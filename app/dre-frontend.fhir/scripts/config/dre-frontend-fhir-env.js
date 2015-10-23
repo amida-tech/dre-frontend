@@ -76,10 +76,8 @@ angular.module('dreFrontend.fhir')
             },
             "MedicationAdministration": {dstu: 2},
             "MedicationDispense": {dstu: 2},
-            "MedicationOrder": {dstu: 2},
-            "MedicationPrescription": {
-                dstu: 1,
-                details: ["prescriber", "reasonReference", "medication"]
+            "MedicationOrder": {
+                dstu: 2
             },
             "MedicationStatement": {dstu: 2},
             "MessageHeader": {dstu: 2},

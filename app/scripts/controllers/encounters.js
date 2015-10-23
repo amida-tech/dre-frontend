@@ -29,7 +29,7 @@ angular.module('dreFrontendApp')
                         rawEntry: entry,
                         type: dreFrontendGlobals.resourceTypes.Encounter.type,
                         title: dreFrontendEntryService.getEntryTitle(entry),
-                        additionalInfo: (angular.isArray(entry.location) && entry.location.length > 0 && entry.location[0].location) ? entry.location[0].location.name : undefined,
+                        additionalInfo: dreFrontendEntryService.getEntryAddInfo(entry),
                         dates: dreFrontendEntryService.getEntryDates(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline,
                         updates: 5

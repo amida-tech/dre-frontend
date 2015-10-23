@@ -1,6 +1,6 @@
-<div class="panel panel-default print-block">
+<div class="panel panel-default print-block" ng-show="model.bundle.length > 0">
     <div class="panel-heading"><h4 class="text-center">{{model.title}}</h4></div>
     <div class="panel-body">
-        <resource-print-block-entry data="entry" ng-repeat="entry in model.bundle"></resource-print-block-entry>
+        <resource-print-block-entry data="entry" type="data.type" show-user-data="data.withUserData" ng-repeat="entry in model.bundle"></resource-print-block-entry>
     </div>
 </div>
