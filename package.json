@@ -28,7 +28,8 @@
     "jit-grunt": "^0.9.1",
     "jshint-stylish": "^1.0.0",
     "time-grunt": "^1.0.0",
-    "protractor-linkuisref-locator": "^1.1.2"
+    "protractor-linkuisref-locator": "^1.1.2",
+    "protractor-jasmine2-screenshot-reporter": "^0.1.7"
   },
   "engines": {
     "node": ">=0.10.0"

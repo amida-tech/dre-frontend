@@ -1,1 +1,4 @@
-module.exports = {'url':'http://localhost:9000/#/'};
+
+module.exports = {
+	'url':'http://localhost:9000/#/'
+	};
