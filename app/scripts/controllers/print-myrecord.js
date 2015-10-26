@@ -20,7 +20,6 @@ angular.module('dreFrontendApp')
             profileTitle: 'Demographics'
         };
 
-        console.log('additionalData', $stateParams.additionalData);
         dreFrontEndPatientInfoService.getPatientData()
             .then(function (patient) {
                 $scope.model.patient = patient;

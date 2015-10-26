@@ -53,8 +53,9 @@ angular.module('dreFrontend.fhir')
                     proceed_reference(
                         this,
                         function (resource, key) {
-                            if ( a_filter.length<1 || a_filter.indexOf(key) !== -1)
+                            if ( a_filter.length<1 || a_filter.indexOf(key) !== -1) {
                                 children.push(resource.load(force));
+                            }
                         },
                         deep || fhirEnv.max_resource_nesting );
 
@@ -116,7 +117,7 @@ angular.module('dreFrontend.fhir')
                     angular.extend(obj, {
                         load: function (force) {
                             var self = this;
-
+                            $log.debug('loading...', field, this.reference);
                             var process_sub_resource = function (sub_resource) {
                                 sub_resource = set_response(sub_resource);
                                 angular.extend(self, sub_resource);
