@@ -10,6 +10,8 @@
 angular.module('dreFrontendApp')
     .factory('dreFrontendEntryService', function (_, dreFrontendUtil, $log) {
 
+        var _black_list = ["photo"];
+
         var isValidName = function (name, black_list) {
             return name[0] != '$' && !_.contains(black_list, name);
         };
@@ -25,6 +27,7 @@ angular.module('dreFrontendApp')
         var _buildTable = function (dataItem, blackList) {
             var dataItems = [];
             blackList = blackList || [];
+            blackList = blackList.concat(_black_list);
 
             var prepareValue = function (propertyName, propertyValue) {
                 //number value

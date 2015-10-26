@@ -8,7 +8,7 @@ angular.module('dreFrontend.fhir')
             "Alert": {dstu: 1},
             "AllergyIntolerance": {
                 dstu: 2,
-                details: ["recorder ", "substance", "reaction", "sensitivityTest"]
+                details: ["recorder", "substance", "reaction"]
             },
             "Appointment": {dstu: 2},
             "AppointmentResponse": {dstu: 2},
@@ -21,14 +21,21 @@ angular.module('dreFrontend.fhir')
                 dstu: 2,
                 details: ["concern", "member", "actionResulting", "detail", "location", "performer", "product"]
             },
-            "Claim": {dstu: 2},
+            "Claim": {
+                dstu: 2,
+                details: ["target", "provider", "organization", "enterer", "facility","prescription","originalPrescription",
+                "provider","organization","person","referral","coverage","claimResponse","provider"]
+            },
             "ClaimResponse": {dstu: 2},
             "ClinicalImpression": {dstu: 2},
             "Communication": {dstu: 2},
             "CommunicationRequest": {dstu: 2},
             "Composition": {dstu: 2},
             "ConceptMap": {dstu: 2},
-            "Condition": {dstu: 2},
+            "Condition": {
+                dstu: 2,
+                details: ["encounter", "asserter", "assessment", "detail"]
+            },
             "Conformance": {dstu: 2},
             "DetectedIssue": {dstu: 2},
             "Coverage": {dstu: 2},
@@ -64,7 +71,10 @@ angular.module('dreFrontend.fhir')
             "HealthcareService": {dstu: 2},
             "ImagingObjectSelection": {dstu: 2},
             "ImagingStudy": {dstu: 2},
-            "Immunization": {dstu: 2},
+            "Immunization": {
+                dstu: 2,
+                "details": ["performer", "requester", "encounter", "manufacturer", "location", "detail", "authority"]
+            },
             "ImmunizationRecommendation": {dstu: 2},
             "ImplementationGuide": {dstu: 2},
             "List": {dstu: 2},
@@ -77,7 +87,8 @@ angular.module('dreFrontend.fhir')
             "MedicationAdministration": {dstu: 2},
             "MedicationDispense": {dstu: 2},
             "MedicationOrder": {
-                dstu: 2
+                dstu: 2,
+                details: ["prescriber", "encounter", "reasonReference", "medicationReference", "siteReference"]
             },
             "MedicationStatement": {dstu: 2},
             "MessageHeader": {dstu: 2},
@@ -85,7 +96,7 @@ angular.module('dreFrontend.fhir')
             "NutritionOrder": {dstu: 2},
             "Observation": {
                 dstu: 2,
-                details: ["performer", "subject", "specimen", "target"]
+                details: ["performer",  "specimen", "target"]
             },
             "OperationDefinition": {dstu: 2},
             "OperationOutcome": {dstu: 2},
@@ -102,7 +113,10 @@ angular.module('dreFrontend.fhir')
                 dstu: 2,
                 details: ["organization", "location", "issuer"]
             },
-            "Procedure": {dstu: 2},
+            "Procedure": {
+                dstu: 2,
+                "details": ["actor", "encounter", "location", "report", "request", "manipulated", "used"]
+            },
             "ProcessRequest": {dstu: 2},
             "ProcessResponse": {dstu: 2},
             "ProcedureRequest": {dstu: 2},
