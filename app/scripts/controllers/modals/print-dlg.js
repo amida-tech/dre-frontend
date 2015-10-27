@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('PrintDlgCtrl', function ($scope, $modalInstance, dreFrontendGlobals, dreFrontEndPatientInfoService, $log) {
+    .controller('PrintDlgCtrl', function ($scope, $modalInstance) {
         $scope.close = function () {
             $modalInstance.dismiss('cancel');
         };
