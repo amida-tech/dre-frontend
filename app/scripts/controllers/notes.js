@@ -8,8 +8,8 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('NotesCtrl', function ($scope, $state, $stateParams, dreFrontendNotesService, _, dreFrontendGlobals, dreFrontendAllergyIntolerances, dreFrontendEntryService,
-                                       dreFrontendConditions, dreFrontendEncounters, dreFrontendImmunizations, dreFrontendMedicationOrder, dreFrontendProcedures, dreFrontendObservations) {
+    .controller('NotesCtrl', function ($scope, $state, $stateParams, dreFrontendNotesService, _,
+                                       dreFrontendGlobals, $log, $injector, dreFrontendEntryService) {
         $scope.model = {
             notesList: [],
             filterByStar: 'all',
@@ -17,37 +17,37 @@ angular.module('dreFrontendApp')
         };
 
         var initNotes = function () {
-            dreFrontendNotesService.getAllNotes().then(function (notesList) {
-                var noteType = _.find(dreFrontendGlobals.resourceTypes, {alias: $stateParams.noteType});
-                var rawNotesList = angular.isUndefined(noteType) ? notesList : _.filter(notesList, {section: noteType.type});
-                if ($scope.model.filterByStar != 'all') {
-                    rawNotesList = _.filter(rawNotesList, function (item) {
-                        if ($scope.model.filterByStar == 'starred' && item.star) {
-                            return true;
+            dreFrontendNotesService.getAllNotes()
+                .then(function (notesList) {
+                    var noteType = _.find(dreFrontendGlobals.resourceTypes, {alias: $stateParams.noteType});
+                    var rawNotesList = angular.isUndefined(noteType) ? notesList : _.filter(notesList, {section: noteType.type});
+                    if ($scope.model.filterByStar != 'all') {
+                        rawNotesList = _.filter(rawNotesList, function (item) {
+                            return ($scope.model.filterByStar == 'starred' && item.star)
+                                || ($scope.model.filterByStar != 'starred' && !item.star);
+                        })
+                    }
+                    $scope.model.notesList = [];
+                    _.forEach(rawNotesList, function (entry) {
+                        var resource_type = _.find(dreFrontendGlobals.resourceTypes, {type: entry.section});
+                        if (resource_type) {
+                            $scope.model.notesList.push({
+                                type: entry.section,
+                                resourceType: resource_type,
+                                note: entry,
+                                date: new Date(entry.datetime),
+                                showEntry: false,
+                                entryTitle: undefined,
+                                dates: {}
+                            });
                         }
-                        if ($scope.model.filterByStar != 'starred' && !item.star) {
-                            return true;
-                        }
-                        return false;
-                    })
-                }
-                $scope.model.notesList = [];
-                _.forEach(rawNotesList, function (entry) {
-                    $scope.model.notesList.push({
-                        type: entry.section,
-                        note: entry,
-                        date: new Date(entry.datetime),
-                        showEntry: false,
-                        entryTitle: undefined,
-                        dates: {}
-                    })
+                    });
                 });
-            });
         };
 
         $scope.toggleFavorite = function (item) {
             item.note.star = !item.note.star;
-            dreFrontendNotesService.toggleFavorite(item.note.star, item.note._id).then(function (note) {
+            dreFrontendNotesService.toggleFavorite(item.note.star, item.note._id).then(function () {
                 initNotes();
             });
         };
@@ -58,7 +58,7 @@ angular.module('dreFrontendApp')
         };
 
         $scope.goToEntry = function (item) {
-            var alias = _.find(dreFrontendGlobals.resourceTypes, {type: item.type}).alias;
+            var alias = item.resourceType ? item.resourceType.alias : undefined;
             if (alias == dreFrontendGlobals.resourceTypes.Insurance.alias || alias == dreFrontendGlobals.resourceTypes.Claim.alias) {
                 $state.go('billing.' + alias, {id: item.note.entry});
             } else {
@@ -67,64 +67,49 @@ angular.module('dreFrontendApp')
         };
 
         $scope.toggleEntry = function (item) {
-            if (angular.isUndefined(item.entryTitle)) {
-                var service = undefined;
-                switch (item.type) {
-                    case dreFrontendGlobals.resourceTypes.MedicationOrder.type:
-                        service = dreFrontendMedicationOrder;
-                        break;
-                    case dreFrontendGlobals.resourceTypes.TestResult.type:
-                        service = dreFrontendObservations;
-                        break;
-                    case dreFrontendGlobals.resourceTypes.Vital.type:
-                        service = dreFrontendObservations;
-                        break;
-                    case dreFrontendGlobals.resourceTypes.Encounter.type:
-                        service = dreFrontendEncounters;
-                        break;
-                    case dreFrontendGlobals.resourceTypes.Condition.type:
-                        service = dreFrontendConditions;
-                        break;
-                    case dreFrontendGlobals.resourceTypes.Procedure.type:
-                        service = dreFrontendProcedures;
-                        break;
-                    case dreFrontendGlobals.resourceTypes.AllergyIntolerance.type:
-                        service = dreFrontendAllergyIntolerances;
-                        break;
-                    case dreFrontendGlobals.resourceTypes.Immunization.type:
-                        service = dreFrontendImmunizations;
-                        break;
-                    case dreFrontendGlobals.resourceTypes.SocialHistory.type:
-                        service = dreFrontendObservations;
-                        break;
-                    case dreFrontendGlobals.resourceTypes.Insurance.type:
-                        throw  new Error('Not implemented');
-                        service = {};
-                        break;
-                    case dreFrontendGlobals.resourceTypes.Claim.type:
-                        service = dreFrontendClaim;
-                        break;
+            var item_data = {
+                showEntry: !item.showEntry
+            };
 
-                }
-                service.getById(item.note.entry).then(function (resourceEntry) {
-                    if (resourceEntry) {
-                        if (item.type == 'MedicationOrder') {
-                            resourceEntry.loadMedication()
-                                .then(function () {
-                                    item.entryTitle = dreFrontendEntryService.getEntryTitle(resourceEntry);
-                                    item.dates = dreFrontendEntryService.getEntryDates(resourceEntry);
-                                    item.showEntry = !item.showEntry;
+            if (angular.isUndefined(item.entryTitle)) {
+
+                angular.extend(item_data, {
+                    entryTitle: 'loading...',
+                    dates: {}
+                });
+                if (item.resourceType && item.resourceType.serviceName) {
+                    var fhir_service = $injector.get(item.resourceType.serviceName);
+                    if (fhir_service) {
+                        fhir_service.getById(item.note.entry)
+                            .then(function (resourceEntry) {
+                                if (item.type == 'MedicationOrder') {
+                                    return resourceEntry.loadMedication()
+                                        .then(function (medication) {
+                                            return resourceEntry;
+                                        });
+                                } else {
+                                    return resourceEntry;
+                                }
+                            })
+                            .then(function (resourceEntry) {
+                                angular.extend(item_data, {
+                                    entryTitle: dreFrontendEntryService.getEntryTitle(resourceEntry),
+                                    dates: dreFrontendEntryService.getEntryDates(resourceEntry)
                                 });
-                        } else {
-                            item.entryTitle = dreFrontendEntryService.getEntryTitle(resourceEntry);
-                            item.dates = dreFrontendEntryService.getEntryDates(resourceEntry);
-                            item.showEntry = !item.showEntry;
-                        }
+                                return item_data;
+                            })
+                            .catch(function (error) {
+                                item_data.entryTitle = "Related resource entry not found";
+                            })
+                            .finally(function (_item_data) {
+                                angular.extend(item, item_data);
+                            })
                     }
-                })
-            } else {
-                item.showEntry = !item.showEntry;
+                } else {
+                    item_data.entryTitle = "Resource entry unsupported";
+                }
             }
+            angular.extend(item, item_data);
         };
 
         initNotes();
