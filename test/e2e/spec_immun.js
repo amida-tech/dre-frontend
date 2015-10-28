@@ -1,4 +1,5 @@
 var url = require('./config').url;
+var shoot = require('./config').shoot;
 
 describe('DRE frontend', function() {
 
@@ -24,6 +25,8 @@ describe('DRE frontend', function() {
         expect(browser.getCurrentUrl()).toEqual(url + 'home/record');
 
         var recordImmun = element(by.css('[ui-sref="record.immunizations"]'));
+        
+        shoot('immun');
         recordImmun.click().then(function() {
 
             var immun = element.all(by.binding('userTimelineEntry.title'));
@@ -41,6 +44,8 @@ describe('DRE frontend', function() {
             var detailsBtn = ($('[ng-click="setTab(\'details\')"]'));
             detailsBtn.click().then(function() {
                 expect(element(by.css('.details-table')).isDisplayed()).toBeTruthy();
+                
+                shoot('immun1');
             });
         });
     });

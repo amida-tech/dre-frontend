@@ -1,5 +1,5 @@
 var url = require('./config').url;
-
+var shoot = require('./config').shoot;
 describe('DRE frontend', function() {
 
     it('login with wrong password', function() {
@@ -17,7 +17,7 @@ describe('DRE frontend', function() {
 
             browser.waitForAngular();
             //browser.sleep(10000);
-
+shoot('wrongpass');
             expect($('[ng-if="model.error"]').isDisplayed()).toBeTruthy();
 
         });

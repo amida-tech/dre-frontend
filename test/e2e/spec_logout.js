@@ -1,5 +1,5 @@
 var url = require('./config').url;
-
+var shoot = require('./config').shoot;
 describe('DRE frontend', function() {
 
     it('user should log out', function() {
@@ -19,13 +19,14 @@ describe('DRE frontend', function() {
 
             var dropdown = ($('[data-toggle="dropdown"]'));
             dropdown.click();
-
+shoot('logout');
             var logout = element(by.cssContainingText('a', 'Log out'));
 
             //browser.sleep(10000);
             logout.click();
 
             expect(browser.getTitle()).toEqual('My PHR');
+            shoot('logout1');
         });
     });
 });

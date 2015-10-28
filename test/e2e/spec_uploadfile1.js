@@ -1,5 +1,5 @@
 var url = require('./config').url;
-
+var shoot = require('./config').shoot;
 describe('DRE frontend', function() {
 
     it('upload another file', function() {

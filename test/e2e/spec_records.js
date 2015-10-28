@@ -1,6 +1,6 @@
-/* no data in the maesurements chart */
-var url = require('./config').url;
 
+var url = require('./config').url;
+var shoot = require('./config').shoot;
 describe('DRE frontend', function() {
 
     it('should have my record', function() {
@@ -24,5 +24,7 @@ describe('DRE frontend', function() {
         record.click();
 
         expect(browser.getCurrentUrl()).toEqual(url + 'home/record');
+        shoot('record1');
+        
     });
 });

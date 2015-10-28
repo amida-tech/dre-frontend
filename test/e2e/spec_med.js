@@ -1,5 +1,5 @@
 var url = require('./config').url;
-
+var shoot = require('./config').shoot;
 describe('DRE frontend', function() {
 
     it('should have my medications', function() {
@@ -26,12 +26,13 @@ describe('DRE frontend', function() {
 
         var recordMedications = element(by.css('[ui-sref="record.medications"]'));
         recordMedications.click().then(function() {
-
+shoot('med');
             var medications = element.all(by.binding('userTimelineEntry.title'));
 
             //console.log(medications);
             var count;
             medications.count().then(function(value) {
+                shoot('med1');
                 count = value;
 
                 console.log('--------------', count);

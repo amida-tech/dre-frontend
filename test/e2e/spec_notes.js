@@ -1,5 +1,5 @@
 var url = require('./config').url;
-
+var shoot = require('./config').shoot;
 describe('DRE frontend', function() {
 
     it('should have my notes', function() {
@@ -22,7 +22,7 @@ describe('DRE frontend', function() {
         notes.click();
 
         expect(browser.getCurrentUrl()).toEqual(url + 'home/notes/');
-
+shoot('note');
         var record = element(by.css('[ui-sref="record"]'));
         record.click();
         var medications = element(by.css('[ui-sref="record.medications"]'));
@@ -40,19 +40,23 @@ describe('DRE frontend', function() {
                 expect(element(by.css('.modal-content')).isDisplayed()).toBeTruthy();
 
                 var setNotes = element(by.cssContainingText('button', 'Note'));
+                shoot('note1');
                 setNotes.click().then(function() {
                     var noteText = element(by.model('model.noteText'));
                     browser.sleep(5000);
 
                     noteText.sendKeys('new test note from test');
                     browser.sleep(5000);
-
+shoot('note2');
                     var addNote = element(by.cssContainingText('button', 'Add Note'));
+                    
                     addNote.click();
                     var btnClose = element(by.cssContainingText('button', 'Close'));
+                    
                     btnClose.click();
 
                     browser.get(url + 'home/notes/');
+                    
                 });
             });
         });

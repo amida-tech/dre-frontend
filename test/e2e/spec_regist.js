@@ -1,5 +1,5 @@
 var url = require('./config').url;
-
+var shoot = require('./config').shoot;
 require('protractor-linkuisref-locator')(protractor);
 
 var randomName;
@@ -22,7 +22,7 @@ describe('DRE signUp', function() {
         browser.get(url + 'register');
 
         var userName = element(by.name('login'));
-
+shoot('singup');
         while (true) {
             randomName = 'test' + Math.floor((Math.random() * 10000));
             userName.clear();
@@ -42,7 +42,7 @@ describe('DRE signUp', function() {
 
             email.clear();
             email.sendKeys(randomName + '@amida-demo.com').then(function() {
-
+shoot('singup1');
                 expect($('[ng-message="required, minlength, maxlength, email"]').isPresent()).toBeFalsy();
 
                 var password = element(by.model('model.password'));
@@ -53,7 +53,7 @@ describe('DRE signUp', function() {
 
                     password.clear();
                     password.sendKeys('testtest').then(function() {
-
+shoot('singup2');
                         expect($('[ng-message=equals]').isDisplayed()).toBeTruthy();
 
                         var confirmPassword = element(by.model('model.confirm'));
@@ -68,6 +68,7 @@ describe('DRE signUp', function() {
                                 expect($('[ng-message="required, minlength, maxlength"]').isPresent()).toBeFalsy();
 
                                 var button = element(by.buttonText('Next'));
+                               shoot('singup3');
                                 button.click();
 
                                 expect($('[ng-show="model.step == 2"]').isDisplayed()).toBeTruthy();
@@ -94,10 +95,12 @@ describe('DRE signUp', function() {
 
 
                                 var buttonNext = element.all(by.buttonText('Next')).get(1);
+                                shoot('singup4');
                                 buttonNext.click();
 
                                 expect($('[ng-show="model.step == 3"]').isDisplayed()).toBeTruthy();
-                                browser.sleep(10000);
+                                shoot('singup5');
+                                browser.sleep(2000);
                             });
                         });
                     });

@@ -1,5 +1,5 @@
 var url = require('./config').url;
-
+var shoot = require('./config').shoot;
 describe('DRE frontend', function() {
 
     it('should upload file', function() {
@@ -20,10 +20,11 @@ describe('DRE frontend', function() {
         expect(browser.getTitle()).toEqual('My PHR | Home');
 
         var files = ($('[ui-sref="files"]'));
+        
         files.click();
 
         expect(browser.getCurrentUrl()).toEqual(url + 'home/files');
-
+shoot('upload1');
         var countBefore;
         var hundredButton = element(by.cssContainingText('button', '100'));
 
@@ -37,20 +38,23 @@ describe('DRE frontend', function() {
         });
 
 
-        var uploadFile = element(by.cssContainingText('button', 'Upload File'));
+        var uploadFile = element(by.cssContainingText('a.btn.btn-link', 'Upload File'));
+        shoot('upload2');
         uploadFile.click();
 
-        ($('input[type="file"]')).sendKeys("sbluebutton-01-original.xml").then(function() {
-
+        ($('input[type="file"]')).sendKeys("/Users/tatianashchelokova/Documents/dre-frontend/test/bluebutton-01-original.xml").then(function() {
+shoot('upload3');
             //($('#uploadButton')).click();
             var uploadBtn = element(by.cssContainingText('button', 'Continue'));
+            
             uploadBtn.click();
 
             expect(browser.getCurrentUrl()).toEqual(url + 'home/files/upload');
 
             browser.wait(function() {
-                return browser.getCurrentUrl().then(function(url) {
-                    return url === (url + 'home/files');
+                return browser.getCurrentUrl().then(function(aurl) {
+                    //console.log(aurl);
+                    return aurl === (url + 'home/files');
                 })
             });
 
@@ -65,7 +69,7 @@ describe('DRE frontend', function() {
                 var countAfter;
                 candidates.count().then(function(value) {
                     countAfter = value;
-
+shoot('upload6');
                     expect(countAfter - countBefore).toBe(1);
 
                 });

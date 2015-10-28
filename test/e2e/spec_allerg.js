@@ -1,4 +1,5 @@
 var url = require('./config').url;
+var shoot = require('./config').shoot;
 
 describe('DRE frontend', function() {
 
@@ -31,6 +32,9 @@ describe('DRE frontend', function() {
         expect(browser.getCurrentUrl()).toEqual(url + 'home/record');
 
         var recordAllergies = element(by.css('[ui-sref="record.allergies"]'));
+        
+        
+        
         recordAllergies.click().then(function() {
 
             var allergies = element.all(by.binding('userTimelineEntry.title'));
@@ -48,8 +52,11 @@ describe('DRE frontend', function() {
 
             });
             var detailsBtn = ($('[ng-click="setTab(\'details\')"]'));
+            
             detailsBtn.click().then(function() {
+                shoot('allergy1');
                 expect(element(by.css('.details-table')).isDisplayed()).toBeTruthy();
+                shoot('allergy');
 
             });
 
