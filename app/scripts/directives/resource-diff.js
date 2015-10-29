@@ -14,31 +14,33 @@ angular.module('dreFrontendApp')
             scope: {
                 resourceDiff: "="
             },
+            link: function (scope, element, attrs, ctrl) {
+                scope.$watch('resourceDiff', function (newValue, oldValue) {
+                    if (newValue)
+                        ctrl.update(newValue);
+                }, true);
+            },
             controller: function ($scope, dreFrontendHttp, $log, $http, _, dreFrontendUtil, dreFrontendEntryService) {
-                $scope.model = {};
-
                 function _build_differences(diff) {
-                    var differences = [];
 
-                    var f = function(rec) {
+                    var f = function (change) {
 
-                        if (angular.isArray(rec)) {
-                            angular.forEach(rec,f);
-                        } else if (angular.isObject(rec)) {
-                            if (rec.path) {
-                                var r = dreFrontendUtil.buildObjectByPath(rec.path, rec.rhs);
-                                var l = dreFrontendUtil.buildObjectByPath(rec.path, rec.lhs);
-                                var path = dreFrontendUtil.buildObjectByPath(rec.path, "");
+                        if (angular.isArray(change)) {
+                            angular.forEach(change, f);
+                        } else if (angular.isObject(change) && !change.model) {
+                            if (change.path) {
+                                var r = dreFrontendUtil.buildObjectByPath(change.path, change.rhs);
+                                var l = dreFrontendUtil.buildObjectByPath(change.path, change.lhs);
+                                var path = dreFrontendUtil.buildObjectByPath(change.path, "");
 
-                                differences.push({
-                                    apply: true,
-                                    kind: rec.kind,
+                                change.apply = true;
+                                change.model = {
                                     path: dreFrontendEntryService.buildTable(path, []),
-                                    lhs: dreFrontendEntryService.buildTable(rec.lhs, []),
-                                    rhs: dreFrontendEntryService.buildTable(rec.rhs, [])
-                                });
+                                    lhs: dreFrontendEntryService.buildTable(change.lhs, []),
+                                    rhs: dreFrontendEntryService.buildTable(change.rhs, [])
+                                };
                             } else {
-                                $log.debug("no path", rec);
+                                $log.debug("no path", change);
                             }
                         }
                     };
@@ -46,15 +48,16 @@ angular.module('dreFrontendApp')
                     if (diff.changes) {
                         angular.forEach(diff.changes, f);
                     }
-
-                    return {
-                        diff : differences,
-                        rhs_type: diff.rhs.resourceType,
-                        lhs_type: diff.lhs.resourceType
-                    };
                 }
 
-                $scope.model = _build_differences($scope.resourceDiff);
+                this.update = function (data) {
+                    $log.debug(data);
+                    if (data) {
+                        _build_differences(data);
+                    }
+                };
+
+                this.update($scope.resourceDiff);
             }
         };
     });

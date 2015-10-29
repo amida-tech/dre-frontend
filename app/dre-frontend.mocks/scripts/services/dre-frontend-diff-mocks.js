@@ -13,7 +13,7 @@ angular.module('dreFrontend.mocks')
                 return [200, p_merge, {}];
             });
 
-            $httpBackend.whenGET('mock/diff/b-0').respond(function (method, url, data) {
+            $httpBackend.whenGET('/mock/diff/b-0').respond(function (method, url, data) {
                 return [200, b_0, {}];
             });
 

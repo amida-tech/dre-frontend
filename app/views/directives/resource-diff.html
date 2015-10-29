@@ -1,7 +1,7 @@
 <div class="panel-body">
     <div class="row table-responsive">
         <div class="col-sm-12">
-            <div class="text-center"><h4>{{model.lhs_type}}</h4></div>
+            <div class="text-center"><h4>{{resourceDiff.lhs.resourceType}}</h4></div>
             <table class="table table-condensed">
                 <tr class="text-center">
                     <th></th>
@@ -9,13 +9,13 @@
                     <th><h5>Current record</h5></th>
                     <th><h5>Updated record</h5></th>
                 </tr>
-                <tr class="match" ng-repeat="diff_entry in model.diff">
+                <tr class="match" ng-repeat="diff_entry in resourceDiff.changes">
                     <td>
                         <input type="checkbox" ng-model="diff_entry.apply"/>
                     </td>
                     <td class="diff-path">
                         <div class="panel details-table">
-                            <div entry-details-item="diff_entry.path"></div>
+                            <div entry-details-item="diff_entry.model.path"></div>
                         </div>
                     </td>
                     <td class="diff-lhs">
@@ -23,7 +23,7 @@
                               ng-show="diff_entry.kind === 'N'">new data</span>
 
                         <div class="panel details-table" ng-hide="diff_entry.kind === 'N'">
-                            <div entry-details-item="diff_entry.lhs"></div>
+                            <div entry-details-item="diff_entry.model.lhs"></div>
                         </div>
                     </td>
                     <td class="diff-rhs">
@@ -32,8 +32,8 @@
 
                         <div class="details-table panel"
                              ng-hide="diff_entry.kind === 'D' && diff_entry.apply || diff_entry.kind === 'N' && !diff_entry.apply">
-                            <div entry-details-item="diff_entry.rhs" ng-show="diff_entry.apply"></div>
-                            <div entry-details-item="diff_entry.lhs" ng-show="!diff_entry.apply"></div>
+                            <div entry-details-item="diff_entry.model.rhs" ng-show="diff_entry.apply"></div>
+                            <div entry-details-item="diff_entry.model.lhs" ng-show="!diff_entry.apply"></div>
                         </div>
                     </td>
                 </tr>

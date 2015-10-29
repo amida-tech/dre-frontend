@@ -101,7 +101,7 @@ angular.module('dreFrontendApp')
                             .catch(function (error) {
                                 item_data.entryTitle = "Related resource entry not found";
                             })
-                            .finally(function (_item_data) {
+                            .finally(function () {
                                 angular.extend(item, item_data);
                             })
                     }

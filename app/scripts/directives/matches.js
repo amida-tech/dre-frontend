@@ -14,56 +14,80 @@ angular.module('dreFrontendApp')
             scope: {
                 matches: "="
             },
-            link: function(scope, element, attrs, ctrl) {
-                scope.$watch('matches', function(newValue, oldValue) {
+            link: function (scope, element, attrs, ctrl) {
+                scope.$watch('matches', function (newValue, oldValue) {
                     if (newValue)
-                        ctrl.format_matches(newValue);
+                        ctrl.update(newValue);
                 }, true);
             },
             controller: function ($scope) {
 
-                $scope.undoAllButton = function() {
+                $scope.model = {
+                    index: 0,
+                    qty:0
+                };
+
+                $scope.next = function(){
+                    if ($scope.model.index<$scope.model.qty-1) {
+                        $scope.model.index++;
+                    }
+                };
+
+                $scope.prev = function() {
+                    if ($scope.model.index>0) {
+                        $scope.model.index--;
+                    }
+                };
+
+                $scope.undoAllButton = function () {
                     $log.debug("undoAllButton() is not implemented");
                 };
 
-                $scope.createNewButton = function() {
+                $scope.createNewButton = function () {
                     $log.debug("createNewButton() is not implemented");
                 };
 
-                $scope.submitButton = function() {
+                $scope.submitButton = function () {
                     $log.debug("submitButton() is not implemented");
+                    $log.debug(model.matches[model.index]);
                 };
 
-                $scope.ignoreButton = function() {
+                $scope.ignoreButton = function () {
                     $log.debug("ignoreButton() is not implemented");
                 };
-                $scope.model = {
-                };
-                this.format_matches = function(src_matches) {
-                    var matches=[];
 
-                    if ($scope.matches) {
-                        if ($scope.matches.hasOwnProperty("changeType")) {
-                            matches.push({
-                                resourceType: "unknown",
-                                matchArray: [src_matches]
-                            });
+                var _format_matches = function (src_matches) {
+                    var res = {
+                        matches: [],
+                        qty: 0
+                    };
+                    if (src_matches) {
+                        if (angular.isArray(src_matches)) {
+                            res.matches = src_matches;
+                            res.qty = src_matches.length;
                         } else {
-                            angular.forEach($scope.matches, function (res_body, res_type) {
-                                if (res_type && dreFrontendUtil.isFhirResource(res_type) && res_body[0].hasOwnProperty("changeType")) {
-                                    matches.push({
-                                        resourceType: res_type,
-                                        matchArray: res_body
-                                    })
-                                }
-                            });
+                            if (src_matches.hasOwnProperty("changeType")) {
+                                res.matches.push(src_matches);
+                            } else {
+                                angular.forEach(src_matches, function (_body, _key) {
+                                    if (_key && dreFrontendUtil.isFhirResource(_key)) {
+                                        res.matches = res.matches.concat(_body)
+                                    }
+                                });
+                            }
                         }
+                        res.qty = res.matches.length;
                     }
-
-                    $scope.model.matches= matches;
+                    return res;
                 };
 
-                this.format_matches($scope.matches);
+                var _update = function (data) {
+                    angular.extend($scope.model, _format_matches(data));
+                };
+
+                _update($scope.matches);
+
+                this.update = _update;
             }
         };
     });
