@@ -2,7 +2,7 @@ var url = require('./config').url;
 var shoot = require('./config').shoot;
 describe('DRE frontend', function () {
 
-    it('should upload file', function () {
+    beforeEach(function () {
         browser.get(url);
 
         var uresName = element(by.id('login'));
@@ -11,14 +11,19 @@ describe('DRE frontend', function () {
         var password = element(by.id('password'));
         password.clear();
         password.sendKeys('testtest');
-
-
         element(by.id('main-login-btn')).click();
-
         browser.waitForAngular();
+    });
 
-        expect(browser.getTitle()).toEqual('My PHR | Home');
+    afterEach(function () {
+        browser.get(url + 'home');
+        var dropdown = ($('[data-toggle="dropdown"]'));
+        dropdown.click();
+        var logout = element(by.cssContainingText('a', 'Log out'));
+        logout.click();
+    });
 
+    it('should upload file', function () {
         var files = ($('[ui-sref="files"]'));
 
         files.click();
@@ -36,7 +41,7 @@ describe('DRE frontend', function () {
                 countBefore = value;
 
                 console.log(value);
-               // browser.sleep(5000);
+                // browser.sleep(5000);
 
 
                 var uploadFile = element(by.cssContainingText('a.btn.btn-link', 'Upload File'));
@@ -52,7 +57,7 @@ describe('DRE frontend', function () {
 
                     expect(browser.getCurrentUrl()).toEqual(url + 'home/files/upload');
 
-                   // browser.sleep(5000);
+                    // browser.sleep(5000);
 
                     browser.wait(function () {
                         return browser.getCurrentUrl().then(function (aurl) {

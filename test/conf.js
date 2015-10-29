@@ -2,7 +2,7 @@ var HtmlScreenshotReporter = require('protractor-jasmine2-screenshot-reporter');
 exports.config = {
     framework: 'jasmine2',
     seleniumAddress: 'http://localhost:4444/wd/hub',
-    specs: ['e2e/spec_uploadfile.js'],
+    specs: ['e2e/spec_*.js'],
     capabilities: {
         browserName: 'chrome',
         chromeOptions: {

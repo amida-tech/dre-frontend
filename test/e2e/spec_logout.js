@@ -1,8 +1,8 @@
 var url = require('./config').url;
 var shoot = require('./config').shoot;
-describe('DRE frontend', function() {
+describe('DRE frontend', function () {
 
-    it('user should log out', function() {
+    it('user should log out', function () {
         browser.get(url);
 
         var uresName = element(by.id('login'));
@@ -13,13 +13,13 @@ describe('DRE frontend', function() {
         password.sendKeys('testtest');
 
         //browser.sleep(10000);
-        element(by.id('main-login-btn')).click().then(function() {
+        element(by.id('main-login-btn')).click().then(function () {
 
             expect(browser.getTitle()).toEqual('My PHR | Home');
 
             var dropdown = ($('[data-toggle="dropdown"]'));
             dropdown.click();
-shoot('logout');
+            shoot('logout');
             var logout = element(by.cssContainingText('a', 'Log out'));
 
             //browser.sleep(10000);

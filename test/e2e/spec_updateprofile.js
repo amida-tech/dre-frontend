@@ -1,8 +1,8 @@
 var url = require('./config').url;
 var shoot = require('./config').shoot;
-describe('DRE frontend', function() {
+describe('DRE frontend', function () {
 
-    it('should update Profile', function() {
+    it('should update Profile', function () {
         browser.get(url);
 
         var uresName = element(by.id('login'));
@@ -13,23 +13,23 @@ describe('DRE frontend', function() {
         password.sendKeys('testtest');
 
         //browser.sleep(10000);
-        element(by.id('main-login-btn')).click().then(function() {
+        element(by.id('main-login-btn')).click().then(function () {
 
             expect(browser.getTitle()).toEqual('My PHR | Home');
 
             var dropdown = ($('[data-toggle="dropdown"]'));
-           
+
             dropdown.click();
 
             var profile = element(by.cssContainingText('a', 'My Profile'));
-shoot('update');
+            shoot('update');
             //browser.sleep(10000);
             profile.click();
             expect(browser.getCurrentUrl()).toEqual(url + 'home/profile');
 
             var editBtn = ($('[ng-click="changeEditProfileSection(false)"]'));
             editBtn.click();
-shoot('update1');
+            shoot('update1');
             var firstName = element(by.id('inputFirst'));
             firstName.clear();
             firstName.sendKeys('Isabella');
@@ -58,18 +58,18 @@ shoot('update1');
             var MaritalStatus = element(by.id('inputMaritalStatus'));
             MaritalStatus.element(by.cssContainingText('option', 'Married')).click();
 
-shoot('update2');
+            shoot('update2');
 
             var updateBtn = ($('[ng-click="updateProfile()"]'));
             updateBtn.click();
-shoot('update3');
+            shoot('update3');
             browser.sleep(3000);
 
             expect($('[ng-click="updateProfile()"]').isDisplayed()).toBeFalsy();
         });
     });
 
-    it('update Address', function() {
+    it('update Address', function () {
         var editAddress = ($('[ng-click="changeEditAddressSection(false)"]'));
         shoot('update4');
         editAddress.click();
@@ -94,17 +94,17 @@ shoot('update3');
         inputZip.sendKeys('20852');
 
         var updateAddressBtn = ($('[ng-click="updateAddress()"]'));
-       shoot('update5');
+        shoot('update5');
         updateAddressBtn.click();
-shoot('update6');
+        shoot('update6');
         expect($('[ng-click="updateAddress()"]').isDisplayed()).toBeFalsy();
     });
 
-    it('update Phone', function() {
+    it('update Phone', function () {
         var editPhone = ($('[ng-click="changeEditPhoneSection(false)"]'));
-        
+
         editPhone.click();
-shoot('update7');
+        shoot('update7');
         var phoneType = element(by.id('inputPhoneType'));
         phoneType.element(by.cssContainingText('option', 'Home')).click();
 
@@ -114,9 +114,15 @@ shoot('update7');
 
         var updatePhoneBtn = ($('[ng-click="updatePhone()"]'));
         shoot('update8');
-        updatePhoneBtn.click().then(function() {
+        updatePhoneBtn.click().then(function () {
             expect($('[ng-click="updatePhone()"]').isDisplayed()).toBeFalsy();
             shoot('update9');
+
+            browser.get(url + 'home');
+            var dropdown = ($('[data-toggle="dropdown"]'));
+            dropdown.click();
+            var logout = element(by.cssContainingText('a', 'Log out'));
+            logout.click();
         });
     });
 });

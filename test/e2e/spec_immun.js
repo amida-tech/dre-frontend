@@ -1,9 +1,9 @@
 var url = require('./config').url;
 var shoot = require('./config').shoot;
 
-describe('DRE frontend', function() {
+describe('DRE frontend', function () {
 
-    it('should have my immunizations', function() {
+    beforeEach(function () {
         browser.get(url);
 
         var uresName = element(by.id('login'));
@@ -12,12 +12,20 @@ describe('DRE frontend', function() {
         var password = element(by.id('password'));
         password.clear();
         password.sendKeys('testtest');
-
         element(by.id('main-login-btn')).click();
-
         browser.waitForAngular();
+    });
 
-        expect(browser.getTitle()).toEqual('My PHR | Home');
+    afterEach(function () {
+        browser.get(url + 'home');
+        var dropdown = ($('[data-toggle="dropdown"]'));
+        dropdown.click();
+        var logout = element(by.cssContainingText('a', 'Log out'));
+        logout.click();
+    });
+
+
+    it('should have my immunizations', function () {
 
         var record = element(by.css('[ui-sref="record"]'));
         record.click();
@@ -25,15 +33,15 @@ describe('DRE frontend', function() {
         expect(browser.getCurrentUrl()).toEqual(url + 'home/record');
 
         var recordImmun = element(by.css('[ui-sref="record.immunizations"]'));
-        
+
         shoot('immun');
-        recordImmun.click().then(function() {
+        recordImmun.click().then(function () {
 
             var immun = element.all(by.binding('userTimelineEntry.title'));
 
             //console.log(medications);
             var count;
-            immun.count().then(function(value) {
+            immun.count().then(function (value) {
                 count = value;
 
                 console.log('--------------', count);
@@ -42,9 +50,9 @@ describe('DRE frontend', function() {
 
             });
             var detailsBtn = ($('[ng-click="setTab(\'details\')"]'));
-            detailsBtn.click().then(function() {
+            detailsBtn.click().then(function () {
                 expect(element(by.css('.details-table')).isDisplayed()).toBeTruthy();
-                
+
                 shoot('immun1');
             });
         });

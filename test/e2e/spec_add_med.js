@@ -1,15 +1,9 @@
 var url = require('./config').url;
 var shoot = require('./config').shoot;
 
-describe('DRE frontend', function() {
+describe('DRE frontend', function () {
 
-    it('add medication', function() {
-        browser.get(url);
-
-        expect(browser.getTitle()).toEqual('My PHR');
-    });
-
-    it('add medication', function() {
+    beforeEach(function () {
         browser.get(url);
 
         var uresName = element(by.id('login'));
@@ -18,17 +12,22 @@ describe('DRE frontend', function() {
         var password = element(by.id('password'));
         password.clear();
         password.sendKeys('testtest');
-
-shoot('login');
         element(by.id('main-login-btn')).click();
-
         browser.waitForAngular();
+    });
 
-        expect(browser.getTitle()).toEqual('My PHR | Home');
+    afterEach(function () {
+        browser.get(url + 'home');
+        var dropdown = ($('[data-toggle="dropdown"]'));
+        dropdown.click();
+        var logout = element(by.cssContainingText('a', 'Log out'));
+        logout.click();
+    });
 
+    it('add medication', function () {
         var record = element(by.css('[ui-sref="record"]'));
         record.click();
-shoot('record');
+        shoot('record');
         expect(browser.getCurrentUrl()).toEqual(url + 'home/record');
 
         var recordMedications = element(by.css('[ui-sref="record.medications"]'));
@@ -38,26 +37,26 @@ shoot('record');
         shoot('addmedication');
         addMedication.click();
         var overTheCounter = element(by.cssContainingText('button', 'Over the Counter'));
-       shoot('addmedication');
+        shoot('addmedication');
         overTheCounter.click();
         var drugName = element(by.model('model.query'));
         drugName.sendKeys('Mucinex');
         var search = element(by.cssContainingText('button', 'Search'));
 
-shoot('medication1');
-        
+        shoot('medication1');
+
         search.click();
         var medType = element(by.model('model.drug.$'));
-        medType.element(by.cssContainingText('option', 'Oral Tablet')).click().then(function() {
+        medType.element(by.cssContainingText('option', 'Oral Tablet')).click().then(function () {
             var select = element(by.css('[ng-click="selectDrug()"]'));
             shoot('addmedication2');
             select.click();
 
-shoot('medication3');
+            shoot('medication3');
 
             var nextBtn = element(by.cssContainingText('button', 'Next'));
             shoot('addmedication4');
-            
+
             nextBtn.click();
             var date = element(by.model('resultDate'));
             date.sendKeys('10/20/2015');
@@ -66,15 +65,15 @@ shoot('medication3');
             browser.sleep(3000);
             var btnNext = element(by.css('[ng-click="next()"]'));
             shoot('addmedication5');
-            
+
             btnNext.click();
             var submit = element(by.css('[ng-click="saveMedication()"]'));
             shoot('addmedication6');
-            
+
             submit.click();
             browser.sleep(3000);
             var newMedication = element(by.cssContainingText('span', 'I12 HR Guaifenesin 1200 MG Extended Release Oral Tablet [Mucinex]'));
-            
+
             expect(newMedication != null).toBeTruthy();
         });
     });

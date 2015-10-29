@@ -4,9 +4,9 @@ require('protractor-linkuisref-locator')(protractor);
 
 var randomName;
 
-describe('DRE signUp', function() {
+describe('DRE signUp', function () {
 
-    it('signUp', function() {
+    it('signUp', function () {
         browser.get(url);
 
         var button = element(by.linkUiSref('register'));
@@ -18,11 +18,11 @@ describe('DRE signUp', function() {
     });
 
 
-    it('register random user', function() {
+    it('register random user', function () {
         browser.get(url + 'register');
 
         var userName = element(by.name('login'));
-shoot('singup');
+        shoot('singup');
         while (true) {
             randomName = 'test' + Math.floor((Math.random() * 10000));
             userName.clear();
@@ -36,39 +36,39 @@ shoot('singup');
 
         var email = element(by.model('model.email'));
         email.clear();
-        email.sendKeys(randomName).then(function() {
+        email.sendKeys(randomName).then(function () {
 
             expect($('[ng-message="required, minlength, maxlength, email"]').isDisplayed()).toBeTruthy();
 
             email.clear();
-            email.sendKeys(randomName + '@amida-demo.com').then(function() {
-shoot('singup1');
+            email.sendKeys(randomName + '@amida-demo.com').then(function () {
+                shoot('singup1');
                 expect($('[ng-message="required, minlength, maxlength, email"]').isPresent()).toBeFalsy();
 
                 var password = element(by.model('model.password'));
                 password.clear();
-                password.sendKeys('tes').then(function() {
+                password.sendKeys('tes').then(function () {
 
                     expect($('[ng-message="required, minlength, maxlength"]').isDisplayed()).toBeTruthy();
 
                     password.clear();
-                    password.sendKeys('testtest').then(function() {
-shoot('singup2');
+                    password.sendKeys('testtest').then(function () {
+                        shoot('singup2');
                         expect($('[ng-message=equals]').isDisplayed()).toBeTruthy();
 
                         var confirmPassword = element(by.model('model.confirm'));
                         confirmPassword.clear();
-                        confirmPassword.sendKeys('tes').then(function() {
+                        confirmPassword.sendKeys('tes').then(function () {
 
                             expect($('[ng-message="required, minlength, maxlength"]').isDisplayed()).toBeTruthy();
 
                             confirmPassword.clear();
-                            confirmPassword.sendKeys('testtest').then(function() {
+                            confirmPassword.sendKeys('testtest').then(function () {
 
                                 expect($('[ng-message="required, minlength, maxlength"]').isPresent()).toBeFalsy();
 
                                 var button = element(by.buttonText('Next'));
-                               shoot('singup3');
+                                shoot('singup3');
                                 button.click();
 
                                 expect($('[ng-show="model.step == 2"]').isDisplayed()).toBeTruthy();
@@ -100,12 +100,12 @@ shoot('singup2');
 
                                 expect($('[ng-show="model.step == 3"]').isDisplayed()).toBeTruthy();
                                 shoot('singup5');
-                                browser.sleep(2000);
                             });
                         });
                     });
                 });
             });
         });
+        /**/
     });
 });
