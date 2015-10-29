@@ -1,5 +1,6 @@
 <div ng-hide="model.isNew && readOnly">
     <h4 ng-hide="withoutHeader">Note</h4>
+
     <div class="row container-fluid panel-body" ng-form="noteEditForm" name="noteEditForm">
         <div class="col-sm-1">
             <button class="btn- btn-link" ng-click="toggleFavorite()">
@@ -10,8 +11,9 @@
             <div class="form-group">
                 <label for="noteText" ng-show="model.isNew">New:</label>
                 <label for="noteText" ng-show="!model.isNew">Edit<span ng-show="model.lastUpdateDate"> ({{model.lastUpdateDate| date:'short'}})</span>:</label>
-      <textarea class="form-control" placeholder="Enter Note" rows="2" ng-disabled="!model.isEditMode"
+                <textarea class="form-control" placeholder="Enter Note" rows="2" ng-disabled="!model.isEditMode"
                 ng-model="model.noteText" required="required" id="noteText" name="noteText"></textarea>
+
                 <div ng-messages="noteEditForm.noteText.$error" role="alert" ng-if="noteEditForm.noteText.$dirty">
                     <p ng-message="required" class="help-block">Note text is required.</p>
                 </div>
@@ -20,11 +22,23 @@
                 <button class="btn btn-primary pull-right" ng-click="createNote()">Add Note</button>
             </div>
             <div class="form-group" ng-hide="model.isNew || readOnly">
-                <button class="btn btn-primary pull-right" ng-hide="model.isEditMode" ng-click="model.isEditMode = true">Edit</button>
-                <button type="button" class="btn btn-danger pull-left" ng-click="deleteNote()" ng-show="model.isEditMode">Delete note</button>
-                <button type="button" class="btn btn-default pull-right" ng-show="model.isEditMode" ng-click="model.isEditMode = false">Cancel</button>
-                <button type="button" class="btn btn-primary pull-right" ng-show="model.isEditMode" ng-click="saveNote()"
-                        ng-disabled="noteEditForm.$invalid">Save Note</button>
+                <div class="btn-group pull-left">
+                    <button type="button" class="btn btn-danger" ng-click="deleteNote()" ng-show="model.isEditMode">
+                        Delete note
+                    </button>
+                </div>
+                <div class="btn-group pull-right">
+                    <button type="button" class="btn btn-primary" ng-show="model.isEditMode"
+                            ng-click="saveNote()"
+                            ng-disabled="noteEditForm.$invalid">Save Note
+                    </button>
+                    <button type="button" class="btn btn-default" ng-show="model.isEditMode"
+                            ng-click="model.isEditMode = false">Cancel
+                    </button>
+                    <button class="btn btn-primary" ng-hide="model.isEditMode"
+                            ng-click="model.isEditMode = true">Edit
+                    </button>
+                </div>
                 <div class="clearfix"></div>
                 <div class="text-center">
                     <div ng-if="model.error" class="text-center login-alert"><i class="fa fa-exclamation-circle"></i>
