@@ -1,8 +1,8 @@
 var url = require('./config').url;
 var shoot = require('./config').shoot;
-describe('DRE frontend', function() {
+describe('DRE frontend', function () {
 
-    it('should upload file', function() {
+    it('should upload file', function () {
         browser.get(url);
 
         var uresName = element(by.id('login'));
@@ -20,61 +20,68 @@ describe('DRE frontend', function() {
         expect(browser.getTitle()).toEqual('My PHR | Home');
 
         var files = ($('[ui-sref="files"]'));
-        
+
         files.click();
 
         expect(browser.getCurrentUrl()).toEqual(url + 'home/files');
-shoot('upload1');
+        shoot('upload1');
         var countBefore;
         var hundredButton = element(by.cssContainingText('button', '100'));
 
-        hundredButton.click().then(function() {
+        hundredButton.click().then(function () {
 
             var candidates = element.all(by.xpath('//td[@data-title-text="Modified"]'));
 
-            candidates.count().then(function(value) {
+            candidates.count().then(function (value) {
                 countBefore = value;
-            });
-        });
+
+                console.log(value);
+               // browser.sleep(5000);
 
 
-        var uploadFile = element(by.cssContainingText('a.btn.btn-link', 'Upload File'));
-        shoot('upload2');
-        uploadFile.click();
+                var uploadFile = element(by.cssContainingText('a.btn.btn-link', 'Upload File'));
+                shoot('upload2');
+                uploadFile.click();
 
-        ($('input[type="file"]')).sendKeys("/Users/tatianashchelokova/Documents/dre-frontend/test/bluebutton-01-original.xml").then(function() {
-shoot('upload3');
-            //($('#uploadButton')).click();
-            var uploadBtn = element(by.cssContainingText('button', 'Continue'));
-            
-            uploadBtn.click();
+                ($('input[type="file"]')).sendKeys("/Users/tatianashchelokova/Documents/dre-frontend/test/bluebutton-01-original.xml").then(function () {
+                    shoot('upload3');
+                    //($('#uploadButton')).click();
+                    var uploadBtn = element(by.cssContainingText('button', 'Continue'));
 
-            expect(browser.getCurrentUrl()).toEqual(url + 'home/files/upload');
+                    uploadBtn.click();
 
-            browser.wait(function() {
-                return browser.getCurrentUrl().then(function(aurl) {
-                    //console.log(aurl);
-                    return aurl === (url + 'home/files');
-                })
-            });
+                    expect(browser.getCurrentUrl()).toEqual(url + 'home/files/upload');
 
-            expect(browser.getCurrentUrl()).toEqual(url + 'home/files');
+                   // browser.sleep(5000);
 
-            //browser.sleep(5000);
+                    browser.wait(function () {
+                        return browser.getCurrentUrl().then(function (aurl) {
+                            //console.log(aurl);
+                            return aurl === (url + 'home/files');
+                        })
+                    });
 
-            hundredButton.click().then(function() {
+                    expect(browser.getCurrentUrl()).toEqual(url + 'home/files');
 
-                var candidates = element.all(by.xpath('//td[@data-title-text="Modified"]'));
+                    //browser.sleep(10000);
 
-                var countAfter;
-                candidates.count().then(function(value) {
-                    countAfter = value;
-shoot('upload6');
-                    expect(countAfter - countBefore).toBe(1);
+                    hundredButton = element(by.cssContainingText('button', '100'));
+                    hundredButton.click().then(function () {
 
+                        var candidates = element.all(by.xpath('//td[@data-title-text="Modified"]'));
+
+                        var countAfter;
+                        candidates.count().then(function (value) {
+                            countAfter = value;
+                            console.log(value);
+                            shoot('upload6');
+                            expect(countAfter - countBefore).toBe(1);
+
+                        });
+                        //browser.sleep(5000);
+                    });
                 });
-                //browser.sleep(5000);
             });
         });
     });
-});
+})
