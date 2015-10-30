@@ -10,17 +10,17 @@
 angular.module('dreFrontendApp')
     .controller('NotesMenuCtrl', function ($scope, dreFrontendNotesService, _, dreFrontendGlobals) {
         $scope.model = {
-            notesTypes: []
+            dataTypes: []
         };
         dreFrontendNotesService.getAllNotes().then(function (notesList) {
             var rawMenuTypes = _.groupBy(notesList, 'section');
-            $scope.model.notesTypes = [];
+            $scope.model.dataTypes = [];
             _.forEach(rawMenuTypes, function (noteType) {
                 var resourceType = _.find(dreFrontendGlobals.resourceTypes, {type:_.first(noteType).section});
                 if (resourceType) {
-                    $scope.model.notesTypes.push({
+                    $scope.model.dataTypes.push({
                         title: resourceType.title,
-                        noteType: resourceType.alias,
+                        type: resourceType.alias,
                         itemCount: noteType.length
                     });
                 }

@@ -1,44 +1,60 @@
 .btn {
-  padding: 10px 20px;
-  font-size: 12px;
-  line-height: 1.428571429;
-  border-radius: 0px;
-  font-weight: normal;
-  font-family: "Montserrat", serif;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+    padding: 10px 20px;
+    font-size: 12px;
+    line-height: 1.428571429;
+    border-radius: 0px;
+    font-weight: normal;
+    font-family: "Montserrat", serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
+
 .btn-block {
-  display: block;
-  width: 100%;
+    display: block;
+    width: 100%;
 }
+
 .btn-primary {
-  color: white;
-  background: $color-blue;
-  border-color: $color-blue2;
+    color: white;
+    background: $color-blue;
+    border-color: $color-blue2;
 }
+
 .btn-xs {
     padding: 1px 5px;
 }
+
 .btn-calendar {
     font-size: 14px;
 }
+
 @media (max-width: 768px) {
     .btn-responsive {
-        padding:3px 6px;
-        border-radius:3px;
+        padding: 3px 6px;
+        border-radius: 3px;
     }
 }
 
 @media (min-width: 769px) and (max-width: 992px) {
     .btn-responsive {
-        padding:3px 6px;
-        font-size:77%;
+        padding: 3px 6px;
+        font-size: 77%;
         line-height: 1.2;
     }
 }
+
 @media (min-width: 992px) and (max-width: 1200px) {
     .btn-responsive {
         padding: 7px 14px;
     }
+}
+
+.pagination.matches {
+    margin: 0;
+}
+
+.pagination > li.page-info > span {
+    color: $gray-dark;
+    background-color: transparent;
+    border-color: transparent;
 }

@@ -219,7 +219,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             }
         })
         .state('notes', {
-            url: '/notes/{noteType}',
+            url: '/notes/{group}',
             parent: 'home',
             data: {
                 name: 'My Notes',
@@ -227,12 +227,30 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             },
             views: {
                 'homeMenu@homeRoot': {
-                    templateUrl: "views/controllers/notes-menu.html",
+                    templateUrl: "views/controllers/groups-menu.html",
                     controller: "NotesMenuCtrl"
                 },
                 'pageBody@homeRoot': {
                     templateUrl: "views/controllers/notes.html",
                     controller: "NotesCtrl"
+                }
+            }
+        })
+        .state('record.review', {
+            url: '/review/{group}',
+            parent: 'record',
+            data: {
+                name: 'Review Updates',
+                isPublic: false
+            },
+            views: {
+                'homeMenu@homeRoot': {
+                    templateUrl: "views/controllers/groups-menu.html",
+                    controller: "ReviewMenuCtrl"
+                },
+                'pageBody@homeRoot': {
+                    templateUrl: "views/controllers/record-review.html",
+                    controller: "ReviewCtrl"
                 }
             }
         })
@@ -263,21 +281,6 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 'pageBody@homeRoot': {
                     templateUrl: "views/controllers/files-upload.html",
                     controller: 'FilesUploadCtrl'
-                }
-            }
-        })
-        .state('record.matches', {
-            url: '/matches',
-            parent: 'record',
-            data: {
-                name: 'Review Updates',
-                isPublic: false
-            },
-            views: {
-                'homeMenu@homeRoot': {},
-                'pageBody@homeRoot': {
-                    templateUrl: "views/controllers/matches.html",
-                    controller: "MatchesCtrl"
                 }
             }
         })

@@ -21,6 +21,9 @@ angular.module('dreFrontendApp')
                 }, true);
             },
             controller: function ($scope, dreFrontendHttp, $log, $http, _, dreFrontendUtil, dreFrontendEntryService) {
+                $scope.model = {
+                  title:''
+                };
                 function _build_differences(diff) {
 
                     var f = function (change) {
@@ -45,13 +48,14 @@ angular.module('dreFrontendApp')
                         }
                     };
 
+                    $scope.model.title = dreFrontendUtil.camelCaseToString(diff.lhs.resourceType);
+
                     if (diff.changes) {
                         angular.forEach(diff.changes, f);
                     }
                 }
 
                 this.update = function (data) {
-                    $log.debug(data);
                     if (data) {
                         _build_differences(data);
                     }
