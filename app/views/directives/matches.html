@@ -1,15 +1,12 @@
 <div class="panel panel-body" ng-show="model.qty>0">
-    <div class="row">
-        <div class="col-xs-12">
-            <nav>
-                <ul class="pagination">
-                    <li class="previous" ng-class="{disabled: model.index<1}"><a ng-click="prev()"><span
-                        aria-hidden="true">&larr;</span> Previous</a></li>
-                    <li class="next" ng-class="{disabled: model.index >= model.qty-1}"><a ng-click="next()">Next <span
-                        aria-hidden="true">&rarr;</span></a></li>
-                </ul>
-            </nav>
-        </div>
+    <div class="clearfix text-right">
+        <ul class="pagination matches">
+            <li class="previous" ng-class="{disabled: model.index<1}"><a ng-click="prev()"><span
+                aria-hidden="true">&larr;</span> Previous</a></li>
+            <li class="next" ng-class="{disabled: model.index >= model.qty-1}"><a ng-click="next()">Next <span
+                aria-hidden="true">&rarr;</span></a></li>
+            <li class="page-info"><span>{{model.index+1}} of {{model.qty}}</span></li>
+        </ul>
     </div>
     <div class="row">
         <div resource-diff="model.matches[model.index]"></div>
