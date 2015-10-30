@@ -19,7 +19,7 @@ angular.module('dreFrontendApp')
         var initNotes = function () {
             dreFrontendNotesService.getAllNotes()
                 .then(function (notesList) {
-                    var noteType = _.find(dreFrontendGlobals.resourceTypes, {alias: $stateParams.noteType});
+                    var noteType = _.find(dreFrontendGlobals.resourceTypes, {alias: $stateParams.group});
                     var rawNotesList = angular.isUndefined(noteType) ? notesList : _.filter(notesList, {section: noteType.type});
                     if ($scope.model.filterByStar != 'all') {
                         rawNotesList = _.filter(rawNotesList, function (item) {

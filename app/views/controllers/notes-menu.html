@@ -11,7 +11,7 @@
         <div class="navbar-collapse collapse records-menu" id="notesnav">
             <div class="sidebar-control nav navbar-left">
                 <a ui-sref="notes({noteType:undefined})" ui-sref-active-eq="active" class="btn">All</a>
-                <a ng-repeat="item in model.notesTypes" ui-sref="notes({noteType:item.noteType})" ui-sref-active="active" class="btn">{{item.title}} ({{item.itemCount}})</a>
+                <a ng-repeat="item in model.dataTypes" ui-sref="notes({noteType:item.noteType})" ui-sref-active="active" class="btn">{{item.title}} ({{item.itemCount}})</a>
             </div>
         </div>
     </div>

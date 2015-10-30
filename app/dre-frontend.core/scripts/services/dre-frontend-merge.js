@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dreFrontend.util')
-    .service('dreFrontendMergeService', function (dreFrontendHttp, $q, $http) {
+    .service('dreFrontendMergeService', function (dreFrontendHttp, $q, $http, _) {
 
         var matches = null;
         var mocked = null;
@@ -16,8 +16,8 @@ angular.module('dreFrontend.util')
                 if (force || !matches) {
                     return dreFrontendHttp({url: urls.list + '/' + user_id, method: 'GET'})
                         .then(function(resp){
-                            matches = resp;
-                            return resp;
+                            matches = _.filter(resp, {changeType: "update"});
+                            return matches;
                         });
                 } else {
                     return $q.resolve(matches);
@@ -29,7 +29,8 @@ angular.module('dreFrontend.util')
                     return $http({url: urls.mocked, method: 'GET'})
                         .then(function (resp) {
                             if (resp.data) {
-                                return resp.data;
+                                mocked = resp.data;
+                                return mocked;
                             }
                         });
                 } else {

@@ -8,20 +8,12 @@
  * Service in the dreFrontendApp.
  */
 angular.module('dreFrontendApp')
-    .factory('dreFrontendEntryService', function (_, dreFrontendUtil, $log) {
+    .factory('dreFrontendEntryService', function (_, dreFrontendUtil) {
 
         var _black_list = ["photo"];
 
         var isValidName = function (name, black_list) {
             return name[0] != '$' && !_.contains(black_list, name);
-        };
-
-        var prepareName = function (name) {
-            var nameArr = name.split(/(?=[A-Z])/);
-            for (var i = 0; i < nameArr.length; i++) {
-                nameArr[i] = dreFrontendUtil.capitalise(nameArr[i]);
-            }
-            return nameArr.join(' ');
         };
 
         var _buildTable = function (dataItem, blackList) {
@@ -33,7 +25,7 @@ angular.module('dreFrontendApp')
                 //number value
                 if (angular.isNumber(propertyValue) || !isNaN(parseFloat(propertyValue))) {
                     dataItems.push({
-                        label: prepareName(propertyName),
+                        label: dreFrontendUtil.camelCaseToString(propertyName),
                         value: propertyValue,
                         type: 'string'
                     });
@@ -41,7 +33,7 @@ angular.module('dreFrontendApp')
                 //if ISO date
                 if (angular.isDate(propertyValue) /*!isNaN(Date.parse(propertyValue))*/) {
                     dataItems.push({
-                        label: prepareName(propertyName),
+                        label: dreFrontendUtil.camelCaseToString(propertyName),
                         value: dreFrontendUtil.formatFhirDate(propertyValue),
                         type: 'string'
                     });
@@ -49,7 +41,7 @@ angular.module('dreFrontendApp')
                 //String value
                 if (angular.isString(propertyValue)) {
                     dataItems.push({
-                        label: prepareName(propertyName),
+                        label: dreFrontendUtil.camelCaseToString(propertyName),
                         value: propertyValue,
                         type: 'string'
                     });
@@ -72,7 +64,7 @@ angular.module('dreFrontendApp')
                     });
                     if (angular.isArray(itemsArray) && itemsArray.length > 0) {
                         dataItems.push({
-                            label: prepareName(propertyName),
+                            label: dreFrontendUtil.camelCaseToString(propertyName),
                             value: itemsArray,
                             type: type
                         });
@@ -83,7 +75,7 @@ angular.module('dreFrontendApp')
                     var rowObjectData = _buildTable(propertyValue, blackList);
                     if (angular.isArray(rowObjectData) && rowObjectData.length > 0) {
                         dataItems.push({
-                            label: prepareName(propertyName),
+                            label: dreFrontendUtil.camelCaseToString(propertyName),
                             value: rowObjectData,
                             type: 'object'
                         });

@@ -7,7 +7,7 @@
  */
 
 angular.module('dreFrontendApp')
-    .directive('matches', function (_, dreFrontendUtil, $log) {
+    .directive('review', function (_, dreFrontendUtil, $log) {
         return {
             templateUrl: 'views/directives/matches.html',
             restrict: 'AE',
@@ -39,21 +39,34 @@ angular.module('dreFrontendApp')
                     }
                 };
 
+                var _revertChanges = function (changes) {
+                    _.forEach(changes, function(chng) {
+                        if (angular.isArray(chng)) {
+                            _revertChanges(chng);
+                        } else {
+                            chng.apply = true;
+                        }
+                    });
+                };
+
                 $scope.undoAllButton = function () {
-                    $log.debug("undoAllButton() is not implemented");
+                    var item = $scope.model.matches[$scope.model.index];
+                    if (item) {
+                        _revertChanges(item.changes);
+                    }
                 };
 
                 $scope.createNewButton = function () {
-                    $log.debug("createNewButton() is not implemented");
+                    $log.debug("createNew is not implemented");
                 };
 
                 $scope.submitButton = function () {
-                    $log.debug("submitButton() is not implemented");
-                    $log.debug(model.matches[model.index]);
+                    $log.debug("saveUpdates is not implemented");
+                    $log.debug($scope.model.matches[$scope.model.index]);
                 };
 
                 $scope.ignoreButton = function () {
-                    $log.debug("ignoreButton() is not implemented");
+                    $log.debug("ignoreUpdates is not implemented");
                 };
 
                 var _format_matches = function (src_matches) {

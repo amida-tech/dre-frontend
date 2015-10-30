@@ -1,0 +1,18 @@
+<nav class="navbar">
+    <div class="">
+        <div class="navbar-header">
+            <button type="button" class="records-toggle collapsed" data-toggle="collapse" data-target="#groupsnav">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="records-menu-icon"></span>
+                <span class="records-menu-icon"></span>
+                <span class="records-menu-icon"></span>
+            </button>
+        </div>
+        <div class="navbar-collapse collapse records-menu" id="groupsnav">
+            <div class="sidebar-control nav navbar-left">
+                <a ui-sref="{group:undefined}" ui-sref-active-eq="active" class="btn">All</a>
+                <a ng-repeat="item in model.dataTypes" ui-sref="{group:item.type}" ui-sref-active="active" class="btn">{{item.title}} ({{item.itemCount}})</a>
+            </div>
+        </div>
+    </div>
+</nav>

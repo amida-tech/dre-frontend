@@ -2,13 +2,13 @@
 
 /**
  * @ngdoc function
- * @name dreFrontendApp.controller:MatchesCtrl
+ * @name dreFrontendApp.controller:ReviewCtrl
  * @description
- * # MatchesCtrl
+ * # ReviewCtrl
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('MatchesCtrl', function ($http, $scope, _, dreFrontEndPatientInfoService, dreFrontendMergeService, $log) {
+    .controller('ReviewCtrl', function ($http, $scope, $state, _, dreFrontEndPatientInfoService, dreFrontendMergeService, $log) {
         $scope.model = {
             userName: '-',
             matches: [],
@@ -16,14 +16,28 @@ angular.module('dreFrontendApp')
             isLoading: true
         };
 
+        function _filter(matches) {
+            var res = [];
+            if ($state.params.group) {
+                _.forEach(matches, function (match) {
+                    if (match.lhs.resourceType.toLowerCase() === $state.params.group) {
+                        res.push(match);
+                    }
+                });
+            } else {
+                res = matches;
+            }
+
+            return res;
+        }
+
         dreFrontEndPatientInfoService.getPatientData()
             .then(function (patient) {
                 $scope.model.userName = patient.getName()[0];
                 dreFrontendMergeService.getList(patient.id)
                     .then(function (resp) {
                         if (resp) {
-                            $scope.model.matches = _.filter(resp, {changeType: "update"});
-                            $log.debug($scope.model.matches);
+                            $scope.model.matches = _filter(resp);
                         }
                     })
                     .finally(function () {

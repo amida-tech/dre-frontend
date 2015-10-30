@@ -2,10 +2,12 @@
 
 angular.module("dreFrontend.util")
     .factory("dreFrontendUtil", function (dreFrontendEnvironment, $filter, fhirEnv) {
+        var _capitalise = function (_str) {
+            return _str.charAt(0).toUpperCase() + _str.substr(1).toLowerCase();
+        };
+
         return {
-            capitalise: function (_str) {
-                return _str.charAt(0).toUpperCase() + _str.substr(1).toLowerCase();
-            },
+            capitalise: _capitalise,
             buildServiceUrl: function (api_path) {
                 return dreFrontendEnvironment.baseServerUrl + api_path;
             },
@@ -64,6 +66,14 @@ angular.module("dreFrontend.util")
                 var query = expr.exec(reference);
 
                 return  query[0].split('/');
+            },
+            camelCaseToString: function (camelCase) {
+                var words = camelCase.split(/(?=[A-Z])/);
+                for (var i = 0; i < words.length; i++) {
+                    words[i] = _capitalise(words[i]);
+                }
+                return words.join(' ');
+
             }
         };
     });
