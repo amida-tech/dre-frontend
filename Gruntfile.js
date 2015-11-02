@@ -496,8 +496,8 @@ module.exports = function (grunt) {
         constants: {
           dreFrontendEnvironment: {
             name: 'vagrant',
-            baseServerUrl:'http://192.168.33.10:3000/api/v1',
-            fhirServerUrl:'http://dev.ntrlab.ru:8080/fhir/baseDstu2',
+            baseServerUrl:'http://localhost:3001/api/v1',
+            fhirServerUrl:'http://localhost:8080/fhir/baseDstu2',
             enableDebugLog:true
           }
         }
