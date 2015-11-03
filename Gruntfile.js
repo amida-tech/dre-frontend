@@ -507,7 +507,7 @@ module.exports = function (grunt) {
         },
         constants: {
           dreFrontendEnvironment: {
-            name: 'vagrant',
+            name: 'env',
             baseServerUrl:'http://' + process.env.SERVICE_HOST + ':3001/api/v1',
             fhirServerUrl:'http://' + process.env.SERVICE_HOST + ':8080/fhir/baseDstu2',
             enableDebugLog:true
