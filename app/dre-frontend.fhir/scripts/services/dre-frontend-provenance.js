@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendProvenance', function (dreFrontendFhirService, dreFrontendUtil, dreFrontendDocumentReference, $q, FhirProvenance) {
+    .factory('dreFrontendProvenance', function (dreFrontendFhirService, dreFrontendUtil, dreFrontendDocumentReference, $q, FhirProvenance,$log) {
         function proceedBundle(bundle) {
             for (var n = 0; n < bundle.entry.length; n++) {
                 bundle.entry[n] = new FhirProvenance(bundle.entry[n]);
@@ -29,6 +29,7 @@ angular.module('dreFrontend.fhir')
             getResourceSources: function (resourceType, resourceId) {
                 return get_for_resource(resourceType, resourceId)
                     .then(function(bundle){
+                        $log.debug("Provenance total",bundle.total);
                         var provenances = [];
                         angular.forEach(bundle.entry,function(p){
                             provenances.push(p.getDocReferences())

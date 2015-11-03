@@ -7,14 +7,16 @@ angular.module('dreFrontend.util')
         var mocked = null;
 
         var urls = {
-            list: '/merge',
-            mocked: '/mock/diff/b-0'
+            list: '/merge/',
+            mocked: '/mock/diff/b-0',
+            problems: '/matches/problems/',
+            social_hist: '/matches/social_history/'
         };
 
         return {
             getList: function (user_id, force) {
                 if (force || !matches) {
-                    return dreFrontendHttp({url: urls.list + '/' + user_id, method: 'GET'})
+                    return dreFrontendHttp({url: urls.list + user_id, method: 'GET'})
                         .then(function(resp){
                             matches = _.filter(resp, {changeType: "update"});
                             return matches;
@@ -36,6 +38,15 @@ angular.module('dreFrontend.util')
                 } else {
                     $q.resolve(mocked);
                 }
+            },
+            ignoreMatch: function(user_id, match_data) {
+
+            },
+            createMatch: function(user_id, match_data) {
+
+            },
+            applyChanges: function(user_id, match_data) {
+
             }
         }
     });

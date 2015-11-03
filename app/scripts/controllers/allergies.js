@@ -13,14 +13,14 @@ angular.module('dreFrontendApp')
             lastUpdate: new Date(),
             userName: '',
             list: [],
-            //TODO hardcoded, need to get updates fromo SERVICE
-            updates: 5,
             entryType: 'Allergies',//dreFrontendGlobals.resourceTypes.AllergyIntolerance.type,
             title: dreFrontendGlobals.resourceTypes.AllergyIntolerance.title
         };
+
         dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
         });
+
         dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
             dreFrontendAllergyIntolerances.getByPatientId(patientId).then(function (allergies) {
                 _.forEach(allergies.entry, function (entry) {
@@ -30,8 +30,7 @@ angular.module('dreFrontendApp')
                         additionalInfo: dreFrontendEntryService.getEntryAddInfo(entry),
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         dates: dreFrontendEntryService.getEntryDates(entry),
-                        menuType: dreFrontendGlobals.menuRecordTypeEnum.inline,
-                        updates: 1
+                        menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
                     });
                 });
             })

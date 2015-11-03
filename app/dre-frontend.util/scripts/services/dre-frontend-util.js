@@ -62,9 +62,8 @@ angular.module("dreFrontend.util")
                 return fhirEnv.resourceTypes.hasOwnProperty(resourceType);
             },
             parseResourceReference: function(reference) {
-                var expr = /([\w\d]+?\/){2}(_history)?(\/\d+)?.*?$/;
+                var expr = /([\w\d]+?\/){2}(_history)?(\/\d+)?$/;
                 var query = expr.exec(reference);
-
                 return  query[0].split('/');
             },
             camelCaseToString: function (camelCase) {

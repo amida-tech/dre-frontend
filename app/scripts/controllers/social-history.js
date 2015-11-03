@@ -14,7 +14,6 @@ angular.module('dreFrontendApp')
             lastUpdate: new Date(),
             socialHistoryList: [],
             filteredSocialHistoryList: [],
-            //TODO hardcoded, need to get updates fromo SERVICE
             entryType: 'SocialHistory'
         };
         dreFrontEndPatientInfoService.getPatientData().then(function (patient) {

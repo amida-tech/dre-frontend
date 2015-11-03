@@ -4,7 +4,7 @@
 "use strict";
 
 angular.module('dreFrontend.resource')
-    .factory('FhirDocumentReference', function (FhirResource, dreFrontendUtil, $q, dreFrontendFhirService) {
+    .factory('FhirDocumentReference', function (FhirResource, dreFrontendUtil, $q, dreFrontendFhirService, $log) {
 
         // reuse the original constructor
         var FhirDocumentReference = function () {

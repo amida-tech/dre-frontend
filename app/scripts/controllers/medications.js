@@ -17,7 +17,6 @@ angular.module('dreFrontendApp')
             showInactive: false,
             medicationsList: [],
             filteredMedicationList: [],
-            updates: 5, //TODO hardcoded, need to get updates fromo SERVICE
             entryType: 'medications'
         };
 
@@ -34,8 +33,7 @@ angular.module('dreFrontendApp')
                         type: dreFrontendGlobals.resourceTypes.MedicationOrder.type,
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         dates: dreFrontendEntryService.getEntryDates(entry),
-                        menuType: dreFrontendGlobals.menuRecordTypeEnum.popup,
-                        updates: 2
+                        menuType: dreFrontendGlobals.menuRecordTypeEnum.popup
                     })
                 });
                 $scope.filterMedications();

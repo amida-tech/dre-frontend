@@ -9,7 +9,7 @@
 angular.module('dreFrontendApp')
     .directive('fhirBinaryLink', function () {
         return {
-            template: '<a ng-click="getContent()"><i class="fa {{getIcon(docRef.contentType)}}"></i> {{docRef.title}}</a>',
+            template: '<a ng-click="getContent()" class="fhir-binary-link"><i class="fa {{getIcon(docRef.contentType)}}"></i>{{docRef.title}}</a>',
             restrict: 'AE',
             scope: {
                 docRef: "="
@@ -36,17 +36,29 @@ angular.module('dreFrontendApp')
                             case "image":
                                 res = "fa-file-image-o";
                                 break;
+                            case "application":
+                                switch (parts[1]) {
+                                    case "xml":
+                                        res = "fa-file-code-o";
+                                        break;
+                                    case "json":
+                                        res = "fa-file-code-j";
+                                        break;
+                                }
+                                break;
                         }
                     }
                     return res;
                 };
 
                 $scope.getContent = function () {
+
                     if (!$scope.docRef.binary) {
-                        $scope.docRef.getBody().then(function (docRef) {
-                            $scope.docRef.binary = docRef;
-                            openSaveAsDialog($scope.docRef.title, atob(docRef.content), docRef.contentType);
-                        });
+                        $scope.docRef.getBody()
+                            .then(function (docRef) {
+                                $scope.docRef.binary = docRef;
+                                openSaveAsDialog($scope.docRef.title, atob(docRef.content), docRef.contentType);
+                            });
                     } else {
                         openSaveAsDialog($scope.docRef.title, atob($scope.docRef.binary.content), $scope.docRef.binary.contentType);
                     }

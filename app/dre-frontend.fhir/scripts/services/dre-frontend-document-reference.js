@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendDocumentReference', function (dreFrontendFhirService, dreFrontendUtil, $q, FhirDocumentReference) {
+    .factory('dreFrontendDocumentReference', function (dreFrontendFhirService, dreFrontendUtil, $q, FhirDocumentReference, $log) {
         function proceedBundle(bundle) {
             for (var n = 0; n < bundle.entry.length; n++) {
                 bundle.entry[n] = new FhirDocumentReference(bundle.entry[n]);
@@ -42,12 +42,16 @@ angular.module('dreFrontend.fhir')
                             status: doc_ref.status
                         };
 
-                        if (doc_ref.type && doc_ref.type.coding[0]) {
-                            angular.extend(data, doc_ref.type.coding[0]);
+                        if (doc_ref.type && doc_ref.type.coding[0] && doc_ref.type.coding[0].display) {
+                            data.display = doc_ref.type.coding[0].display;
                         }
 
                         if (doc_ref.content && doc_ref.content[0]) {
-                            angular.extend(data, doc_ref.content[0]);
+                            if (doc_ref.content[0].attachment) {
+                                angular.extend(data, doc_ref.content[0].attachment);
+                            } else {
+                                angular.extend(data, doc_ref.content[0]);
+                            }
                         }
 
                         files.push(data);

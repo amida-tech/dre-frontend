@@ -13,8 +13,6 @@ angular.module('dreFrontendApp')
             userName: '-',
             lastUpdate: new Date(),
             list: [],
-            //TODO hardcoded, need to get updates fromo SERVICE
-            updates: 5,
             entryType: dreFrontendGlobals.resourceTypes.TestResult.type,
             title: dreFrontendGlobals.resourceTypes.TestResult.title
         };
@@ -30,8 +28,7 @@ angular.module('dreFrontendApp')
                         type: dreFrontendGlobals.resourceTypes.TestResult.type,
                         title: dreFrontendEntryService.getEntryTitle(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline,
-                        dates: dreFrontendEntryService.getEntryDates(entry),
-                        updates: 3
+                        dates: dreFrontendEntryService.getEntryDates(entry)
                     });
                 });
             });
