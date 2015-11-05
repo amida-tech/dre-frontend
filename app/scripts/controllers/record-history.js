@@ -8,15 +8,19 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-  .controller('RecordHistoryCtrl', function ($scope, dreFrontendEntryService, dreFrontEndPatientInfoService, dreFrontendGlobals, dreFrontendModalsService) {
+    .controller('RecordHistoryCtrl', function ($scope, dreFrontendEntryService, dreFrontEndPatientInfoService,
+                                               dreFrontendGlobals, dreFrontendModalsService, dreFrontendUtil) {
         $scope.model = {
-            userName : '-',
+            userName: '-',
             lastUpdate: new Date(),
-            actionsList:[]
+            actionsList: [],
+            mhrLink: dreFrontendUtil.buildServiceUrl('/mhr')
         };
+
         dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
         });
+
         dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
             $scope.model.actionsList = [
                 {
@@ -47,4 +51,4 @@ angular.module('dreFrontendApp')
         });
 
         $scope.showPrintDlg = dreFrontendModalsService.showPrintDlg;
-  });
+    });
