@@ -17,13 +17,13 @@
                 <button class="btn btn-default btn-block" ng-click="undoAllButton()">
                     <i class="fa fa-undo"></i>&nbsp;Undo All
                 </button>
-                <button class="btn btn-warning btn-block" ng-click="createNewButton()">Create New</button>
+                <button class="btn btn-warning btn-block" ng-click="replace(true)">Replace with Origin</button>
             </div>
         </div>
         <div class="col-sm-6">
             <div class="col-sm-8 col-sm-offset-2">
-                <button class="btn btn-primary btn-block" ng-click="submitButton()">Save Updates</button>
-                <button class="btn btn-default btn-block" ng-click="ignoreButton()">Ignore Updates</button>
+                <button class="btn btn-primary btn-block" ng-click="update()">Save Updates</button>
+                <button class="btn btn-warning btn-block" ng-click="replace(false)">Replace with Matched</button>
             </div>
         </div>
     </div>

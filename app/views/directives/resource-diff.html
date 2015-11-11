@@ -6,8 +6,8 @@
                 <tr class="text-center">
                     <th></th>
                     <th><h5>Path</h5></th>
-                    <th><h5>Current record</h5></th>
-                    <th><h5>Updated record</h5></th>
+                    <th><h5>Origin record</h5></th>
+                    <th><h5>Matched record</h5></th>
                 </tr>
                 <tr class="match" ng-repeat="diff_entry in resourceDiff.changes">
                     <td>
@@ -28,12 +28,12 @@
                     </td>
                     <td class="diff-rhs">
                         <span class="label label-danger text-capitalize"
-                              ng-show="diff_entry.kind === 'D' && diff_entry.apply">deleted</span>
+                              ng-show="diff_entry.kind === 'D' && !diff_entry.apply">deleted</span>
 
                         <div class="details-table panel"
-                             ng-hide="diff_entry.kind === 'D' && diff_entry.apply || diff_entry.kind === 'N' && !diff_entry.apply">
-                            <div entry-details-item="diff_entry.model.rhs" ng-show="diff_entry.apply"></div>
-                            <div entry-details-item="diff_entry.model.lhs" ng-show="!diff_entry.apply"></div>
+                             ng-hide="diff_entry.kind === 'D' && !diff_entry.apply || diff_entry.kind === 'N' && diff_entry.apply">
+                            <div entry-details-item="diff_entry.model.rhs" ng-show="!diff_entry.apply"></div>
+                            <div entry-details-item="diff_entry.model.lhs" ng-show="diff_entry.apply"></div>
                         </div>
                     </td>
                 </tr>

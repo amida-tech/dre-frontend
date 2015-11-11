@@ -32,15 +32,17 @@ angular.module('dreFrontendApp')
                             angular.forEach(change, f);
                         } else if (angular.isObject(change) && !change.model) {
                             if (change.path) {
+                                /*
                                 var r = dreFrontendUtil.buildObjectByPath(change.path, change.rhs);
                                 var l = dreFrontendUtil.buildObjectByPath(change.path, change.lhs);
+                                */
                                 var path = dreFrontendUtil.buildObjectByPath(change.path, "");
 
-                                change.apply = true;
+                                change.apply = false;
                                 change.model = {
                                     path: dreFrontendEntryService.buildTable(path, []),
-                                    lhs: dreFrontendEntryService.buildTable(change.lhs, []),
-                                    rhs: dreFrontendEntryService.buildTable(change.rhs, [])
+                                    lhs: dreFrontendEntryService.buildTable(change.rhs, []),
+                                    rhs: dreFrontendEntryService.buildTable(change.lhs, [])
                                 };
                             } else {
                                 $log.debug("no path", change);
