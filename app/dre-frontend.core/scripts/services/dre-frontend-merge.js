@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('dreFrontend.util')
-    .service('dreFrontendMergeService', function ($q, $http, _, dreFrontendHttp, dreFrontendUtil, $log) {
+    .service('dreFrontendMergeService', function ($q, $http, _, dreFrontendHttp, dreFrontendUtil,
+                                                  dreFrontendEnvironment, dreFrontendEntryService, $log) {
 
         var matches = null;
         var mocked = null;
@@ -15,27 +16,59 @@ angular.module('dreFrontend.util')
         };
 
         function _apply(match) {
-            var _res = match.rhs;
-            $log.debug(match, _res);
-            var f = function (change) {
-                if (angular.isArray(change)) {
-                    angular.forEach(change, f);
-                } else if (angular.isObject(change) && change.apply) {
-                    if (change.path) {
-                        var l = dreFrontendUtil.buildObjectByPath(change.path, change.rhs);
-                        $log.debug(l, change);
-                    } else {
-                        $log.debug("no path", change);
-                    }
-                }
-            };
+            var lhs, rhs;
+            lhs = match.lhs;
+            rhs = match.rhs;
 
             if (match.changes) {
-                angular.forEach(match.changes, f);
+                angular.forEach(match.changes, function (change) {
+                    if (change.apply) {
+                        DeepDiff.applyChange(lhs, rhs, change);
+                    }
+                });
             }
-            $log.debug(_res);
-            return _res;
+            return match.lhs;
         }
+
+        var _swapChange = function (change) {
+            if (angular.isArray(change)) {
+                angular.forEach(change, _prepareChangeModel);
+            } else {
+                switch (change.kind) {
+                    case 'N':
+                        change.kind = 'D';
+                        break;
+                    case 'D':
+                        change.kind = 'N';
+                        break;
+                }
+                var tmp = change.rhs;
+                change.rhs = change.lhs;
+                change.lhs = tmp;
+            }
+        };
+
+        var _prepareChangeModel = function (change) {
+
+            if (angular.isArray(change)) {
+                angular.forEach(change, _prepareChangeModel);
+            } else if (angular.isObject(change) && !change.model) {
+                if (change.path) {
+                    var path = dreFrontendUtil.buildObjectByPath(change.path, "");
+                    var lhs, rhs;
+                    lhs = change.lhs;
+                    rhs = change.rhs;
+                    change.apply = false;
+                    change.model = {
+                        path: dreFrontendEntryService.buildTable(path, []),
+                        lhs: dreFrontendEntryService.buildTable(lhs, []),
+                        rhs: dreFrontendEntryService.buildTable(rhs, [])
+                    };
+                } else {
+                    $log.debug("no path", change);
+                }
+            }
+        };
 
         return {
             getList: function (user_id, force) {
@@ -43,6 +76,11 @@ angular.module('dreFrontend.util')
                     return dreFrontendHttp({url: urls.list + user_id, method: 'GET'})
                         .then(function (resp) {
                             matches = _.filter(resp, {changeType: "update"});
+                            if (dreFrontendEnvironment.swapDiff) {
+                                angular.forEach(matches, function(match){
+                                   angular.forEach(match.changes, _swapChange);
+                                });
+                            }
                             return matches;
                         });
                 } else {
@@ -72,15 +110,13 @@ angular.module('dreFrontend.util')
             },
             update: function (match) {
                 var _resource = _apply(match);
-//                $log.debug(match,_resource);
-                return $q.reject("not done yet");
-                /*
+
                  return dreFrontendHttp({
                  method: 'POST',
                  data: {body: _resource},
-                 url: urls.replace + '/' + match.lhs.id
+                 url: urls.replace + '/' + match.rhs.id
                  });
-                 */
-            }
+            },
+            prepareChangeModel: _prepareChangeModel
         }
     });

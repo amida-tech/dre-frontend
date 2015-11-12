@@ -77,7 +77,7 @@ angular.module('dreFrontendApp')
                     dreFrontendMergeService.update($scope.model.matches[$scope.model.index])
                         .then(_resolveMatch)
                         .catch(function (err) {
-                            $log.debug("Replacement error", err);
+                            $log.debug("Update error", err);
                         });
                 };
 

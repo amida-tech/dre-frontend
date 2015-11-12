@@ -455,6 +455,7 @@ module.exports = function (grunt) {
         },
         constants: {
           dreFrontendEnvironment: {
+              swapDiff: true,
             name: 'mock',
             baseServerUrl:'mock',
             fhirServerUrl:'mocksFhir',
@@ -469,6 +470,7 @@ module.exports = function (grunt) {
         },
         constants: {
           dreFrontendEnvironment: {
+              swapDiff: true,
             name: 'dev',
             baseServerUrl:'http://dre.ntrlab.ru:83/api/v1',
             fhirServerUrl:'http://dre.ntrlab.ru:8080/fhir/baseDstu2',
@@ -483,6 +485,7 @@ module.exports = function (grunt) {
         },
         constants: {
           dreFrontendEnvironment: {
+              swapDiff: true,
             name: 'qa',
             baseServerUrl:'http://dre.amida-demo.com:3000/api/v1',
             fhirServerUrl:'http://dev.ntrlab.ru:8080/fhir/baseDstu2',
@@ -495,6 +498,7 @@ module.exports = function (grunt) {
         },
         constants: {
           dreFrontendEnvironment: {
+              swapDiff: true,
             name: 'vagrant',
             baseServerUrl:'http://192.168.33.10:3001/api/v1',
             fhirServerUrl:'http://192.168.33.10:8080/fhir/baseDstu2',
@@ -507,6 +511,7 @@ module.exports = function (grunt) {
         },
         constants: {
           dreFrontendEnvironment: {
+              swapDiff: true,
             name: 'env',
             baseServerUrl:'http://' + process.env.SERVICE_HOST + ':3001/api/v1',
             fhirServerUrl:'http://' + process.env.SERVICE_HOST + ':8080/fhir/baseDstu2',

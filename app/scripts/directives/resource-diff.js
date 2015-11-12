@@ -15,51 +15,24 @@ angular.module('dreFrontendApp')
                 resourceDiff: "="
             },
             link: function (scope, element, attrs, ctrl) {
-                scope.$watch('resourceDiff', function (newValue, oldValue) {
-                    if (newValue)
+                scope.$watch('resourceDiff', function (newValue) {
+                    if (newValue) {
                         ctrl.update(newValue);
+                    }
                 }, true);
             },
-            controller: function ($scope, dreFrontendHttp, $log, $http, _, dreFrontendUtil, dreFrontendEntryService) {
+            controller: function ($scope, dreFrontendHttp, $log, $http, _, dreFrontendUtil, dreFrontendMergeService) {
                 $scope.model = {
-                  title:''
+                    title: ''
                 };
-                function _build_differences(diff) {
 
-                    var f = function (change) {
+                this.update = function (diff) {
+                    if (diff) {
+                        $scope.model.title = dreFrontendUtil.camelCaseToString(diff.lhs.resourceType);
 
-                        if (angular.isArray(change)) {
-                            angular.forEach(change, f);
-                        } else if (angular.isObject(change) && !change.model) {
-                            if (change.path) {
-                                /*
-                                var r = dreFrontendUtil.buildObjectByPath(change.path, change.rhs);
-                                var l = dreFrontendUtil.buildObjectByPath(change.path, change.lhs);
-                                */
-                                var path = dreFrontendUtil.buildObjectByPath(change.path, "");
-
-                                change.apply = false;
-                                change.model = {
-                                    path: dreFrontendEntryService.buildTable(path, []),
-                                    lhs: dreFrontendEntryService.buildTable(change.rhs, []),
-                                    rhs: dreFrontendEntryService.buildTable(change.lhs, [])
-                                };
-                            } else {
-                                $log.debug("no path", change);
-                            }
+                        if (diff.changes) {
+                            angular.forEach(diff.changes, dreFrontendMergeService.prepareChangeModel);
                         }
-                    };
-
-                    $scope.model.title = dreFrontendUtil.camelCaseToString(diff.lhs.resourceType);
-
-                    if (diff.changes) {
-                        angular.forEach(diff.changes, f);
-                    }
-                }
-
-                this.update = function (data) {
-                    if (data) {
-                        _build_differences(data);
                     }
                 };
 

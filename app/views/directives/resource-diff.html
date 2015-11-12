@@ -20,20 +20,21 @@
                     </td>
                     <td class="diff-lhs">
                         <span class="label label-success text-capitalize"
-                              ng-show="diff_entry.kind === 'N'">new data</span>
+                              ng-show="diff_entry.kind === 'N' && !diff_entry.apply">new data</span>
+                        <span class="label label-danger text-capitalize"
+                              ng-show="diff_entry.kind === 'D' && diff_entry.apply">deleted</span>
 
-                        <div class="panel details-table" ng-hide="diff_entry.kind === 'N'">
-                            <div entry-details-item="diff_entry.model.lhs"></div>
+                        <div class="panel details-table" ng-hide="diff_entry.kind === 'N' && !diff_entry.apply || diff_entry.kind === 'D' && diff_entry.apply">
+                            <div entry-details-item="diff_entry.model.rhs" ng-show="diff_entry.apply && diff_entry.kind !== 'D'"></div>
+                            <div entry-details-item="diff_entry.model.lhs" ng-show="!diff_entry.apply"></div>
                         </div>
                     </td>
                     <td class="diff-rhs">
                         <span class="label label-danger text-capitalize"
-                              ng-show="diff_entry.kind === 'D' && !diff_entry.apply">deleted</span>
+                              ng-show="diff_entry.kind === 'D'">deleted</span>
 
-                        <div class="details-table panel"
-                             ng-hide="diff_entry.kind === 'D' && !diff_entry.apply || diff_entry.kind === 'N' && diff_entry.apply">
-                            <div entry-details-item="diff_entry.model.rhs" ng-show="!diff_entry.apply"></div>
-                            <div entry-details-item="diff_entry.model.lhs" ng-show="diff_entry.apply"></div>
+                        <div class="details-table panel" ng-hide="diff_entry.kind === 'D'">
+                            <div entry-details-item="diff_entry.model.rhs"></div>
                         </div>
                     </td>
                 </tr>
