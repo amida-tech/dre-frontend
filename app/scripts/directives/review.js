@@ -7,7 +7,7 @@
  */
 
 angular.module('dreFrontendApp')
-    .directive('review', function (_, dreFrontendUtil, $log) {
+    .directive('review', function (_, $log) {
         return {
             templateUrl: 'views/directives/matches.html',
             restrict: 'AE',
@@ -16,15 +16,16 @@ angular.module('dreFrontendApp')
             },
             link: function (scope, element, attrs, ctrl) {
                 scope.$watch('matches', function (newValue, oldValue) {
-                    if (newValue)
+                    if (newValue) {
                         ctrl.update(newValue);
+                    }
                 }, true);
             },
-            controller: function ($scope, dreFrontendMergeService, dreFrontendUtil) {
+            controller: function ($rootScope, $scope, $state, dreFrontendMergeService, dreFrontendGlobals) {
 
                 $scope.model = {
                     index: 0,
-                    qty: 0
+                    qty: null
                 };
 
                 $scope.next = function () {
@@ -50,8 +51,11 @@ angular.module('dreFrontendApp')
                 };
 
                 var _resolveMatch = function () {
+                    $rootScope.$broadcast(dreFrontendGlobals.recordEvents.updateReviewList, dreFrontendMergeService.removeFromList($scope.model.matches[$scope.model.index]));
                     _.pullAt($scope.model.matches, $scope.model.index);
-                    // 2do: update qty in leftside menu
+                    if ($scope.model.matches.length === 0 && $state.params.group) {
+                        $state.go($state.current.name, {group: undefined});
+                    }
                 };
 
                 $scope.undoAllButton = function () {
@@ -61,7 +65,7 @@ angular.module('dreFrontendApp')
                     }
                 };
 
-                $scope.replace = function (isLeft) {
+                $scope.replaceResource = function (isLeft) {
                     var _match = $scope.model.matches[$scope.model.index];
                     var primary_id = (isLeft) ? _match.lhs.id : _match.rhs.id;
                     var dup_id = (isLeft) ? _match.rhs.id : _match.lhs.id;
@@ -72,7 +76,7 @@ angular.module('dreFrontendApp')
                         });
                 };
 
-                $scope.update = function () {
+                $scope.updateResource = function () {
                     dreFrontendMergeService.update($scope.model.matches[$scope.model.index])
                         .then(_resolveMatch)
                         .catch(function (err) {
@@ -80,38 +84,11 @@ angular.module('dreFrontendApp')
                         });
                 };
 
-                var _format_matches = function (src_matches) {
-                    var res = {
-                        matches: [],
-                        qty: 0
-                    };
-                    if (src_matches) {
-                        if (angular.isArray(src_matches)) {
-                            res.matches = src_matches;
-                            res.qty = src_matches.length;
-                        } else {
-                            if (src_matches.hasOwnProperty("changeType")) {
-                                res.matches.push(src_matches);
-                            } else {
-                                angular.forEach(src_matches, function (_body, _key) {
-                                    if (_key && dreFrontendUtil.isFhirResource(_key)) {
-                                        res.matches = res.matches.concat(_body)
-                                    }
-                                });
-                            }
-                        }
-                        res.qty = res.matches.length;
-                    }
-                    return res;
+                this.update = function (data) {
+                    angular.extend($scope.model, dreFrontendMergeService.formatList(data));
                 };
 
-                var _update = function (data) {
-                    angular.extend($scope.model, _format_matches(data));
-                };
-
-                _update($scope.matches);
-
-                this.update = _update;
+                this.update($scope.matches);
             }
         };
     });

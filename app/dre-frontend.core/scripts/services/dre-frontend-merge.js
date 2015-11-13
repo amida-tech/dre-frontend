@@ -2,7 +2,8 @@
 
 angular.module('dreFrontend.util')
     .service('dreFrontendMergeService', function ($q, $http, _, dreFrontendHttp, dreFrontendUtil,
-                                                  dreFrontendEnvironment, dreFrontendEntryService, $log) {
+                                                  dreFrontendEnvironment, dreFrontendEntryService,
+                                                  $rootScope, $log) {
 
         var matches = null;
         var mocked = null;
@@ -70,8 +71,54 @@ angular.module('dreFrontend.util')
             }
         };
 
+        var _getList = function(){
+            if (matches) {
+                return $q.resolve(matches);
+            } else {
+                return $q.reject("no data");
+            }
+        };
+
+        var _setList = function (_matches) {
+            matches = _matches;
+        };
+
+        var _removeMatch = function(match){
+            _.pull(matches, match);
+            return matches;
+        };
+
+        var _format_matches = function (src_matches) {
+            var res = {
+                matches: [],
+                qty: null
+            };
+            if (src_matches) {
+                if (angular.isArray(src_matches)) {
+                    res.matches = src_matches;
+                    res.qty = src_matches.length;
+                } else {
+                    if (src_matches.hasOwnProperty("changeType")) {
+                        res.matches.push(src_matches);
+                    } else {
+                        angular.forEach(src_matches, function (_body, _key) {
+                            if (_key && dreFrontendUtil.isFhirResource(_key)) {
+                                res.matches = res.matches.concat(_body)
+                            }
+                        });
+                    }
+                }
+                res.qty = res.matches.length;
+            }
+            return res;
+        };
+
         return {
-            getList: function (user_id, force) {
+            getList: _getList,
+            setList: _setList,
+            removeFromList: _removeMatch,
+            formatList: _format_matches,
+            getListByPatientId: function (user_id, force) {
                 if (force || !matches) {
                     return dreFrontendHttp({url: urls.list + user_id, method: 'GET'})
                         .then(function (resp) {
@@ -84,7 +131,7 @@ angular.module('dreFrontend.util')
                             return matches;
                         });
                 } else {
-                    return $q.resolve(matches);
+                    return _getList();
                 }
             },
 

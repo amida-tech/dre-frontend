@@ -19,6 +19,10 @@ angular.module('dreFrontend.util')
             updated: 'dreFrontend:ProfileUpdated'
         };
 
+        self.recordEvents = {
+            updateReviewList: 'dreFrontend:UpdateRecordReviewList'
+        };
+
         self.menuRecordTypeEnum = {
             none: "none",
             popup: "popup",

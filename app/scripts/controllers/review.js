@@ -8,7 +8,8 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('ReviewCtrl', function ($http, $scope, $state, _, dreFrontEndPatientInfoService, dreFrontendMergeService, $log) {
+    .controller('ReviewCtrl', function ($rootScope, $scope, $state, _, dreFrontEndPatientInfoService, dreFrontendMergeService,
+                                        dreFrontendGlobals, $log) {
         $scope.model = {
             userName: '-',
             matches: [],
@@ -19,7 +20,7 @@ angular.module('dreFrontendApp')
         function _filter(matches) {
             var res = [];
             if ($state.params.group) {
-                _.forEach(matches, function (match) {
+                angular.forEach(matches, function (match) {
                     if (match.lhs.resourceType.toLowerCase() === $state.params.group) {
                         res.push(match);
                     }
@@ -34,10 +35,14 @@ angular.module('dreFrontendApp')
         dreFrontEndPatientInfoService.getPatientData()
             .then(function (patient) {
                 $scope.model.userName = patient.getName()[0];
-                dreFrontendMergeService.getList(patient.id)
+                dreFrontendMergeService.getListByPatientId(patient.id)
                     .then(function (resp) {
                         if (resp) {
+                            $rootScope.$broadcast(dreFrontendGlobals.recordEvents.updateReviewList, resp);
                             $scope.model.matches = _filter(resp);
+                            if ($scope.model.matches.length ===0 && $state.params.group) {
+                                $state.go($state.current.name, {group:undefined});
+                            }
                         }
                     })
                     .finally(function () {
