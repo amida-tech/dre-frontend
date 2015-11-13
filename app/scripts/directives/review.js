@@ -52,7 +52,6 @@ angular.module('dreFrontendApp')
                 var _resolveMatch = function () {
                     _.pullAt($scope.model.matches, $scope.model.index);
                     // 2do: update qty in leftside menu
-                    $log.debug($scope.model.matches.length);
                 };
 
                 $scope.undoAllButton = function () {

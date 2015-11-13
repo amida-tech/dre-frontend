@@ -77,8 +77,8 @@ angular.module('dreFrontend.util')
                         .then(function (resp) {
                             matches = _.filter(resp, {changeType: "update"});
                             if (dreFrontendEnvironment.swapDiff) {
-                                angular.forEach(matches, function(match){
-                                   angular.forEach(match.changes, _swapChange);
+                                angular.forEach(matches, function (match) {
+                                    angular.forEach(match.changes, _swapChange);
                                 });
                             }
                             return matches;
@@ -109,13 +109,11 @@ angular.module('dreFrontend.util')
                 });
             },
             update: function (match) {
-                var _resource = _apply(match);
-
-                 return dreFrontendHttp({
-                 method: 'POST',
-                 data: {body: _resource},
-                 url: urls.replace + '/' + match.rhs.id
-                 });
+                return dreFrontendHttp({
+                    method: 'POST',
+                    data: _apply(match),
+                    url: urls.replace + '/' + match.rhs.id
+                });
             },
             prepareChangeModel: _prepareChangeModel
         }
