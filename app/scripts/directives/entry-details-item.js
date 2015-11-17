@@ -1,11 +1,5 @@
 'use strict';
 
-/**
- * @ngdoc directive
- * @name dreFrontendApp.directive:mainMenu
- * @description
- * # mainMenu
- */
 angular.module('dreFrontendApp')
     .directive('entryDetailsItem', function () {
         return {
@@ -18,7 +12,8 @@ angular.module('dreFrontendApp')
             "<tr ng-repeat='member in entryDetailsItem' entry-details-item-member='member'></tr>" +
             "</table>"
         }
-    }).directive('entryDetailsItemMember', function ($compile) {
+    })
+    .directive('entryDetailsItemMember', function ($compile) {
         return {
             restrict: "AE",
             scope: {
@@ -31,7 +26,7 @@ angular.module('dreFrontendApp')
                     if ($scope.entryDetailsItemMember.label) {
                         element.append("<td><strong ng-bind='entryDetailsItemMember.label'></strong></td>");
                     }
-                    var val;
+
                     switch ($scope.entryDetailsItemMember.type) {
                         case "string":
                             element.append("<td><span>{{entryDetailsItemMember.value}}</span></td>");
@@ -49,7 +44,7 @@ angular.module('dreFrontendApp')
                             element.append("<td><div ng-repeat='item in entryDetailsItemMember.value'><span>{{item}}</span><br/></div></td>");
                             break;
                     }
-///                    element.append(val);
+
                     $compile(element.contents())($scope);
 
                 }

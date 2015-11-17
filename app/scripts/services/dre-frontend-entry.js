@@ -22,64 +22,65 @@ angular.module('dreFrontendApp')
             blackList = blackList.concat(_black_list);
 
             var prepareValue = function (propertyName, propertyValue) {
-                //number value
-                if (angular.isNumber(propertyValue) || !isNaN(parseFloat(propertyValue))) {
-                    dataItems.push({
-                        label: dreFrontendUtil.camelCaseToString(propertyName),
-                        value: propertyValue,
-                        type: 'string'
-                    });
-                } else
-                //if ISO date
-                if (angular.isDate(propertyValue) /*!isNaN(Date.parse(propertyValue))*/) {
-                    dataItems.push({
-                        label: dreFrontendUtil.camelCaseToString(propertyName),
-                        value: dreFrontendUtil.formatFhirDate(propertyValue),
-                        type: 'string'
-                    });
-                } else
-                //String value
-                if (angular.isString(propertyValue)) {
-                    dataItems.push({
-                        label: dreFrontendUtil.camelCaseToString(propertyName),
-                        value: propertyValue,
-                        type: 'string'
-                    });
-                } else
+                if (propertyName === 'line') {
+                    $log.debug(propertyName, typeof propertyValue, angular.isArray(propertyValue), angular.isString(propertyValue), angular.isNumber(propertyValue), parseFloat(propertyValue));
+                }
+                var _item = {
+                    type: 'string',
+                    label: dreFrontendUtil.camelCaseToString(propertyName),
+                    value: null
+                };
+
                 //if nested array of objects
                 if (angular.isArray(propertyValue)) {
-                    var itemsArray = [];
-                    var type = 'objectsList';
+                    var allScalar = true;
+                    _item.value = [];
                     propertyValue.forEach(function (item) {
-                        var rowItemData = [];
-                        if (angular.isString(item)) {
-                            itemsArray.push(item);
-                            type = 'array';
-                        } else {
+                        var rowItemData = item;
+                        if (!angular.isString(item)) {
+                            allScalar = false;
                             rowItemData = _buildTable(item, blackList);
                             if (rowItemData.length > 0) {
-                                itemsArray.push(rowItemData);
+                                _item.value.push(rowItemData);
                             }
+                        } else {
+                            _item.value.push(rowItemData);
                         }
                     });
-                    if (angular.isArray(itemsArray) && itemsArray.length > 0) {
-                        dataItems.push({
-                            label: dreFrontendUtil.camelCaseToString(propertyName),
-                            value: itemsArray,
-                            type: type
-                        });
+
+                    _item.type = allScalar ? 'array' : 'objectsList';
+
+                    if (_item.value.length < 1) {
+                        _item.value = null;
                     }
                 } else
+
+                //number value
+                if (angular.isNumber(propertyValue) /*|| !isNaN(parseFloat(propertyValue))*/) {
+                    _item.value = propertyValue;
+                } else
+
+                //if ISO date
+                if (angular.isDate(propertyValue) /*!isNaN(Date.parse(propertyValue))*/) {
+                    _item.value = dreFrontendUtil.formatFhirDate(propertyValue);
+                } else
+
+                //String value
+                if (angular.isString(propertyValue)) {
+                    _item.value = propertyValue;
+                } else
+
                 //if nested object
                 if (angular.isObject(propertyValue)) {
                     var rowObjectData = _buildTable(propertyValue, blackList);
                     if (angular.isArray(rowObjectData) && rowObjectData.length > 0) {
-                        dataItems.push({
-                            label: dreFrontendUtil.camelCaseToString(propertyName),
-                            value: rowObjectData,
-                            type: 'object'
-                        });
+                        _item.value = rowObjectData;
+                        _item.type = 'object';
                     }
+                }
+
+                if (_item.value !== null ) {
+                    dataItems.push(_item);
                 }
             };
 
@@ -202,7 +203,7 @@ angular.module('dreFrontendApp')
 
         };
 
-        var _getEntryAddInfo = function(entry) {
+        var _getEntryAddInfo = function (entry) {
             var info = '';
             switch (entry.resourceType) {
                 case 'MedicationOrder':
