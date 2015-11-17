@@ -8,7 +8,7 @@
  * Service in the dreFrontendApp.
  */
 angular.module('dreFrontendApp')
-    .factory('dreFrontendEntryService', function (_, dreFrontendUtil) {
+    .factory('dreFrontendEntryService', function (_, dreFrontendUtil, $log) {
 
         var _black_list = ["photo"];
 
@@ -119,6 +119,9 @@ angular.module('dreFrontendApp')
                         break;
                     case 'Procedure':
                         title = entry.codableConceptTitle(entry.code);
+                        if (!title && entry.focalDevice) {
+                            title = entry.codableConceptTitle(entry.focalDevice[0].action);
+                        }
                         break;
                     case 'AllergyIntolerance':
                         title = entry.codableConceptTitle(entry.substance);
