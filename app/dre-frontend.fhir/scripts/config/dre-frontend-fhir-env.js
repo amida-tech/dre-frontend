@@ -8,7 +8,7 @@ angular.module('dreFrontend.fhir')
             "Alert": {dstu: 1},
             "AllergyIntolerance": {
                 dstu: 2,
-                details: ["recorder", "substance", "reaction"]
+                details: ["substance", "reaction"]
             },
             "Appointment": {dstu: 2},
             "AppointmentResponse": {dstu: 2},
