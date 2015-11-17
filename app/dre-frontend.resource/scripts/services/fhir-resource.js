@@ -4,7 +4,7 @@
 "use strict";
 
 angular.module('dreFrontend.resource')
-    .factory('FhirResource',function(dreFrontendFhirService){
+    .factory('FhirResource',function(dreFrontendFhirService, $log){
         var FhirResource = function (data){
             this.setData(data);
         };
@@ -34,6 +34,9 @@ angular.module('dreFrontend.resource')
 
         FhirResource.prototype.codableConceptTitle = function(cc_data) {
             var res;
+            if (angular.isArray(cc_data)) {
+                cc_data = cc_data[0];
+            }
             if (cc_data) {
                 if (cc_data.coding && cc_data.coding[0]){
                     res = cc_data.coding[0].display || cc_data.coding[0].code;
