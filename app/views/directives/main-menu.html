@@ -1,61 +1,61 @@
 <header>
-  <div class="container">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#login-menu">
-        <span class="sr-only">Toggle navigation</span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" ui-sref="{{model.$state.current.data.isPublic ? 'main' : 'home'}}">
-        <img class="img-navbar-logo" src="images/bb-logo-vector.png">
-      </a>
-    </div>
-    <div class="navbar-collapse collapse" id="login-menu">
-      <ul ng-show="model.isAuthenticated" class="nav navbar-nav">
-        <li>
-          <a ui-sref="record">My Record</a>
-        </li>
-          <li>
-              <a ui-sref="record.review">Review Updates</a>
-          </li>
-        <li>
-          <a ui-sref="billing">My Billing</a>
-        </li>
-        <li>
-          <a ui-sref="notes">My Notes</a>
-        </li>
-        <li>
-          <a ui-sref="files">My Files</a>
-        </li>
-      </ul>
-      <ul ng-hide="model.isAuthenticated" class="nav navbar-nav navbar-right ">
-        <li><a ui-sref="register" ui-sref-opts="{inherit : true}">Sign Up</a>
-        </li>
-        <li><a ui-sref="login" ui-sref-opts="{inherit : true}">Log In</a>
-        </li>
-      </ul>
-      <ul ng-show="model.isAuthenticated" class="nav navbar-nav navbar-right">
-        <li class="hidden-xs hidden-sm">
-          <img class="img-navbar-avatar" ng-src="{{model.avatarData}}" alt="{{model.userName}}">
-        </li>
-        <li class="dropdown">
-          <a class="button dropdown-toggle" data-toggle="dropdown">
-            <span ng-bind="model.userName"></span>
-            <span class="caret"></span>
-          </a>
-          <ul class="dropdown-menu">
-            <li><a ui-sref="profile">My Profile</a>
-            </li>
-            <li><a ui-sref="account">My Account</a>
-            </li>
-            <li class="divider"></li>
-            <li><a href="" ng-click="logOut()">Log out</a>
-            </li>
-          </ul>
-        </li>
-      </ul>
-    </div>
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#login-menu">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" ui-sref="{{model.$state.current.data.isPublic ? 'main' : 'home'}}">
+                <img class="img-navbar-logo" src="images/bb-logo-vector.png">
+            </a>
+        </div>
+        <div class="navbar-collapse collapse" id="login-menu">
+            <ul ng-show="model.isAuthenticated" class="nav navbar-nav">
+                <li>
+                    <a ui-sref="record">My Record</a>
+                </li>
+                <li>
+                    <a ui-sref="billing">My Billing</a>
+                </li>
+                <li>
+                    <a ui-sref="record.review">Review Updates</a>
+                </li>
+                <li>
+                    <a ui-sref="notes">My Notes</a>
+                </li>
+                <li>
+                    <a ui-sref="files">My Files</a>
+                </li>
+            </ul>
+            <ul ng-hide="model.isAuthenticated" class="nav navbar-nav navbar-right ">
+                <li><a ui-sref="register" ui-sref-opts="{inherit : true}">Sign Up</a>
+                </li>
+                <li><a ui-sref="login" ui-sref-opts="{inherit : true}">Log In</a>
+                </li>
+            </ul>
+            <ul ng-show="model.isAuthenticated" class="nav navbar-nav navbar-right">
+                <li class="hidden-xs hidden-sm">
+                    <img class="img-navbar-avatar" ng-src="{{model.avatarData}}" alt="{{model.userName}}">
+                </li>
+                <li class="dropdown">
+                    <a class="button dropdown-toggle" data-toggle="dropdown">
+                        <span ng-bind="model.userName"></span>
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li><a ui-sref="profile">My Profile</a>
+                        </li>
+                        <li><a ui-sref="account">My Account</a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="" ng-click="logOut()">Log out</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
 
-  </div>
+    </div>
 </header>
