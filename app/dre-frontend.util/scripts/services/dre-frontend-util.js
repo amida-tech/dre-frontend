@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module("dreFrontend.util")
-    .factory("dreFrontendUtil", function (dreFrontendEnvironment, $filter, fhirEnv) {
+    .factory("dreFrontendUtil", function (dreFrontendEnvironment, $filter, fhirEnv, $log) {
         var _capitalise = function (_str) {
             return _str.charAt(0).toUpperCase() + _str.substr(1).toLowerCase();
         };
@@ -62,7 +62,7 @@ angular.module("dreFrontend.util")
                 return fhirEnv.resourceTypes.hasOwnProperty(resourceType);
             },
             parseResourceReference: function(reference) {
-                var expr = /([\w\d]+?\/){2}(_history)?(\/\d+)?$/;
+                var expr = /(\w+)(\/[\w\d]+)(\/_history(\/\d+)?)?[$|\"|\']/;
                 var query = expr.exec(reference);
                 return  query[0].split('/');
             },
