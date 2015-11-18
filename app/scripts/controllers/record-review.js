@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('ReviewCtrl', function ($rootScope, $scope, $state, _, dreFrontEndPatientInfoService, dreFrontendMergeService,
+    .controller('RecordReviewCtrl', function ($rootScope, $scope, $state, _, dreFrontEndPatientInfoService, dreFrontendMergeService,
                                         dreFrontendGlobals, $log) {
         $scope.model = {
             userName: '-',
@@ -35,8 +35,10 @@ angular.module('dreFrontendApp')
         dreFrontEndPatientInfoService.getPatientData()
             .then(function (patient) {
                 $scope.model.userName = patient.getName()[0];
-                dreFrontendMergeService.getListByPatientId(patient.id)
+                //dreFrontendMergeService.getListByPatientId(patient.id)
+                dreFrontendMergeService.getMockData()
                     .then(function (resp) {
+                        $log.debug(resp);
                         if (resp) {
                             $rootScope.$broadcast(dreFrontendGlobals.recordEvents.updateReviewList, resp);
                             $scope.model.matches = _filter(resp);

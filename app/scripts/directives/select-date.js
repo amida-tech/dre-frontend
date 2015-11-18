@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Created by igi on 12.10.15.
  */
@@ -8,7 +9,7 @@
  * # selectDate
  */
 angular.module('dreFrontendApp')
-    .directive('selectDate', function ($log) {
+    .directive('selectDate', function () {
         return {
             templateUrl: 'views/directives/select-date.html',
             restrict: 'AE',

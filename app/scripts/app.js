@@ -251,7 +251,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 },
                 'pageBody@homeRoot': {
                     templateUrl: "views/controllers/record-review.html",
-                    controller: "ReviewCtrl"
+                    controller: "RecordReviewCtrl"
                 }
             }
         })

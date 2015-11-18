@@ -71,7 +71,7 @@ angular.module('dreFrontend.util')
             }
         };
 
-        var _getList = function(){
+        var _getList = function () {
             if (matches) {
                 return $q.resolve(matches);
             } else {
@@ -83,7 +83,7 @@ angular.module('dreFrontend.util')
             matches = _matches;
         };
 
-        var _removeMatch = function(match){
+        var _removeMatch = function (match) {
             _.pull(matches, match);
             return matches;
         };
@@ -140,7 +140,18 @@ angular.module('dreFrontend.util')
                     return $http({url: urls.mocked, method: 'GET'})
                         .then(function (resp) {
                             if (resp.data) {
-                                mocked = resp.data;
+                                mocked = [];
+                                angular.forEach(resp.data, function (restypeArr) {
+                                    angular.forEach(restypeArr, function (diff) {
+                                        if (diff.changeType === 'update') {
+                                            if (dreFrontendEnvironment.swapDiff) {
+                                                angular.forEach(diff.changes, _swapChange);
+                                            }
+                                            mocked.push(diff);
+                                        }
+                                    });
+                                });
+                                $log.debug(mocked);
                                 return mocked;
                             }
                         });

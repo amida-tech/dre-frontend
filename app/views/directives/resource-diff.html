@@ -2,34 +2,77 @@
     <div class="row table-responsive">
         <div class="col-sm-12">
             <div class="text-center"><h4>{{model.title}}</h4></div>
-            <table class="table table-condensed">
-                <tr class="text-center">
-                    <th></th>
-                    <th><h5>Path</h5></th>
-                    <th><h5>Origin record</h5></th>
-                    <th><h5>Matched record</h5></th>
-                </tr>
-                <tr class="match" ng-repeat="diff_entry in resourceDiff.changes">
-                    <td>
-                        <input type="checkbox" ng-model="diff_entry.apply"/>
-                    </td>
-                    <td class="diff-path">
-                        <div class="panel details-table">
-                            <div entry-details-item="diff_entry.model.path"></div>
+            <div class="matches-table">
+                <div class="row">
+                    <div class="col-sm-2"><h5>Path</h5></div>
+                    <div class="col-sm-5"><h5>Origin record</h5></div>
+                    <div class="col-sm-5"><h5>Matched record</h5></div>
+                </div>
+                <div class="row match" ng-repeat="diff_entry in resourceDiff.changes">
+                    <div class="diff-path col-sm-2">
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <input type="checkbox" ng-model="diff_entry.apply"/>
+                            </div>
+                            <div class="panel details-table col-sm-11">
+                                <div entry-details-item="diff_entry.model.path"></div>
+                            </div>
                         </div>
-                    </td>
-                    <td class="diff-lhs">
+                    </div>
+                    <div class="diff-lhs col-sm-5 form-inline">
                         <span class="label label-success text-capitalize"
                               ng-show="diff_entry.kind === 'N' && !diff_entry.apply">new data</span>
                         <span class="label label-danger text-capitalize"
                               ng-show="diff_entry.kind === 'D' && diff_entry.apply">deleted</span>
 
-                        <div class="panel details-table" ng-hide="diff_entry.kind === 'N' && !diff_entry.apply || diff_entry.kind === 'D' && diff_entry.apply">
-                            <div entry-details-item="diff_entry.model.rhs" ng-show="diff_entry.apply && diff_entry.kind !== 'D'"></div>
+                        <div class="panel details-table"
+                             ng-hide="diff_entry.kind === 'N' && !diff_entry.apply || diff_entry.kind === 'D' && diff_entry.apply">
+                            <div entry-details-item="diff_entry.model.rhs"
+                                 ng-show="diff_entry.apply && diff_entry.kind !== 'D'"></div>
+                            <div entry-details-item="diff_entry.model.lhs" ng-show="!diff_entry.apply"></div>
+                        </div>
+                    </div>
+                    <div class="diff-rhs col-sm-5">
+                        <span class="label label-danger text-capitalize"
+                              ng-show="diff_entry.kind === 'D'">deleted</span>
+
+                        <div class="details-table panel" ng-hide="diff_entry.kind === 'D'">
+                            <div entry-details-item="diff_entry.model.rhs"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <table class="table table-condensed">
+                <tr class="text-center">
+                    <th><h5>Path</h5></th>
+                    <th><h5>Origin record</h5></th>
+                    <th><h5>Matched record</h5></th>
+                </tr>
+                <tr class="match" ng-repeat="diff_entry in resourceDiff.changes">
+                    <td class="diff-path col-sm-2">
+                        <div class="row">
+                            <div class="col-sm-1">
+                                <input type="checkbox" ng-model="diff_entry.apply"/>
+                            </div>
+                            <div class="panel details-table col-sm-11">
+                                <div entry-details-item="diff_entry.model.path"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="diff-lhs col-sm-5 form-inline">
+                        <span class="label label-success text-capitalize"
+                              ng-show="diff_entry.kind === 'N' && !diff_entry.apply">new data</span>
+                        <span class="label label-danger text-capitalize"
+                              ng-show="diff_entry.kind === 'D' && diff_entry.apply">deleted</span>
+
+                        <div class="panel details-table"
+                             ng-hide="diff_entry.kind === 'N' && !diff_entry.apply || diff_entry.kind === 'D' && diff_entry.apply">
+                            <div entry-details-item="diff_entry.model.rhs"
+                                 ng-show="diff_entry.apply && diff_entry.kind !== 'D'"></div>
                             <div entry-details-item="diff_entry.model.lhs" ng-show="!diff_entry.apply"></div>
                         </div>
                     </td>
-                    <td class="diff-rhs">
+                    <td class="diff-rhs col-sm-5">
                         <span class="label label-danger text-capitalize"
                               ng-show="diff_entry.kind === 'D'">deleted</span>
 
