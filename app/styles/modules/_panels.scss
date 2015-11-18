@@ -1,6 +1,6 @@
 .panel {
   border-color: #ddd;
-  border-radius: 0px;
+  border-radius: 0;
   background-color: rgba(255, 255, 255, 0.75);
 }
 .match .panel {
@@ -18,7 +18,24 @@
         padding-left: 5px;
         padding-right: 5px;
     }
+
+    .row {
+        margin-right: -5px;
+        margin-left: -5px;
+    }
     .diff-path {
-        margin-left: -10px;
+        width: 30%;
+        padding-right:0;
+    }
+    .diff-rhs, .diff-lhs {
+        width: 35%;
+    }
+    .diff-rhs {
+        padding-left: 0;
+    }
+    .match-header {
+        .diff-path {
+            padding-left: 3%;
+        }
     }
 }

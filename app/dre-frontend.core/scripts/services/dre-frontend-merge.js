@@ -151,7 +151,6 @@ angular.module('dreFrontend.util')
                                         }
                                     });
                                 });
-                                $log.debug(mocked);
                                 return mocked;
                             }
                         });
