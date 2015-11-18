@@ -322,7 +322,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             },
             views: {
                 'pageBody@homeRoot': {
-                    templateUrl: "views/controllers/insurance.html",
+                    templateUrl: "views/controllers/records-common.html",
                     controller: "InsuranceCtrl"
                 }
             }

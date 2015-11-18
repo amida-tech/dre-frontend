@@ -12,13 +12,15 @@ angular.module('dreFrontendApp')
         $scope.model = {
             userName : '-',
             lastUpdate: new Date(),
-            insuranceList:[]
+            list: [],
+            entryType: 'Insurance',//dreFrontendGlobals.resourceTypes.AllergyIntolerance.type,
+            title: dreFrontendGlobals.resourceTypes.Insurance.title
         };
         dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
         });
         dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
-            $scope.model.insuranceList = [
+            $scope.model.list = [
                 {
                     rawEntry: {},
                     type: dreFrontendGlobals.resourceTypes.Insurance.type,

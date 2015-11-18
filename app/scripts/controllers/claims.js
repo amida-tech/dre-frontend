@@ -28,7 +28,8 @@ angular.module('dreFrontendApp')
                         type: dreFrontendGlobals.resourceTypes.Claim.type,
                         title: dreFrontendEntryService.getEntryTitle(claim),
                         dates: dreFrontendEntryService.getEntryDates(claim),
-                        menuType: dreFrontendGlobals.menuRecordTypeEnum.popup
+                        additionalInfo: dreFrontendEntryService.getEntryAddInfo(claim),
+                        menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
                     })
                 });
             });
