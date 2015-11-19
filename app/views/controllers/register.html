@@ -70,7 +70,6 @@
             <div class="progress-bar progress-bar-info" style="width: 67%">
             </div>
           </div>
-          <h5 class="text-center">Note: All fields are required.</h5>
 
           <div class="form-group">
             <label>First Name:</label>
@@ -84,11 +83,10 @@
           </div>
           <div class="form-group">
             <label>Middle Name:</label>
-            <input type="text" class="form-control" ng-model="model.middleName" name="middleName" required ng-minlength="1"
-                   ng-maxlength="80">
+            <input type="text" class="form-control" ng-model="model.middleName" name="middleName" ng-maxlength="80">
 
             <div ng-messages="step2Form.middleName.$error" role="alert" ng-if="step2Form.middleName.$dirty">
-              <p ng-message="required, minlength, maxlength" class="help-block">Middle name must be between 1 and 80
+              <p ng-message="required, minlength, maxlength" class="help-block">Middle name must be less than 80
                 characters.</p>
             </div>
           </div>
