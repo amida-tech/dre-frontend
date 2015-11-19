@@ -155,7 +155,7 @@ angular.module('dreFrontend.util')
                             }
                         });
                 } else {
-                    $q.resolve(mocked);
+                    return $q.resolve(mocked);
                 }
             },
             replace: function (resourceType, primaryId, duplicateId) {

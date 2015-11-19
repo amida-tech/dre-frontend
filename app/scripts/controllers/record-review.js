@@ -38,7 +38,6 @@ angular.module('dreFrontendApp')
                 //dreFrontendMergeService.getListByPatientId(patient.id)
                 dreFrontendMergeService.getMockData()
                     .then(function (resp) {
-                        $log.debug(resp);
                         if (resp) {
                             $rootScope.$broadcast(dreFrontendGlobals.recordEvents.updateReviewList, resp);
                             $scope.model.matches = _filter(resp);
