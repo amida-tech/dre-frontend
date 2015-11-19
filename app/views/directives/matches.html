@@ -11,17 +11,20 @@
     <div class="row">
         <div resource-diff="model.matches[model.index]"></div>
     </div>
-    <div class="row panel-footer">
-        <div class="col-sm-4">
-            <button class="btn btn-default btn-block" ng-click="undoAllButton()">
-                <i class="fa fa-undo"></i>&nbsp;Undo All
-            </button>
-        </div>
-        <div class="col-sm-4">
-            <button class="btn btn-primary btn-block" ng-click="updateResource()">Save Updates</button>
-        </div>
-        <div class="col-sm-4">
-            <button class="btn btn-warning btn-block" ng-click="replaceResource(false)">Replace with Matched</button>
+    <div class="col-sm-12 panel-footer">
+        <div class="row">
+            <div class="col-sm-4">
+                <button class="btn btn-default btn-block" ng-click="undoAllButton()">
+                    <i class="fa fa-undo"></i>&nbsp;Undo All
+                </button>
+            </div>
+            <div class="col-sm-4">
+                <button class="btn btn-primary btn-block" ng-click="updateResource()">Save Updates</button>
+            </div>
+            <div class="col-sm-4">
+                <button class="btn btn-warning btn-block" ng-click="replaceResource(false)">Replace with Matched
+                </button>
+            </div>
         </div>
     </div>
 </div>

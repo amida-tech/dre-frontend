@@ -8,7 +8,7 @@
  * Service in the dreFrontendApp.
  */
 angular.module('dreFrontendApp')
-    .factory('dreFrontendEntryService', function (_, dreFrontendUtil, $log) {
+    .factory('dreFrontendEntryService', function (_, dreFrontendUtil) {
 
         var _black_list = ["photo"];
 
@@ -22,9 +22,6 @@ angular.module('dreFrontendApp')
             blackList = blackList.concat(_black_list);
 
             var prepareValue = function (propertyName, propertyValue) {
-                if (propertyName === 'line') {
-                    $log.debug(propertyName, typeof propertyValue, angular.isArray(propertyValue), angular.isString(propertyValue), angular.isNumber(propertyValue), parseFloat(propertyValue));
-                }
                 var _item = {
                     type: 'string',
                     label: dreFrontendUtil.camelCaseToString(propertyName),
@@ -243,10 +240,22 @@ angular.module('dreFrontendApp')
             return info;
         };
 
+        var _initEntry = function(rawData, iconType, menuType) {
+            return {
+                rawEntry: rawData,
+                type: iconType,
+                title: _getEntryTitle(rawData),
+                additionalInfo: _getEntryAddInfo(rawData),
+                dates: _getEntryDates(rawData),
+                menuType: menuType
+            };
+        };
+
         return {
             buildTable: _buildTable,
             getEntryTitle: _getEntryTitle,
             getEntryDates: _getEntryDates,
-            getEntryAddInfo: _getEntryAddInfo
+            getEntryAddInfo: _getEntryAddInfo,
+            getEntry: _initEntry
         };
     });

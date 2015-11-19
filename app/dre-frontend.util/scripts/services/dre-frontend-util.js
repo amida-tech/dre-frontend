@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module("dreFrontend.util")
-    .factory("dreFrontendUtil", function (dreFrontendEnvironment, $filter, fhirEnv, $log) {
+    .factory("dreFrontendUtil", function ($injector, dreFrontendEnvironment, $filter, fhirEnv, $log) {
         var _capitalise = function (_str) {
             return _str.charAt(0).toUpperCase() + _str.substr(1).toLowerCase();
         };
@@ -62,9 +62,14 @@ angular.module("dreFrontend.util")
                 return fhirEnv.resourceTypes.hasOwnProperty(resourceType);
             },
             parseResourceReference: function(reference) {
-                var expr = /(\w+)(\/[\w\d]+)(\/_history(\/\d+)?)?[$|\"|\']/;
+                var expr = /(\w+)(\/[\w\d]+)(\/_history(\/\d+)?)?($|\"|\')/;
                 var query = expr.exec(reference);
-                return  query[0].split('/');
+                if (!query) {
+                    $log.debug(reference, query);
+                    return [];
+                } else {
+                    return query[0].split('/');
+                }
             },
             camelCaseToString: function (camelCase) {
                 var words = camelCase.split(/(?=[A-Z])/);
@@ -73,6 +78,19 @@ angular.module("dreFrontend.util")
                 }
                 return words.join(' ');
 
+            },
+            asFhirObject: function (data) {
+                if (data && data.resourceType) {
+                    var _class;
+                    try {
+                        _class = $injector.get('Fhir' + _capitalise(data.resourceType));
+                    } catch (e) {
+                        $log.debug(e.message);
+                        _class = $injector.get('FhirResource');
+                    }
+                    data = new _class(data);
+                }
+                return data;
             }
         };
     });

@@ -88,7 +88,8 @@ angular.module('dreFrontend.fhir')
             "MedicationDispense": {dstu: 2},
             "MedicationOrder": {
                 dstu: 2,
-                details: ["prescriber", "encounter", "reasonReference", "medicationReference", "siteReference"]
+                details: ["prescriber", "encounter", "reasonReference", "medicationReference", "siteReference"],
+                className: 'FhirMediacationOrder'
             },
             "MedicationStatement": {dstu: 2},
             "MessageHeader": {dstu: 2},
@@ -96,7 +97,8 @@ angular.module('dreFrontend.fhir')
             "NutritionOrder": {dstu: 2},
             "Observation": {
                 dstu: 2,
-                details: ["performer",  "specimen", "target"]
+                details: ["performer",  "specimen", "target"],
+                className: 'FhirObservation'
             },
             "OperationDefinition": {dstu: 2},
             "OperationOutcome": {dstu: 2},
@@ -105,13 +107,17 @@ angular.module('dreFrontend.fhir')
             "Organization": {dstu: 2},
             "Other": {dstu: 1},
             "Parameters": {dstu: 2},
-            "Patient": {dstu: 2},
+            "Patient": {
+                dstu: 2,
+                className:'FhirPatient'
+            },
             "PaymentNotice": {dstu: 2},
             "PaymentReconciliation": {dstu: 2},
             "Person": {dstu: 2},
             "Practitioner": {
                 dstu: 2,
-                details: ["organization", "location", "issuer"]
+                details: ["organization", "location", "issuer"],
+                className: 'FhirPractitioner'
             },
             "Procedure": {
                 dstu: 2,
@@ -121,7 +127,10 @@ angular.module('dreFrontend.fhir')
             "ProcessResponse": {dstu: 2},
             "ProcedureRequest": {dstu: 2},
             "Profile": {dstu: 1},
-            "Provenance": {dstu: 2},
+            "Provenance": {
+                dstu: 2,
+                className: 'FhirProvenance'
+            },
             "Query": {dstu: 1},
             "Questionnaire": {dstu: 2},
             "QuestionnaireResponse": {dstu: 2},

@@ -1,12 +1,11 @@
 'use strict';
 
 angular.module('dreFrontend.util')
-    .service('dreFrontendMergeService', function ($q, $http, _, dreFrontendHttp, dreFrontendUtil,
-                                                  dreFrontendEnvironment, dreFrontendEntryService,
-                                                  $rootScope, $log) {
+    .service('dreFrontendMergeService', function ($rootScope, $q, $http, _, dreFrontendHttp, dreFrontendUtil,
+                                                  dreFrontendEnvironment, dreFrontendEntryService, dreFrontendGlobals,
+                                                  $log) {
 
         var matches = null;
-        var mocked = null;
 
         var urls = {
             list: '/merge/',
@@ -14,6 +13,30 @@ angular.module('dreFrontend.util')
             problems: '/matches/problems/',
             social_hist: '/matches/social_history/',
             replace: '/replace'
+        };
+
+        var _filter = function (resp) {
+            var _knowResources = _.pluck(dreFrontendGlobals.resourceTypes, 'fhirType');
+            var res = _.filter(resp, function (match) {
+                var _allow = match.changeType === 'update';
+                var _resourceTypeName = match.lhs?match.lhs.resourceType:'resource';
+
+                _allow = _allow && _.includes(_knowResources, _resourceTypeName);
+
+                if (_allow) {
+                    match.lhs = dreFrontendUtil.asFhirObject(match.lhs);
+                }
+
+                return _allow;
+            });
+
+            if (dreFrontendEnvironment.swapDiff) {
+                angular.forEach(res, function (match) {
+                    angular.forEach(match.changes, _swapChange);
+                });
+            }
+            matches = res;
+            return res;
         };
 
         function _apply(match) {
@@ -88,7 +111,7 @@ angular.module('dreFrontend.util')
             return matches;
         };
 
-        var _format_matches = function (src_matches) {
+        var _formatMatches = function (src_matches) {
             var res = {
                 matches: [],
                 qty: null
@@ -117,45 +140,32 @@ angular.module('dreFrontend.util')
             getList: _getList,
             setList: _setList,
             removeFromList: _removeMatch,
-            formatList: _format_matches,
+            formatList: _formatMatches,
             getListByPatientId: function (user_id, force) {
                 if (force || !matches) {
                     return dreFrontendHttp({url: urls.list + user_id, method: 'GET'})
-                        .then(function (resp) {
-                            matches = _.filter(resp, {changeType: "update"});
-                            if (dreFrontendEnvironment.swapDiff) {
-                                angular.forEach(matches, function (match) {
-                                    angular.forEach(match.changes, _swapChange);
-                                });
-                            }
-                            return matches;
-                        });
+                        .then(_filter);
                 } else {
                     return _getList();
                 }
             },
 
             getMockData: function () {
-                if (!mocked) {
+                if (!matches) {
                     return $http({url: urls.mocked, method: 'GET'})
                         .then(function (resp) {
                             if (resp.data) {
-                                mocked = [];
+                                var _data = [];
                                 angular.forEach(resp.data, function (restypeArr) {
                                     angular.forEach(restypeArr, function (diff) {
-                                        if (diff.changeType === 'update') {
-                                            if (dreFrontendEnvironment.swapDiff) {
-                                                angular.forEach(diff.changes, _swapChange);
-                                            }
-                                            mocked.push(diff);
-                                        }
+                                        _data.push(diff);
                                     });
                                 });
-                                return mocked;
+                                return _filter(_data);
                             }
                         });
                 } else {
-                    return $q.resolve(mocked);
+                    return _getList();
                 }
             },
             replace: function (resourceType, primaryId, duplicateId) {

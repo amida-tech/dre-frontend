@@ -15,14 +15,13 @@ angular.module('dreFrontendApp')
                 entrySource: '=',
                 withoutHeader: '='
             },
-            controller: function ($scope, $log) {
+            controller: function ($scope) {
                 $scope.model = {
                     links: []
                 };
                 if ($scope.entrySource) {
                     dreFrontendProvenance.getResourceSources($scope.entrySource.resourceType, $scope.entrySource.id)
                         .then(function (sources) {
-                            $log.debug("Sources", sources);
                             $scope.model.links = sources;
                         });
                 } else {

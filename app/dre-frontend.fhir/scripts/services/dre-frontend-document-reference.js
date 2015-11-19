@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendDocumentReference', function (dreFrontendFhirService, dreFrontendUtil, $q, FhirDocumentReference, $log) {
+    .factory('dreFrontendDocumentReference', function (dreFrontendFhirService, dreFrontendUtil, $q, FhirDocumentReference) {
         function proceedBundle(bundle) {
             for (var n = 0; n < bundle.entry.length; n++) {
                 bundle.entry[n] = new FhirDocumentReference(bundle.entry[n]);
@@ -14,9 +14,7 @@ angular.module('dreFrontend.fhir')
         }
 
         return {
-            DocumentReference: function (data) {
-                return new DocumentReference(data);
-            },
+            DocumentReference: proceedEntry,
             getByPatientId: function (patient_id, params) {
                 angular.extend(params, {author: patient_id});
                 return dreFrontendFhirService.search("DocumentReference", params)

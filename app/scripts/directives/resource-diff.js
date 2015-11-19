@@ -21,9 +21,15 @@ angular.module('dreFrontendApp')
                     }
                 }, true);
             },
-            controller: function ($scope, dreFrontendHttp, $log, $http, _, dreFrontendUtil, dreFrontendMergeService) {
+            controller: function ($scope, dreFrontendHttp, $log, $http, _, dreFrontendUtil, dreFrontendMergeService,
+                                  dreFrontendGlobals, dreFrontendEntryService) {
                 $scope.model = {
-                    title: ''
+                    title: '',
+                    resource: dreFrontendEntryService.getEntry(
+                        $scope.resourceDiff.lhs,
+                        '',
+                        dreFrontendGlobals.menuRecordTypeEnum.none
+                    )
                 };
 
                 this.update = function (diff) {

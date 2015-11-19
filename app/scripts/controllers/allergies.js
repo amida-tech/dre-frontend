@@ -24,14 +24,13 @@ angular.module('dreFrontendApp')
         dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
             dreFrontendAllergyIntolerances.getByPatientId(patientId).then(function (allergies) {
                 _.forEach(allergies.entry, function (entry) {
-                    $scope.model.list.push({
-                        rawEntry: entry,
-                        type: dreFrontendGlobals.resourceTypes.AllergyIntolerance.type,
-                        additionalInfo: dreFrontendEntryService.getEntryAddInfo(entry),
-                        title: dreFrontendEntryService.getEntryTitle(entry),
-                        dates: dreFrontendEntryService.getEntryDates(entry),
-                        menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
-                    });
+                    $scope.model.list.push(
+                        dreFrontendEntryService.getEntry(
+                            entry,
+                            dreFrontendGlobals.resourceTypes.AllergyIntolerance.type,
+                            dreFrontendGlobals.menuRecordTypeEnum.inline
+                        )
+                    );
                 });
             })
         });
