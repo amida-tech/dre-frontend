@@ -26,6 +26,10 @@
     .diff-path {
         width: 30%;
         padding-right:0;
+
+        .diff-path-data {
+            overflow-x: hidden;
+        }
     }
     .diff-rhs, .diff-lhs {
         width: 35%;
@@ -36,6 +40,14 @@
     .match-header {
         .diff-path {
             padding-left: 3%;
+        }
+    }
+    .match {
+        .label-updated {
+            position: absolute;
+            margin-top: 3px;
+            margin-right: 8px;
+            right: 0;
         }
     }
 }

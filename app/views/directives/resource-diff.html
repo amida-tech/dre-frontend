@@ -22,7 +22,8 @@
                               ng-show="diff_entry.kind === 'N' && !diff_entry.apply">new data</span>
                         <span class="label label-danger text-capitalize"
                               ng-show="diff_entry.kind === 'D' && diff_entry.apply">deleted</span>
-
+                        <span class="label-updated label label-info text-capitalize"
+                              ng-show="diff_entry.kind !== 'D' && diff_entry.apply">updated</span>
                         <div class="panel details-table"
                              ng-hide="diff_entry.kind === 'N' && !diff_entry.apply || diff_entry.kind === 'D' && diff_entry.apply">
                             <div entry-details-item="diff_entry.model.rhs"
