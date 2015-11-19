@@ -35,8 +35,8 @@ angular.module('dreFrontendApp')
         dreFrontEndPatientInfoService.getPatientData()
             .then(function (patient) {
                 $scope.model.userName = patient.getName()[0];
-                //dreFrontendMergeService.getListByPatientId(patient.id)
-                dreFrontendMergeService.getMockData()
+                dreFrontendMergeService.getListByPatientId(patient.id)
+/*                dreFrontendMergeService.getMockData()*/
                     .then(function (resp) {
                         if (resp) {
                             $rootScope.$broadcast(dreFrontendGlobals.recordEvents.updateReviewList, resp);
