@@ -25,16 +25,18 @@ angular.module('dreFrontendApp')
                                   dreFrontendGlobals, dreFrontendEntryService) {
                 $scope.model = {
                     title: '',
-                    resource: dreFrontendEntryService.getEntry(
-                        $scope.resourceDiff.lhs,
-                        '',
-                        dreFrontendGlobals.menuRecordTypeEnum.none
-                    )
+                    resource: {
+                        title: '',
+                        dates: {}
+                    }
                 };
 
                 this.update = function (diff) {
                     if (diff) {
                         $scope.model.title = dreFrontendUtil.camelCaseToString(diff.lhs.resourceType);
+                        $scope.model.resource = dreFrontendEntryService.getEntry(
+                            diff.lhs, '', dreFrontendGlobals.menuRecordTypeEnum.none
+                        );
 
                         if (diff.changes) {
                             angular.forEach(diff.changes, dreFrontendMergeService.prepareChangeModel);

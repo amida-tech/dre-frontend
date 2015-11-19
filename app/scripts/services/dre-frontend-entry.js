@@ -10,6 +10,8 @@
 angular.module('dreFrontendApp')
     .factory('dreFrontendEntryService', function (_, dreFrontendUtil) {
 
+/* 2do: refactor code & move calls into FhirResource children implementations*/
+
         var _black_list = ["photo"];
 
         var isValidName = function (name, black_list) {
