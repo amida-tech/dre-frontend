@@ -1,0 +1,202 @@
+<div class="panel panel-body">
+    <home-breadcrumbs></home-breadcrumbs>
+    <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <h4>My Profile</h4>
+        </div>
+        <div class="col-sm-12">
+            <p>Adjust settings associated with your profile.</p>
+
+            <p>Providing a detailed profile helps us perform more accurate searches for your records.</p>
+
+            <p> The information contained here can also be helpful for doctors in emergency situations.</p>
+
+            <p> Account Settings, such as password changes, can be accessed in <a ui-sref="account">account settings</a>.
+            </p>
+        </div>
+    </div>
+</div>
+
+<h4 class="text-center white" id="contactInfo">Contact Information</h4>
+
+<div class="panel panel-body" id="contact" ng-hide="view.addressEdit || view.phoneEdit">
+    <div class="row text-center">
+        <!-- Address section -->
+        <div class="col-sm-5">
+            <h4>Address</h4>
+
+            <div class="col-sm-12 ng-hide" ng-hide="model.addresses.length">
+                <h5>No address found in your record.</h5>
+            </div>
+            <div class="col-sm-12 ng-scope" ng-repeat="(addressIndex, address) in model.addresses">
+
+                <h5 class="capitalize">{{address.contactType.display}}</h5>
+
+                <p ng-repeat="(lineIndex, line) in address.line">{{line}}</p>
+
+                <p>{{address.city}}, {{address.state}} {{address.postalCode}}</p>
+            </div>
+        </div>
+
+        <!--Phone section-->
+        <div class="col-sm-5 col-sm-offset-2">
+            <h4>Phone Number</h4>
+
+            <div class="col-sm-12" ng-hide="model.phones.length">
+                <h5>No phone numbers found in your record.</h5>
+            </div>
+            <div class="col-sm-12 panel-editable ng-scope" ng-repeat="(phoneIndex, phone) in model.phones">
+                <h5 class="capitalize">{{phone.contactType.display}}</h5>
+
+                <p>{{phone.value}}</p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-sm-5 text-center">
+            <div class="btn btn-default" ng-click="changeEditAddressSection(false)">
+                <i class="fa fa-edit"> Edit Address</i>
+            </div>
+        </div>
+        <div class="col-sm-5 col-sm-offset-2 text-center">
+            <div class="btn btn-default" ng-click="changeEditPhoneSection(false)">
+                <i class="fa fa-edit"> Edit Phone Number</i>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="panel panel-body" ng-show="view.addressEdit">
+    <h5>* Denotes required fields.</h5>
+
+    <form novalidate role="form" name="addressForm" ng-show="model.addresses">
+        <h4>Edit Your Address</h4>
+
+        <div id="address">
+            <div class="row">
+                <div class="form-group col-sm-3 capitalize">
+                    <label for="inputAddressType">Address Type*</label>
+                    <select class="form-control capitalize" id="inputAddressType" name="inputAddressType"
+                            ng-model="model.addresses[0].use"
+                            ng-options="addressType.code as addressType.display for addressType in view.addressTypes"
+                            required>
+                    </select>
+
+                    <p ng-show="addressForm.inputAddressType.$invalid" class="help-block">Address Type is required.</p>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="form-group col-sm-5">
+                    <label for="inputAddress">Address Line*</label>
+                    <input type="text" class="form-control" id="inputAddress" name="inputAddress"
+                           ng-model="model.addresses[0].line[0]" required>
+
+                    <p ng-show="addressForm.inputAddress.$invalid" class="help-block">Please enter your street address
+                        or P.O. Box.</p>
+                </div>
+
+                <div class="form-group col-sm-5 col-sm-offset-1">
+                    <label for="inputCity">City*</label>
+                    <input type="text" class="form-control" id="inputCity" name="inputCity"
+                           ng-model="model.addresses[0].city" required>
+
+                    <p ng-show="addressForm.inputCity.$invalid" class="help-block">Please enter a city.</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-sm-5">
+                    <label for="inputState">State*</label>
+                    <input type="text" class="form-control" id="inputState" name="inputState"
+                           ng-model="model.addresses[0].state" required ng-minlength="2">
+
+                    <p ng-show="addressForm.inputState.$invalid" class="help-block">Please enter a state.</p>
+                </div>
+
+                <div class="form-group col-sm-5 col-sm-offset-1">
+                    <label for="inputZip">Zip*</label>
+                    <input type="text" class="form-control" id="inputZip" name="inputZip"
+                           ng-model="model.addresses[0].postalCode" required ng-minlength="5" ng-maxlength="11">
+
+                    <p ng-show="addressForm.inputZip.$invalid" class="help-block">Please enter a five-digit zip.</p>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row">
+            <a>
+                <button type="submit" class="btn btn-default col-sm-2 col-sm-offset-3"
+                        ng-click="changeEditAddressSection(false)">Cancel
+                </button>
+            </a>
+            <a>
+                <button type="submit" class="btn btn-primary col-sm-3 col-sm-offset-1"
+                        ng-disabled="addressForm.$invalid" ng-click="updateAddress()">Update
+                </button>
+            </a>
+
+            <div class="text-center">
+                <!-- ngIf: vm.error -->
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="panel panel-body" ng-show="view.phoneEdit">
+
+    <h5>* Denotes required fields.</h5>
+
+    <form role="form" name="phoneForm" novalidate>
+        <h4>Edit Your Phone Number</h4>
+
+        <!--Phone section-->
+        <div class="row">
+            <div class="col-sm-4 col-sm-offset-4">
+                <div class="form-group col-sm-12">
+                    <label for="inputPhoneType">Type*</label>
+                    <select class="form-control capitalize" id="inputPhoneType" name="inputPhoneType"
+                            ng-model="model.phones[0].use"
+                            ng-options="addressCode.code as addressCode.display for addressCode in view.contactUse"
+                            required>
+                    </select>
+
+                    <p ng-show="phoneForm.inputPhoneType.$invalid" class="help-block">Phone Type is required.</p>
+                </div>
+
+
+                <div class="form-group col-sm-12">
+                    <label for="inputPhone">Number*</label>
+                    <input type="text" class="form-control" id="inputPhone" name="inputPhone"
+                           ng-model="model.phones[0].value" required ng-minlength="10" ng-maxlength="10">
+
+                    <p ng-show="phoneForm.inputPhone.$invalid " class="help-block">Please enter a 10-digit phone number
+                        without spaces or symbols: xxxxxxxxxx.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <a>
+                <button type="submit" class="btn btn-default col-sm-2 col-sm-offset-3"
+                        ng-click="changeEditPhoneSection(false)">Cancel
+                </button>
+            </a>
+            <a>
+                <button type="submit" class="btn btn-primary col-sm-3 col-sm-offset-1" ng-disabled="phoneForm.$invalid || !phoneForm.$dirty"
+                        ng-click="updatePhone()">Update
+                </button>
+            </a>
+
+            <div class="text-center">
+                <!-- ngIf: vm.error -->
+            </div>
+        </div>
+    </form>
+
+</div>
+
+
+

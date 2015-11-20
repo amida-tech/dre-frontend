@@ -8,11 +8,13 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('ProfilePhotoCtrl', function ($scope, dreFrontEndPatientInfoService, $log) {
-        $scope.model= {
+    .controller('ProfilePhotoCtrl', function ($scope, dreFrontEndPatientInfoService) {
+        $scope.model = {
             patient: undefined
         };
-        dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
-            $scope.model.patient = patient;
-        });
+        dreFrontEndPatientInfoService
+            .getPatientData()
+            .then(function (patient) {
+                $scope.model.patient = patient;
+            });
     });

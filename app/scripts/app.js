@@ -359,6 +359,24 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 }
             }
         })
+        .state('profile.contact', {
+            url: '/contact-info',
+            parent: 'profile',
+            data: {
+                name: 'Contact Info',
+                isPublic: false
+            },
+            views: {
+                'homeMenu@homeRoot': {
+                    templateUrl: "views/controllers/profile-menu.html",
+                    controller: 'ProfileMenuCtrl'
+                },
+                'pageBody@homeRoot': {
+                    templateUrl: "views/controllers/profile-contact-info.html",
+                    controller: 'ProfileCtrl'
+                }
+            }
+        })
         .state('profile.photo', {
             url: '/photo',
             parent: 'profile',

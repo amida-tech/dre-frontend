@@ -1,12 +1,15 @@
 <div class="row">
-    <div class="col-md-4 col-sm-12">
-        <div class="form-group"><input type="file" class="form-control input-file" id="imageInput"/></div>
+    <div class="col-md-4 col-sm-12" ng-form="imageForm" name="imageForm">
+        <div class="form-group">
+            <input type="file" class="form-control input-file" id="imageInput" name="imageInput"
+                   accept="image/*" reqired/>
+        </div>
         <h5 class="text-center">Preview photo</h5>
         <div class="profile panel-body">
             <div class="profile-image"><img ng-src="{{model.resultImage}}"/></div>
         </div>
         <div class="">
-            <button class="btn btn-primary btn-block" ng-click="updatePhoto()">Update</button>
+            <button class="btn btn-primary btn-block" ng-click="updatePhoto()" ng-disabled="!model.valid">Update</button>
         </div>
     </div>
     <div class="col-md-8 col-sm-12">

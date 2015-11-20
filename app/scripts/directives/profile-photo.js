@@ -18,15 +18,19 @@ angular.module('dreFrontendApp')
 
                 $scope.model = {
                     srcImage: '',
-                    resultImage: ''
+                    resultImage: '',
+                    filename: '',
+                    valid: false
                 };
 
                 var handleFileSelect=function(evt) {
                     var file=evt.currentTarget.files[0];
+                    $scope.model.valid = false;
                     var reader = new FileReader();
                     reader.onload = function (evt) {
                         $scope.$apply(function($scope){
                             $scope.model.srcImage=evt.target.result;
+                            $scope.model.valid = true;
                         });
                     };
                     reader.readAsDataURL(file);
