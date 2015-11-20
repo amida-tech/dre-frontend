@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('RecordsMenuCtrl', function ($scope, dreFrontendGlobals, _, $state) {
+    .controller('RecordsMenuCtrl', function ($scope, dreFrontendGlobals, _) {
         $scope.model = {
             menuItems: [
                 dreFrontendGlobals.resourceTypes.MedicationOrder,

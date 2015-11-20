@@ -4,9 +4,9 @@
 "use strict";
 
 angular.module('dreFrontend.resource')
-    .factory('FhirPatient',function(FhirResource, fhirEnv){
+    .factory('FhirPatient', function (FhirResource, fhirEnv, _) {
         // reuse the original constructor
-        var FhirPatient = function() {
+        var FhirPatient = function () {
             FhirResource.apply(this, arguments);
         };
 
@@ -17,18 +17,18 @@ angular.module('dreFrontend.resource')
 
         function _glue_name(parts) {
             var r = [];
-            if (parts.prefix)
+            if (parts.prefix) {
                 r.push(parts.prefix.join(" "));
-
-            if (parts.given)
+            }
+            if (parts.given) {
                 r.push(parts.given.join(" "));
-
-            if (parts.family)
+            }
+            if (parts.family) {
                 r.push(parts.family.join(" "));
-
-            if (parts.suffix)
+            }
+            if (parts.suffix) {
                 r.push(parts.suffix.join(" "));
-
+            }
             return r.join(" ");
         }
 
@@ -66,8 +66,10 @@ angular.module('dreFrontend.resource')
                 .concat(this.getNameByType());
         };
 
-        FhirPatient.prototype.setBase64Photo = function (contentType,data) {
-            if (!this.photo || typeof this.photo !== 'array'){this.photo=[];}
+        FhirPatient.prototype.setBase64Photo = function (contentType, data) {
+            if (!this.photo || !angular.isArray(this.photo)) {
+                this.photo = [];
+            }
             this.photo[0] = {
                 contentType: contentType,
                 data: data

@@ -8,30 +8,29 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-  .controller('ClaimsCtrl', function ($scope, dreFrontendEntryService, dreFrontEndPatientInfoService, dreFrontendGlobals, dreFrontendClaim) {
+    .controller('ClaimsCtrl', function ($scope, dreFrontendEntryService, dreFrontEndPatientInfoService, dreFrontendGlobals, dreFrontendClaim, _) {
         $scope.model = {
-            userName : '-',
+            userName: '-',
             lastUpdate: new Date(),
             list: [],
             entryType: dreFrontendGlobals.resourceTypes.Claim.type,
             title: dreFrontendGlobals.resourceTypes.Claim.title
         };
-        dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
-            $scope.model.userName = patient.getName()[0];
-        });
-        dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
-            dreFrontendClaim.getByPatientId(patientId).then(function(bundle){
-                $scope.model.list = [];
-                _.forEach(bundle.entry, function (claim) {
-                    $scope.model.list.push({
-                        rawEntry: claim,
-                        type: dreFrontendGlobals.resourceTypes.Claim.type,
-                        title: dreFrontendEntryService.getEntryTitle(claim),
-                        dates: dreFrontendEntryService.getEntryDates(claim),
-                        additionalInfo: dreFrontendEntryService.getEntryAddInfo(claim),
-                        menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
-                    })
-                });
+        dreFrontEndPatientInfoService.getPatientData()
+            .then(function (patient) {
+                $scope.model.userName = patient.getName()[0];
+                dreFrontendClaim.getByPatientId(patient.id)
+                    .then(function (bundle) {
+                        $scope.model.list = [];
+                        _.forEach(bundle.entry, function (claim) {
+                            $scope.model.list.push(
+                                dreFrontendEntryService.getEntry(
+                                    claim,
+                                    dreFrontendGlobals.resourceTypes.Claim.type,
+                                    dreFrontendGlobals.menuRecordTypeEnum.inline
+                                )
+                            );
+                        });
+                    });
             });
-        });
-  });
+    });

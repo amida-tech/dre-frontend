@@ -20,9 +20,10 @@ angular.module('dreFrontendApp')
                     avatarData: 'https://placeholdit.imgix.net/~text?txtsize=33&txt=Photo&w=100&h=100'
                 };
                 $scope.logOut = function () {
-                    dreFrontendAuthService.logout().finally(function () {
-                        $state.go('main');
-                    })
+                    dreFrontendAuthService.logout()
+                        .finally(function () {
+                            $state.go('main');
+                        });
                 };
                 var checkAuth = function () {
                     dreFrontendAuthService.isAuthenticated().then(function (isAuthenticated) {
@@ -30,7 +31,7 @@ angular.module('dreFrontendApp')
                         if (isAuthenticated) {
                             dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
                                 $scope.model.userName = patient.getName()[0];
-                                if (!angular.isString($scope.model.userName) || $scope.model.userName.length == 0) {
+                                if (!angular.isString($scope.model.userName) || $scope.model.userName.length === 0) {
                                     $scope.model.userName = patient.id;
                                 }
                                 $scope.model.dateOfBorn = new Date(patient.birthDate);

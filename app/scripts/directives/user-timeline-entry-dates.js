@@ -7,12 +7,12 @@
  * # mainMenu
  */
 angular.module('dreFrontendApp')
-    .directive('userTimelineEntryDates', function (dreFrontendUtil, $log) {
+    .directive('userTimelineEntryDates', function () {
         return {
-            template: '<div ng-show="userTimelineEntryDates.dates.startDate"><strong>\
-<span>{{userTimelineEntryDates.dates.startDate}}</span>\
-<span ng-show="userTimelineEntryDates.dates.endDate"> - {{userTimelineEntryDates.dates.endDate}}</span>\
-</strong></div>',
+            template: '<div ng-show="userTimelineEntryDates.dates.startDate"><strong>' +
+            '<span>{{userTimelineEntryDates.dates.startDate}}</span>' +
+            '<span ng-show="userTimelineEntryDates.dates.endDate"> - {{userTimelineEntryDates.dates.endDate}}</span>' +
+            '</strong></div>',
             restrict: 'AE',
             scope: {
                 userTimelineEntryDates: '='

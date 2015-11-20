@@ -10,14 +10,14 @@
  * # prescriberSearch
  */
 angular.module('dreFrontendApp')
-    .directive('prescriberSearch', function ($log) {
+    .directive('prescriberSearch', function () {
         return {
             templateUrl: 'views/directives/prescriber-search.html',
             restrict: 'AE',
             scope: {
                 resultPrescriber: '='
             },
-            controller: function ($scope, dreFrontendPrescriberService) {
+            controller: function ($scope, dreFrontendPrescriberService, _) {
                 var query = {};
                 $scope.model = {
                     name: {
@@ -45,8 +45,9 @@ angular.module('dreFrontendApp')
                 }
 
                 function NpiPrescriber(data) {
-                    if (data)
+                    if (data) {
                         angular.extend(this, data);
+                    }
                 }
 
                 NpiPrescriber.prototype.getPracticeAddress = function () {
@@ -54,8 +55,8 @@ angular.module('dreFrontendApp')
                     var pa = this.practice_address;
 
                     if (pa) {
-                        res.push (pa.address_line + ((pa.address_details_line)?', ' + pa.address_details_line:''));
-                        res.push (pa.city + ', ' + pa.state + ' ' + pa.zip);
+                        res.push(pa.address_line + ((pa.address_details_line) ? ', ' + pa.address_details_line : ''));
+                        res.push(pa.city + ', ' + pa.state + ' ' + pa.zip);
 
                     }
                     return res;
@@ -122,5 +123,5 @@ angular.module('dreFrontendApp')
                     }
                 };
             }
-        }
+        };
     });

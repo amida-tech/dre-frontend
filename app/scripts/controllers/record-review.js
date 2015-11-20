@@ -8,8 +8,8 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('RecordReviewCtrl', function ($rootScope, $scope, $state, _, dreFrontEndPatientInfoService, dreFrontendMergeService,
-                                        dreFrontendGlobals, $log) {
+    .controller('RecordReviewCtrl', function ($rootScope, $scope, $state, _, dreFrontEndPatientInfoService,
+                                              dreFrontendMergeService, dreFrontendGlobals) {
         $scope.model = {
             userName: '-',
             matches: [],

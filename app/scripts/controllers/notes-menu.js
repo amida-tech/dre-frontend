@@ -24,6 +24,6 @@ angular.module('dreFrontendApp')
                         itemCount: noteType.length
                     });
                 }
-            })
-        })
+            });
+        });
     });

@@ -14,7 +14,7 @@ angular.module('dreFrontendApp')
             scope: {
                 medicationAdverse: '='
             },
-            controller: function ($scope) {
+            controller: function ($scope, _) {
                 $scope.model = {
                     events: [],
                     total:0,
@@ -33,7 +33,7 @@ angular.module('dreFrontendApp')
                                     $scope.model.events = events;
                                     $scope.model.total = _.sum(events, 'count');
                                     _.forEach($scope.model.events, function(item){
-                                       item.percentage = (100*item.count/$scope.model.total).toFixed(2)
+                                       item.percentage = (100*item.count/$scope.model.total).toFixed(2);
                                     });
                                     $scope.medicationAdverse.medicationAdverse = $scope.model.events;
                                 }).finally(function(){

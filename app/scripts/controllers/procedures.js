@@ -8,7 +8,8 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('ProceduresCtrl', function ($scope, dreFrontendEntryService, dreFrontendProcedures, _, dreFrontEndPatientInfoService, dreFrontendUtil, dreFrontendGlobals) {
+    .controller('ProceduresCtrl', function ($scope, dreFrontendEntryService, dreFrontendProcedures, _,
+                                            dreFrontEndPatientInfoService, dreFrontendGlobals) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
@@ -18,21 +19,17 @@ angular.module('dreFrontendApp')
         };
         dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
-        });
-        dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
-            dreFrontendProcedures.getByPatientId(patientId).then(function (results) {
-                $scope.model.list = [];
-                _.forEach(results.entry, function (entry) {
-                    $scope.model.list.push({
-                        rawEntry: entry,
-                        type: dreFrontendGlobals.resourceTypes.Procedure.type,
-                        title: dreFrontendEntryService.getEntryTitle(entry),
-                        additionalInfo: dreFrontendEntryService.getEntryAddInfo(entry),
-                        dates: dreFrontendEntryService.getEntryDates(entry),
-                        menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
-                    })
+            dreFrontendProcedures.getByPatientId(patient.id)
+                .then(function (results) {
+                    $scope.model.list = [];
+                    _.forEach(results.entry, function (entry) {
+                        $scope.model.list.push(dreFrontendEntryService.getEntry(
+                                entry,
+                                dreFrontendGlobals.resourceTypes.Procedure.type,
+                                dreFrontendGlobals.menuRecordTypeEnum.inline
+                            )
+                        );
+                    });
                 });
-            });
         });
-        var formatDay
     });

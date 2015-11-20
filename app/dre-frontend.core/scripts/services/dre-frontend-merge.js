@@ -126,7 +126,7 @@ angular.module('dreFrontend.util')
                     } else {
                         angular.forEach(src_matches, function (_body, _key) {
                             if (_key && dreFrontendUtil.isFhirResource(_key)) {
-                                res.matches = res.matches.concat(_body)
+                                res.matches = res.matches.concat(_body);
                             }
                         });
                     }
@@ -183,5 +183,5 @@ angular.module('dreFrontend.util')
                 });
             },
             prepareChangeModel: _prepareChangeModel
-        }
+        };
     });

@@ -19,13 +19,13 @@ angular.module('dreFrontendApp')
                     currentTab: 'details'
                 };
                 $scope.setTab = function (tabId) {
-                    if (tabId != $scope.model.currentTab) {
+                    if (tabId !== $scope.model.currentTab) {
                         $scope.model.currentTab = tabId;
                         $scope.userTimelineEntryInlineInfo.isDetailsOpen = true;
                     } else {
                         $scope.userTimelineEntryInlineInfo.isDetailsOpen = !$scope.userTimelineEntryInlineInfo.isDetailsOpen;
                     }
-                }
+                };
             }
         };
     });

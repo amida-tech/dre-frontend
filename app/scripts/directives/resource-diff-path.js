@@ -10,7 +10,7 @@ angular.module('dreFrontendApp')
             restrict: 'AE',
             path: '=',
             controller: function($scope){
-                $log.debug(path);
+                $log.debug($scope.path);
             }
         };
     });

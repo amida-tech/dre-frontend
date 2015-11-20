@@ -8,9 +8,9 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-  .controller('LoginCtrl', function (dreFrontendAuthService, $state) {
-        dreFrontendAuthService.isAuthenticated().then(function(isAuthenticated){
-            if(isAuthenticated){
+    .controller('LoginCtrl', function (dreFrontendAuthService, $state) {
+        dreFrontendAuthService.isAuthenticated().then(function (isAuthenticated) {
+            if (isAuthenticated) {
                 $state.go('home');
             }
         });

@@ -15,7 +15,7 @@ angular.module('dreFrontendApp')
         var _black_list = ["photo"];
 
         var isValidName = function (name, black_list) {
-            return name[0] != '$' && !_.contains(black_list, name);
+            return (name[0] !== '$' && !_.contains(black_list, name));
         };
 
         var _buildTable = function (dataItem, blackList) {
@@ -83,7 +83,7 @@ angular.module('dreFrontendApp')
                 }
             };
 
-            if (typeof dataItem === "array" || typeof dataItem === "object") {
+            if (angular.isArray(dataItem) || angular.isObject(dataItem)) {
                 for (var propertyName in dataItem) {
                     if (dataItem.hasOwnProperty(propertyName) && isValidName(propertyName, blackList)) {
                         prepareValue(propertyName, dataItem[propertyName]);
@@ -169,7 +169,7 @@ angular.module('dreFrontendApp')
                     break;
                 case 'Immunization':
                     dates = {
-                        startDate: entry.date != undefined ? entry.date : null
+                        startDate: entry.date !== undefined ? entry.date : null
                     };
                     break;
                 case 'Encounter':
@@ -191,12 +191,12 @@ angular.module('dreFrontendApp')
                     break;
                 case 'AllergyIntolerance':
                     dates = {
-                        startDate: entry.lastOccurence != undefined ? entry.lastOccurence : null
+                        startDate: entry.lastOccurence !== undefined ? entry.lastOccurence : null
                     };
                     break;
                 case 'Claim':
                     dates = {
-                        startDate: entry.created != undefined ? dreFrontendUtil.formatFhirDate(entry.created) : null
+                        startDate: entry.created !== undefined ? dreFrontendUtil.formatFhirDate(entry.created) : null
                     };
                     break;
             }
@@ -234,11 +234,11 @@ angular.module('dreFrontendApp')
                     break;
                 case 'AllergyIntolerance':
                     if (angular.isDefined(entry.event)) {
-                        if (entry.event.length != 0) {
+                        if (entry.event.length !== 0) {
                             if (angular.isDefined(entry.event[0].manifestation)) {
-                                if (entry.event[0].manifestation.length == 2) {
+                                if (entry.event[0].manifestation.length === 2) {
                                     if (angular.isDefined(entry.event[0].manifestation[1].coding)) {
-                                        if (entry.event[0].manifestation[1].coding.length != 0) {
+                                        if (entry.event[0].manifestation[1].coding.length !== 0) {
                                             if (angular.isDefined(entry.event[0].manifestation[1].coding[0].display)) {
                                                 info = entry.event[0].manifestation[1].coding[0].display;
                                             }

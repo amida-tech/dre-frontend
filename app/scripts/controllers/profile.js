@@ -72,18 +72,18 @@ angular.module('dreFrontendApp')
                     {system: fhirEnv.contactSystemCodes.phone, value: ''}
                 ];
             } else {
-                var qty = {}, email_qty = 0;
-                angular.forEach(fhirEnv.contactSystemCodes,function (v) {
+                var qty = {};
+                angular.forEach(fhirEnv.contactSystemCodes, function (v) {
                     qty[v] = 0;
                 });
-                angular.forEach(patient.telecom,function (v) {
+                angular.forEach(patient.telecom, function (v) {
                     qty[v.system]++;
                 });
                 angular.forEach(qty, function (v, k) {
                     if (v < 1) {
                         patient.telecom.push({system: k, value: null});
                     }
-                })
+                });
             }
 
         };
@@ -99,79 +99,74 @@ angular.module('dreFrontendApp')
                     model.patient = patient;
                     $scope.model.patientId = patient.id;
 
-                    if (patient.name != undefined && patient.name.length != 0) {
+                    if (patient.name !== undefined && patient.name.length !== 0) {
                         var names = patient.name[0];
-                        if (names.family != undefined && names.family.length != 0) model.lastName = names.family[0];
-                        if (names.given != undefined && names.given.length != 0) {
+                        if (names.family !== undefined && names.family.length !== 0) {
+                            model.lastName = names.family[0];
+                        }
+                        if (names.given !== undefined && names.given.length !== 0) {
                             model.firstName = names.given[0];
-                            if (names.given.length != 1) {
+                            if (names.given.length > 1) {
                                 model.middleName = names.given[1];
                             }
                         }
                     }
                     _initTelecom(patient);
-                    if (patient.telecom != undefined) {
-                        if (patient.telecom.length != 0) {
-                            _.forEach(patient.telecom, function (entry) {
-                                if (entry.system === $scope.contactSystemCodes.email) {
-                                    model.primaryEmail = entry.value;
-                                }
-                                if (entry.system === $scope.contactSystemCodes.phone) {
-                                    model.phones.push(entry);
-                                }
-                            });
-                        }
-                    }
-                    if (patient.maritalStatus != undefined) {
-                        if (patient.maritalStatus.coding.length != 0) {
-                            if (patient.maritalStatus.coding[0].display != undefined) {
-                                model.maritalStatus = patient.maritalStatus.coding[0];
+
+                    if (patient.telecom && patient.telecom.length > 0) {
+                        _.forEach(patient.telecom, function (entry) {
+                            if (entry.system === $scope.contactSystemCodes.email) {
+                                model.primaryEmail = entry.value;
                             }
-                        }
+                            if (entry.system === $scope.contactSystemCodes.phone) {
+                                model.phones.push(entry);
+                            }
+                        });
                     }
+
+                    if (patient.maritalStatus && patient.maritalStatus.coding.length > 0) {
+                        model.maritalStatus = patient.maritalStatus.coding[0];
+                    }
+
                     var extensionInfo;
-                    if (patient.extension != undefined) {
-                        if (patient.extension.length != 0) {
-                            extensionInfo = patient.extension;
-                        }
+                    if (patient.extension && patient.extension.length > 0) {
+                        extensionInfo = patient.extension;
                     }
-                    if (patient.birthDate != undefined) {
+
+                    if (patient.birthDate) {
                         model.dateOfBirth = new Date(patient.birthDate);
                     }
-                    if (patient.gender != undefined) {
+
+                    if (patient.gender) {
                         model.gender = patient.gender;
                     }
-                    if (patient.address && patient.address.length != 0) {
+
+                    if (patient.address && patient.address.length !== 0) {
                         model.addresses = patient.address;
                     } else {
                         patient.address = [];
                         model.addresses = patient.address;
                     }
+
                     _.forEach(model.addresses, function (entry) {
                         $scope.setContactType(entry);
                     });
+
                     _.forEach(model.phones, function (entry) {
                         $scope.setContactType(entry);
                     });
+
                     _.forEach(extensionInfo, function (entry) {
-                        if (entry.url != undefined) {
-                            if (entry.url == fhirEnv.raceExtensionUrl) {
-                                if (entry.valueCodeableConcept != undefined) {
-                                    if (entry.valueCodeableConcept.coding != undefined) {
-                                        if (entry.valueCodeableConcept.coding.length != 0) {
-                                            model.race = entry.valueCodeableConcept.coding[0];
-                                        }
-                                    }
-                                }
+                        if (entry.url) {
+                            var _url_type = null;
+                            if (entry.url === fhirEnv.raceExtensionUrl) {
+                                _url_type = 'race';
                             }
-                            if (entry.url == fhirEnv.ethnicityExtensionUrl) {
-                                if (entry.valueCodeableConcept != undefined) {
-                                    if (entry.valueCodeableConcept.coding != undefined) {
-                                        if (entry.valueCodeableConcept.coding.length != 0) {
-                                            model.ethnicity = entry.valueCodeableConcept.coding[0];
-                                        }
-                                    }
-                                }
+                            if (entry.url === fhirEnv.ethnicityExtensionUrl) {
+                                _url_type = 'ethnicity';
+                            }
+                            if (_url_type && entry.valueCodeableConcept && entry.valueCodeableConcept.coding && entry.valueCodeableConcept.coding.length > 0) {
+                                model[_url_type] = entry.valueCodeableConcept.coding[0];
                             }
 
                         }
@@ -204,6 +199,15 @@ angular.module('dreFrontendApp')
         };
 
         //TODO Check for bad response, SHOW IT in the GUI
+
+        var _updatePatient = function(_patient) {
+            _patient = _patient || $scope.model.patient;
+            _patient.update()
+                .then(function(){
+                    $scope.changeEditProfileSection(true);
+                });
+        };
+
         $scope.updateProfile = function () {
             var model = $scope.model;
             var patient = model.patient;
@@ -217,23 +221,23 @@ angular.module('dreFrontendApp')
 
 
             var extensionInfo;
-            if (patient.extension != undefined) {
-                if (patient.extension.length != 0) {
-                    extensionInfo = patient.extension;
-                }
+            if (patient.extension && patient.extension.length > 0) {
+                extensionInfo = patient.extension;
             } else {
                 patient.extension = [];
+                extensionInfo = patient.extension;
             }
+
             var raceFound = false;
             var ethnicityFound = false;
             _.forEach(extensionInfo, function (entry) {
-                if (entry.url != undefined) {
-                    if (entry.url == fhirEnv.raceExtensionUrl) {
+                if (entry.url) {
+                    if (entry.url === fhirEnv.raceExtensionUrl) {
                         entry.valueCodeableConcept = {};
                         entry.valueCodeableConcept.coding = [model.race];
                         raceFound = true;
                     }
-                    if (entry.url == fhirEnv.ethnicityExtensionUrl) {
+                    if (entry.url === fhirEnv.ethnicityExtensionUrl) {
                         entry.valueCodeableConcept = {};
                         entry.valueCodeableConcept.coding = [model.ethnicity];
                         ethnicityFound = true;
@@ -241,6 +245,7 @@ angular.module('dreFrontendApp')
 
                 }
             });
+
             if (!raceFound) {
                 var raceObj = {};
                 raceObj.url = fhirEnv.raceExtensionUrl;
@@ -248,6 +253,7 @@ angular.module('dreFrontendApp')
                 raceObj.valueCodeableConcept.coding = [model.race];
                 patient.extension.push(raceObj);
             }
+
             if (!ethnicityFound) {
                 var ethnicityObj = {};
                 ethnicityObj.url = fhirEnv.ethnicityExtensionUrl;
@@ -255,22 +261,11 @@ angular.module('dreFrontendApp')
                 ethnicityObj.valueCodeableConcept.coding = [model.ethnicity];
                 patient.extension.push(ethnicityObj);
             }
-            patient.update()
-                .then(function (response) {
-                    $scope.changeEditProfileSection(true);
-                });
+
+            _updatePatient(patient);
         };
 
-        $scope.updateAddress = function () {
-            dreFrontendFhirService.update($scope.model.patient.resourceType, $scope.model.patient.id, $scope.model.patient).then(function (response) {
-                $scope.changeEditAddressSection(true);
-            });
-        };
-
-        $scope.updatePhone = function () {
-            //patient.telecom = patient.telecom.concat(model.phones);
-            dreFrontendFhirService.update($scope.model.patient.resourceType, $scope.model.patient.id, $scope.model.patient).then(function (response) {
-                $scope.changeEditPhoneSection(true);
-            });
-        };
-    });
+        $scope.updateAddress = _updatePatient;
+        $scope.updatePhone = _updatePatient;
+    })
+;

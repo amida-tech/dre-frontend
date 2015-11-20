@@ -18,8 +18,6 @@ angular.module('dreFrontendApp')
         };
         dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
-        });
-        dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
             $scope.model.list = [
                 {
                     rawEntry: {},

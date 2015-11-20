@@ -14,7 +14,7 @@ angular.module('dreFrontendApp')
             scope: {
                 docRef: "="
             },
-            controller: function ($scope, FileSaver, $log) {
+            controller: function ($scope, FileSaver) {
 
                 function openSaveAsDialog(filename, content, mediaType) {
                     var save_data = {

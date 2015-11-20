@@ -17,5 +17,5 @@ angular.module('dreFrontendApp')
         };
         _.forEach($scope.model.menuItems, function (item) {
             item.url = 'billing.' + item.alias;
-        })
+        });
     });

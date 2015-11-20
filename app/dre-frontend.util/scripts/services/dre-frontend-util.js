@@ -20,20 +20,19 @@ angular.module("dreFrontend.util")
                 }
                 return res;
             },
-            formatFhirDate: function(dateString){
-                if(angular.isString(dateString)){
+            formatFhirDate: function (dateString) {
+                if (angular.isString(dateString)) {
                     var date = new Date(dateString);
-                    if(date.getUTCHours() == 0 && date.getUTCMinutes() == 0 && date.getUTCSeconds() == 0){
+                    if (date.getUTCHours() === 0 && date.getUTCMinutes() === 0 && date.getUTCSeconds() === 0) {
                         return $filter('date')(date, 'longDate');
-                    }else{
+                    } else {
                         return $filter('date')(date, 'MMM d, y h:mm a');
                     }
-                }else{
+                } else {
                     return '';
                 }
             },
-            buildObjectByPath: function(path, val) {
-                var res, prev, current;
+            buildObjectByPath: function (path, val) {
                 var p = path.slice(0);
 
                 var f = function (_path) {
@@ -42,7 +41,7 @@ angular.module("dreFrontend.util")
                     var res;
                     switch (typeof n) {
                         case "number":
-                            res=[];
+                            res = [];
                             res[n] = f(_path);
                             break;
                         case "string":
@@ -58,10 +57,10 @@ angular.module("dreFrontend.util")
 
                 return f(p);
             },
-            isFhirResource: function(resourceType) {
+            isFhirResource: function (resourceType) {
                 return fhirEnv.resourceTypes.hasOwnProperty(resourceType);
             },
-            parseResourceReference: function(reference) {
+            parseResourceReference: function (reference) {
                 var expr = /(\w+)(\/[\w\d]+)(\/_history(\/\d+)?)?($|\"|\')/;
                 var query = expr.exec(reference);
                 if (!query) {
@@ -81,14 +80,15 @@ angular.module("dreFrontend.util")
             },
             asFhirObject: function (data) {
                 if (data && data.resourceType) {
-                    var _class;
+                    var Class;
+                    var _name = 'Fhir' + _capitalise(data.resourceType);
                     try {
-                        _class = $injector.get('Fhir' + _capitalise(data.resourceType));
+                        Class = $injector.get(_name);
                     } catch (e) {
-                        $log.debug(e.message);
-                        _class = $injector.get('FhirResource');
+                        $log.debug(_name + ' not found. Using FhirResource class');
+                        Class = $injector.get('FhirResource');
                     }
-                    data = new _class(data);
+                    data = new Class(data);
                 }
                 return data;
             }

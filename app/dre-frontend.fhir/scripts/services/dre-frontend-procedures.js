@@ -20,7 +20,7 @@ angular.module('dreFrontend.fhir')
             },
             getById: function (id) {
                 return dreFrontendFhirService.read('Procedure', id)
-                    .then(proceedBundle);
+                    .then(proceedEntry);
             },
             getAll: function () {
                 return dreFrontendFhirService.read('Procedure')

@@ -27,9 +27,9 @@ angular.module('dreFrontendApp')
 
                 angular.extend($scope.model, $scope.options);
 
-                $scope.open = function (evt) {
+                $scope.open = function () {
                     $scope.model.opened = true;
-                }
+                };
             }
         };
     });

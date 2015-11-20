@@ -88,7 +88,7 @@ angular.module('dreFrontendApp')
                 }
                 $scope.toggleDetails = function () {
                     $scope.$emit('toggleMenu', $scope.userTimelineEntryIcon);
-                }
+                };
             }
         };
     });

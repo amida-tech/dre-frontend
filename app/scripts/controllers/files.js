@@ -8,7 +8,8 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('FilesCtrl', function ($scope, $filter, $q, $state, NgTableParams, dreFrontendDocumentReference, dreFrontendAuthService, dreFrontEndPatientInfoService, FileSaver, $log) {
+    .controller('FilesCtrl', function ($scope, $filter, $q, $state, NgTableParams, dreFrontendDocumentReference,
+                                       dreFrontendAuthService, dreFrontEndPatientInfoService, FileSaver) {
         var files = [];
         var page_size = 50;
         $scope.model = {};

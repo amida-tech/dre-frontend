@@ -11,7 +11,7 @@ angular.module('dreFrontendApp')
             template: "<table class='table table-condensed'>" +
             "<tr ng-repeat='member in entryDetailsItem' entry-details-item-member='member'></tr>" +
             "</table>"
-        }
+        };
     })
     .directive('entryDetailsItemMember', function ($compile) {
         return {
@@ -49,5 +49,5 @@ angular.module('dreFrontendApp')
 
                 }
             }
-        }
+        };
     });

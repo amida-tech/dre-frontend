@@ -15,7 +15,7 @@ angular.module('dreFrontendApp')
                 matches: "="
             },
             link: function (scope, element, attrs, ctrl) {
-                scope.$watch('matches', function (newValue, oldValue) {
+                scope.$watch('matches', function (newValue) {
                     if (newValue) {
                         ctrl.update(newValue);
                     }

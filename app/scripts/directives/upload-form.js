@@ -40,27 +40,17 @@ angular.module('dreFrontendApp')
                     return issues;
                 };
 
-                uploader.onBeforeUploadItem = function (item) {
+                uploader.onBeforeUploadItem = function () {
                     $scope.model = {};
                 };
 
                 uploader.onSuccessItem = $scope.uploadSuccess;
 
-                uploader.onErrorItem = $scope.uploadError || function(fileItem, response, status, headers) {
+                uploader.onErrorItem = $scope.uploadError || function(fileItem, response) {
                     $scope.model = {
                         issues: color_issues(response.issue)
                    };
                 };
-                uploader.onCancelItem = function(fileItem, response, status, headers) {
-                    /* add handler here */
-                };
-                uploader.onCompleteItem = function(fileItem, response, status, headers) {
-                    /* add handler here */
-                };
-                uploader.onCompleteAll = function() {
-                    /* add handler here */
-                };
-
             }
         };
     });

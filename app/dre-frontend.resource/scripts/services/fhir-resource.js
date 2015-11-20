@@ -4,7 +4,7 @@
 "use strict";
 
 angular.module('dreFrontend.resource')
-    .factory('FhirResource',function(dreFrontendFhirService, $log){
+    .factory('FhirResource',function(dreFrontendFhirService){
         var FhirResource = function (data){
             this.setData(data);
         };

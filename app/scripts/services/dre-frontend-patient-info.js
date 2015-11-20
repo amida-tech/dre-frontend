@@ -15,10 +15,10 @@ angular.module('dreFrontendApp')
         var patientIdPromise = null;
         var self = {
             getPatientId: function () {
-                if(patientId){
+                if (patientId) {
                     return $q.when(patientId);
-                }else{
-                    if(patientIdPromise == null){
+                } else {
+                    if (patientIdPromise === null) {
                         patientIdPromise = $q.defer();
                     }
                     return patientIdPromise.promise;
@@ -26,7 +26,7 @@ angular.module('dreFrontendApp')
             },
             setPatientId: function (id) {
                 patientId = id;
-                if(patientIdPromise){
+                if (patientIdPromise) {
                     patientIdPromise.resolve(patientId);
                     patientIdPromise = null;
                 }
@@ -34,13 +34,13 @@ angular.module('dreFrontendApp')
             clearPatientData: function () {
                 patientData = null;
                 patientId = null;
-                if(patientIdPromise){
+                if (patientIdPromise) {
                     patientIdPromise.reject('logout');
                     patientIdPromise = null;
                 }
             },
             getPatientData: function (force) {
-                return self.getPatientId().then(function(patientId){
+                return self.getPatientId().then(function (patientId) {
                     if (angular.isObject(patientData) && !force) {
                         patientDataRequest = null;
                         return $q.when(patientData);

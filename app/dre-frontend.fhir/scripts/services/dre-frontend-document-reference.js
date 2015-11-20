@@ -1,7 +1,8 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendDocumentReference', function (dreFrontendFhirService, dreFrontendUtil, $q, FhirDocumentReference) {
+    .factory('dreFrontendDocumentReference', function (dreFrontendFhirService, dreFrontendUtil, $q,
+                                                       FhirDocumentReference) {
         function proceedBundle(bundle) {
             for (var n = 0; n < bundle.entry.length; n++) {
                 bundle.entry[n] = new FhirDocumentReference(bundle.entry[n]);
@@ -60,7 +61,7 @@ angular.module('dreFrontend.fhir')
 
                 if (documentReferenceBundle.getPage) {
                     var pages = [];
-                    for (var i = 1; i < documentReferenceBundle.total / page_size; i++) {
+                    for (var i = 1; i < documentReferenceBundle.total / dreFrontendFhirService.getCount() +1; i++) {
                         pages.push(documentReferenceBundle.getPage(i));
                     }
                     return $q.all(pages).then(function (bundles) {

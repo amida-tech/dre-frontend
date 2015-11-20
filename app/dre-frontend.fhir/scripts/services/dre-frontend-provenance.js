@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendProvenance', function (dreFrontendFhirService, dreFrontendUtil, dreFrontendDocumentReference, $q, FhirProvenance) {
+    .factory('dreFrontendProvenance', function (dreFrontendFhirService, dreFrontendDocumentReference, $q, FhirProvenance, _) {
         function proceedBundle(bundle) {
             for (var n = 0; n < bundle.entry.length; n++) {
                 bundle.entry[n] = new FhirProvenance(bundle.entry[n]);
@@ -31,7 +31,7 @@ angular.module('dreFrontend.fhir')
                     .then(function(bundle){
                         var provenances = [];
                         angular.forEach(bundle.entry,function(p){
-                            provenances.push(p.getDocReferences())
+                            provenances.push(p.getDocReferences());
                         });
 
                         return $q.all(provenances)

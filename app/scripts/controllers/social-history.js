@@ -30,20 +30,20 @@ angular.module('dreFrontendApp')
                         additionalInfo: dreFrontendEntryService.getEntryAddInfo(entry),
                         dates: dreFrontendEntryService.getEntryDates(entry),
                         menuType: dreFrontendGlobals.menuRecordTypeEnum.inline
-                    })
+                    });
                 });
                 $scope.filterSocialHistory();
-                if($scope.model.filteredSocialHistoryList.length == 0){
+                if ($scope.model.filteredSocialHistoryList.length === 0) {
                     $scope.model.showInactive = true;
                     $scope.filterSocialHistory();
                 }
             });
         });
         $scope.filterSocialHistory = function () {
-            $scope.model.filteredSocialHistoryList = $scope.model.showInactive
-                ? $scope.model.socialHistoryList
-                : _.filter($scope.model.socialHistoryList, function (item) {
-                        return item.dates.isInactive == false;
-                    });
+            $scope.model.filteredSocialHistoryList = $scope.model.showInactive ?
+                $scope.model.socialHistoryList :
+                _.filter($scope.model.socialHistoryList, function (item) {
+                    return item.dates.isInactive === false;
+                });
         };
     });

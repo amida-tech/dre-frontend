@@ -19,10 +19,7 @@ angular.module('dreFrontendApp')
 
         dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
-        });
-
-        dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
-            dreFrontendAllergyIntolerances.getByPatientId(patientId).then(function (allergies) {
+            dreFrontendAllergyIntolerances.getByPatientId(patient.id).then(function (allergies) {
                 _.forEach(allergies.entry, function (entry) {
                     $scope.model.list.push(
                         dreFrontendEntryService.getEntry(
@@ -32,6 +29,6 @@ angular.module('dreFrontendApp')
                         )
                     );
                 });
-            })
+            });
         });
     });

@@ -8,21 +8,21 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-  .controller('AccountCtrl', function ($scope, dreFrontendAuthService) {
+    .controller('AccountCtrl', function ($scope, dreFrontendAuthService) {
         $scope.model = {
             oldPassword: "",
             newPassword: "",
-            retypeNewPassword: "",
+            retypeNewPassword: ""
         };
         $scope.error = '';
-        $scope.isPasswordEquals = function() {
+        $scope.isPasswordEquals = function () {
             return ($scope.model.newPassword === $scope.model.retypeNewPassword);
         };
 
-        $scope.updatePassword = function() {
-            dreFrontendAuthService.changePassword($scope.model.oldPassword, $scope.model.newPassword).then(function(response) { }, function(reason) {
-                $scope.error = reason;
-            });
-
-        }
-  });
+        $scope.updatePassword = function () {
+            dreFrontendAuthService.changePassword($scope.model.oldPassword, $scope.model.newPassword)
+                .catch(function (reason) {
+                    $scope.error = reason;
+                });
+        };
+    });

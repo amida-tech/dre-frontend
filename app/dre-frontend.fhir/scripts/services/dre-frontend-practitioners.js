@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendPractitioners', function (dreFrontendFhirService, FhirPractitioner) {
+    .factory('dreFrontendPractitioners', function (dreFrontendFhirService, FhirPractitioner, $q) {
         function proceedBundle(bundle) {
             for (var n = 0; n < bundle.entry.length; n++) {
                 bundle.entry[n] = new FhirPractitioner(bundle.entry[n]);
@@ -29,7 +29,7 @@ angular.module('dreFrontend.fhir')
             var _fields = ['fax','phone'];
             for(var n=0; n<_fields.length; n++) {
                 if (addr[_fields[n]]) {
-                    dest.push({system:_fields[n], value: addr[_fields[n]]})
+                    dest.push({system:_fields[n], value: addr[_fields[n]]});
                 }
             }
         }

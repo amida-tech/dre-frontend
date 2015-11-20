@@ -12,18 +12,18 @@ angular.module('dreFrontend.fhir')
             $get: function (Restangular, $q, fhirEnv, dreFrontendUtil, $log, _) {
 
                 function _add_page_handlers(bundleResource) {
-                    if (bundleResource.resourceType == fhirEnv.bundleType) {
+                    if (bundleResource.resourceType === fhirEnv.bundleType) {
                         var handlers = {};
                         angular.forEach(bundleResource.link,
                             function (_link) {
-                                if (_link.relation == "next" || _link.relation == "previous") {
+                                if (_link.relation === "next" || _link.relation === "previous") {
                                     var params = dreFrontendUtil.getURLparams(_link.url);
                                     params._getpagesoffset *= 1;
                                     params._count *= 1;
                                     handlers[_link.relation] = function () {
                                         return Restangular.one('').get(params).then(set_response);
                                     };
-                                    handlers['getPage'] = function (offset) {
+                                    handlers.getPage = function (offset) {
                                         var page_count = bundleResource.total / params._count + 1;
                                         if (offset >= 0 && offset < page_count) {
                                             var _params = params;
@@ -32,7 +32,7 @@ angular.module('dreFrontend.fhir')
                                         } else {
                                             return $q.reject("incorrect page number");
                                         }
-                                    }
+                                    };
                                 }
                             }
                         );
@@ -47,31 +47,27 @@ angular.module('dreFrontend.fhir')
                     var a_filter = [];
                     var r_type = fhirEnv.resourceTypes[this.resourceType];
 
-                    if (r_type && r_type.hasOwnProperty(filter))
+                    if (r_type && r_type.hasOwnProperty(filter)) {
                         a_filter = r_type[filter];
+                    }
 
                     proceed_reference(
                         this,
                         function (resource, key) {
-                            if ( a_filter.length<1 || a_filter.indexOf(key) !== -1) {
+                            if (a_filter.length < 1 || a_filter.indexOf(key) !== -1) {
                                 children.push(resource.load(force));
                             }
                         },
-                        deep || fhirEnv.max_resource_nesting );
+                        deep || fhirEnv.max_resource_nesting);
 
-                    return $q.all(children).then(function(){return self;});
+                    return $q.all(children).then(function () {
+                        return self;
+                    });
                 };
 
                 function _is_valid_resource_type(resourceType) {
-                    var res;
-
-                    if (resourceType) {
-                        if (dreFrontendUtil.isFhirResource(resourceType))
-                            res = $q.resolve(resourceType);
-                        else
-                            res = $q.reject("unsupported resource type: " + resourceType);
-                    }
-                    return res;
+                    return (resourceType && dreFrontendUtil.isFhirResource(resourceType)) ?
+                        $q.resolve(resourceType) : $q.reject("unsupported resource type: " + resourceType);
                 }
 
                 function set_response(resource) {
@@ -81,6 +77,7 @@ angular.module('dreFrontend.fhir')
                         });
                         return _.omit(r, ["base", "link", "search", "text"]);
                     }
+
                     /* remove unnecessary data */
 
                     resource = Restangular.stripRestangular(resource);
@@ -102,13 +99,17 @@ angular.module('dreFrontend.fhir')
                 }
 
                 function proceed_reference(node, callback, deep) {
-                    if (deep>=0) {
-                        _.forEach(node, function (v,k) {
+                    if (deep >= 0) {
+                        _.forEach(node, function (v, k) {
                             var _type = typeof v;
                             if (v && _type === "object" && v.hasOwnProperty("reference")) {
-                                if (callback && typeof callback === "function") callback(v,k);
+                                if (callback && typeof callback === "function") {
+                                    callback(v, k);
+                                }
                             }
-                            if (_type === "object" || _type === "array") proceed_reference(v, callback, deep - 1);
+                            if (_type === "object" || _type === "array") {
+                                proceed_reference(v, callback, deep - 1);
+                            }
                         });
                     }
                 }
@@ -127,7 +128,7 @@ angular.module('dreFrontend.fhir')
                             if (force || !this.resourceType) {
                                 if (obj.reference.match(/^#.+/)) {
                                     /* contained resource */
-                                    var data = _.first(_.filter(resource.contains, {"id": obj.reference.substring(1)})) || {};
+                                    var data = _.first(_.filter(obj.contains, {"id": obj.reference.substring(1)})) || {};
                                     return process_sub_resource(data);
                                 } else {
                                     /* relative reference resource */
@@ -143,25 +144,26 @@ angular.module('dreFrontend.fhir')
                 }
 
                 function _search(resourceType, params) {
-                    if (typeof params == "undefined") {
+                    if (typeof params === "undefined") {
                         params = resourceType;
                         resourceType = null;
                     }
 
-                    if (!params._count)
+                    if (!params._count) {
                         angular.extend(params, {"_count": _count});
-
-                    if (resourceType)
+                    }
+                    if (resourceType) {
                         return _is_valid_resource_type(resourceType)
                             .then(function (resType) {
                                 return Restangular.one(resType, '_search').get(params).then(set_response);
                             });
-                    else
+                    } else {
                         return Restangular.one('_search').get(params).then(set_response);
+                    }
                 }
 
                 function _read(resourceType, id) {
-                    var params = (typeof id == 'undefined') ? {"_count": _count} : {};
+                    var params = (typeof id === 'undefined') ? {"_count": _count} : {};
 
                     return _is_valid_resource_type(resourceType)
                         .then(function (resType) {
@@ -175,9 +177,9 @@ angular.module('dreFrontend.fhir')
 
                 function _create(resourceType, data) {
                     return Restangular.one(resourceType).customPOST(data)
-                        .then(function(operationOutcome){
+                        .then(function (operationOutcome) {
                             var ref = dreFrontendUtil.parseResourceReference(operationOutcome.issue[0].diagnostics);
-                            return _read(ref[0],ref[1]);
+                            return _read(ref[0], ref[1]);
                         });
                 }
 
@@ -186,7 +188,7 @@ angular.module('dreFrontend.fhir')
                 }
 
                 function _delete(resourceType, id) {
-                    return $q.reject("not implemented");
+                    return $q.reject("not implemented 'delete(", resourceType, id, ")'");
                 }
 
                 return {
@@ -195,9 +197,14 @@ angular.module('dreFrontend.fhir')
                     history: _history,
                     create: _create,
                     update: _update,
-                    delete: _delete
+                    delete: _delete,
+                    getCount: function () {
+                        return _count;
+                    },
                 };
             }
 
-        };
-    });
+        }
+            ;
+    })
+;

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dreFrontend.util')
-    .service('dreFrontendNotesService', function (dreFrontendHttp, $q, _, $log) {
+    .service('dreFrontendNotesService', function (dreFrontendHttp, $q, _) {
         var notesList = null;
         var notesListPromise = null;
         var urls = {

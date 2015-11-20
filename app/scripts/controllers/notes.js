@@ -21,11 +21,11 @@ angular.module('dreFrontendApp')
                 .then(function (notesList) {
                     var noteType = _.find(dreFrontendGlobals.resourceTypes, {alias: $stateParams.group});
                     var rawNotesList = angular.isUndefined(noteType) ? notesList : _.filter(notesList, {section: noteType.type});
-                    if ($scope.model.filterByStar != 'all') {
+                    if ($scope.model.filterByStar !== 'all') {
                         rawNotesList = _.filter(rawNotesList, function (item) {
-                            return ($scope.model.filterByStar == 'starred' && item.star)
-                                || ($scope.model.filterByStar != 'starred' && !item.star);
-                        })
+                            return ($scope.model.filterByStar === 'starred' && item.star) ||
+                                ($scope.model.filterByStar !== 'starred' && !item.star);
+                        });
                     }
                     $scope.model.notesList = [];
                     _.forEach(rawNotesList, function (entry) {
@@ -59,7 +59,7 @@ angular.module('dreFrontendApp')
 
         $scope.goToEntry = function (item) {
             var alias = item.resourceType ? item.resourceType.alias : undefined;
-            if (alias == dreFrontendGlobals.resourceTypes.Insurance.alias || alias == dreFrontendGlobals.resourceTypes.Claim.alias) {
+            if (alias === dreFrontendGlobals.resourceTypes.Insurance.alias || alias === dreFrontendGlobals.resourceTypes.Claim.alias) {
                 $state.go('billing.' + alias, {id: item.note.entry});
             } else {
                 $state.go('record.' + alias, {id: item.note.entry});
@@ -82,9 +82,9 @@ angular.module('dreFrontendApp')
                     if (fhir_service) {
                         fhir_service.getById(item.note.entry)
                             .then(function (resourceEntry) {
-                                if (item.type == 'MedicationOrder') {
+                                if (item.type === 'MedicationOrder') {
                                     return resourceEntry.loadMedication()
-                                        .then(function (medication) {
+                                        .then(function () {
                                             return resourceEntry;
                                         });
                                 } else {
@@ -98,12 +98,12 @@ angular.module('dreFrontendApp')
                                 });
                                 return item_data;
                             })
-                            .catch(function (error) {
+                            .catch(function () {
                                 item_data.entryTitle = "Related resource entry not found";
                             })
                             .finally(function () {
                                 angular.extend(item, item_data);
-                            })
+                            });
                     }
                 } else {
                     item_data.entryTitle = "Resource entry unsupported";

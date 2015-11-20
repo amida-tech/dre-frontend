@@ -18,10 +18,11 @@ angular.module('dreFrontend.fhir')
                 return dreFrontendFhirService.search("Encounter", {patient: patient_id})
                     .then(function (bundle) {
                         var locations = [];
-                        angular.forEach(bundle.entry, function (res, res_key) {
+                        angular.forEach(bundle.entry, function (res) {
                             angular.forEach(res.location, function (location_entry) {
-                                if (location_entry.location)
+                                if (location_entry.location) {
                                     locations.push(location_entry.location.load());
+                                }
                             });
                         });
                         return $q.all(locations).then(function () {

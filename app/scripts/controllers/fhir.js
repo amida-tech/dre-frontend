@@ -12,6 +12,7 @@ angular.module('dreFrontendApp')
     function ($scope,
               $log,
               $q,
+              _,
               dreFrontendFhirService,
               dreFrontendMedications,
               dreFrontendObservations,
@@ -28,8 +29,7 @@ angular.module('dreFrontendApp')
               dreFrontendMedicationDispenses,
               dreFrontendMedicationStatements,
               dreFrontendProcedures,
-              dreFrontendProvenance,
-              dreFrontendDocumentReference
+              dreFrontendProvenance
     ) {
 
         function success_handler(response) {
@@ -217,14 +217,14 @@ angular.module('dreFrontendApp')
                 .catch(fail_handler);
         };
 
-        $scope.uploadError = function(fileItem, response, status, headers) {
+        $scope.uploadError = function(fileItem, response) {
             console.log(response);
             $scope.response = response.issue;
             $scope.res_type = "danger";
         };
-        $scope.uploadSuccess = function(fileItem, response, status, headers) {
+        $scope.uploadSuccess = function(fileItem, response) {
             var issues = [];
-            angular.forEach(_.pluck(response.entry, "resource"), function(v,k){
+            angular.forEach(_.pluck(response.entry, "resource"), function(v){
                 if (v && v.resourceType === "OperationOutcome") {
                     angular.merge(issues, v.issue);
                 }
@@ -260,46 +260,12 @@ angular.module('dreFrontendApp')
                 res_body.subject = {reference : "Patient/3768"};
                 res_body.performer = [];
                 dreFrontendFhirService.create(res.resourceType, res_body)
-                    .then(function (r) {
+                    .then(function () {
                         $scope.response.push(res_body.code.coding[0].display);
                     });
             });
         };
 
         /* paste data in array below */
-        var fhir_data = [ {
-                "resourceType":"Observation",
-                "id":"104972",
-                "text":{
-                    "status":"generated",
-                    "div":"<div xmlns=\"http://www.w3.org/1999/xhtml\">2009-05-14: weight = 88.133 kg</div>"
-                },
-                "status":"final",
-                "category": {
-                  "coding":[{
-                      "code": "vital-signs",
-                      "display": "Vital Signs"
-                  }]
-                },
-                "code":{
-                    "coding":[
-                        {
-                            "system":"http://loinc.org",
-                            "code":"3141-9",
-                            "display":"weight"
-                        }
-                    ]
-                },
-                "subject":{
-                    "reference":"Patient/104809"
-                },
-                "encounter":{
-                    "reference":"Encounter/104824"
-                },
-                "valueQuantity":{
-                    "value":88.133,
-                    "system":"http://unitsofmeasure.org",
-                    "code":"kg"
-                }
-            }];
+        var fhir_data = [];
     });

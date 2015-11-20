@@ -8,7 +8,7 @@
  */
 angular.module('dreFrontendApp')
     .directive('userTimelineEntryBody', function ($state, dreFrontendAuthService, $rootScope, dreFrontendGlobals,
-                                              dreFrontendModalsService, $stateParams, $uiViewScroll, $timeout, $log) {
+                                              dreFrontendModalsService, $stateParams, $uiViewScroll, $timeout) {
         return {
             templateUrl: 'views/directives/user-timeline-entry-body.html',
             restrict: 'AE',
@@ -23,26 +23,27 @@ angular.module('dreFrontendApp')
                 };
 
                 var toggleMenu = function () {
-                    if ($scope.userTimelineEntry.menuType == dreFrontendGlobals.menuRecordTypeEnum.popup) {
+                    if ($scope.userTimelineEntry.menuType === dreFrontendGlobals.menuRecordTypeEnum.popup) {
                         $scope.showMedicationInfo();
                     }
-                    if ($scope.userTimelineEntryBody.menuType == dreFrontendGlobals.menuRecordTypeEnum.inline) {
+                    if ($scope.userTimelineEntryBody.menuType === dreFrontendGlobals.menuRecordTypeEnum.inline) {
                         $scope.userTimelineEntryBody.isDetailsOpen = !$scope.userTimelineEntry.isDetailsOpen;
                     }
                 };
 
-                var toggleMenuCleanEvent = $scope.$on('toggleMenu', function (event) {
+                var toggleMenuCleanEvent = $scope.$on('toggleMenu', function () {
                     toggleMenu();
                 });
 
                 $scope.$on('$destroy', function () {
                     toggleMenuCleanEvent();
                 });
-                if ($stateParams.id && $scope.userTimelineEntryBody.rawEntry.id == $stateParams.id) {
+
+                if ($stateParams.id && $scope.userTimelineEntryBody.rawEntry.id === $stateParams.id) {
                     element.addClass('bg-warning');
                     $timeout(function () {
                         element.removeClass('bg-warning');
-                        $state.go($state.current.name,{id:undefined},{notify:false, reload:false})
+                        $state.go($state.current.name,{id:undefined},{notify:false, reload:false});
                     }, 3000);
 
                     $timeout(function () {

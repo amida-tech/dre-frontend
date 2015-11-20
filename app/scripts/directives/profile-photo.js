@@ -7,7 +7,7 @@
  * # profilePhoto
  */
 angular.module('dreFrontendApp')
-    .directive('profilePhoto', function (dreFrontendGlobals,$rootScope, $log) {
+    .directive('profilePhoto', function (dreFrontendGlobals,$rootScope) {
         return {
             templateUrl: 'views/directives/profile-photo.html',
             restrict: 'AE',
@@ -49,7 +49,7 @@ angular.module('dreFrontendApp')
                                 });
                         }
                     }
-                }
+                };
             }
         };
     })

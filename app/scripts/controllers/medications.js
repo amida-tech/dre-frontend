@@ -22,22 +22,18 @@ angular.module('dreFrontendApp')
 
         dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
-        });
-
-        dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
-            dreFrontendMedicationOrder.getByPatientId(patientId).then(function (medications) {
+            dreFrontendMedicationOrder.getByPatientId(patient.id).then(function (medications) {
                 $scope.model.medicationsList = [];
                 _.forEach(medications.entry, function (entry) {
-                    $scope.model.medicationsList.push({
-                        rawEntry: entry,
-                        type: dreFrontendGlobals.resourceTypes.MedicationOrder.type,
-                        title: dreFrontendEntryService.getEntryTitle(entry),
-                        dates: dreFrontendEntryService.getEntryDates(entry),
-                        menuType: dreFrontendGlobals.menuRecordTypeEnum.popup
-                    })
+                    $scope.model.medicationsList.push(dreFrontendEntryService.getEntry(
+                            entry,
+                            dreFrontendGlobals.resourceTypes.MedicationOrder.type,
+                            dreFrontendGlobals.menuRecordTypeEnum.popup
+                        )
+                    );
                 });
                 $scope.filterMedications();
-                if($scope.model.filteredMedicationList.length == 0){
+                if ($scope.model.filteredMedicationList.length === 0) {
                     $scope.model.showInactive = true;
                     $scope.filterMedications();
                 }
@@ -45,13 +41,12 @@ angular.module('dreFrontendApp')
         });
 
         $scope.filterMedications = function () {
-            $scope.model.filteredMedicationList = $scope.model.showInactive
-                ? $scope.model.medicationsList
-                : _.filter($scope.model.medicationsList, function (item) {
-                        return item.dates.isInactive === false;
-                    });
+            $scope.model.filteredMedicationList = $scope.model.showInactive ?
+                $scope.model.medicationsList : _.filter($scope.model.medicationsList, function (item) {
+                return item.dates.isInactive === false;
+            });
         };
-        $scope.showMedicationEdit = function() {
+        $scope.showMedicationEdit = function () {
             dreFrontendModalsService.showMedicationEdit();
-        }
+        };
     });
