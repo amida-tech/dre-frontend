@@ -1,7 +1,7 @@
 <div class="panel panel-body">
     <div class="row">
         <div class="col-sm-6">
-            <h4><span class="text-left" ng-bind="userTimelineEntryBody.title">{{userTimeLi}}</span></h4>
+            <h4><span class="text-left" ng-bind="userTimelineEntryBody.title"></span></h4>
         </div>
         <div class="col-sm-6">
             <div class="text-right" ng-if="userTimelineEntryBody.menuType === menuTypes.popup">
@@ -11,8 +11,10 @@
             </div>
         </div>
     </div>
-    <div ng-show="userTimelineEntryBody.additionalInfo"><span ng-bind="userTimelineEntryBody.additionalInfo"></span></div>
-    <div user-timeline-entry-dates="userTimelineEntryBody.dates"></div>
+    <div ng-show="userTimelineEntryBody.additionalInfo">
+        <span ng-bind="userTimelineEntryBody.additionalInfo"></span>
+    </div>
+    <div user-timeline-entry-dates="userTimelineEntryBody"></div>
     <div ng-if="userTimelineEntryBody.menuType === menuTypes.inline"
          user-timeline-entry-inline-info="userTimelineEntryBody"></div>
 </div>

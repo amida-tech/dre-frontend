@@ -21,7 +21,7 @@ angular.module('dreFrontendApp')
                     }
                 }, true);
             },
-            controller: function ($scope, dreFrontendHttp, $log, $http, _, dreFrontendUtil, dreFrontendMergeService,
+            controller: function ($scope, $log, dreFrontendUtil, dreFrontendMergeService,
                                   dreFrontendGlobals, dreFrontendEntryService) {
                 $scope.model = {
                     title: '',
@@ -33,14 +33,14 @@ angular.module('dreFrontendApp')
 
                 this.update = function (diff) {
                     if (diff) {
-                        $scope.model.title = dreFrontendUtil.camelCaseToString(diff.lhs.resourceType);
-                        $scope.model.resource = dreFrontendEntryService.getEntry(
-                            diff.lhs, '', dreFrontendGlobals.menuRecordTypeEnum.none
-                        );
-
                         if (diff.changes) {
                             angular.forEach(diff.changes, dreFrontendMergeService.prepareChangeModel);
                         }
+                        var resource = dreFrontendEntryService.getEntry(
+                            diff.lhs, '', dreFrontendGlobals.menuRecordTypeEnum.none
+                        );
+                        $scope.model.title = dreFrontendUtil.camelCaseToString(diff.lhs.resourceType);
+                        $scope.model.resource = resource;
                     }
                 };
 

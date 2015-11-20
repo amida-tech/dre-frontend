@@ -60,7 +60,7 @@ angular.module('dreFrontendApp')
                 } else
 
                 //if ISO date
-                if (angular.isDate(propertyValue) /*!isNaN(Date.parse(propertyValue))*/) {
+                if (angular.isDate(propertyValue) /*|| !isNaN(Date.parse(propertyValue))*/) {
                     _item.value = dreFrontendUtil.formatFhirDate(propertyValue);
                 } else
 
@@ -146,7 +146,8 @@ angular.module('dreFrontendApp')
                     dates = {
                         startDate: entry.dateWritten ? entry.dateWritten : null,
                         endDate: entry.dateEnded ? entry.dateEnded : null,
-                        isInactive: entry.status != 'active'
+                        isActive: entry.status === 'active',
+                        isInactive: entry.status !== 'active'
                     };
                     break;
                 case 'Observation'://todo inactive social history
@@ -198,6 +199,17 @@ angular.module('dreFrontendApp')
                     };
                     break;
             }
+            if (dates.startDate) {
+                dates.startDate = dreFrontendUtil.formatFhirDate(dates.startDate);
+            }
+            if (dates.isInactive === false) {
+                dates.endDate = 'Present';
+            } else {
+                if (dates.endDate) {
+                    dates.endDate = dreFrontendUtil.formatFhirDate(dates.endDate);
+                }
+            }
+            dates.isActive = dates.isActive || (dates.isInactive === false);
             return dates;
 
         };
