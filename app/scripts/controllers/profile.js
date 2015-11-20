@@ -200,11 +200,11 @@ angular.module('dreFrontendApp')
 
         //TODO Check for bad response, SHOW IT in the GUI
 
-        var _updatePatient = function(_patient) {
-            _patient = _patient || $scope.model.patient;
+        var _updatePatient = function (_patient, _editSection) {
             _patient.update()
-                .then(function(){
-                    $scope.changeEditProfileSection(true);
+                .then(function () {
+                    $scope.view[_editSection]= false;
+                    $scope.initPatientModel(true);
                 });
         };
 
@@ -262,10 +262,14 @@ angular.module('dreFrontendApp')
                 patient.extension.push(ethnicityObj);
             }
 
-            _updatePatient(patient);
+            _updatePatient($scope.model.patient, 'edit');
         };
 
-        $scope.updateAddress = _updatePatient;
-        $scope.updatePhone = _updatePatient;
-    })
-;
+        $scope.updateAddress = function () {
+            _updatePatient($scope.model.patient, 'addressEdit');
+        };
+
+        $scope.updatePhone = function () {
+            _updatePatient($scope.model.patient, 'phoneEdit');
+        };
+    });
