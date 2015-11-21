@@ -480,7 +480,19 @@ module.exports = function (grunt) {
           }
         }
       },
-      qa: {
+      local: {
+        options: {
+        },
+        constants: {
+          dreFrontendEnvironment: {
+              swapDiff: true,
+            name: 'local',
+            baseServerUrl:'http://localhost:3000/api/v1',
+            fhirServerUrl:'http://localhost:8080/fhir/baseDstu2',
+            enableDebugLog:true
+          }
+        }
+      },      qa: {
         options: {
         },
         constants: {
