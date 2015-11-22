@@ -12,7 +12,7 @@ angular.module('dreFrontendApp')
 
 /* 2do: refactor code & move calls into FhirResource children implementations*/
 
-        var _black_list = ["photo"];
+        var _black_list = ["photo", "extension"];
 
         var isValidName = function (name, black_list) {
             return (name[0] !== '$' && !_.contains(black_list, name));
@@ -52,6 +52,59 @@ angular.module('dreFrontendApp')
                     if (_item.value.length < 1) {
                         _item.value = null;
                     }
+                } else
+
+                if (propertyName==="system"){
+                    switch(propertyValue){
+                        case "http://www.ama-assn.org/go/cpt":
+                            _item.value="CPT";    
+                            break;
+                        case "http://snomed.info/sct":
+                            _item.value="SNOMED";    
+                            break;
+                        case "http://loinc.org":
+                            _item.value="LOINC";    
+                            break;
+                        case "http://www.nlm.nih.gov/research/umls/rxnorm":
+                            _item.value="RXNORM";    
+                            break;
+                        case "http://www2a.cdc.gov/vaccines/iis/iisstandards/vaccines.asp?rpt=cvx":
+                            _item.value="CVX";    
+                            break;
+                        /*
+                        case "urn:oid:2.16.840.1.113883.5.83":
+                            _item.value="MAGIC CODE SYSTEM";    
+                            break;
+                        case "urn:oid:2.16.840.1.113883.3.88.12.3221.8.9":
+                            _item.value="MAGIC CODE SYSTEM";    
+                            break;
+                        case "urn:oid:2.16.840.1.113883.6.259":
+                            _item.value="MAGIC CODE SYSTEM";    
+                            break;
+                        case "urn:oid:2.16.840.1.113883.3.26.1.1":
+                            _item.value="MAGIC CODE SYSTEM";    
+                            break;
+                        case "urn:oid:2.16.840.1.113883.5.8":
+                            _item.value="MAGIC CODE SYSTEM";    
+                            break;
+                        case "http://hl7.org/fhir/v3/ParticipationType":
+                            _item.value="MAGIC CODE SYSTEM";    
+                            break;
+                        case "":
+                            _item.value="MAGIC CODE SYSTEM";    
+                            break;
+                        case "":
+                            _item.value="MAGIC CODE SYSTEM";    
+                            break;
+                        */
+                        default:
+                            //_item.value="MAGIC CODE SYSTEM";  
+                            _item.value=  propertyValue;
+
+
+                            
+                    }
+                    
                 } else
 
                 //number value
