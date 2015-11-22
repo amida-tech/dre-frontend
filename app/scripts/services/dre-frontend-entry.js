@@ -60,36 +60,36 @@ angular.module('dreFrontendApp')
                             _item.value="CPT";    
                             break;
                         case "http://snomed.info/sct":
-                            _item.value="SNOMED";    
+                            _item.value="SNOMED-CT";    
                             break;
                         case "http://loinc.org":
                             _item.value="LOINC";    
                             break;
                         case "http://www.nlm.nih.gov/research/umls/rxnorm":
-                            _item.value="RXNORM";    
+                            _item.value="RxNORM";    
                             break;
                         case "http://www2a.cdc.gov/vaccines/iis/iisstandards/vaccines.asp?rpt=cvx":
                             _item.value="CVX";    
                             break;
-                        /*
                         case "urn:oid:2.16.840.1.113883.5.83":
-                            _item.value="MAGIC CODE SYSTEM";    
-                            break;
-                        case "urn:oid:2.16.840.1.113883.3.88.12.3221.8.9":
-                            _item.value="MAGIC CODE SYSTEM";    
-                            break;
-                        case "urn:oid:2.16.840.1.113883.6.259":
-                            _item.value="MAGIC CODE SYSTEM";    
+                            _item.value="HITSP C80 Observation Status";    
                             break;
                         case "urn:oid:2.16.840.1.113883.3.26.1.1":
-                            _item.value="MAGIC CODE SYSTEM";    
+                            _item.value="NCI Thesaurus";    
+                            break;
+                        case "urn:oid:2.16.840.1.113883.3.88.12.3221.8.9":
+                            _item.value="Body Site Value Set";    
+                            break;
+                        case "urn:oid:2.16.840.1.113883.6.259":
+                            _item.value="Healthcare Service Location (HL7)";    
                             break;
                         case "urn:oid:2.16.840.1.113883.5.8":
-                            _item.value="MAGIC CODE SYSTEM";    
+                            _item.value="HL7 v3 Act Reason";    
                             break;
                         case "http://hl7.org/fhir/v3/ParticipationType":
-                            _item.value="MAGIC CODE SYSTEM";    
+                            _item.value="HL7 v3 Participation Type";    
                             break;
+                        /*
                         case "":
                             _item.value="MAGIC CODE SYSTEM";    
                             break;
@@ -99,10 +99,7 @@ angular.module('dreFrontendApp')
                         */
                         default:
                             //_item.value="MAGIC CODE SYSTEM";  
-                            _item.value=  propertyValue;
-
-
-                            
+                            _item.value=  propertyValue;                            
                     }
                     
                 } else
