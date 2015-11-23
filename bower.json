@@ -8,7 +8,6 @@
     "angular-file-upload": "~2.1.3",
     "angular-messages": "~1.4.4",
     "angular-mocks": "~1.4.4",
-    "angular-momentjs": "~0.2.2",
     "angular-nvd3": "~0.1.1",
     "angular-touch": "^1.4.4",
     "angular-ui-router": "~0.2.15",

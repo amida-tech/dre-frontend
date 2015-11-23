@@ -8,14 +8,26 @@
  * Service in the dreFrontendApp.
  */
 angular.module('dreFrontendApp')
-    .factory('dreFrontendEntryService', function (_, dreFrontendUtil) {
+    .factory('dreFrontendEntryService', function (_, dreFrontendUtil, $log) {
 
-/* 2do: refactor code & move calls into FhirResource children implementations*/
+        /* 2do: refactor code & move calls into FhirResource children implementations*/
 
         var _black_list = ["photo"];
 
         var isValidName = function (name, black_list) {
             return (name[0] !== '$' && !_.contains(black_list, name));
+        };
+
+        var _fixCodingOrder = function (_obj) {
+            var _keys = ['display', 'system', 'code'];
+            var res = {};
+            angular.forEach(_keys, function(_key){
+               if (_obj[_key]) {
+                   res[_key] = _obj[_key];
+               }
+            });
+            angular.extend(res,_obj);
+            return res;
         };
 
         var _buildTable = function (dataItem, blackList) {
@@ -30,55 +42,52 @@ angular.module('dreFrontendApp')
                     value: null
                 };
 
-                //if nested array of objects
-                if (angular.isArray(propertyValue)) {
-                    var allScalar = true;
-                    _item.value = [];
-                    propertyValue.forEach(function (item) {
-                        var rowItemData = item;
-                        if (!angular.isString(item)) {
-                            allScalar = false;
-                            rowItemData = _buildTable(item, blackList);
-                            if (rowItemData.length > 0) {
+                switch (dreFrontendUtil.guessDataType(propertyValue)) {
+                    case 'object':
+                        var rowObjectData = _buildTable(propertyValue, blackList);
+                        if (angular.isArray(rowObjectData) && rowObjectData.length > 0) {
+                            _item.value = rowObjectData;
+                            _item.type = 'object';
+                        }
+                        break;
+
+                    case 'array':
+                        var allScalar = true;
+                        _item.value = [];
+                        propertyValue.forEach(function (item) {
+                            var rowItemData = item;
+                            if (!angular.isString(item)) {
+                                if (propertyName === 'coding') {
+                                    $log.debug(item);
+                                    item =  _fixCodingOrder(item);
+                                    $log.debug(item);
+                                }
+                                allScalar = false;
+                                rowItemData = _buildTable(item, blackList);
+                                if (rowItemData.length > 0) {
+                                    _item.value.push(rowItemData);
+                                }
+                            } else {
                                 _item.value.push(rowItemData);
                             }
-                        } else {
-                            _item.value.push(rowItemData);
+                        });
+
+                        _item.type = allScalar ? 'array' : 'objectsList';
+
+                        if (_item.value.length < 1) {
+                            _item.value = null;
                         }
-                    });
+                        break;
 
-                    _item.type = allScalar ? 'array' : 'objectsList';
+                    case 'date':
+                        _item.value = dreFrontendUtil.formatFhirDate(propertyValue);
+                        break;
 
-                    if (_item.value.length < 1) {
-                        _item.value = null;
-                    }
-                } else
-
-                //number value
-                if (angular.isNumber(propertyValue) /*|| !isNaN(parseFloat(propertyValue))*/) {
-                    _item.value = propertyValue;
-                } else
-
-                //if ISO date
-                if (angular.isDate(propertyValue) /*|| !isNaN(Date.parse(propertyValue))*/) {
-                    _item.value = dreFrontendUtil.formatFhirDate(propertyValue);
-                } else
-
-                //String value
-                if (angular.isString(propertyValue)) {
-                    _item.value = propertyValue;
-                } else
-
-                //if nested object
-                if (angular.isObject(propertyValue)) {
-                    var rowObjectData = _buildTable(propertyValue, blackList);
-                    if (angular.isArray(rowObjectData) && rowObjectData.length > 0) {
-                        _item.value = rowObjectData;
-                        _item.type = 'object';
-                    }
+                    default:
+                        _item.value = propertyValue;
                 }
 
-                if (_item.value !== null ) {
+                if (_item.value !== null) {
                     dataItems.push(_item);
                 }
             };
@@ -151,7 +160,7 @@ angular.module('dreFrontendApp')
                     };
                     break;
                 case 'Observation':
-                //todo inactive social history
+                    //todo inactive social history
                     if (angular.isDefined(entry.appliesDateTime)) {
                         dates = {startDate: entry.appliesDateTime};
                     } else {
@@ -255,7 +264,7 @@ angular.module('dreFrontendApp')
             return info;
         };
 
-        var _initEntry = function(rawData, iconType, menuType) {
+        var _initEntry = function (rawData, iconType, menuType) {
             return {
                 rawEntry: rawData,
                 type: iconType,

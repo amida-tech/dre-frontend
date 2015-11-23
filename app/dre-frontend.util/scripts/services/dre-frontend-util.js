@@ -91,6 +91,22 @@ angular.module("dreFrontend.util")
                     data = new Class(data);
                 }
                 return data;
+            },
+            guessDataType: function (data) {
+                var _length = data.length ? data.length : NaN;
+                var _type = 'string';
+                var _date_delimeters = [':','-','/'];
+
+                if (angular.isArray(data)) {
+                    _type = 'array';
+                } else if (!isNaN(data * 1)) {
+                    _type = 'number';
+                } else if (angular.isDate(data) || (_length > 6 && !isNaN(Date.parse(data)))){
+                    _type = 'date';
+                } else if (angular.isObject(data)) {
+                    _type = 'object';
+                }
+                return _type;
             }
         };
     });

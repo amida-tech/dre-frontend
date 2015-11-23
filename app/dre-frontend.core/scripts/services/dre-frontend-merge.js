@@ -46,8 +46,8 @@ angular.module('dreFrontend.util')
 
             if (match.changes) {
                 angular.forEach(match.changes, function (change) {
-                    if (change.apply) {
-                        DeepDiff.applyChange(lhs, rhs, change);
+                    if (change.apply && window.DeepDiff) {
+                        window.DeepDiff.applyChange(lhs, rhs, change);
                     }
                 });
             }
