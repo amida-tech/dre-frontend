@@ -58,9 +58,7 @@ angular.module('dreFrontendApp')
                             var rowItemData = item;
                             if (!angular.isString(item)) {
                                 if (propertyName === 'coding') {
-                                    $log.debug(item);
                                     item =  _fixCodingOrder(item);
-                                    $log.debug(item);
                                 }
                                 allScalar = false;
                                 rowItemData = _buildTable(item, blackList);
@@ -83,8 +81,12 @@ angular.module('dreFrontendApp')
                         _item.value = dreFrontendUtil.formatFhirDate(propertyValue);
                         break;
 
-                    default:
+                    case 'number':
+                    case 'string':
                         _item.value = propertyValue;
+                        break;
+                    default:
+                        _item.value = null;
                 }
 
                 if (_item.value !== null) {

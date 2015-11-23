@@ -94,7 +94,7 @@ angular.module("dreFrontend.util")
             },
             guessDataType: function (data) {
                 var _length = data.length ? data.length : NaN;
-                var _type = 'string';
+                var _type = typeof data;
                 var _date_delimeters = [':','-','/'];
 
                 if (angular.isArray(data)) {
@@ -103,6 +103,8 @@ angular.module("dreFrontend.util")
                     _type = 'number';
                 } else if (angular.isDate(data) || (_length > 6 && !isNaN(Date.parse(data)))){
                     _type = 'date';
+//                } else if (angular.isString(data)) {
+//                    _type = 'string';
                 } else if (angular.isObject(data)) {
                     _type = 'object';
                 }

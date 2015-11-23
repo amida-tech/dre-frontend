@@ -51,3 +51,16 @@
         }
     }
 }
+
+.details-table {
+    .detail-row {
+        margin-top: 5px;
+        margin-bottom: 5px;
+        margin-left: -30px;
+        .detail-value {
+            margin-top: 0;
+            margin-bottom: 0;
+            border-style: dashed;
+        }
+    }
+}
