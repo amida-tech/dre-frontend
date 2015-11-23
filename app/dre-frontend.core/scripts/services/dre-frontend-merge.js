@@ -136,6 +136,10 @@ angular.module('dreFrontend.util')
             return res;
         };
 
+        var _clearData = function () {
+            matches = null;
+        };
+
         return {
             getList: _getList,
             setList: _setList,
@@ -182,6 +186,7 @@ angular.module('dreFrontend.util')
                     url: urls.replace + '/' + match.rhs.id
                 });
             },
-            prepareChangeModel: _prepareChangeModel
+            prepareChangeModel: _prepareChangeModel,
+            clear: _clearData
         };
     });

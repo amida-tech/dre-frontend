@@ -12,6 +12,7 @@ var app = angular
     .module('dreFrontendApp', ['ui.router', 'ui.bootstrap', 'dreFrontend.core', 'dreFrontend.fhir', 'dreFrontend.util',
         'ngTouch', 'ngMessages', 'nvd3', 'dreFrontend.mocks', 'angularFileUpload', 'ngTable', 'ngFileSaver',
         'angularSpinner', 'ngImgCrop', 'dreFrontend.resource']);
+
 app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryProvider, $locationProvider, datepickerConfig,
                      datepickerPopupConfig, dreFrontendGlobalsProvider, $urlRouterProvider, $stateProvider) {
     var dreFrontendGlobals = dreFrontendGlobalsProvider.$get();
@@ -418,9 +419,13 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
     $urlRouterProvider.otherwise('/');
 
 });
-app.run(function ($rootScope, $state, $stateParams, dreFrontendAuthService, dreFrontEndPatientInfoService, dreFrontendGlobals, dreFrontendNotesService) {
+
+app.run(function ($rootScope, $state, $stateParams, dreFrontendAuthService, dreFrontEndPatientInfoService,
+                  dreFrontendGlobals, dreFrontendNotesService, dreFrontendMergeService) {
     $rootScope.$on("$stateChangeError", console.log.bind(console));
+
     $rootScope.$state = $state;
+
     $rootScope.$on('$stateChangeStart', function (e, toState, toParams, fromState, fromParams) {
         //if rule not defined
         if (!angular.isDefined(toState.data.isPublic)) {
@@ -442,12 +447,15 @@ app.run(function ($rootScope, $state, $stateParams, dreFrontendAuthService, dreF
             }
         });
     });
+
     $rootScope.$on(dreFrontendGlobals.authEvents.loggedIn, function (event, userId) {
         dreFrontEndPatientInfoService.setPatientId(userId);
         dreFrontendNotesService.getAllNotes();
     });
+
     $rootScope.$on(dreFrontendGlobals.authEvents.loggedOut, function () {
         dreFrontEndPatientInfoService.clearPatientData();
         dreFrontendNotesService.clearAllNotes();
+        dreFrontendMergeService.clear();
     });
 });

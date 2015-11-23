@@ -21,20 +21,15 @@ angular.module('dreFrontendApp')
         dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
             dreFrontendObservations.getSocialHistory(patient.id).then(function (results) {
-                $scope.model.socialHistoryList = [];
+                $scope.model.list = [];
                 _.forEach(results.entry, function (entry) {
-                    $scope.model.socialHistoryList.push(dreFrontendEntryService.getEntry(
+                    $scope.model.list.push(dreFrontendEntryService.getEntry(
                             entry,
                             dreFrontendGlobals.resourceTypes.SocialHistory.type,
                             dreFrontendGlobals.menuRecordTypeEnum.inline
                         )
                     );
                 });
-                $scope.filterSocialHistory();
-                if ($scope.model.filteredSocialHistoryList.length === 0) {
-                    $scope.model.showInactive = true;
-                    $scope.filterSocialHistory();
-                }
             });
         });
     });
