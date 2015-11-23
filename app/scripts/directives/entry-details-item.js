@@ -8,9 +8,8 @@ angular.module('dreFrontendApp')
             scope: {
                 entryDetailsItem: '='
             },
-            template: "<div class='col-xs-12'>" +
-            "<div class='row detail-row' ng-repeat='member in entryDetailsItem' entry-details-item-member='member'></div>" +
-            "</div>"
+            template: "<div><div class='row detail-row' ng-repeat='member in entryDetailsItem' " +
+            "entry-details-item-member='member'></div></div>"
         };
     })
     .directive('entryDetailsItemMember', function ($compile) {
@@ -24,7 +23,7 @@ angular.module('dreFrontendApp')
 
                 if (angular.isObject($scope.entryDetailsItemMember)) {
                     if ($scope.entryDetailsItemMember.label) {
-                        element.append("<div class='col-xs-3 detail-label'><strong ng-bind='entryDetailsItemMember.label'></strong></div>");
+                        element.append("<div class='col-xs-3 detail-label'><span><strong ng-bind='entryDetailsItemMember.label'></strong></span></div>");
                     }
 
                     switch ($scope.entryDetailsItemMember.type) {

@@ -1,8 +1,9 @@
 .panel {
-  border-color: #ddd;
-  border-radius: 0;
-  background-color: rgba(255, 255, 255, 0.75);
+    border-color: #ddd;
+    border-radius: 0;
+    background-color: rgba(255, 255, 255, 0.75);
 }
+
 .match .panel {
     margin-bottom: 3px;
 }
@@ -25,7 +26,7 @@
     }
     .diff-path {
         width: 30%;
-        padding-right:0;
+        padding-right: 0;
 
         .diff-path-data {
             overflow-x: hidden;
@@ -56,11 +57,25 @@
     .detail-row {
         margin-top: 5px;
         margin-bottom: 5px;
-        margin-left: -30px;
+
+        .detail-label {
+            text-overflow: ellipsis;
+            overflow-x: hidden;
+/*            width: 8.5em;*/
+            span {
+                word-wrap: break-word;
+            }
+        }
+
         .detail-value {
             margin-top: 0;
             margin-bottom: 0;
             border-style: dashed;
+            text-overflow: ellipsis;
+            overflow-x: hidden;
+            span {
+                word-wrap: break-word;
+            }
         }
     }
 }
