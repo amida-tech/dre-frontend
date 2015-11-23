@@ -158,7 +158,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
             },
             views: {
                 'pageBody@homeRoot': {
-                    templateUrl: "views/controllers/social-history.html",
+                    templateUrl: "views/controllers/records-common.html",
                     controller: "SocialHistoryCtrl"
                 }
             }

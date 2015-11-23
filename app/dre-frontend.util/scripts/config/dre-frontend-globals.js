@@ -67,7 +67,7 @@ angular.module('dreFrontend.util')
             },
             SocialHistory: {
                 alias: 'social-history',
-                title: 'SocialHistory',
+                title: 'Social History',
                 type: 'SocialHistory',
                 fhirType: 'Observation',
                 serviceName: 'dreFrontendObservations'
