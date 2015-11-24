@@ -19,7 +19,7 @@ angular.module('dreFrontendApp')
         };
 
         var _fixCodingOrder = function (_obj) {
-            var _keys = ['display', 'system', 'code'];
+            var _keys = ['display', 'code', 'system'];
             var res = {};
             angular.forEach(_keys, function(_key){
                if (_obj[_key]) {

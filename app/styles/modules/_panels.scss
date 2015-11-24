@@ -61,18 +61,32 @@
         .detail-label {
             text-overflow: ellipsis;
             overflow-x: hidden;
-/*            width: 8.5em;*/
+            width: $detail-label-width;
+            position: relative;
+            float:left;
+            margin-right: - $detail-label-width;
+            padding: 0 15px;
             span {
                 word-wrap: break-word;
             }
         }
 
+        .detail-container {
+            position: relative;
+            float: left;
+            width: 100%;
+            padding:0 15px 0 $detail-label-width;
+            min-width: 1px;
+        }
+
         .detail-value {
+
             margin-top: 0;
             margin-bottom: 0;
-            border-style: dashed;
+            border: 1px dashed #ddd;
             text-overflow: ellipsis;
             overflow-x: hidden;
+            padding-right: 1px;
             span {
                 word-wrap: break-word;
             }

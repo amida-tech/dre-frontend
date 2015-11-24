@@ -12,7 +12,7 @@ angular.module('dreFrontendApp')
             "entry-details-item-member='member'></div></div>"
         };
     })
-    .directive('entryDetailsItemMember', function ($compile) {
+    .directive('entryDetailsItemMember', function ($compile,$log) {
         return {
             restrict: "AE",
             scope: {
@@ -23,31 +23,33 @@ angular.module('dreFrontendApp')
 
                 if (angular.isObject($scope.entryDetailsItemMember)) {
                     if ($scope.entryDetailsItemMember.label) {
-                        element.append("<div class='col-xs-3 detail-label'><span><strong ng-bind='entryDetailsItemMember.label'></strong></span></div>");
+                        element.append("<div class='detail-label'><span><strong ng-bind='entryDetailsItemMember.label'></strong></span></div>");
                     }
+                    var elem;
 
                     switch ($scope.entryDetailsItemMember.type) {
                         case "string":
 //                            element.append("<td><span>{{entryDetailsItemMember.value}}</span></td>");
-                            element.append("<div class='col-xs-9 detail-value panel panel-default'><span>{{entryDetailsItemMember.value}}</span></div>");
+                            elem = element.append("<div class='detail-container'><div class='col-xs-12 panel detail-value'><span>{{entryDetailsItemMember.value}}</span></div></div>");
                             break;
 
                         case 'object':
 //                            element.append("<td><div entry-details-item='entryDetailsItemMember.value'></div></td>");
-                            element.append("<div class='col-xs-9 detail-value panel panel-default'><div entry-details-item='entryDetailsItemMember.value'></div></div>");
+                            elem = element.append("<div class='detail-container'><div class='col-xs-12 panel detail-value' entry-details-item='entryDetailsItemMember.value'></div></div>");
                             break;
 
                         case 'objectsList':
 //                            element.append("<td ng-class='{tablesBlock:entryDetailsItemMember.value.length > 1}'><div ng-repeat='item in entryDetailsItemMember.value' entry-details-item='item'></div></td>");
-                            element.append("<div class='col-xs-9 detail-value panel panel-default' ng-class='{tablesBlock:entryDetailsItemMember.value.length > 1}'><div ng-repeat='item in entryDetailsItemMember.value' entry-details-item='item'></div></div>");
+                            elem = element.append("<div class='detail-container' ng-class='{tablesBlock:entryDetailsItemMember.value.length > 1}'><div class='col-xs-12 panel detail-value' ng-repeat='item in entryDetailsItemMember.value' entry-details-item='item'></div></div>");
                             break;
 
                         case 'array':
 //                            element.append("<td><div ng-repeat='item in entryDetailsItemMember.value'><span>{{item}}</span><br/></div></td>");
-                            element.append("<div class='col-xs-9 detail-value panel panel-default'><div ng-repeat='item in entryDetailsItemMember.value'><span>{{item}}</span><br/></div></div>");
+                            elem = element.append("<div class='detail-container'><div class='col-xs-12 panel detail-value' ng-repeat='item in entryDetailsItemMember.value'><span>{{item}}</span><br/></div></div>");
                             break;
                     }
 
+                    $log.debug(elem);
                     $compile(element.contents())($scope);
 
                 }
