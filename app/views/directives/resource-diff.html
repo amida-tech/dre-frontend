@@ -1,4 +1,12 @@
 <div class="panel-body">
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="details-table" entry-details-item="resourceDiff.model.lhs"></div>
+        </div>
+        <div class="col-sm-6">
+            <div class="details-table" entry-details-item="resourceDiff.model.rhs"></div>
+        </div>
+    </div>
     <div class="row table-responsive">
         <div class="col-sm-12">
             <div class="text-center"><h4>{{model.title}}</h4></div>
@@ -25,6 +33,7 @@
                               ng-show="diff_entry.kind === 'D' && diff_entry.apply">deleted</span>
                         <span class="label-updated label label-info text-capitalize"
                               ng-show="diff_entry.kind !== 'D' && diff_entry.apply">updated</span>
+
                         <div class="panel details-table"
                              ng-hide="diff_entry.kind === 'N' && !diff_entry.apply || diff_entry.kind === 'D' && diff_entry.apply">
                             <div entry-details-item="diff_entry.model.rhs"

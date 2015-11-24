@@ -9,22 +9,19 @@
         </ul>
     </div>
     <div class="row">
-        <div resource-diff="model.matches[model.index]"></div>
+        <div class="panel" resource-diff="model.matches[model.index]"></div>
     </div>
-    <div class="col-sm-12 panel-footer">
-        <div class="row">
-            <div class="col-sm-4">
-                <button class="btn btn-default btn-block" ng-click="undoAllButton()">
-                    <i class="fa fa-undo"></i>&nbsp;Undo All
-                </button>
-            </div>
-            <div class="col-sm-4">
-                <button class="btn btn-primary btn-block" ng-click="updateResource()">Save Updates</button>
-            </div>
-            <div class="col-sm-4">
-                <button class="btn btn-warning btn-block" ng-click="replaceResource(false)">Replace with Matched
-                </button>
-            </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <button class="btn btn-default col-sm-offset-2 col-sm-8" ng-click="undoAllButton()">
+                <i class="fa fa-undo"></i>&nbsp;Undo All
+            </button>
+            <button class="btn btn-primary col-sm-offset-2 col-sm-8" ng-click="updateResource()">Save Updates</button>
+        </div>
+        <div class="col-sm-6">
+            <button class="btn btn-warning col-sm-offset-2 col-sm-8" ng-click="replaceResource(false)">Replace with Matched
+            </button>
+            <button class="btn btn-default col-sm-offset-2 col-sm-8" ng-click="">Ignore Match</button>
         </div>
     </div>
 </div>

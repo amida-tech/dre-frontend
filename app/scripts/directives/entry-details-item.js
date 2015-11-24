@@ -26,12 +26,12 @@ angular.module('dreFrontendApp')
                         element.append("<div class='detail-label'><span><strong ng-bind='entryDetailsItemMember.label'></strong></span></div>");
                     }
 
-                    var prefix = '<div class="detail-container"><div class="col-xs-12 panel detail-value"';
+                    var prefix = "<div class='detail-container'><div class='col-xs-12 panel detail-value'";
                     var suffix = '</div></div>';
 
                     switch ($scope.entryDetailsItemMember.type) {
                         case "string":
-                            element.append(prefix + "><span>{{entryDetailsItemMember.value}}</span>" + suffix);
+                            element.append(prefix + "><span class='{{entryDetailsItemMember.cssClass}}'>{{entryDetailsItemMember.value}}</span>" + suffix);
                             break;
 
                         case 'object':

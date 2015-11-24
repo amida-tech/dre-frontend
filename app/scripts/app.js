@@ -56,13 +56,18 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: true
             }
         })
+        .state('wideRoot', {
+            url: '',
+            abstract: true,
+            templateUrl: 'views/controllers/wide-root.html'
+        })
         .state('homeRoot', {
-            url: '/home',
+            url: '',
             templateUrl: 'views/controllers/home-root.html',
             abstract: true
         })
         .state('home', {
-            url: '',
+            url: '/home',
             parent: 'homeRoot',
             data: {
                 name: 'Home',
@@ -240,11 +245,15 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
         })
         .state('record.review', {
             url: '/review/{group}',
-            parent: 'record',
+            parent: 'home',
             data: {
                 name: 'Review Updates',
                 isPublic: false
             },
+            /*
+             templateUrl: "views/controllers/record-review.html",
+             controller: "RecordReviewCtrl"
+             */
             views: {
                 'homeMenu@homeRoot': {
                     templateUrl: "views/controllers/groups-menu.html",
@@ -288,7 +297,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
         })
         .state('printMyrecord', {
             url: '/home/record/print',
-            params: {additionalData:null},
+            params: {additionalData: null},
             templateUrl: "views/controllers/print-myrecord.html",
             controller: "PrintMyrecordCtrl",
             data: {

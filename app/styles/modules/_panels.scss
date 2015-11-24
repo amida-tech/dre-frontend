@@ -55,8 +55,7 @@
 
 .details-table {
     .detail-row {
-        margin-top: 5px;
-        margin-bottom: 5px;
+        margin: 5px -15px;
 
         .detail-label {
             text-overflow: ellipsis;
@@ -90,6 +89,12 @@
             span {
                 word-wrap: break-word;
             }
+            .highlight {
+                color: $brand-blue-dark;
+                font-weight: bolder;
+            }
         }
+
     }
 }
+

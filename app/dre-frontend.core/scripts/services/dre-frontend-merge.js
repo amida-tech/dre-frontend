@@ -15,11 +15,13 @@ angular.module('dreFrontend.util')
             replace: '/replace'
         };
 
+        var _blacklist = ['meta', 'patient', 'id'];
+
         var _filter = function (resp) {
             var _knowResources = _.pluck(dreFrontendGlobals.resourceTypes, 'fhirType');
             var res = _.filter(resp, function (match) {
                 var _allow = match.changeType === 'update';
-                var _resourceTypeName = match.lhs?match.lhs.resourceType:'resource';
+                var _resourceTypeName = match.lhs ? match.lhs.resourceType : 'resource';
 
                 _allow = _allow && _.includes(_knowResources, _resourceTypeName);
 
@@ -72,6 +74,19 @@ angular.module('dreFrontend.util')
             }
         };
 
+        var _prepareModel = function (diff) {
+            if (diff.changes) {
+                angular.forEach(diff.changes, _prepareChangeModel);
+            }
+            if (typeof diff.lhs.loadAll === 'function') {
+                diff.lhs.loadAll();
+            }
+            diff.model = {
+                lhs: dreFrontendEntryService.buildTable(diff.lhs, _blacklist),
+                rhs: dreFrontendEntryService.buildTable(diff.rhs, _blacklist)
+            }
+        };
+
         var _prepareChangeModel = function (change) {
 
             if (angular.isArray(change)) {
@@ -84,9 +99,9 @@ angular.module('dreFrontend.util')
                     rhs = change.rhs;
                     change.apply = false;
                     change.model = {
-                        path: dreFrontendEntryService.buildTable(path, []),
-                        lhs: dreFrontendEntryService.buildTable(lhs, []),
-                        rhs: dreFrontendEntryService.buildTable(rhs, [])
+                        path: dreFrontendEntryService.buildTable(path, _blacklist),
+                        lhs: dreFrontendEntryService.buildTable(lhs, _blacklist),
+                        rhs: dreFrontendEntryService.buildTable(rhs, _blacklist)
                     };
                 } else {
                     $log.debug("no path", change);
@@ -187,6 +202,7 @@ angular.module('dreFrontend.util')
                 });
             },
             prepareChangeModel: _prepareChangeModel,
+            prepareModel: _prepareModel,
             clear: _clearData
         };
     });

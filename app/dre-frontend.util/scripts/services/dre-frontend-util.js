@@ -93,14 +93,20 @@ angular.module("dreFrontend.util")
                 return data;
             },
             guessDataType: function (data) {
-                var _length = data.length ? data.length : NaN;
+                var _length;
+                if (data && data.length) {
+                    _length = data.length;
+                } else {
+                    _length = NaN;
+                }
                 var _type = typeof data;
 
                 if (angular.isArray(data)) {
                     _type = 'array';
                 } else if (!isNaN(data * 1)) {
                     _type = 'number';
-                } else if (angular.isDate(data) || (_length > 6 && !isNaN(Date.parse(data)))){
+                } else if (angular.isDate(data) || (_length > 6 && !isNaN(Date.parse(data)))) {
+                    $log.debug(angular.isDate(data), _length, data);
                     _type = 'date';
                 } else if (angular.isString(data)) {
                     _type = 'string';
@@ -122,12 +128,12 @@ angular.module("dreFrontend.util")
                 var _keys = dreFrontendGlobals.fieldsOrder[objType];
                 if (_keys) {
                     var res = {};
-                    angular.forEach(_keys, function(_key){
+                    angular.forEach(_keys, function (_key) {
                         if (_obj[_key]) {
                             res[_key] = _obj[_key];
                         }
                     });
-                    angular.extend(res,_obj);
+                    angular.extend(res, _obj);
                     return res;
                 }
             }

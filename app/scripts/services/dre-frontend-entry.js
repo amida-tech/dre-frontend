@@ -28,7 +28,8 @@ angular.module('dreFrontendApp')
                 var _item = {
                     type: 'string',
                     label: dreFrontendUtil.camelCaseToString(propertyName),
-                    value: null
+                    value: null,
+                    cssClass: propertyName === 'display' ? 'highlight' : ''
                 };
 
                 if (propertyName === 'system') {
@@ -51,7 +52,7 @@ angular.module('dreFrontendApp')
                             var rowItemData = item;
                             if (!angular.isString(item)) {
                                 if (propertyName === 'coding') {
-                                    item =  dreFrontendUtil.reorderObjectFields(item, propertyName);
+                                    item = dreFrontendUtil.reorderObjectFields(item, propertyName);
                                 }
                                 allScalar = false;
                                 rowItemData = _buildTable(item, blackList);
