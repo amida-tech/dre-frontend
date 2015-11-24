@@ -1,7 +1,7 @@
 "use strict";
 
 angular.module("dreFrontend.util")
-    .factory("dreFrontendUtil", function ($injector, dreFrontendEnvironment, $filter, fhirEnv, $log) {
+    .factory("dreFrontendUtil", function ($injector, dreFrontendEnvironment, $filter, fhirEnv, dreFrontendGlobals, $log) {
         var _capitalise = function (_str) {
             return _str.charAt(0).toUpperCase() + _str.substr(1).toLowerCase();
         };
@@ -95,7 +95,6 @@ angular.module("dreFrontend.util")
             guessDataType: function (data) {
                 var _length = data.length ? data.length : NaN;
                 var _type = typeof data;
-                var _date_delimeters = [':','-','/'];
 
                 if (angular.isArray(data)) {
                     _type = 'array';
@@ -103,12 +102,34 @@ angular.module("dreFrontend.util")
                     _type = 'number';
                 } else if (angular.isDate(data) || (_length > 6 && !isNaN(Date.parse(data)))){
                     _type = 'date';
-//                } else if (angular.isString(data)) {
-//                    _type = 'string';
+                } else if (angular.isString(data)) {
+                    _type = 'string';
                 } else if (angular.isObject(data)) {
                     _type = 'object';
                 }
                 return _type;
+            },
+            encodeSystemURL: function (url) {
+                var _res = dreFrontendGlobals.systemCodes[url];
+
+                if (!_res) {
+                    return url;
+                } else {
+                    return _res;
+                }
+            },
+            reorderObjectFields: function (_obj, objType) {
+                var _keys = dreFrontendGlobals.fieldsOrder[objType];
+                if (_keys) {
+                    var res = {};
+                    angular.forEach(_keys, function(_key){
+                        if (_obj[_key]) {
+                            res[_key] = _obj[_key];
+                        }
+                    });
+                    angular.extend(res,_obj);
+                    return res;
+                }
             }
         };
     });

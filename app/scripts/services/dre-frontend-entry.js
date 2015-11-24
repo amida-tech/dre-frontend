@@ -11,23 +11,12 @@ angular.module('dreFrontendApp')
     .factory('dreFrontendEntryService', function (_, dreFrontendUtil, $log) {
 
         /* 2do: refactor code & move calls into FhirResource children implementations*/
+        $log.debug('refactor dreFrontendEntryService code & move calls into FhirResource children implementations');
 
         var _black_list = ["photo"];
 
         var isValidName = function (name, black_list) {
             return (name[0] !== '$' && !_.contains(black_list, name));
-        };
-
-        var _fixCodingOrder = function (_obj) {
-            var _keys = ['display', 'code', 'system'];
-            var res = {};
-            angular.forEach(_keys, function(_key){
-               if (_obj[_key]) {
-                   res[_key] = _obj[_key];
-               }
-            });
-            angular.extend(res,_obj);
-            return res;
         };
 
         var _buildTable = function (dataItem, blackList) {
@@ -41,6 +30,10 @@ angular.module('dreFrontendApp')
                     label: dreFrontendUtil.camelCaseToString(propertyName),
                     value: null
                 };
+
+                if (propertyName === 'system') {
+                    propertyValue = dreFrontendUtil.encodeSystemURL(propertyValue);
+                }
 
                 switch (dreFrontendUtil.guessDataType(propertyValue)) {
                     case 'object':
@@ -58,7 +51,7 @@ angular.module('dreFrontendApp')
                             var rowItemData = item;
                             if (!angular.isString(item)) {
                                 if (propertyName === 'coding') {
-                                    item =  _fixCodingOrder(item);
+                                    item =  dreFrontendUtil.reorderObjectFields(item, propertyName);
                                 }
                                 allScalar = false;
                                 rowItemData = _buildTable(item, blackList);
