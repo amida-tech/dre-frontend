@@ -4,34 +4,29 @@
 "use strict";
 
 angular.module('dreFrontend.util')
-    .factory('dreFrontendDiff', function ($log, dreFrontendEntryService, dreFrontendUtil, _) {
+    .factory('dreFrontendDiff', function ($log, dreFrontendEntryService, dreFrontendUtil, _, dreFrontendGlobals) {
 
-        var _blacklist = [];//['meta', 'id'];
-
-        var _normalizeTree = function (lhs, rhs) {
-            var _res = {};
-            angular.extend(_res, lhs);
-            angular.extend(_res, rhs);
-
-            return _res;
-        };
+        var _blacklist = [];//['meta', 'id', 'reference', 'resourceType'];
 
         var isValidName = function (name, black_list) {
             return (name[0] !== '$' && !_.contains(black_list, name));
         };
 
         var _buildDiffView = function (diff) {
-            var _diff_paths = _.pick(diff.changes,'path');
-            $log.debug(diff.changes, _diff_paths);
-
+/*
             var _getChange = function (path) {
                 var res = null;
-                angular.forEach(diff.changes, function(chng){
 
-                })
+                for (var c = 0; c < diff.changes.length && !res; c++) {
+                    if (!res && _.isEqual(diff.changes[c].path, path)) {
+                        res = diff.changes[c];
+                    }
+                }
+
+                return res;
             };
-
-            var _buildTable = function (dataItem,_side, blackList, _path) {
+*/
+            var _buildTable = function (dataItem, _side, blackList, _path) {
                 var dataItems = [];
                 blackList = blackList || [];
                 blackList = blackList.concat(_blacklist);
@@ -67,9 +62,9 @@ angular.module('dreFrontend.util')
                         case 'array':
                             var allScalar = true;
                             node.value = [];
-                            _val.forEach(function (item,_ind) {
+                            _val.forEach(function (item, _ind) {
                                 var rowItemData = item;
-                                node.path = _path.concat(_key,_ind);
+                                node.path = _path.concat(_key, _ind);
                                 if (!angular.isString(item)) {
                                     if (_key === 'coding') {
                                         item = dreFrontendUtil.reorderObjectFields(item, _key);
@@ -111,7 +106,7 @@ angular.module('dreFrontend.util')
                 if (angular.isArray(dataItem) || angular.isObject(dataItem)) {
                     for (var propertyName in dataItem) {
                         if (dataItem.hasOwnProperty(propertyName) && isValidName(propertyName, blackList)) {
-                            buildNode(propertyName, dataItem[propertyName],'');
+                            buildNode(propertyName, dataItem[propertyName], '');
                         }
                     }
                 } else {
@@ -123,26 +118,43 @@ angular.module('dreFrontend.util')
             if (diff.changes) {
                 angular.forEach(diff.changes, _buildChangeView);
             }
-            if (typeof diff.lhs.loadAll === 'function') {
-                diff.lhs.loadAll();
+            if (typeof diff.lhs._loadAll === 'function') {
+                diff.lhs._loadAll();
             }
 
-            var _lhs = {};
-            var _rhs = {};
-            /* make normalized object */
-            angular.extend(_lhs, diff.lhs);
+            if (typeof diff.rhs._loadAll === 'function') {
+                diff.rhs._loadAll();
+            }
+
+            /* make clone object */
+            var _lhs = _.cloneDeep(diff.lhs);
+            var _rhs = _.cloneDeep(diff.lhs);
+
+            /* extend with rhs data */
             angular.extend(_lhs, diff.rhs);
-            /* duplicate to _rhs */
-            angular.extend(_rhs, _lhs);
+
+            /* restore original rhs data */
+            angular.extend(_rhs, diff.rhs);
+
             /* restore original lhs data */
             angular.extend(_lhs, diff.lhs);
 
             diff.model = {
-                lhs: _buildTable(_lhs, _blacklist),
-                rhs: _buildTable(_rhs, _blacklist)
+                lhs: {
+                    view: _buildTable(_lhs, _blacklist),
+                    title: dreFrontendUtil.camelCaseToString(diff.lhs.resourceType),
+                    entry: dreFrontendEntryService.getEntry(
+                        diff.lhs, '', dreFrontendGlobals.menuRecordTypeEnum.none
+                    )
+                },
+                rhs: {
+                    view: _buildTable(_rhs, _blacklist),
+                    title: dreFrontendUtil.camelCaseToString(diff.rhs.resourceType),
+                    entry: dreFrontendEntryService.getEntry(
+                        diff.rhs, '', dreFrontendGlobals.menuRecordTypeEnum.none
+                    )
+                }
             };
-
-            $log.debug(diff.model.lhs, diff.changes);
         };
 
         var _buildChangeView = function (change) {
@@ -166,29 +178,29 @@ angular.module('dreFrontend.util')
             }
         };
 
-        var _buildObjectByPath = function(path, val){
-                var p = path.slice(0);
+        var _buildObjectByPath = function (path, val) {
+            var p = path.slice(0);
 
-                var f = function (_path) {
-                    var n = _path.shift();
+            var f = function (_path) {
+                var n = _path.shift();
 
-                    var res;
-                    switch (typeof n) {
-                        case "number":
-                            res = [];
-                            res[n] = f(_path);
-                            break;
-                        case "string":
-                            res = {};
-                            res[n] = f(_path);
-                            break;
-                        default:
-                            res = val;
-                    }
+                var res;
+                switch (typeof n) {
+                    case "number":
+                        res = [];
+                        res[n] = f(_path);
+                        break;
+                    case "string":
+                        res = {};
+                        res[n] = f(_path);
+                        break;
+                    default:
+                        res = val;
+                }
 
-                    return res;
-                };
-                return f(p);
+                return res;
+            };
+            return f(p);
         };
 
         return {

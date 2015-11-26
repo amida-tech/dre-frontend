@@ -19,6 +19,7 @@ angular.module('dreFrontend.fhir')
             },
             getByPatientId: function (patient_id) {
                 return dreFrontendFhirService.search("MedicationOrder", {patient: patient_id, "_sort:desc":"datewritten"})
+                    .then(proceedBundle)
                     .then(function (response) {
                         var medicationsArray = [];
                         angular.forEach(response.entry, function (resource) {
@@ -27,7 +28,7 @@ angular.module('dreFrontend.fhir')
                             }
                         });
                         return $q.all(medicationsArray).then(function () {
-                            return proceedBundle(response);
+                            return response;
                         });
                     });
             },

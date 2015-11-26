@@ -25,6 +25,7 @@ angular.module('dreFrontend.util')
 
                 if (_allow) {
                     match.lhs = dreFrontendUtil.asFhirObject(match.lhs);
+                    match.rhs = dreFrontendUtil.asFhirObject(match.rhs);
                 }
 
                 return _allow;

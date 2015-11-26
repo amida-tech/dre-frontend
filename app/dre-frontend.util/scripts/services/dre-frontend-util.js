@@ -56,7 +56,7 @@ angular.module("dreFrontend.util")
             asFhirObject: function (data) {
                 if (data && data.resourceType) {
                     var Class;
-                    var _name = 'Fhir' + _capitalise(data.resourceType);
+                    var _name = 'Fhir' + data.resourceType;
                     try {
                         Class = $injector.get(_name);
                     } catch (e) {

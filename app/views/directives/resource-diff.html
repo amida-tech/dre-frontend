@@ -1,16 +1,19 @@
 <div class="panel-body">
     <div class="row">
         <div class="col-sm-6">
-            <div class="details-table" entry-details-item="resourceDiff.model.lhs"></div>
+            <div class="text-center"><h4>{{resourceDiff.model.lhs.title}}</h4></div>
+            <div user-timeline-entry-body="resourceDiff.model.lhs.entry"></div>
         </div>
         <div class="col-sm-6">
-            <div class="details-table" entry-details-item="resourceDiff.model.rhs"></div>
+            <div class="row">
+                <div class="text-center"><h4>{{resourceDiff.model.rhs.title}}</h4></div>
+                <div user-timeline-entry-body="resourceDiff.model.rhs.entry"></div>
+            </div>
         </div>
     </div>
+
     <div class="row table-responsive">
         <div class="col-sm-12">
-            <div class="text-center"><h4>{{model.title}}</h4></div>
-            <div user-timeline-entry-body="model.resource"></div>
             <div class="matches-table">
                 <div class="row match-header">
                     <div class="diff-path col-sm-4"><h5>Path</h5></div>
@@ -51,6 +54,15 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="details-table" entry-details-item="resourceDiff.model.lhs.view"></div>
+        </div>
+        <div class="col-sm-6">
+            <div class="details-table" entry-details-item="resourceDiff.model.rhs.view"></div>
         </div>
     </div>
 </div>
