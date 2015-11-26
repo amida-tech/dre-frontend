@@ -6,33 +6,32 @@
 angular.module('dreFrontend.util')
     .factory('dreFrontendDiff', function ($log, $q, dreFrontendEntryService, dreFrontendUtil, _, dreFrontendGlobals) {
 
-        var _blacklist = [];//['meta', 'id', 'reference', 'resourceType', 'patient'];
+        var _blacklist = [];
+//        var _blacklist = ['meta', 'id', 'reference', 'resourceType', 'patient'];
 
         var isValidName = function (name, black_list) {
             return (name[0] !== '$' && !_.contains(black_list, name));
         };
 
         var _buildDiffView = function (diff) {
-/*
-            var _getChange = function (path) {
-                var res = null;
-
-                for (var c = 0; c < diff.changes.length && !res; c++) {
-                    if (!res && _.isEqual(diff.changes[c].path, path)) {
-                        res = diff.changes[c];
-                    }
-                }
-
-                return res;
-            };
-*/
             diff.updating = true;
-            var _buildTable = function (dataItem, _side, blackList, _path) {
-                var dataItems = [];
-                blackList = blackList || [];
-                blackList = blackList.concat(_blacklist);
+            /*
+             var _getChange = function (path) {
+             var res = null;
 
-                _path = _path || [];
+             for (var c = 0; c < diff.changes.length && !res; c++) {
+             if (!res && _.isEqual(diff.changes[c].path, path)) {
+             res = diff.changes[c];
+             }
+             }
+
+             return res;
+             };
+             */
+            var _buildTable = function (dataItem, blackList) {
+                var dataItems = [];
+                blackList = blackList || _blacklist;
+//                blackList = blackList.concat();
 
                 var buildNode = function (_key, _val) {
                     var node = {
@@ -40,12 +39,13 @@ angular.module('dreFrontend.util')
                         label: dreFrontendUtil.camelCaseToString(_key),
                         value: null,
                         cssClass: _key === 'display' ? 'highlight' : '',
-                        diff: {
-                            side: _side,
-                            change: null
-                        },
-                        path: _path.concat(_key)
+                        diff: {}
                     };
+
+                    if (_val && _val.diff) {
+                        angular.extend(node.diff,_val.diff);
+                        _val.diff = undefined;
+                    }
 
                     if (_key === 'system') {
                         _val = dreFrontendUtil.encodeSystemURL(_val);
@@ -53,7 +53,7 @@ angular.module('dreFrontend.util')
 
                     switch (dreFrontendUtil.guessDataType(_val)) {
                         case 'object':
-                            var rowObjectData = _buildTable(_val, blackList, node.path);
+                            var rowObjectData = _buildTable(_val, blackList);
                             if (angular.isArray(rowObjectData) && rowObjectData.length > 0) {
                                 node.value = rowObjectData;
                                 node.type = 'object';
@@ -65,13 +65,12 @@ angular.module('dreFrontend.util')
                             node.value = [];
                             _val.forEach(function (item, _ind) {
                                 var rowItemData = item;
-                                node.path = _path.concat(_key, _ind);
                                 if (!angular.isString(item)) {
                                     if (_key === 'coding') {
                                         item = dreFrontendUtil.reorderObjectFields(item, _key);
                                     }
                                     allScalar = false;
-                                    rowItemData = _buildTable(item, blackList, node.path);
+                                    rowItemData = _buildTable(item, blackList);
                                     if (rowItemData.length > 0) {
                                         node.value.push(rowItemData);
                                     }
@@ -107,7 +106,8 @@ angular.module('dreFrontend.util')
                 if (angular.isArray(dataItem) || angular.isObject(dataItem)) {
                     for (var propertyName in dataItem) {
                         if (dataItem.hasOwnProperty(propertyName) && isValidName(propertyName, blackList)) {
-                            buildNode(propertyName, dataItem[propertyName], '');
+                            $log.debug(propertyName);
+                            buildNode(propertyName, dataItem[propertyName]);
                         }
                     }
                 } else {
@@ -131,7 +131,7 @@ angular.module('dreFrontend.util')
                 queue.push(diff.rhs.loadAll());
             }
 
-            return $q.all(queue).then(function(){
+            return $q.all(queue).then(function () {
                 /* make clone object */
                 var _lhs = _.cloneDeep(diff.lhs);
                 var _rhs = _.cloneDeep(diff.lhs);
@@ -145,25 +145,67 @@ angular.module('dreFrontend.util')
                 /* restore original lhs data */
                 angular.extend(_lhs, diff.lhs);
 
-                diff.updating = false;
+                /* mark changed nodes */
+                for (var i = 0; i < diff.changes.length; i++) {
+                    var r = _rhs, obj_r = null, l = _lhs, obj_l = null;
 
-                return {
+                    for (var p = 0; p < diff.changes[i].path.length; p++) {
+                        if (r && r[diff.changes[i].path[p]]) {
+                            obj_r = r;
+                            r = r[diff.changes[i].path[p]];
+                        } else {
+                            obj_r = null;
+                        }
+                        if (l && l[diff.changes[i].path[p]]) {
+                            obj_l = l;
+                            l = l[diff.changes[i].path[p]];
+                        } else {
+                            obj_l = null;
+                        }
+                    }
+
+                    if (obj_r) {
+                        $log.debug(obj_r);
+                        r.diff = {
+                            kind: diff.changes[i].kind,
+                            ref: l
+                        };
+                    }
+
+                    if (obj_l) {
+                        $log.debug(obj_l);
+                        obj_l.diff = {
+                            kind: diff.changes[i].kind,
+                            ref: r
+                        };
+                    }
+                }
+
+                var lhs_title = _.result(_.find(dreFrontendGlobals.resourceTypes, {fhirType: diff.lhs.resourceType}), 'title') ||
+                    dreFrontendUtil.camelCaseToString(diff.lhs.resourceType);
+                var rhs_title = _.result(_.find(dreFrontendGlobals.resourceTypes, {fhirType: diff.rhs.resourceType}), 'title') ||
+                    dreFrontendUtil.camelCaseToString(diff.rhs.resourceType);
+
+                var model = {
                     lhs: {
                         view: _buildTable(_lhs, _blacklist),
-                        title: dreFrontendUtil.camelCaseToString(diff.lhs.resourceType),
+                        title: lhs_title,
                         entry: dreFrontendEntryService.getEntry(
                             diff.lhs, '', dreFrontendGlobals.menuRecordTypeEnum.none
                         )
                     },
                     rhs: {
                         view: _buildTable(_rhs, _blacklist),
-                        title: dreFrontendUtil.camelCaseToString(diff.rhs.resourceType),
+                        title: rhs_title,
                         entry: dreFrontendEntryService.getEntry(
                             diff.rhs, '', dreFrontendGlobals.menuRecordTypeEnum.none
                         )
                     }
                 };
 
+                diff.updating = false;
+
+                return model;
             });
         };
 
@@ -172,15 +214,15 @@ angular.module('dreFrontend.util')
                 angular.forEach(change, _buildChangeView);
             } else if (angular.isObject(change) && !change.model) {
                 if (change.path) {
-                    var path = _buildObjectByPath(change.path, null);
+                    var path = _buildObjectByPath(change.path, '');
                     var lhs, rhs;
                     lhs = change.lhs;
                     rhs = change.rhs;
                     change.apply = false;
                     change.model = {
-                        path: dreFrontendEntryService.buildTable(path, _blacklist),
-                        lhs: dreFrontendEntryService.buildTable(lhs, _blacklist),
-                        rhs: dreFrontendEntryService.buildTable(rhs, _blacklist)
+                        path: dreFrontendEntryService.buildTable(path, []),
+                        lhs: dreFrontendEntryService.buildTable(lhs, []),
+                        rhs: dreFrontendEntryService.buildTable(rhs, [])
                     };
                 } else {
                     $log.debug("no path", change);
@@ -193,7 +235,7 @@ angular.module('dreFrontend.util')
 
             var f = function (_path) {
                 var n = _path.shift();
-
+                $log.debug(n);
                 var res;
                 switch (typeof n) {
                     case "number":

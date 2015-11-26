@@ -26,7 +26,13 @@ angular.module('dreFrontendApp')
                         element.append("<div class='detail-label'><span><strong ng-bind='entryDetailsItemMember.label'></strong></span></div>");
                     }
 
-                    var prefix = "<div class='detail-container'><div class='col-xs-12 panel detail-value'";
+                    var prefix = "<div class='detail-container'><div class='col-xs-12 panel detail-value";
+
+                    if ($scope.entryDetailsItemMember.diff && $scope.entryDetailsItemMember.diff.kind) {
+                        prefix += ' diff-' + $scope.entryDetailsItemMember.diff.kind;
+                    }
+                    prefix += "'";
+
                     var suffix = '</div></div>';
 
                     switch ($scope.entryDetailsItemMember.type) {
@@ -35,7 +41,7 @@ angular.module('dreFrontendApp')
                             break;
 
                         case 'object':
-                            element.append(prefix +" entry-details-item='entryDetailsItemMember.value'>" + suffix);
+                            element.append(prefix + " entry-details-item='entryDetailsItemMember.value'>" + suffix);
                             break;
 
                         case 'objectsList':

@@ -23,13 +23,13 @@ angular.module('dreFrontend.resource')
             angular.extend(val, {
                 load: function (force) {
                     var self = val;
-                    $log.debug('_loading...', prop, this.reference);
                     var process_sub_resource = function (sub_resource) {
                         angular.extend(self, dreFrontendUtil.asFhirObject(sub_resource));
                         return self;
                     };
 
                     if (force || !this.resourceType) {
+                        $log.debug('loading...', prop, this.reference);
                         if (val.reference.match(/^#.+/)) {
                             /* contained resource */
                             var _data = _.first(_.filter(resource.contains, {"id": val.reference.substring(1)})) || {};

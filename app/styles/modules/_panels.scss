@@ -49,6 +49,7 @@
             margin-top: 3px;
             margin-right: 8px;
             right: 0;
+            z-index: 10;
         }
     }
 }
@@ -69,7 +70,15 @@
                 word-wrap: break-word;
             }
         }
-
+        .diff-N {
+            background-color: greenyellow;
+        }
+        .diff-E {
+            background-color: #b3d4fc;
+        }
+        .diff-D {
+            background-color: red;
+        }
         .detail-container {
             position: relative;
             float: left;
