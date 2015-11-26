@@ -15,16 +15,16 @@ angular.module('dreFrontendApp')
                 resourceDiff: "="
             },
             link: function ($scope) {
-                if (angular.isObject($scope.resourceDiff)) {
-                    dreFrontendDiff.buildDiffView($scope.resourceDiff);
-                }
-
-                $scope.$watch('resourceDiff', function (newValue) {
-                    if (angular.isObject(newValue)) {
-                        $log.debug('updating to', newValue);
-                        dreFrontendDiff.buildDiffView(newValue);
+                var _updateModel = function(diff) {
+                    if(typeof diff === 'object' && !diff.updating) {
+                        $log.debug('updating to', diff);
+                        dreFrontendDiff.buildDiffView(diff)
+                            .then(function (model) {
+                                $scope.model = model;
+                            });
                     }
-                }, true);
+                };
+                $scope.$watch('resourceDiff', _updateModel, true);
             }
         };
     });

@@ -4,9 +4,9 @@
 "use strict";
 
 angular.module('dreFrontend.util')
-    .factory('dreFrontendDiff', function ($log, dreFrontendEntryService, dreFrontendUtil, _, dreFrontendGlobals) {
+    .factory('dreFrontendDiff', function ($log, $q, dreFrontendEntryService, dreFrontendUtil, _, dreFrontendGlobals) {
 
-        var _blacklist = [];//['meta', 'id', 'reference', 'resourceType'];
+        var _blacklist = [];//['meta', 'id', 'reference', 'resourceType', 'patient'];
 
         var isValidName = function (name, black_list) {
             return (name[0] !== '$' && !_.contains(black_list, name));
@@ -26,6 +26,7 @@ angular.module('dreFrontend.util')
                 return res;
             };
 */
+            diff.updating = true;
             var _buildTable = function (dataItem, _side, blackList, _path) {
                 var dataItems = [];
                 blackList = blackList || [];
@@ -115,46 +116,55 @@ angular.module('dreFrontend.util')
                 return dataItems;
             };
 
+            var queue = [];
+
             if (diff.changes) {
                 angular.forEach(diff.changes, _buildChangeView);
             }
-            if (typeof diff.lhs._loadAll === 'function') {
-                diff.lhs._loadAll();
+
+
+            if (typeof diff.lhs.loadAll === 'function') {
+                queue.push(diff.lhs.loadAll());
             }
 
-            if (typeof diff.rhs._loadAll === 'function') {
-                diff.rhs._loadAll();
+            if (typeof diff.rhs.loadAll === 'function') {
+                queue.push(diff.rhs.loadAll());
             }
 
-            /* make clone object */
-            var _lhs = _.cloneDeep(diff.lhs);
-            var _rhs = _.cloneDeep(diff.lhs);
+            return $q.all(queue).then(function(){
+                /* make clone object */
+                var _lhs = _.cloneDeep(diff.lhs);
+                var _rhs = _.cloneDeep(diff.lhs);
 
-            /* extend with rhs data */
-            angular.extend(_lhs, diff.rhs);
+                /* extend with rhs data */
+                angular.extend(_lhs, diff.rhs);
 
-            /* restore original rhs data */
-            angular.extend(_rhs, diff.rhs);
+                /* restore original rhs data */
+                angular.extend(_rhs, diff.rhs);
 
-            /* restore original lhs data */
-            angular.extend(_lhs, diff.lhs);
+                /* restore original lhs data */
+                angular.extend(_lhs, diff.lhs);
 
-            diff.model = {
-                lhs: {
-                    view: _buildTable(_lhs, _blacklist),
-                    title: dreFrontendUtil.camelCaseToString(diff.lhs.resourceType),
-                    entry: dreFrontendEntryService.getEntry(
-                        diff.lhs, '', dreFrontendGlobals.menuRecordTypeEnum.none
-                    )
-                },
-                rhs: {
-                    view: _buildTable(_rhs, _blacklist),
-                    title: dreFrontendUtil.camelCaseToString(diff.rhs.resourceType),
-                    entry: dreFrontendEntryService.getEntry(
-                        diff.rhs, '', dreFrontendGlobals.menuRecordTypeEnum.none
-                    )
-                }
-            };
+                diff.updating = false;
+
+                return {
+                    lhs: {
+                        view: _buildTable(_lhs, _blacklist),
+                        title: dreFrontendUtil.camelCaseToString(diff.lhs.resourceType),
+                        entry: dreFrontendEntryService.getEntry(
+                            diff.lhs, '', dreFrontendGlobals.menuRecordTypeEnum.none
+                        )
+                    },
+                    rhs: {
+                        view: _buildTable(_rhs, _blacklist),
+                        title: dreFrontendUtil.camelCaseToString(diff.rhs.resourceType),
+                        entry: dreFrontendEntryService.getEntry(
+                            diff.rhs, '', dreFrontendGlobals.menuRecordTypeEnum.none
+                        )
+                    }
+                };
+
+            });
         };
 
         var _buildChangeView = function (change) {
@@ -205,7 +215,6 @@ angular.module('dreFrontend.util')
 
         return {
             buildChangeView: _buildChangeView,
-            buildDiffView: _buildDiffView,
-            normalizeTree: _normalizeTree
+            buildDiffView: _buildDiffView
         };
     });
