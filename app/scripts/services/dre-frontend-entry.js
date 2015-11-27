@@ -8,12 +8,52 @@
  * Service in the dreFrontendApp.
  */
 angular.module('dreFrontendApp')
-    .factory('dreFrontendEntryService', function (_, dreFrontendUtil, $log) {
+    .factory('dreFrontendEntryService', function (_, dreFrontendUtil, dreFrontendGlobals, $log) {
 
         /* 2do: refactor code & move calls into FhirResource children implementations*/
         $log.debug('refactor dreFrontendEntryService code & move calls into FhirResource children implementations');
 
         var _black_list = ["photo"];
+
+        var getFieldCssClass = function (_val, _key) {
+            var aClasses = [];
+            if (_.includes(dreFrontendGlobals.highlightProperty, _key) || _.includes(_key, 'date') || _.includes(_key, 'time')) {
+                aClasses.push('highlight');
+            }
+            return aClasses.join(' ');
+        };
+
+        var wrapCoding = function (_val) {
+            var res = [];
+            for (var c = 0; c < _val.length; c++) {
+                var rows = [];
+                if (_val[c].display) {
+                    rows.push(_val[c].display);
+                }
+                if (_val[c].code || _val[c].system) {
+                    rows.push(_val[c].code + ' ('+_val[c].system+')');
+                }
+                if (rows.length>0){
+                    res.push(rows.join("\n"));
+                }
+            }
+
+            if (res.length>0){
+                return res;
+            } else {
+                return _val;
+            }
+        };
+
+        var _getLabel = function (_key) {
+            var res;
+            if (dreFrontendGlobals.synonims[_key]) {
+                res = dreFrontendUtil.camelCaseToString(dreFrontendGlobals.synonims[_key])
+            } else {
+                res = dreFrontendUtil.camelCaseToString(_key);
+            }
+            return res;
+        };
 
         var isValidName = function (name, black_list) {
             return (name[0] !== '$' && !_.contains(black_list, name));
@@ -24,67 +64,78 @@ angular.module('dreFrontendApp')
             blackList = blackList || [];
             blackList = blackList.concat(_black_list);
 
-            var prepareValue = function (propertyName, propertyValue) {
-                var _item = {
+            var prepareValue = function (_key, _val) {
+                var node = {
                     type: 'string',
-                    label: dreFrontendUtil.camelCaseToString(propertyName),
+                    label: _getLabel(_key),
                     value: null,
-                    cssClass: propertyName === 'display' ? 'highlight' : ''
+                    cssClass: getFieldCssClass(_val, _key),
+                    diff: {}
                 };
 
-                if (propertyName === 'system') {
-                    propertyValue = dreFrontendUtil.encodeSystemURL(propertyValue);
+                if (_val && _val.diff) {
+                    angular.extend(node.diff, _val.diff);
+                    _val.diff = undefined;
+                    if (_val.nodeValue) {
+                        _val = _val.nodeValue;
+                    }
                 }
 
-                switch (dreFrontendUtil.guessDataType(propertyValue)) {
+                if (_key === 'system') {
+                    _val = dreFrontendUtil.encodeSystemURL(_val);
+                } else if (_key === 'coding') {
+                    _val = wrapCoding(_val);
+                }
+
+                switch (dreFrontendUtil.guessDataType(_val)) {
                     case 'object':
-                        var rowObjectData = _buildTable(propertyValue, blackList);
+                        var rowObjectData = _buildTable(_val, blackList);
                         if (angular.isArray(rowObjectData) && rowObjectData.length > 0) {
-                            _item.value = rowObjectData;
-                            _item.type = 'object';
+                            node.value = rowObjectData;
+                            node.type = 'object';
                         }
                         break;
 
                     case 'array':
                         var allScalar = true;
-                        _item.value = [];
-                        propertyValue.forEach(function (item) {
+                        node.value = [];
+                        _val.forEach(function (item) {
                             var rowItemData = item;
                             if (!angular.isString(item)) {
-                                if (propertyName === 'coding') {
-                                    item = dreFrontendUtil.reorderObjectFields(item, propertyName);
+                                if (_key === 'coding') {
+                                    item = dreFrontendUtil.reorderObjectFields(item, _key);
                                 }
                                 allScalar = false;
                                 rowItemData = _buildTable(item, blackList);
                                 if (rowItemData.length > 0) {
-                                    _item.value.push(rowItemData);
+                                    node.value.push(rowItemData);
                                 }
                             } else {
-                                _item.value.push(rowItemData);
+                                node.value.push(rowItemData);
                             }
                         });
 
-                        _item.type = allScalar ? 'array' : 'objectsList';
+                        node.type = allScalar ? 'array' : 'objectsList';
 
-                        if (_item.value.length < 1) {
-                            _item.value = null;
+                        if (node.value.length < 1) {
+                            node.value = null;
                         }
                         break;
 
                     case 'date':
-                        _item.value = dreFrontendUtil.formatFhirDate(propertyValue);
+                        node.value = dreFrontendUtil.formatFhirDate(_val);
                         break;
 
                     case 'number':
                     case 'string':
-                        _item.value = propertyValue;
+                        node.value = _val;
                         break;
                     default:
-                        _item.value = null;
+                        node.value = null;
                 }
 
-                if (_item.value !== null) {
-                    dataItems.push(_item);
+                if (node.value !== null) {
+                    dataItems.push(node);
                 }
             };
 

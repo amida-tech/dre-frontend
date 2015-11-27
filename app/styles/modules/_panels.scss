@@ -66,25 +66,35 @@
             float:left;
             margin-right: - $detail-label-width;
             padding: 0 15px;
+            z-index: 5;
             span {
                 word-wrap: break-word;
             }
         }
+
         .diff-N {
             background-color: greenyellow;
         }
+
         .diff-E {
             background-color: #b3d4fc;
         }
+
         .diff-D {
             background-color: red;
         }
+
         .detail-container {
             position: relative;
             float: left;
             width: 100%;
             padding:0 15px 0 $detail-label-width;
             min-width: 1px;
+        }
+
+        .highlight .detail-value span {
+            color: $brand-blue-dark;
+            font-weight: bolder;
         }
 
         .detail-value {
@@ -97,10 +107,7 @@
             padding-right: 1px;
             span {
                 word-wrap: break-word;
-            }
-            .highlight {
-                color: $brand-blue-dark;
-                font-weight: bolder;
+                white-space: pre;
             }
         }
 

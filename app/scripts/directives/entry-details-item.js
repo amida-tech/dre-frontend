@@ -23,36 +23,42 @@ angular.module('dreFrontendApp')
 
                 if (angular.isObject($scope.entryDetailsItemMember)) {
                     if ($scope.entryDetailsItemMember.label) {
-                        element.append("<div class='detail-label'><span><strong ng-bind='entryDetailsItemMember.label'></strong></span></div>");
+                        element.append("<div class='detail-label'><strong ng-bind='entryDetailsItemMember.label'></strong></div>");
                     }
 
-                    var prefix = "<div class='detail-container'><div class='col-xs-12 panel detail-value";
+                    if ($scope.entryDetailsItemMember.value) {
 
-                    if ($scope.entryDetailsItemMember.diff && $scope.entryDetailsItemMember.diff.kind) {
-                        prefix += ' diff-' + $scope.entryDetailsItemMember.diff.kind;
+                        var prefix = "<div class='detail-container";
+
+                        if ($scope.entryDetailsItemMember.diff && $scope.entryDetailsItemMember.diff.kind) {
+                            prefix += ' diff-' + $scope.entryDetailsItemMember.diff.kind;
+                        }
+
+                        if ($scope.entryDetailsItemMember.cssClass) {
+                            prefix += ' ' + $scope.entryDetailsItemMember.cssClass;
+                        }
+                        prefix += "'><div class='col-xs-12 panel detail-value'";
+
+                        var suffix = '</div></div>';
+
+                        switch ($scope.entryDetailsItemMember.type) {
+                            case "string":
+                                element.append(prefix + "><span>{{entryDetailsItemMember.value}}</span>" + suffix);
+                                break;
+
+                            case 'object':
+                                element.append(prefix + " entry-details-item='entryDetailsItemMember.value'>" + suffix);
+                                break;
+
+                            case 'objectsList':
+                                element.append(prefix + " ng-class='{tablesBlock:entryDetailsItemMember.value.length > 1}' ng-repeat='item in entryDetailsItemMember.value' entry-details-item='item'>" + suffix);
+                                break;
+
+                            case 'array':
+                                element.append(prefix + " ng-repeat='item in entryDetailsItemMember.value'><span>{{item}}</span><br/>" + suffix);
+                                break;
+                        }
                     }
-                    prefix += "'";
-
-                    var suffix = '</div></div>';
-
-                    switch ($scope.entryDetailsItemMember.type) {
-                        case "string":
-                            element.append(prefix + "><span class='{{entryDetailsItemMember.cssClass}}'>{{entryDetailsItemMember.value}}</span>" + suffix);
-                            break;
-
-                        case 'object':
-                            element.append(prefix + " entry-details-item='entryDetailsItemMember.value'>" + suffix);
-                            break;
-
-                        case 'objectsList':
-                            element.append(prefix + " ng-class='{tablesBlock:entryDetailsItemMember.value.length > 1}' ng-repeat='item in entryDetailsItemMember.value' entry-details-item='item'>" + suffix);
-                            break;
-
-                        case 'array':
-                            element.append(prefix + " ng-repeat='item in entryDetailsItemMember.value'><span>{{item}}</span><br/>" + suffix);
-                            break;
-                    }
-
                     $compile(element.contents())($scope);
 
                 }

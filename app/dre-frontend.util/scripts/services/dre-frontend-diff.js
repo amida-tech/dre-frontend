@@ -6,8 +6,7 @@
 angular.module('dreFrontend.util')
     .factory('dreFrontendDiff', function ($log, $q, dreFrontendEntryService, dreFrontendUtil, _, dreFrontendGlobals) {
 
-        var _blacklist = [];
-//        var _blacklist = ['meta', 'id', 'reference', 'resourceType', 'patient'];
+        var _blacklist = ['meta', 'id', 'resourceType', 'patient', 'reference'];
 
         var isValidName = function (name, black_list) {
             return (name[0] !== '$' && !_.contains(black_list, name));
@@ -15,113 +14,11 @@ angular.module('dreFrontend.util')
 
         var _buildDiffView = function (diff) {
             diff.updating = true;
-            /*
-             var _getChange = function (path) {
-             var res = null;
-
-             for (var c = 0; c < diff.changes.length && !res; c++) {
-             if (!res && _.isEqual(diff.changes[c].path, path)) {
-             res = diff.changes[c];
-             }
-             }
-
-             return res;
-             };
-             */
-            var _buildTable = function (dataItem, blackList) {
-                var dataItems = [];
-                blackList = blackList || _blacklist;
-//                blackList = blackList.concat();
-
-                var buildNode = function (_key, _val) {
-                    var node = {
-                        type: 'string',
-                        label: dreFrontendUtil.camelCaseToString(_key),
-                        value: null,
-                        cssClass: _key === 'display' ? 'highlight' : '',
-                        diff: {}
-                    };
-
-                    if (_val && _val.diff) {
-                        angular.extend(node.diff,_val.diff);
-                        _val.diff = undefined;
-                    }
-
-                    if (_key === 'system') {
-                        _val = dreFrontendUtil.encodeSystemURL(_val);
-                    }
-
-                    switch (dreFrontendUtil.guessDataType(_val)) {
-                        case 'object':
-                            var rowObjectData = _buildTable(_val, blackList);
-                            if (angular.isArray(rowObjectData) && rowObjectData.length > 0) {
-                                node.value = rowObjectData;
-                                node.type = 'object';
-                            }
-                            break;
-
-                        case 'array':
-                            var allScalar = true;
-                            node.value = [];
-                            _val.forEach(function (item, _ind) {
-                                var rowItemData = item;
-                                if (!angular.isString(item)) {
-                                    if (_key === 'coding') {
-                                        item = dreFrontendUtil.reorderObjectFields(item, _key);
-                                    }
-                                    allScalar = false;
-                                    rowItemData = _buildTable(item, blackList);
-                                    if (rowItemData.length > 0) {
-                                        node.value.push(rowItemData);
-                                    }
-                                } else {
-                                    node.value.push(rowItemData);
-                                }
-                            });
-
-                            node.type = allScalar ? 'array' : 'objectsList';
-
-                            if (node.value.length < 1) {
-                                node.value = null;
-                            }
-                            break;
-
-                        case 'date':
-                            node.value = dreFrontendUtil.formatFhirDate(_val);
-                            break;
-
-                        case 'number':
-                        case 'string':
-                            node.value = _val;
-                            break;
-                        default:
-                            node.value = null;
-                    }
-
-                    if (node.value !== null) {
-                        dataItems.push(node);
-                    }
-                };
-
-                if (angular.isArray(dataItem) || angular.isObject(dataItem)) {
-                    for (var propertyName in dataItem) {
-                        if (dataItem.hasOwnProperty(propertyName) && isValidName(propertyName, blackList)) {
-                            $log.debug(propertyName);
-                            buildNode(propertyName, dataItem[propertyName]);
-                        }
-                    }
-                } else {
-                    buildNode("", dataItem);
-                }
-                return dataItems;
-            };
-
             var queue = [];
 
             if (diff.changes) {
                 angular.forEach(diff.changes, _buildChangeView);
             }
-
 
             if (typeof diff.lhs.loadAll === 'function') {
                 queue.push(diff.lhs.loadAll());
@@ -145,57 +42,95 @@ angular.module('dreFrontend.util')
                 /* restore original lhs data */
                 angular.extend(_lhs, diff.lhs);
 
+                var _f1 = function (markObj, param_name) {
+
+                    if (markObj && markObj.node[param_name]) {
+                        markObj.parent = markObj.node;
+                        markObj.node = markObj.node[param_name];
+                    } else {
+                        markObj = null;
+                    }
+
+                };
+
+                var _f2 = function (markObj, neighbour, node_name, change) {
+                    if (markObj) {
+                        var node_val;
+                        if (0 && typeof markObj.node !== 'object') {
+                            node_val = markObj.node;
+                            markObj.parent[node_name] = {
+                                value: node_val
+                            };
+                            markObj.node = markObj.parent[node_name];
+                            /// $log.debug(markObj, node_name, change.kind);
+                        }
+
+                        if (node_name ==='reference') {
+                            if (typeof markObj.parent === 'object') {
+                                markObj.parent.diff = {
+                                    kind: change.kind,
+                                    ref: neighbour
+                                };
+                            }
+                        } else {
+                            if (typeof markObj.node !== 'object') {
+                                node_val = markObj.node;
+                                markObj.parent[node_name] = {
+                                    value: node_val
+                                };
+                                markObj.node = markObj.parent[node_name];
+                                /// $log.debug(markObj, node_name, change.kind);
+                            }
+                            if (typeof markObj.node === 'object') {
+                                markObj.node.diff = {
+                                    kind: change.kind,
+                                    ref: neighbour
+                                };
+                            }
+
+                        }
+                    }
+                };
+
+                var f = function(obj) {
+                    return {
+                        node: obj,
+                        parent: null,
+                        nodeKey:''
+                    };
+                };
+
                 /* mark changed nodes */
                 for (var i = 0; i < diff.changes.length; i++) {
-                    var r = _rhs, obj_r = null, l = _lhs, obj_l = null;
+                    var lMark = f(_lhs);
+                    var rMark = f(_rhs);
 
-                    for (var p = 0; p < diff.changes[i].path.length; p++) {
-                        if (r && r[diff.changes[i].path[p]]) {
-                            obj_r = r;
-                            r = r[diff.changes[i].path[p]];
-                        } else {
-                            obj_r = null;
-                        }
-                        if (l && l[diff.changes[i].path[p]]) {
-                            obj_l = l;
-                            l = l[diff.changes[i].path[p]];
-                        } else {
-                            obj_l = null;
-                        }
+                    var path = diff.changes[i].path;
+                    for (var p = 0; p < path.length; p++) {
+                        _f1(lMark, path[p]);
+                        _f1(rMark, path[p]);
                     }
 
-                    if (obj_r) {
-                        $log.debug(obj_r);
-                        r.diff = {
-                            kind: diff.changes[i].kind,
-                            ref: l
-                        };
-                    }
-
-                    if (obj_l) {
-                        $log.debug(obj_l);
-                        obj_l.diff = {
-                            kind: diff.changes[i].kind,
-                            ref: r
-                        };
-                    }
+                    _f2(lMark, rMark.node, path[path.length - 1], diff.changes[i]);
+                    _f2(rMark, lMark.node, path[path.length - 1], diff.changes[i]);
                 }
 
                 var lhs_title = _.result(_.find(dreFrontendGlobals.resourceTypes, {fhirType: diff.lhs.resourceType}), 'title') ||
                     dreFrontendUtil.camelCaseToString(diff.lhs.resourceType);
+
                 var rhs_title = _.result(_.find(dreFrontendGlobals.resourceTypes, {fhirType: diff.rhs.resourceType}), 'title') ||
                     dreFrontendUtil.camelCaseToString(diff.rhs.resourceType);
 
                 var model = {
                     lhs: {
-                        view: _buildTable(_lhs, _blacklist),
+                        view: dreFrontendEntryService.buildTable(_lhs, _blacklist),
                         title: lhs_title,
                         entry: dreFrontendEntryService.getEntry(
                             diff.lhs, '', dreFrontendGlobals.menuRecordTypeEnum.none
                         )
                     },
                     rhs: {
-                        view: _buildTable(_rhs, _blacklist),
+                        view: dreFrontendEntryService.buildTable(_rhs, _blacklist),
                         title: rhs_title,
                         entry: dreFrontendEntryService.getEntry(
                             diff.rhs, '', dreFrontendGlobals.menuRecordTypeEnum.none
@@ -235,7 +170,6 @@ angular.module('dreFrontend.util')
 
             var f = function (_path) {
                 var n = _path.shift();
-                $log.debug(n);
                 var res;
                 switch (typeof n) {
                     case "number":
