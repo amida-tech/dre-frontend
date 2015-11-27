@@ -39,23 +39,25 @@ RUN npm install -g grunt-cli
 # Install app dependencies
 COPY package.json /src/package.json
 COPY bower.json /src/bower.json
+WORKDIR "/src"
 RUN echo '{ "allow_root": true }' > /root/.bowerrc && \
-    cd /src && \
     npm install && \
     bower install
 
 # Bundle app source code
 COPY . /src
+    
+# Fix imagemin issue
+RUN npm update -g npm && \
+    npm install grunt-contrib-imagemin
 
 # Build the dist
-RUN cd /src && \
-    grunt build -f && \
+RUN grunt build && \
     grunt ngconstant:docker
 
 # Expose bound port
 EXPOSE 9000
 
 # Run the app
-WORKDIR "/src"
 CMD ["grunt", "serve:docker"]
 
