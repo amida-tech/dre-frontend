@@ -59,11 +59,11 @@ angular.module('dreFrontendApp')
             return (name[0] !== '$' && !_.contains(black_list, name));
         };
 
-        var _buildTable = function (dataItem, blackList) {
+        var _buildTable = function (dataItem, blackList, deep) {
             var dataItems = [];
             blackList = blackList || [];
             blackList = blackList.concat(_black_list);
-
+            deep = deep || 0;
             var prepareValue = function (_key, _val) {
                 var node = {
                     type: 'string',
@@ -89,7 +89,7 @@ angular.module('dreFrontendApp')
 
                 switch (dreFrontendUtil.guessDataType(_val)) {
                     case 'object':
-                        var rowObjectData = _buildTable(_val, blackList);
+                        var rowObjectData = _buildTable(_val, blackList,deep+1);
                         if (angular.isArray(rowObjectData) && rowObjectData.length > 0) {
                             node.value = rowObjectData;
                             node.type = 'object';
@@ -106,7 +106,7 @@ angular.module('dreFrontendApp')
                                     item = dreFrontendUtil.reorderObjectFields(item, _key);
                                 }
                                 allScalar = false;
-                                rowItemData = _buildTable(item, blackList);
+                                rowItemData = _buildTable(item, blackList, deep+1);
                                 if (rowItemData.length > 0) {
                                     node.value.push(rowItemData);
                                 }
@@ -117,7 +117,7 @@ angular.module('dreFrontendApp')
 
                         node.type = allScalar ? 'array' : 'objectsList';
 
-                        if (allScalar) {
+                        if (allScalar && deep) {
                             node.label = '';
                         }
 
@@ -127,13 +127,17 @@ angular.module('dreFrontendApp')
                         break;
 
                     case 'date':
-                        node.label = '';
+                        if (deep) {
+                            node.label = '';
+                        }
                         node.value = dreFrontendUtil.formatFhirDate(_val);
                         break;
 
                     case 'number':
                     case 'string':
-                        node.label = '';
+                        if (deep) {
+                            node.label = '';
+                        }
                         node.value = _val;
                         break;
                     default:
