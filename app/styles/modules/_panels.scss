@@ -92,13 +92,18 @@
             min-width: 1px;
         }
 
+        .detail-container.no-label {
+            padding-left: 0;
+            margin-top: -5px;
+            margin-bottom: -5px;
+        }
+
         .highlight .detail-value span {
             color: $brand-blue-dark;
             font-weight: bolder;
         }
 
         .detail-value {
-
             margin-top: 0;
             margin-bottom: 0;
             border: 1px dashed #ddd;
@@ -111,6 +116,9 @@
             }
         }
 
+        .no-label .detail-value {
+            border: none;
+        }
     }
 }
 

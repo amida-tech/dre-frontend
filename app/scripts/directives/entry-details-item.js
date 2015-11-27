@@ -30,6 +30,10 @@ angular.module('dreFrontendApp')
 
                         var prefix = "<div class='detail-container";
 
+                        if (!$scope.entryDetailsItemMember.label) {
+                            prefix += ' no-label';
+                        }
+
                         if ($scope.entryDetailsItemMember.diff && $scope.entryDetailsItemMember.diff.kind) {
                             prefix += ' diff-' + $scope.entryDetailsItemMember.diff.kind;
                         }

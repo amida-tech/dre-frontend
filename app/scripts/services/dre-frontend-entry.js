@@ -117,17 +117,23 @@ angular.module('dreFrontendApp')
 
                         node.type = allScalar ? 'array' : 'objectsList';
 
+                        if (allScalar) {
+                            node.label = '';
+                        }
+
                         if (node.value.length < 1) {
                             node.value = null;
                         }
                         break;
 
                     case 'date':
+                        node.label = '';
                         node.value = dreFrontendUtil.formatFhirDate(_val);
                         break;
 
                     case 'number':
                     case 'string':
+                        node.label = '';
                         node.value = _val;
                         break;
                     default:
