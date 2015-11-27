@@ -116,6 +116,14 @@ module.exports = function (grunt) {
           open: true,
           base: '<%= yeoman.dist %>'
         }
+      },
+      docker: {
+          options: {
+              open: true,
+              base: '<%= yeoman.dist %>',
+              port: 9000,
+              hostname: '0.0.0.0',
+          }
       }
     },
 
@@ -492,7 +500,8 @@ module.exports = function (grunt) {
             enableDebugLog:true
           }
         }
-      },      qa: {
+      },      
+      qa: {
         options: {
         },
         constants: {
@@ -514,6 +523,19 @@ module.exports = function (grunt) {
             name: 'vagrant',
             baseServerUrl:'http://192.168.33.10:3001/api/v1',
             fhirServerUrl:'http://192.168.33.10:8080/fhir/baseDstu2',
+            enableDebugLog:true
+          }
+        }
+      },
+      docker: {
+        options: {
+        },
+        constants: {
+          dreFrontendEnvironment: {
+              swapDiff: true,
+            name: 'docker',
+            baseServerUrl:'http://192.168.99.100:3000/api/v1',
+            fhirServerUrl:'http://192.168.99.100:8080/fhir/baseDstu2',
             enableDebugLog:true
           }
         }
@@ -545,6 +567,10 @@ module.exports = function (grunt) {
   grunt.registerTask('serve', 'Compile then start a connect web server', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'connect:dist:keepalive']);
+    }
+    
+    if (target === 'docker') {
+        return grunt.task.run(['connect:docker:keepalive']);
     }
 
     grunt.task.run([
