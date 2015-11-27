@@ -17,7 +17,6 @@ angular.module('dreFrontendApp')
             link: function ($scope) {
                 var _updateModel = function(diff) {
                     if(typeof diff === 'object' && !diff.updating) {
-                        $log.debug('updating to', diff);
                         dreFrontendDiff.buildDiffView(diff)
                             .then(function (model) {
                                 $scope.model = model;
