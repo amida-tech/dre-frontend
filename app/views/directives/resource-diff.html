@@ -1,16 +1,30 @@
 <div class="panel-body">
+    <div class="row text-center">
+        <div class="col-sm-6"><h4>{{model.lhs.title}}</h4></div>
+        <div class="col-sm-6"><h4>{{model.rhs.title}}</h4></div>
+    </div>
     <div class="row">
         <div class="col-sm-6">
-            <div class="text-center"><h4>{{model.lhs.title}}</h4></div>
             <div user-timeline-entry-body="model.lhs.entry"></div>
         </div>
         <div class="col-sm-6">
-            <div class="text-center"><h4>{{model.rhs.title}}</h4></div>
             <div user-timeline-entry-body="model.rhs.entry"></div>
         </div>
     </div>
 
+    <resource-diff-tree lhs="model.lhs.view" rhs="model.rhs.view"></resource-diff-tree>
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="details-table" entry-details-item="model.lhs.view"></div>
+        </div>
+        <div class="col-sm-6">
+            <div class="details-table" entry-details-item="model.rhs.view"></div>
+        </div>
+    </div>
+
     <div class="row table-responsive">
+        <hr/>
         <div class="col-sm-12">
             <div class="matches-table">
                 <div class="row match-header">
@@ -52,15 +66,5 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <div class="row">
-        <div class="col-sm-6">
-            <div class="details-table" entry-details-item="model.lhs.view"></div>
         </div>
-        <div class="col-sm-6">
-            <div class="details-table" entry-details-item="model.rhs.view"></div>
-        </div>
-    </div>
-</div>
