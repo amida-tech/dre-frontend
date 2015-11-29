@@ -7,29 +7,31 @@
  */
 
 angular.module('dreFrontendApp')
-    .directive('resourceDiffTree', function ($log, $compile) {
+    .directive('resourceDiffTree', function () {
         return {
-            template: '<div class="details-table"></div>',
+            templateUrl: 'views/directives/resource-diff-tree.html',
             restrict: 'AE',
             scope: {
-                data: "=",
-                lhs: "=",
-                rhs: "="
+                data: "="
             },
-            link: function ($scope, element) {
-                $log.debug($scope.lhs, $scope.rhs);
-                if (angular.isObject($scope.lhs) || angular.isObject($scope.rhs)) {
-                    $log.debug($scope.lhs, $scope.rhs);
+            link: function ($scope) {
 
-                    $compile(element.contents())($scope);
-                }
+                var _update = function (lhs, rhs) {
+                    if (angular.isObject(lhs) && angular.isObject(rhs)) {
+                        $scope.model = [];
+                        for (var n = 0; n < lhs.length; n++) {
+                            $scope.model.push({
+                                lhs: lhs[n],
+                                rhs: rhs[n]
+                            });
+                        }
+                    }
+                };
 
-                $scope.$watch('lhs', function (newLhs) {
-                    $log.debug(newLhs);
-                });
-
-                $scope.$watch('rhs', function (newRhs) {
-                    $log.debug(newRhs);
+                $scope.$watch('data', function (newData) {
+                    if (newData && newData.lhs.view && newData.rhs.view) {
+                        _update(newData.lhs.view, newData.rhs.view);
+                    }
                 });
             }
         };

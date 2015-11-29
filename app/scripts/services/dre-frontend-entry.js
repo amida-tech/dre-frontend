@@ -31,14 +31,14 @@ angular.module('dreFrontendApp')
                     rows.push(_val[c].display);
                 }
                 if (_val[c].code || _val[c].system) {
-                    rows.push(_val[c].code + ' ('+_val[c].system+')');
+                    rows.push(_val[c].code + ' (' + dreFrontendUtil.encodeSystemURL(_val[c].system) + ')');
                 }
-                if (rows.length>0){
+                if (rows.length > 0) {
                     res.push(rows.join("\n"));
                 }
             }
 
-            if (res.length>0){
+            if (res.length > 0) {
                 return res;
             } else {
                 return _val;
@@ -89,7 +89,7 @@ angular.module('dreFrontendApp')
 
                 switch (dreFrontendUtil.guessDataType(_val)) {
                     case 'object':
-                        var rowObjectData = _buildTable(_val, blackList,deep+1);
+                        var rowObjectData = _buildTable(_val, blackList, deep + 1);
                         if (angular.isArray(rowObjectData) && rowObjectData.length > 0) {
                             node.value = rowObjectData;
                             node.type = 'object';
@@ -106,7 +106,7 @@ angular.module('dreFrontendApp')
                                     item = dreFrontendUtil.reorderObjectFields(item, _key);
                                 }
                                 allScalar = false;
-                                rowItemData = _buildTable(item, blackList, deep+1);
+                                rowItemData = _buildTable(item, blackList, deep + 1);
                                 if (rowItemData.length > 0) {
                                     node.value.push(rowItemData);
                                 }

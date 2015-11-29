@@ -101,7 +101,7 @@ angular.module("dreFrontend.util")
                 var _res = dreFrontendGlobals.systemCodes[url];
 
                 if (!_res) {
-                    return url;
+                    return 'UNKNOWN';
                 } else {
                     return _res;
                 }
