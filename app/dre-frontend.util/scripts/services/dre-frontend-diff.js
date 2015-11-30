@@ -6,11 +6,7 @@
 angular.module('dreFrontend.util')
     .factory('dreFrontendDiff', function ($log, $q, dreFrontendEntryService, dreFrontendUtil, _, dreFrontendGlobals) {
 
-        var _blacklist = ['meta', 'id', 'resourceType', 'patient', 'reference'];
-
-        var isValidName = function (name, black_list) {
-            return (name[0] !== '$' && !_.contains(black_list, name));
-        };
+        var _blacklist = ['meta', 'id', 'resourceType', 'patient', 'reference', 'extension'];
 
         var _buildDiffView = function (diff) {
             diff.updating = true;

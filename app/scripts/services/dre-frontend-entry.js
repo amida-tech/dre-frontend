@@ -48,7 +48,7 @@ angular.module('dreFrontendApp')
         var _getLabel = function (_key) {
             var res;
             if (dreFrontendGlobals.synonims[_key]) {
-                res = dreFrontendUtil.camelCaseToString(dreFrontendGlobals.synonims[_key])
+                res = dreFrontendUtil.camelCaseToString(dreFrontendGlobals.synonims[_key]);
             } else {
                 res = dreFrontendUtil.camelCaseToString(_key);
             }
