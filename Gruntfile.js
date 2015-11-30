@@ -105,7 +105,7 @@ module.exports = function (grunt) {
                             connect().use(
                                 '/bower_components',
                                 connect.static('./bower_components')
-                                ),
+                            ),
                             connect.static(appConfig.app)
                         ];
                     }
@@ -255,7 +255,7 @@ module.exports = function (grunt) {
                 src: [
                     '<%= yeoman.dist %>/scripts/{,*/}*.js',
                     '<%= yeoman.dist %>/styles/{,*/}*.css',
-                //'<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+                    //'<%= yeoman.dist %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
                     '<%= yeoman.dist %>/styles/fonts/*'
                 ]
             }
@@ -391,10 +391,10 @@ module.exports = function (grunt) {
 
         // Replace Google CDN references
         /*cdnify: {
-          dist: {
-            html: ['<%= yeoman.dist %>/*.html']
-          }
-        },*/
+         dist: {
+         html: ['<%= yeoman.dist %>/*.html']
+         }
+         },*/
 
         // Copies remaining files to places other tasks can use
         copy: {
@@ -412,21 +412,21 @@ module.exports = function (grunt) {
                         'styles/fonts/{,*/}*.*'
                     ]
                 }, {
-                        expand: true,
-                        cwd: '.tmp/images',
-                        dest: '<%= yeoman.dist %>/images',
-                        src: ['generated/*']
-                    }, {
-                        expand: true,
-                        cwd: '.',
-                        src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
-                        dest: '<%= yeoman.dist %>'
-                    }, {
-                        expand: true,
-                        cwd: '.',
-                        src: 'bower_components/fontawesome/fonts/*',
-                        dest: '<%= yeoman.dist %>'
-                    }]
+                    expand: true,
+                    cwd: '.tmp/images',
+                    dest: '<%= yeoman.dist %>/images',
+                    src: ['generated/*']
+                }, {
+                    expand: true,
+                    cwd: '.',
+                    src: 'bower_components/bootstrap-sass-official/assets/fonts/bootstrap/*',
+                    dest: '<%= yeoman.dist %>'
+                }, {
+                    expand: true,
+                    cwd: '.',
+                    src: 'bower_components/fontawesome/fonts/*',
+                    dest: '<%= yeoman.dist %>'
+                }]
             },
             styles: {
                 expand: true,
@@ -459,8 +459,7 @@ module.exports = function (grunt) {
             },
             // Environment targets
             mock: {
-                options: {
-                },
+                options: {},
                 constants: {
                     dreFrontendEnvironment: {
                         swapDiff: true,
@@ -474,8 +473,7 @@ module.exports = function (grunt) {
                 }
             },
             dev: {
-                options: {
-                },
+                options: {},
                 constants: {
                     dreFrontendEnvironment: {
                         swapDiff: true,
@@ -489,8 +487,7 @@ module.exports = function (grunt) {
                 }
             },
             local: {
-                options: {
-                },
+                options: {},
                 constants: {
                     dreFrontendEnvironment: {
                         swapDiff: true,
@@ -502,8 +499,7 @@ module.exports = function (grunt) {
                 }
             },
             qa: {
-                options: {
-                },
+                options: {},
                 constants: {
                     dreFrontendEnvironment: {
                         swapDiff: true,
@@ -515,8 +511,7 @@ module.exports = function (grunt) {
                 }
             },
             vagrant: {
-                options: {
-                },
+                options: {},
                 constants: {
                     dreFrontendEnvironment: {
                         swapDiff: true,
@@ -541,8 +536,7 @@ module.exports = function (grunt) {
                 }
             },
             env: {
-                options: {
-                },
+                options: {},
                 constants: {
                     dreFrontendEnvironment: {
                         swapDiff: true,
@@ -572,7 +566,7 @@ module.exports = function (grunt) {
         if (target === 'docker') {
             return grunt.task.run(['connect:docker:keepalive']);
         }
-
+        
         grunt.task.run([
             'clean:server',
             'wiredep',
@@ -607,7 +601,7 @@ module.exports = function (grunt) {
         'concat',
         'ngAnnotate',
         'copy:dist',
-    //'cdnify',
+        //'cdnify',
         'cssmin',
         'uglify',
         'filerev',

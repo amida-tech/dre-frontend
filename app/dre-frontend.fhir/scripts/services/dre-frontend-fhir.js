@@ -40,31 +40,6 @@ angular.module('dreFrontend.fhir')
                     }
                 }
 
-                var loadChildren = function (deep, filter, force) {
-                    var children = [];
-                    var self = this;
-                    filter = filter || "details";
-                    var a_filter = [];
-                    var r_type = fhirEnv.resourceTypes[this.resourceType];
-
-                    if (r_type && r_type.hasOwnProperty(filter)) {
-                        a_filter = r_type[filter];
-                    }
-
-                    proceed_reference(
-                        this,
-                        function (resource, key) {
-                            if (a_filter.length < 1 || a_filter.indexOf(key) !== -1) {
-                                children.push(resource.load(force));
-                            }
-                        },
-                        deep || fhirEnv.max_resource_nesting);
-
-                    return $q.all(children).then(function () {
-                        return self;
-                    });
-                };
-
                 function _is_valid_resource_type(resourceType) {
                     return (resourceType && dreFrontendUtil.isFhirResource(resourceType)) ?
                         $q.resolve(resourceType) : $q.reject("unsupported resource type: " + resourceType);
@@ -72,13 +47,10 @@ angular.module('dreFrontend.fhir')
 
                 function set_response(resource) {
                     function f(r) {
-                        angular.extend(r, {
-                            loadAll: loadChildren
-                        });
                         return _.omit(r, ["base", "link", "search", "text"]);
                     }
 
-                    /* remove unnecessary data */
+                    /* removing unnecessary data */
 
                     resource = Restangular.stripRestangular(resource);
                     resource = f(resource);
@@ -93,54 +65,7 @@ angular.module('dreFrontend.fhir')
                         });
                     }
 
-                    proceed_reference(resource, add_reference_loader, fhirEnv.max_resource_nesting);
-
                     return resource;
-                }
-
-                function proceed_reference(node, callback, deep) {
-                    if (deep >= 0) {
-                        _.forEach(node, function (v, k) {
-                            var _type = typeof v;
-                            if (v && _type === "object" && v.hasOwnProperty("reference")) {
-                                if (callback && typeof callback === "function") {
-                                    callback(v, k);
-                                }
-                            }
-                            if (_type === "object" || _type === "array") {
-                                proceed_reference(v, callback, deep - 1);
-                            }
-                        });
-                    }
-                }
-
-                function add_reference_loader(obj, field) {
-                    angular.extend(obj, {
-                        load: function (force) {
-                            var self = this;
-                            $log.debug('loading...', field, this.reference);
-                            var process_sub_resource = function (sub_resource) {
-                                sub_resource = set_response(sub_resource);
-                                angular.extend(self, sub_resource);
-                                return sub_resource;
-                            };
-
-                            if (force || !this.resourceType) {
-                                if (obj.reference.match(/^#.+/)) {
-                                    /* contained resource */
-                                    var data = _.first(_.filter(obj.contains, {"id": obj.reference.substring(1)})) || {};
-                                    return process_sub_resource(data);
-                                } else {
-                                    /* relative reference resource */
-                                    var p = obj.reference.split("/");
-                                    return Restangular.one(p[0], p[1]).get().then(process_sub_resource);
-                                }
-                                /*2do: add absolute reference handling */
-                            } else {
-                                return $q.resolve(this);
-                            }
-                        }
-                    });
                 }
 
                 function _search(resourceType, params) {

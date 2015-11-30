@@ -19,7 +19,7 @@ angular.module('dreFrontendApp')
                 $scope.model = {
                     data: [],
                     wasLoaded: false,
-                    blackList: ['reference', 'patient', 'meta', 'resourceType', 'id', 'subject']
+                    blackList: ['reference', 'patient', 'meta', 'resourceType', 'id', 'subject', 'identifier', 'extension']
                 };
 
                 if (!$scope.model.wasLoaded && $scope.entryDetails) {

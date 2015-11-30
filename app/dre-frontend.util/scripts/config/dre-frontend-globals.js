@@ -127,6 +127,9 @@ angular.module('dreFrontend.util')
             coding: ['display', 'code', 'system']
         };
 
+        self.highlightProperty = ['display','date', 'status', 'text', 'value', 'unit', 'valueString', 'name', 'status', 'severity', 'category', 'family', 'given'];
+        self.synonims = {'interpretation': 'meaning'};
+
         this.$get = function () {
             return self;
         };

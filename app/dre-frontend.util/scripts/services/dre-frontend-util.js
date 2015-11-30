@@ -32,31 +32,6 @@ angular.module("dreFrontend.util")
                     return '';
                 }
             },
-            buildObjectByPath: function (path, val) {
-                var p = path.slice(0);
-
-                var f = function (_path) {
-                    var n = _path.shift();
-
-                    var res;
-                    switch (typeof n) {
-                        case "number":
-                            res = [];
-                            res[n] = f(_path);
-                            break;
-                        case "string":
-                            res = {};
-                            res[n] = f(_path);
-                            break;
-                        default:
-                            res = val;
-                    }
-
-                    return res;
-                };
-
-                return f(p);
-            },
             isFhirResource: function (resourceType) {
                 return fhirEnv.resourceTypes.hasOwnProperty(resourceType);
             },
@@ -81,7 +56,7 @@ angular.module("dreFrontend.util")
             asFhirObject: function (data) {
                 if (data && data.resourceType) {
                     var Class;
-                    var _name = 'Fhir' + _capitalise(data.resourceType);
+                    var _name = 'Fhir' + data.resourceType;
                     try {
                         Class = $injector.get(_name);
                     } catch (e) {
@@ -94,24 +69,31 @@ angular.module("dreFrontend.util")
             },
             guessDataType: function (data) {
                 var _length;
+
                 if (data && data.length) {
                     _length = data.length;
                 } else {
-                    _length = NaN;
+                    _length = null;
                 }
-                var _type = typeof data;
 
-                if (angular.isArray(data)) {
-                    _type = 'array';
-                } else if (!isNaN(data * 1)) {
-                    _type = 'number';
-                } else if (angular.isDate(data) || (_length > 6 && !isNaN(Date.parse(data)))) {
-                    $log.debug(angular.isDate(data), _length, data);
-                    _type = 'date';
-                } else if (angular.isString(data)) {
-                    _type = 'string';
-                } else if (angular.isObject(data)) {
-                    _type = 'object';
+                var _type = typeof data;
+                var _full_dt = new RegExp("^\\d{2,4}([-\\.\\/])\\d{1,2}\\1\\d{1,2}([T\\ ]\\d{2}(:\\d{2}){1,2})?");
+                var _short_dt = /^\d{2,4}([-\.\/])\d{1,2}\1\d{1,4}/;
+
+                if (_type !== 'function') {
+                    if (angular.isArray(data)) {
+                        _type = 'array';
+                    } else if (!isNaN(data * 1)) {
+                        _type = 'number';
+                    } else if (angular.isString(data)) {
+                        if (data.match(_short_dt) || data.match(_full_dt)) {
+                            _type = 'date';
+                        } else {
+                            _type = 'string';
+                        }
+                    } else if (angular.isObject(data)) {
+                        _type = 'object';
+                    }
                 }
                 return _type;
             },
@@ -119,7 +101,7 @@ angular.module("dreFrontend.util")
                 var _res = dreFrontendGlobals.systemCodes[url];
 
                 if (!_res) {
-                    return url;
+                    return 'UNKNOWN';
                 } else {
                     return _res;
                 }

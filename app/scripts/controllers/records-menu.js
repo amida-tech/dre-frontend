@@ -9,6 +9,9 @@
  */
 angular.module('dreFrontendApp')
     .controller('RecordsMenuCtrl', function ($scope, dreFrontendGlobals, _) {
+
+        //todo: remove controller & view if no need more
+
         $scope.model = {
             menuItems: [
                 dreFrontendGlobals.resourceTypes.MedicationOrder,

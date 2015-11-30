@@ -1,56 +1,17 @@
 <div class="panel-body">
+    <div class="row text-center">
+        <div class="col-sm-6"><h4>{{model.lhs.title}}</h4></div>
+        <div class="col-sm-6"><h4>{{model.rhs.title}}</h4></div>
+    </div>
     <div class="row">
         <div class="col-sm-6">
-            <div class="details-table" entry-details-item="resourceDiff.model.lhs"></div>
+            <div user-timeline-entry-body="model.lhs.entry"></div>
         </div>
         <div class="col-sm-6">
-            <div class="details-table" entry-details-item="resourceDiff.model.rhs"></div>
+            <div user-timeline-entry-body="model.rhs.entry"></div>
         </div>
     </div>
-    <div class="row table-responsive">
-        <div class="col-sm-12">
-            <div class="text-center"><h4>{{model.title}}</h4></div>
-            <div user-timeline-entry-body="model.resource"></div>
-            <div class="matches-table">
-                <div class="row match-header">
-                    <div class="diff-path col-sm-4"><h5>Path</h5></div>
-                    <div class="diff-lhs col-sm-4"><h5>Origin record</h5></div>
-                    <div class="diff-rhs col-sm-4"><h5>Matched record</h5></div>
-                </div>
-                <div class="row match" ng-repeat="diff_entry in resourceDiff.changes">
-                    <div class="diff-path col-sm-4">
-                        <div class="col-sm-1">
-                            <input type="checkbox" ng-model="diff_entry.apply"/>
-                        </div>
-                        <div class="panel details-table col-sm-11">
-                            <div entry-details-item="diff_entry.model.path"></div>
-                        </div>
-                    </div>
-                    <div class="diff-lhs col-sm-4">
-                        <span class="label label-success text-capitalize"
-                              ng-show="diff_entry.kind === 'N' && !diff_entry.apply">new data</span>
-                        <span class="label label-danger text-capitalize"
-                              ng-show="diff_entry.kind === 'D' && diff_entry.apply">deleted</span>
-                        <span class="label-updated label label-info text-capitalize"
-                              ng-show="diff_entry.kind !== 'D' && diff_entry.apply">updated</span>
 
-                        <div class="panel details-table"
-                             ng-hide="diff_entry.kind === 'N' && !diff_entry.apply || diff_entry.kind === 'D' && diff_entry.apply">
-                            <div entry-details-item="diff_entry.model.rhs"
-                                 ng-show="diff_entry.apply && diff_entry.kind !== 'D'"></div>
-                            <div entry-details-item="diff_entry.model.lhs" ng-show="!diff_entry.apply"></div>
-                        </div>
-                    </div>
-                    <div class="diff-rhs col-sm-4">
-                        <span class="label label-danger text-capitalize"
-                              ng-show="diff_entry.kind === 'D'">deleted</span>
+    <resource-diff-tree data="model"></resource-diff-tree>
 
-                        <div class="details-table panel" ng-hide="diff_entry.kind === 'D'">
-                            <div entry-details-item="diff_entry.model.rhs"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>

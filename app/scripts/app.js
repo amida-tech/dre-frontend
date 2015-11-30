@@ -56,26 +56,31 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: true
             }
         })
-        .state('wideRoot', {
-            url: '',
+        .state('container', {
+            url: '/home',
             abstract: true,
-            templateUrl: 'views/controllers/wide-root.html'
+            templateUrl: 'views/abstract/container.html'
         })
-        .state('homeRoot', {
+        .state('leftmenuBody', {
+            abstract: true,
             url: '',
-            templateUrl: 'views/controllers/home-root.html',
-            abstract: true
+            parent: 'container',
+            views: {
+                'body@container': {
+                    templateUrl: 'views/abstract/leftmenu-body.html'
+                }
+            }
         })
         .state('home', {
-            url: '/home',
-            parent: 'homeRoot',
+            url: '',
             data: {
                 name: 'Home',
                 isPublic: false
             },
+            parent: 'leftmenuBody',
             views: {
-                'homeMenu@homeRoot': {},
-                'pageBody@homeRoot': {
+                'homeMenu@leftmenuBody': {},
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/account-history.html",
                     controller: "AccountHistoryCtrl"
                 }
@@ -89,11 +94,11 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {
+                'homeMenu@leftmenuBody': {
                     templateUrl: "views/controllers/record-menu.html",
                     controller: "RecordsMenuCtrl"
                 },
-                'pageBody@homeRoot': {
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/record-history.html",
                     controller: "RecordHistoryCtrl"
                 }
@@ -107,7 +112,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'pageBody@homeRoot': {
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/medications.html",
                     controller: "MedicationsCtrl"
                 }
@@ -121,7 +126,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'pageBody@homeRoot': {
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/records-common.html",
                     controller: "TestresultsCtrl"
                 }
@@ -135,7 +140,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'pageBody@homeRoot': {
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/records-common.html",
                     controller: "EncountersCtrl"
                 }
@@ -149,7 +154,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'pageBody@homeRoot': {
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/records-common.html",
                     controller: "ConditionsCtrl"
                 }
@@ -163,7 +168,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'pageBody@homeRoot': {
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/records-common.html",
                     controller: "SocialHistoryCtrl"
                 }
@@ -177,7 +182,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'pageBody@homeRoot': {
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/records-common.html",
                     controller: "ProceduresCtrl"
                 }
@@ -191,7 +196,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'pageBody@homeRoot': {
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/records-common.html",
                     controller: "VitalsCtrl"
                 }
@@ -205,7 +210,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'pageBody@homeRoot': {
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/records-common.html",
                     controller: "ImmunizationsCtrl"
                 }
@@ -219,7 +224,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'pageBody@homeRoot': {
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/records-common.html",
                     controller: "AllergiesCtrl"
                 }
@@ -233,35 +238,13 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {
+                'homeMenu@leftmenuBody': {
                     templateUrl: "views/controllers/groups-menu.html",
                     controller: "NotesMenuCtrl"
                 },
-                'pageBody@homeRoot': {
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/notes.html",
                     controller: "NotesCtrl"
-                }
-            }
-        })
-        .state('record.review', {
-            url: '/review/{group}',
-            parent: 'home',
-            data: {
-                name: 'Review Updates',
-                isPublic: false
-            },
-            /*
-             templateUrl: "views/controllers/record-review.html",
-             controller: "RecordReviewCtrl"
-             */
-            views: {
-                'homeMenu@homeRoot': {
-                    templateUrl: "views/controllers/groups-menu.html",
-                    controller: "ReviewMenuCtrl"
-                },
-                'pageBody@homeRoot': {
-                    templateUrl: "views/controllers/record-review.html",
-                    controller: "RecordReviewCtrl"
                 }
             }
         })
@@ -273,8 +256,8 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {},
-                'pageBody@homeRoot': {
+                'homeMenu@leftmenuBody': {},
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/files.html",
                     controller: 'FilesCtrl'
                 }
@@ -288,8 +271,8 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {},
-                'pageBody@homeRoot': {
+                'homeMenu@leftmenuBody': {},
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/files-upload.html",
                     controller: 'FilesUploadCtrl'
                 }
@@ -313,11 +296,11 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {
+                'homeMenu@leftmenuBody': {
                     templateUrl: "views/controllers/billing-menu.html",
                     controller: "BillingMenuCtrl"
                 },
-                'pageBody@homeRoot': {
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/billing-history.html",
                     controller: "BillingHistoryCtrl"
                 }
@@ -331,7 +314,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'pageBody@homeRoot': {
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/records-common.html",
                     controller: "InsuranceCtrl"
                 }
@@ -345,7 +328,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'pageBody@homeRoot': {
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/records-common.html",
                     controller: "ClaimsCtrl"
                 }
@@ -359,11 +342,11 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {
+                'homeMenu@leftmenuBody': {
                     templateUrl: "views/controllers/profile-menu.html",
                     controller: 'ProfileMenuCtrl'
                 },
-                'pageBody@homeRoot': {
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/profile.html",
                     controller: 'ProfileCtrl'
                 }
@@ -377,11 +360,11 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {
+                'homeMenu@leftmenuBody': {
                     templateUrl: "views/controllers/profile-menu.html",
                     controller: 'ProfileMenuCtrl'
                 },
-                'pageBody@homeRoot': {
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/profile-contact-info.html",
                     controller: 'ProfileCtrl'
                 }
@@ -395,7 +378,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'pageBody@homeRoot': {
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/profile-photo.html",
                     controller: 'ProfilePhotoCtrl'
                 }
@@ -409,22 +392,42 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
                 isPublic: false
             },
             views: {
-                'homeMenu@homeRoot': {},
-                'pageBody@homeRoot': {
+                'homeMenu@leftmenuBody': {},
+                'pageBody@leftmenuBody': {
                     templateUrl: "views/controllers/account.html",
                     controller: 'AccountCtrl'
                 }
             }
         })
-        .state('fhir', {
-            url: '/fhir',
-            templateUrl: 'views/controllers/fhir.html',
-            controller: 'FhirCtrl',
+        .state('record.review', {
+            url: '/review/{group}',
+            parent: 'home',
             data: {
-                name: 'My PHR | FHIR',
+                name: 'Review Updates',
+                isPublic: false
+            },
+            views: {
+                'body@container': {
+                    templateUrl: "views/controllers/record-review.html",
+                    controller: "RecordReviewCtrl"
+                }
+            }
+        })
+        .state('test', {
+            url: '/test',
+            parent: 'home',
+            data: {
+                name: 'Review Updates',
                 isPublic: true
+            },
+            views: {
+                'body@container': {
+                    templateUrl: "views/controllers/record-review.html",
+                    controller: "RecordReviewCtrl"
+                }
             }
         });
+
     $urlRouterProvider.otherwise('/');
 
 });

@@ -2,8 +2,7 @@
 
 angular.module('dreFrontend.util')
     .service('dreFrontendMergeService', function ($rootScope, $q, $http, _, dreFrontendHttp, dreFrontendUtil,
-                                                  dreFrontendEnvironment, dreFrontendEntryService, dreFrontendGlobals,
-                                                  $log) {
+                                                  dreFrontendEnvironment, dreFrontendGlobals) {
 
         var matches = null;
 
@@ -15,8 +14,6 @@ angular.module('dreFrontend.util')
             replace: '/replace'
         };
 
-        var _blacklist = ['meta', 'patient', 'id'];
-
         var _filter = function (resp) {
             var _knowResources = _.pluck(dreFrontendGlobals.resourceTypes, 'fhirType');
             var res = _.filter(resp, function (match) {
@@ -27,6 +24,7 @@ angular.module('dreFrontend.util')
 
                 if (_allow) {
                     match.lhs = dreFrontendUtil.asFhirObject(match.lhs);
+                    match.rhs = dreFrontendUtil.asFhirObject(match.rhs);
                 }
 
                 return _allow;
@@ -58,7 +56,7 @@ angular.module('dreFrontend.util')
 
         var _swapChange = function (change) {
             if (angular.isArray(change)) {
-                angular.forEach(change, _prepareChangeModel);
+                angular.forEach(change, _swapChange);
             } else {
                 switch (change.kind) {
                     case 'N':
@@ -73,42 +71,7 @@ angular.module('dreFrontend.util')
                 change.lhs = tmp;
             }
         };
-
-        var _prepareModel = function (diff) {
-            if (diff.changes) {
-                angular.forEach(diff.changes, _prepareChangeModel);
-            }
-            if (typeof diff.lhs.loadAll === 'function') {
-                diff.lhs.loadAll();
-            }
-            diff.model = {
-                lhs: dreFrontendEntryService.buildTable(diff.lhs, _blacklist),
-                rhs: dreFrontendEntryService.buildTable(diff.rhs, _blacklist)
-            };
-        };
-
-        var _prepareChangeModel = function (change) {
-
-            if (angular.isArray(change)) {
-                angular.forEach(change, _prepareChangeModel);
-            } else if (angular.isObject(change) && !change.model) {
-                if (change.path) {
-                    var path = dreFrontendUtil.buildObjectByPath(change.path, "");
-                    var lhs, rhs;
-                    lhs = change.lhs;
-                    rhs = change.rhs;
-                    change.apply = false;
-                    change.model = {
-                        path: dreFrontendEntryService.buildTable(path, _blacklist),
-                        lhs: dreFrontendEntryService.buildTable(lhs, _blacklist),
-                        rhs: dreFrontendEntryService.buildTable(rhs, _blacklist)
-                    };
-                } else {
-                    $log.debug("no path", change);
-                }
-            }
-        };
-
+        
         var _getList = function () {
             if (matches) {
                 return $q.resolve(matches);
@@ -201,8 +164,6 @@ angular.module('dreFrontend.util')
                     url: urls.replace + '/' + match.rhs.id
                 });
             },
-            prepareChangeModel: _prepareChangeModel,
-            prepareModel: _prepareModel,
             clear: _clearData
         };
     });

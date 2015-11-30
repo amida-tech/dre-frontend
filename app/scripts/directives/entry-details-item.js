@@ -22,31 +22,94 @@ angular.module('dreFrontendApp')
             link: function ($scope, element) {
 
                 if (angular.isObject($scope.entryDetailsItemMember)) {
+                    var checkBox = '', diffKind, diffSide, diffApply;
+                    var modelType = $scope.entryDetailsItemMember.type;
+
+                    if (angular.isObject($scope.entryDetailsItemMember.diff)) {
+                        diffKind = $scope.entryDetailsItemMember.diff.change.kind || '';
+                        diffSide = $scope.entryDetailsItemMember.diff.side || '';
+                        diffApply = $scope.entryDetailsItemMember.diff.change ? $scope.entryDetailsItemMember.diff.change.apply : false;
+                    }
+
+                    if (diffSide === 'l' && diffApply && diffKind === 'E') {
+                        $scope.model = $scope.entryDetailsItemMember.diff.ref;
+                    } else {
+                        $scope.model = $scope.entryDetailsItemMember.value;
+                    }
+
                     if ($scope.entryDetailsItemMember.label) {
-                        element.append("<div class='detail-label'><span><strong ng-bind='entryDetailsItemMember.label'></strong></span></div>");
+                        if (diffKind && diffSide === 'l') {
+                            checkBox = "<input type='checkbox' ng-model='entryDetailsItemMember.diff.change.apply'/>";
+                        }
+                        element.append("<div class='detail-label'>" + checkBox + "<strong ng-bind='entryDetailsItemMember.label'></strong></div>");
                     }
 
-                    var prefix = "<div class='detail-container'><div class='col-xs-12 panel detail-value'";
-                    var suffix = '</div></div>';
 
-                    switch ($scope.entryDetailsItemMember.type) {
-                        case "string":
-                            element.append(prefix + "><span class='{{entryDetailsItemMember.cssClass}}'>{{entryDetailsItemMember.value}}</span>" + suffix);
-                            break;
+                    if ($scope.model) {
+                        var prefix = "<div class='detail-container";
 
-                        case 'object':
-                            element.append(prefix +" entry-details-item='entryDetailsItemMember.value'>" + suffix);
-                            break;
+                        if (!$scope.entryDetailsItemMember.label) {
+                            prefix += ' no-label';
+                        }
 
-                        case 'objectsList':
-                            element.append(prefix + " ng-class='{tablesBlock:entryDetailsItemMember.value.length > 1}' ng-repeat='item in entryDetailsItemMember.value' entry-details-item='item'>" + suffix);
-                            break;
+                        if ($scope.entryDetailsItemMember.cssClass) {
+                            prefix += ' ' + $scope.entryDetailsItemMember.cssClass;
+                        }
 
-                        case 'array':
-                            element.append(prefix + " ng-repeat='item in entryDetailsItemMember.value'><span>{{item}}</span><br/>" + suffix);
-                            break;
+                        prefix += "'><div class='col-xs-12 panel detail-value";
+
+                        if (diffKind && diffSide === 'l') {
+                            prefix += ' diff-' + diffKind;
+                        }
+
+                        switch (diffKind) {
+                            case 'N':
+                                if (diffSide === 'l' && !diffApply) {
+                                    $scope.model = '<span class="label label-success text-capitalize">new data</span>';
+                                    modelType = 'html';
+                                }
+                                break;
+                            case 'D':
+                                if (diffSide === 'r') {
+                                    $scope.model = '<span class="label label-danger text-capitalize">no data</span>';
+                                    modelType = 'html';
+                                } else if (diffApply && diffSide === 'l') {
+                                    $scope.model = '<span class="label label-danger text-capitalize">deleted</span>';
+                                    modelType = 'html';
+                                }
+                                break;
+                        }
+
+                        prefix += "'";
+
+                        var suffix = '</div></div>';
+
+                        if (diffSide === 'l' && diffApply && diffKind !== 'D') {
+                            suffix = '</div><span class="label-updated label label-info text-capitalize">updated</span></div>';
+                        }
+
+
+                        switch (modelType) {
+                            case 'html':
+                                element.append(prefix + ">" + $scope.model + suffix);
+                                break;
+                            case "string":
+                                element.append(prefix + "><span>{{model}}</span>" + suffix);
+                                break;
+
+                            case 'object':
+                                element.append(prefix + " entry-details-item='model'>" + suffix);
+                                break;
+
+                            case 'objectsList':
+                                element.append(prefix + " ng-class='{tablesBlock:model.length > 1}' ng-repeat='item in model' entry-details-item='item'>" + suffix);
+                                break;
+
+                            case 'array':
+                                element.append(prefix + " ng-repeat='item in model'><span>{{item}}</span><br/>" + suffix);
+                                break;
+                        }
                     }
-
                     $compile(element.contents())($scope);
 
                 }

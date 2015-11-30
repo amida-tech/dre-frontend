@@ -7,44 +7,23 @@
  */
 
 angular.module('dreFrontendApp')
-    .directive('resourceDiff', function () {
+    .directive('resourceDiff', function ($log, dreFrontendDiff) {
         return {
             templateUrl: 'views/directives/resource-diff.html',
             restrict: 'AE',
             scope: {
                 resourceDiff: "="
             },
-            link: function (scope, element, attrs, ctrl) {
-                scope.$watch('resourceDiff', function (newValue) {
-                    if (newValue) {
-                        ctrl.update(newValue);
-                    }
-                }, true);
-            },
-            controller: function ($scope, $log, dreFrontendUtil, dreFrontendMergeService,
-                                  dreFrontendGlobals, dreFrontendEntryService) {
-                $scope.model = {
-                    title: '',
-                    resource: {
-                        title: '',
-                        dates: {}
-                    },
-                    lhs: {},
-                    rhs: {}
-                };
-
-                this.update = function (diff) {
-                    if (diff) {
-                        dreFrontendMergeService.prepareModel(diff);
-
-                        $scope.model.resource = dreFrontendEntryService.getEntry(
-                            diff.lhs, '', dreFrontendGlobals.menuRecordTypeEnum.none
-                        );
-                        $scope.model.title = dreFrontendUtil.camelCaseToString(diff.lhs.resourceType);
+            link: function ($scope) {
+                var _updateModel = function(diff) {
+                    if(typeof diff === 'object' && !diff.updating) {
+                        dreFrontendDiff.buildDiffView(diff)
+                            .then(function (model) {
+                                $scope.model = model;
+                            });
                     }
                 };
-
-                this.update($scope.resourceDiff);
+                $scope.$watch('resourceDiff', _updateModel, true);
             }
         };
     });

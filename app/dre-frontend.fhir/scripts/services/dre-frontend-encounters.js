@@ -16,6 +16,7 @@ angular.module('dreFrontend.fhir')
         return {
             getByPatientId: function (patient_id) {
                 return dreFrontendFhirService.search("Encounter", {patient: patient_id})
+                    .then(proceedBundle)
                     .then(function (bundle) {
                         var locations = [];
                         angular.forEach(bundle.entry, function (res) {
@@ -26,7 +27,7 @@ angular.module('dreFrontend.fhir')
                             });
                         });
                         return $q.all(locations).then(function () {
-                            return proceedBundle(bundle);
+                            return bundle;
                         });
                     });
             },
