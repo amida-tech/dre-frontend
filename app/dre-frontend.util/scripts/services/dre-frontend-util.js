@@ -78,7 +78,7 @@ angular.module("dreFrontend.util")
 
                 var _type = typeof data;
                 var _full_dt = new RegExp("^\\d{2,4}([-\\.\\/])\\d{1,2}\\1\\d{1,2}([T\\ ]\\d{2}(:\\d{2}){1,2})?");
-                var _short_dt = /\d{2,4}([-\.\/])\d{1,2}\1\d{1,4}/;
+                var _short_dt = /^\d{2,4}([-\.\/])\d{1,2}\1\d{1,4}/;
 
                 if (_type !== 'function') {
                     if (angular.isArray(data)) {
@@ -86,7 +86,7 @@ angular.module("dreFrontend.util")
                     } else if (!isNaN(data * 1)) {
                         _type = 'number';
                     } else if (angular.isString(data)) {
-                        if (angular.isDate(data) || data.match && (data.match(_short_dt) || data.match(_full_dt))) {
+                        if (data.match(_short_dt) || data.match(_full_dt)) {
                             _type = 'date';
                         } else {
                             _type = 'string';

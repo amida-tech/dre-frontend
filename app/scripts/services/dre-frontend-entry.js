@@ -70,21 +70,25 @@ angular.module('dreFrontendApp')
                     label: _getLabel(_key),
                     value: null,
                     cssClass: getFieldCssClass(_val, _key),
-                    diff: {}
+                    diff: null
                 };
 
                 if (_val && _val.diff) {
-                    angular.extend(node.diff, _val.diff);
-                    _val.diff = undefined;
+                    if (_val.diff.side === 'l') {
+                        node.diff = {};
+                        angular.extend(node.diff, _val.diff);
+                        node.diff.ref = _buildTable(node.diff.ref, blackList, deep);
+                    }
+                    delete _val.diff;
                     if (_val.nodeValue) {
                         _val = _val.nodeValue;
                     }
                 }
 
-                if (_key === 'system') {
-                    _val = dreFrontendUtil.encodeSystemURL(_val);
-                } else if (_key === 'coding') {
-                    _val = wrapCoding(_val);
+                switch (_key) {
+                    case 'coding':
+                        _val = wrapCoding(_val);
+                        break;
                 }
 
                 switch (dreFrontendUtil.guessDataType(_val)) {

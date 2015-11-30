@@ -49,39 +49,36 @@ angular.module('dreFrontend.util')
 
                 };
 
-                var _f2 = function (markObj, neighbour, node_name, change) {
+                var _f2 = function (markObj, nMark, node_name, change, side) {
                     if (markObj) {
-                        var node_val;
-                        if (0 && typeof markObj.node !== 'object') {
-                            node_val = markObj.node;
-                            markObj.parent[node_name] = {
-                                value: node_val
-                            };
-                            markObj.node = markObj.parent[node_name];
-                            /// $log.debug(markObj, node_name, change.kind);
-                        }
-
                         if (node_name ==='reference') {
                             if (typeof markObj.parent === 'object') {
                                 markObj.parent.diff = {
+                                    change: change,
                                     kind: change.kind,
-                                    ref: neighbour
+                                    ref: {},
+                                    side: side
                                 };
+                                angular.extend(markObj.parent.diff.ref,nMark.parent);
                             }
                         } else {
                             if (typeof markObj.node !== 'object') {
-                                node_val = markObj.node;
+                                var node_val = markObj.node;
                                 markObj.parent[node_name] = {
                                     value: node_val
                                 };
                                 markObj.node = markObj.parent[node_name];
-                                /// $log.debug(markObj, node_name, change.kind);
                             }
+
                             if (typeof markObj.node === 'object') {
+                                $log.debug(nMark.node.value, nMark.node);
                                 markObj.node.diff = {
+                                    change: change,
                                     kind: change.kind,
-                                    ref: neighbour
+                                    ref: nMark.node.value || nMark.node,
+                                    side: side
                                 };
+
                             }
 
                         }
@@ -107,8 +104,8 @@ angular.module('dreFrontend.util')
                         _f1(rMark, path[p]);
                     }
 
-                    _f2(lMark, rMark.node, path[path.length - 1], diff.changes[i]);
-                    _f2(rMark, lMark.node, path[path.length - 1], diff.changes[i]);
+                    _f2(lMark, rMark, path[path.length - 1], diff.changes[i],'l');
+//                    _f2(rMark, lMark, path[path.length - 1], diff.changes[i],'r');
                 }
 
                 var lhs_title = _.result(_.find(dreFrontendGlobals.resourceTypes, {fhirType: diff.lhs.resourceType}), 'title') ||
