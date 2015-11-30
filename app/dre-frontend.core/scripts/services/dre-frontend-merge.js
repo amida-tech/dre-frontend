@@ -84,7 +84,7 @@ angular.module('dreFrontend.util')
             diff.model = {
                 lhs: dreFrontendEntryService.buildTable(diff.lhs, _blacklist),
                 rhs: dreFrontendEntryService.buildTable(diff.rhs, _blacklist)
-            }
+            };
         };
 
         var _prepareChangeModel = function (change) {
