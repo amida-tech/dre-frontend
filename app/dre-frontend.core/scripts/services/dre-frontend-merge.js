@@ -71,7 +71,7 @@ angular.module('dreFrontend.util')
                 change.lhs = tmp;
             }
         };
-
+        
         var _getList = function () {
             if (matches) {
                 return $q.resolve(matches);

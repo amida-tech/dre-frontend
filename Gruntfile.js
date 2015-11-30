@@ -85,11 +85,11 @@ module.exports = function (grunt) {
                             connect().use(
                                 '/bower_components',
                                 connect.static('./bower_components')
-                            ),
+                                ),
                             connect().use(
                                 '/app/styles',
                                 connect.static('./app/styles')
-                            ),
+                                ),
                             connect.static(appConfig.app)
                         ];
                     }
@@ -115,6 +115,14 @@ module.exports = function (grunt) {
                 options: {
                     open: true,
                     base: '<%= yeoman.dist %>'
+                }
+            },
+            docker: {
+                options: {
+                    open: true,
+                    base: '<%= yeoman.dist %>',
+                    port: 9000,
+                    hostname: '0.0.0.0',
                 }
             }
         },
@@ -514,6 +522,19 @@ module.exports = function (grunt) {
                     }
                 }
             },
+            docker: {
+                options: {
+                },
+                constants: {
+                    dreFrontendEnvironment: {
+                        swapDiff: true,
+                        name: 'docker',
+                        baseServerUrl: 'http://192.168.99.100:3000/api/v1',
+                        fhirServerUrl: 'http://192.168.99.100:8080/fhir/baseDstu2',
+                        enableDebugLog: true
+                    }
+                }
+            },
             env: {
                 options: {},
                 constants: {
@@ -542,6 +563,10 @@ module.exports = function (grunt) {
             return grunt.task.run(['build', 'connect:dist:keepalive']);
         }
 
+        if (target === 'docker') {
+            return grunt.task.run(['connect:docker:keepalive']);
+        }
+        
         grunt.task.run([
             'clean:server',
             'wiredep',
