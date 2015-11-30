@@ -13,6 +13,7 @@ angular.module('dreFrontendApp')
         /* 2do: refactor code & move calls into FhirResource children implementations*/
         $log.debug('refactor dreFrontendEntryService code & move calls into FhirResource children implementations');
 
+        var _wrapLabelDeep = 1;
         var _black_list = ["photo"];
 
         var getFieldCssClass = function (_val, _key) {
@@ -60,6 +61,9 @@ angular.module('dreFrontendApp')
         };
 
         var _buildTable = function (dataItem, blackList, deep) {
+            if (deep > 10) {
+                return [];
+            }
             var dataItems = [];
             blackList = blackList || [];
             blackList = blackList.concat(_black_list);
@@ -74,10 +78,19 @@ angular.module('dreFrontendApp')
                 };
 
                 if (_val && _val.diff) {
-                    if (_val.diff.side === 'l') {
-                        node.diff = {};
-                        angular.extend(node.diff, _val.diff);
-                        node.diff.ref = _buildTable(node.diff.ref, blackList, deep);
+                    switch (_val.diff.side) {
+                        case 'l':
+                            node.diff = _val.diff;
+                            if (_val.diff.change.kind !== "N") {
+                                node.diff.ref = _buildTable(node.diff.ref, blackList, deep);
+                            }
+                            break;
+                        case 'r':
+                            node.diff = _val.diff;
+                            if (_val.diff.change.kind !=='N') {
+                                delete node.diff.ref;
+                            }
+                            break;
                     }
                     delete _val.diff;
                     if (_val.nodeValue) {
@@ -87,7 +100,9 @@ angular.module('dreFrontendApp')
 
                 switch (_key) {
                     case 'coding':
-                        _val = wrapCoding(_val);
+                        if (!node.diff) {
+                            _val = wrapCoding(_val);
+                        }
                         break;
                 }
 
@@ -131,7 +146,7 @@ angular.module('dreFrontendApp')
                         break;
 
                     case 'date':
-                        if (deep) {
+                        if (_key === 'value' && !node.diff) {
                             node.label = '';
                         }
                         node.value = dreFrontendUtil.formatFhirDate(_val);
@@ -139,7 +154,7 @@ angular.module('dreFrontendApp')
 
                     case 'number':
                     case 'string':
-                        if (deep) {
+                        if (deep > _wrapLabelDeep && !node.diff) {
                             node.label = '';
                         }
                         node.value = _val;

@@ -72,20 +72,20 @@
             }
             input[type='checkbox'] {
                 position: absolute;
-                left: -5px;
+                left: 0;
             }
         }
 
         .diff-N {
-            background-color: greenyellow;
+            background-color: #dff0d8;
         }
 
         .diff-E {
-            background-color: #b3d4fc;
+            background-color: #d9edf7;
         }
 
         .diff-D {
-            background-color: red;
+            background-color: #f2dede;
         }
 
         .detail-container {
@@ -124,6 +124,10 @@
             span {
                 word-wrap: break-word;
                 white-space: pre-wrap;
+            }
+
+            span.label {
+                color: #fff;
             }
         }
 

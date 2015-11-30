@@ -38,58 +38,53 @@ angular.module('dreFrontend.util')
                 /* restore original lhs data */
                 angular.extend(_lhs, diff.lhs);
 
-                var _f1 = function (markObj, param_name) {
+                var _f1 = function (marker, param_name) {
 
-                    if (markObj && markObj.node[param_name]) {
-                        markObj.parent = markObj.node;
-                        markObj.node = markObj.node[param_name];
+                    if (marker && marker.node[param_name]) {
+                        marker.parent = marker.node;
+                        marker.node = marker.node[param_name];
+                        marker.nodeKey = param_name;
                     } else {
-                        markObj = null;
+                        marker = null;
                     }
 
                 };
 
-                var _f2 = function (markObj, nMark, node_name, change, side) {
-                    if (markObj) {
-                        if (node_name ==='reference') {
-                            if (typeof markObj.parent === 'object') {
-                                markObj.parent.diff = {
+                var _f2 = function (marker, neibMarker, change, side) {
+                    if (marker) {
+                        if (marker.nodeKey === 'reference') {
+                            if (typeof marker.parent === 'object') {
+                                marker.parent.diff = {
                                     change: change,
-                                    kind: change.kind,
-                                    ref: {},
+                                    ref: _.cloneDeep(neibMarker.parent),
                                     side: side
                                 };
-                                angular.extend(markObj.parent.diff.ref,nMark.parent);
                             }
                         } else {
-                            if (typeof markObj.node !== 'object') {
-                                var node_val = markObj.node;
-                                markObj.parent[node_name] = {
+                            if (typeof marker.node !== 'object') {
+                                var node_val = marker.node;
+                                marker.parent[marker.nodeKey] = {
                                     value: node_val
                                 };
-                                markObj.node = markObj.parent[node_name];
+                                marker.node = marker.parent[marker.nodeKey];
                             }
 
-                            if (typeof markObj.node === 'object') {
-                                $log.debug(nMark.node.value, nMark.node);
-                                markObj.node.diff = {
+                            if (typeof marker.node === 'object') {
+                                marker.node.diff = {
                                     change: change,
-                                    kind: change.kind,
-                                    ref: nMark.node.value || nMark.node,
+                                    ref: neibMarker.node.value || neibMarker.node,
                                     side: side
                                 };
-
                             }
-
                         }
                     }
                 };
 
-                var f = function(obj) {
+                var f = function (obj) {
                     return {
                         node: obj,
                         parent: null,
-                        nodeKey:''
+                        nodeKey: ''
                     };
                 };
 
@@ -97,15 +92,18 @@ angular.module('dreFrontend.util')
                 for (var i = 0; i < diff.changes.length; i++) {
                     var lMark = f(_lhs);
                     var rMark = f(_rhs);
-
                     var path = diff.changes[i].path;
+
                     for (var p = 0; p < path.length; p++) {
                         _f1(lMark, path[p]);
                         _f1(rMark, path[p]);
                     }
 
-                    _f2(lMark, rMark, path[path.length - 1], diff.changes[i],'l');
-//                    _f2(rMark, lMark, path[path.length - 1], diff.changes[i],'r');
+                    _f2(lMark, rMark, diff.changes[i], 'l');
+
+                    if (diff.changes[i].kind === "D") {
+                        _f2(rMark, lMark, diff.changes[i], 'r');
+                    }
                 }
 
                 var lhs_title = _.result(_.find(dreFrontendGlobals.resourceTypes, {fhirType: diff.lhs.resourceType}), 'title') ||
@@ -140,48 +138,51 @@ angular.module('dreFrontend.util')
         var _buildChangeView = function (change) {
             if (angular.isArray(change)) {
                 angular.forEach(change, _buildChangeView);
-            } else if (angular.isObject(change) && !change.model) {
-                if (change.path) {
-                    var path = _buildObjectByPath(change.path, '');
-                    var lhs, rhs;
-                    lhs = change.lhs;
-                    rhs = change.rhs;
-                    change.apply = false;
-                    change.model = {
-                        path: dreFrontendEntryService.buildTable(path, []),
-                        lhs: dreFrontendEntryService.buildTable(lhs, []),
-                        rhs: dreFrontendEntryService.buildTable(rhs, [])
-                    };
-                } else {
-                    $log.debug("no path", change);
-                }
+            } else if (angular.isObject(change) && typeof change.apply === 'undefined') {
+                change.apply = false;
+                /*
+                 if (change.path) {
+                 var path = _buildObjectByPath(change.path, '');
+                 var lhs, rhs;
+                 lhs = change.lhs;
+                 rhs = change.rhs;
+
+                 change.model = {
+                 path: dreFrontendEntryService.buildTable(path, []),
+                 lhs: dreFrontendEntryService.buildTable(lhs, []),
+                 rhs: dreFrontendEntryService.buildTable(rhs, [])
+                 };
+                 } else {
+                 $log.debug("no path", change);
+                 }
+                 */
             }
         };
+        /*
+         var _buildObjectByPath = function (path, val) {
+         var p = path.slice(0);
 
-        var _buildObjectByPath = function (path, val) {
-            var p = path.slice(0);
+         var f = function (_path) {
+         var n = _path.shift();
+         var res;
+         switch (typeof n) {
+         case "number":
+         res = [];
+         res[n] = f(_path);
+         break;
+         case "string":
+         res = {};
+         res[n] = f(_path);
+         break;
+         default:
+         res = val;
+         }
 
-            var f = function (_path) {
-                var n = _path.shift();
-                var res;
-                switch (typeof n) {
-                    case "number":
-                        res = [];
-                        res[n] = f(_path);
-                        break;
-                    case "string":
-                        res = {};
-                        res[n] = f(_path);
-                        break;
-                    default:
-                        res = val;
-                }
-
-                return res;
-            };
-            return f(p);
-        };
-
+         return res;
+         };
+         return f(p);
+         };
+         */
         return {
             buildChangeView: _buildChangeView,
             buildDiffView: _buildDiffView

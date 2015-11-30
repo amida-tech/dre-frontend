@@ -2,8 +2,7 @@
 
 angular.module('dreFrontend.util')
     .service('dreFrontendMergeService', function ($rootScope, $q, $http, _, dreFrontendHttp, dreFrontendUtil,
-                                                  dreFrontendEnvironment, dreFrontendGlobals,
-                                                  dreFrontendDiff) {
+                                                  dreFrontendEnvironment, dreFrontendGlobals) {
 
         var matches = null;
 
@@ -165,8 +164,6 @@ angular.module('dreFrontend.util')
                     url: urls.replace + '/' + match.rhs.id
                 });
             },
-            prepareChangeModel: dreFrontendDiff.buildChangeView,
-            prepareModel: dreFrontendDiff.buildDiffView,
             clear: _clearData
         };
     });
