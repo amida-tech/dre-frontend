@@ -27,6 +27,22 @@ angular.module('dreFrontend.resource')
                 "note": "", // Information about the prescription
                 "medicationReference": {} // Reference(Medication)
             });
+            if (!this.extension) {
+                this.extension = [];
+            }
+            this.extension.push({
+                "url":"http://amida-tech.com/fhir/extensions/source",
+                "extension":[
+                   {
+                        "url":"http://amida-tech.com/fhir/extensions/source/date",
+                        "valueDate": new Date().toISOString()
+                    },
+                    {
+                        "url":"http://amida-tech.com/fhir/extensions/source/description",
+                        "valueString":"Patient entered"
+                    }
+                ]
+            });
         };
 
         FhirMedicationOrder.prototype.loadMedication = function () {
