@@ -1,14 +1,14 @@
 <div class="panel-body">
     <div class="row text-center">
-        <div class="col-sm-6"><h4>{{model.lhs.title}}</h4></div>
         <div class="col-sm-6"><h4>{{model.rhs.title}}</h4></div>
+        <div class="col-sm-6"><h4>{{model.lhs.title}}</h4></div>
     </div>
     <div class="row">
         <div class="col-sm-6">
-            <div user-timeline-entry-body="model.lhs.entry"></div>
+            <div user-timeline-entry-body="model.rhs.entry"></div>
         </div>
         <div class="col-sm-6">
-            <div user-timeline-entry-body="model.rhs.entry"></div>
+            <div user-timeline-entry-body="model.lhs.entry"></div>
         </div>
     </div>
 
