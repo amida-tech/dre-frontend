@@ -14,6 +14,29 @@ angular.module('dreFrontend.fhir')
             return new FhirDocumentReference(entry);
         }
 
+        function proceedDocRef(doc_ref) {
+            var data = {
+                indexed: doc_ref.indexed,
+                display: "User uploaded record",
+                getBody: doc_ref.getContent,
+                status: doc_ref.status
+            };
+
+            if (doc_ref.type && doc_ref.type.coding[0] && doc_ref.type.coding[0].display) {
+                data.display = doc_ref.type.coding[0].display;
+            }
+
+            if (doc_ref.content && doc_ref.content[0]) {
+                if (doc_ref.content[0].attachment) {
+                    angular.extend(data, doc_ref.content[0].attachment);
+                } else {
+                    angular.extend(data, doc_ref.content[0]);
+                }
+            }
+
+            return data;
+        }
+
         return {
             DocumentReference: proceedEntry,
             getByPatientId: function (patient_id, params) {
@@ -29,31 +52,13 @@ angular.module('dreFrontend.fhir')
                 return dreFrontendFhirService.read('DocumentReference')
                     .then(proceedBundle);
             },
+
             getFileList: function (documentReferenceBundle) {
                 var files = [];
 
                 function _proceedBundle(bundle) {
                     angular.forEach(bundle.entry, function (doc_ref) {
-                        var data = {
-                            indexed: doc_ref.indexed,
-                            display: "User uploaded record",
-                            getBody: doc_ref.getContent,
-                            status: doc_ref.status
-                        };
-
-                        if (doc_ref.type && doc_ref.type.coding[0] && doc_ref.type.coding[0].display) {
-                            data.display = doc_ref.type.coding[0].display;
-                        }
-
-                        if (doc_ref.content && doc_ref.content[0]) {
-                            if (doc_ref.content[0].attachment) {
-                                angular.extend(data, doc_ref.content[0].attachment);
-                            } else {
-                                angular.extend(data, doc_ref.content[0]);
-                            }
-                        }
-
-                        files.push(data);
+                        files.push(proceedDocRef(doc_ref));
                     });
                 }
 

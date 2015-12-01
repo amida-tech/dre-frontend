@@ -7,7 +7,7 @@
  * # mainMenu
  */
 angular.module('dreFrontendApp')
-    .directive('entrySource', function (dreFrontendProvenance) {
+    .directive('entrySource', function (dreFrontendDocumentReference) {
         return {
             templateUrl: 'views/directives/entry-source.html',
             restrict: 'AE',
@@ -20,10 +20,13 @@ angular.module('dreFrontendApp')
                     links: []
                 };
                 if ($scope.entrySource) {
-                    dreFrontendProvenance.getResourceSources($scope.entrySource.resourceType, $scope.entrySource.id)
-                        .then(function (sources) {
-                            $scope.model.links = sources;
-                        });
+                    $scope.entrySource.getSources().then(function (resources) {
+                        $scope.model.links = [];
+                        for (var n = 0; n < resources.length; n++) {
+                            var docRef = dreFrontendDocumentReference.DocumentReference(resources[n]);
+                            $scope.model.links.push(docRef.getLinkData());
+                        }
+                    });
                 } else {
                     $scope.model.links = [];
                 }

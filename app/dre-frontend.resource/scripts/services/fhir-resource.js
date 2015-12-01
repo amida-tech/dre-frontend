@@ -4,7 +4,8 @@
 "use strict";
 
 angular.module('dreFrontend.resource')
-    .factory('FhirResource', function (dreFrontendFhirService, dreFrontendUtil, _, fhirEnv, $log, $q) {
+    .factory('FhirResource', function (dreFrontendUtil, _, fhirEnv, $log, $q,
+                                       dreFrontendFhirService) {
 
         var FhirResource = function (data) {
             this.setData(data);
@@ -126,6 +127,44 @@ angular.module('dreFrontend.resource')
             return $q.all(children).then(function () {
                 return self;
             });
+        };
+
+        FhirResource.prototype.getSources = function () {
+            var f = function (obj, _key, valueType) {
+                var res = _.filter(obj.extension, {url: _key});
+                if (valueType && res) {
+                    var _tmp = res.shift();
+                    res = _tmp['value' + valueType];
+                }
+                return res;
+            };
+
+            var src_links = f(this, 'http://amida-tech.com/fhir/extensions/source');
+            var doc_refs = [];
+            var add_data = [];
+
+            if (src_links.length > 0) {
+                for (var s = 0; s < src_links.length; s++) {
+
+                    var path = dreFrontendUtil.parseResourceReference(f(src_links[s], 'http://amida-tech.com/fhir/extensions/source/reference', 'String'));
+                    if (path && path.length === 4) {
+                        add_data.push({
+                            indexed: f(src_links[s], 'http://amida-tech.com/fhir/extensions/source/date', 'Date'),
+                            status: f(src_links[s], 'http://amida-tech.com/fhir/extensions/source/description', 'String')
+                        });
+                        doc_refs.push(dreFrontendFhirService.history(path[0], path[1], path[3]));
+                    }
+                }
+                return $q.all(doc_refs).then(function(resp){
+                    for(var r=0; r<resp.length;r++) {
+                        angular.extend(resp[r],add_data[r]);
+                    }
+                    $log.debug(resp);
+                    return resp;
+                });
+            } else {
+                return $q.resolve(doc_refs);
+            }
         };
 
         return FhirResource;

@@ -28,6 +28,31 @@ angular.module('dreFrontend.resource')
             }
         };
 
+        FhirDocumentReference.prototype.getLinkData = function () {
+            var data = {
+                indexed: this.indexed,
+                display: "User uploaded record",
+                getBody: this.getContent,
+                status: this.status
+            };
+
+            if (this.type && this.type.coding[0] && this.type.coding[0].display) {
+                data.display = this.type.coding[0].display;
+            }
+
+            if (this.content && this.content[0]) {
+                if (this.content[0].attachment) {
+                    angular.extend(data, this.content[0].attachment);
+                } else {
+                    angular.extend(data, this.content[0]);
+                }
+            }
+
+            return data;
+        };
+
+        FhirDocumentReference.prototype.getBody = FhirDocumentReference.prototype.getContent;
+
         return FhirDocumentReference;
     });
 

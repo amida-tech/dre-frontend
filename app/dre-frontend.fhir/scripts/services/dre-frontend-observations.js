@@ -45,7 +45,6 @@ angular.module('dreFrontend.fhir')
             var res = true;
             res = res && (resource.code && _.intersection(_.pluck(resource.code.coding, "code"), exclude_codes).length === 0);
             res = res && (resource.category && _.intersection(_.pluck(resource.category.coding, "code"), 'social-history') === 0);
-            if (res) console.log(resource);
             return res;
         }
 
