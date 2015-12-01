@@ -2,7 +2,7 @@
 
 angular.module('dreFrontend.util')
     .service('dreFrontendMergeService', function ($rootScope, $q, $http, _, dreFrontendHttp, dreFrontendUtil,
-                                                  dreFrontendEnvironment, dreFrontendGlobals) {
+                                                  dreFrontendEnvironment, dreFrontendGlobals, $log) {
 
         var matches = null;
 
@@ -71,7 +71,7 @@ angular.module('dreFrontend.util')
                 change.lhs = tmp;
             }
         };
-        
+
         var _getList = function () {
             if (matches) {
                 return $q.resolve(matches);
@@ -116,6 +116,30 @@ angular.module('dreFrontend.util')
 
         var _clearData = function () {
             matches = null;
+        };
+
+        var _addNotMatchExt = function (resource, matchedResourceId) {
+            if (!resource.extension) {
+                resource.extension = [];
+            }
+            resource.extension.push({
+                "url": 'http://amida-tech.com/fhir/extensions/mismatch',
+                'valueString': matchedResourceId
+            });
+        };
+
+        var _ignoreMatch = function (match) {
+            _addNotMatchExt(match.lhs, match.rhs.id);
+            _addNotMatchExt(match.rhs, match.lhs.id);
+
+            $log.debug(match.lhs, match.rhs);
+
+            var queue = [];
+
+            queue.push(match.lhs.save());
+            queue.push(match.rhs.save());
+
+            return $q.all(queue);
         };
 
         return {
@@ -164,6 +188,7 @@ angular.module('dreFrontend.util')
                     url: urls.replace + '/' + match.rhs.id
                 });
             },
+            ignore: _ignoreMatch,
             clear: _clearData
         };
     });

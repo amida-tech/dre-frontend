@@ -73,6 +73,7 @@ angular.module('dreFrontend.resource')
                 self.setData(resp);
                 return self;
             };
+            console.log(_data);
             if (!_data.id) {
                 return dreFrontendFhirService.create(_data.resourceType, _data)
                     .then(f);

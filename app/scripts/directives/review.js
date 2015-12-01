@@ -52,7 +52,7 @@ angular.module('dreFrontendApp')
 
                 var _resolveMatch = function () {
                     $rootScope.$broadcast(dreFrontendGlobals.recordEvents.updateReviewList, dreFrontendMergeService.removeFromList($scope.model.matches[$scope.model.index]));
-                    _.pullAt($scope.model.matches, $scope.model.index);
+//                    _.pullAt($scope.model.matches, $scope.model.index);
                     if ($scope.model.matches.length === 0 && $state.params.group) {
                         $state.go($state.current.name, {group: undefined});
                     }
@@ -81,6 +81,14 @@ angular.module('dreFrontendApp')
                         .then(_resolveMatch)
                         .catch(function (err) {
                             $log.debug("Update error", err);
+                        });
+                };
+
+                $scope.ignoreMatch = function () {
+                    dreFrontendMergeService.ignore($scope.model.matches[$scope.model.index])
+                        .then(_resolveMatch)
+                        .catch(function(err){
+                            $log.debug("Ignore error", err);
                         });
                 };
 
