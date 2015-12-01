@@ -74,18 +74,22 @@ There are different configurations:
 ### Development server less server (mock)
 
 This is demo and client debug configuration. All server responses already mocked. No server calls. Log to the browser console debug information enabled.
+
 ```
 grunt ngconstant:mock
+```
 
 ### Development without server (dev)
 
 This is development server configuration. Log to the browser console debug information enabled.
+
 ```
 grunt ngconstant:dev
 ```
 
 ### Staging (qa)
 This is configuration for test stands. Use relative path server calls. Log to the browser console debug information enabled.
+
 ```
 grunt ngconstant:qa
 ```
@@ -100,10 +104,10 @@ Please do not update it manual.
 * Run `grunt serve` for preview current configuration.
 * Run `grunt serve:dist` for preview current builded configuration.
 * Run `grunt buildQa` for building qa version.
-* Run `grunt buildDev` for building ntr version.
 * Run `grunt buildMock` for building mocked (server less) version.
 
 #### *Note for a staging build*
+
 ```
 grunt buildQa
 ```
