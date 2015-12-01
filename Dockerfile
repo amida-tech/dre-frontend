@@ -52,8 +52,8 @@ RUN npm update -g npm && \
     npm install grunt-contrib-imagemin
 
 # Build the dist
-RUN grunt build && \
-    grunt ngconstant:docker
+RUN grunt ngconstant:docker && \
+    grunt build
 
 # Expose bound port
 EXPOSE 9000
