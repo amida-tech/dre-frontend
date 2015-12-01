@@ -231,8 +231,8 @@ angular.module('dreFrontendApp')
                     dates = {
                         startDate: entry.dateWritten ? entry.dateWritten : null,
                         endDate: entry.dateEnded ? entry.dateEnded : null,
-                        isActive: entry.status === 'active',
-                        isInactive: entry.status !== 'active'
+                        isActive: true, //entry.status === 'active',
+                        isInactive: false //entry.status !== 'active'
                     };
                     break;
                 case 'Observation':

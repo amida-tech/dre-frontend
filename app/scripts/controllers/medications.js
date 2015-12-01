@@ -14,7 +14,7 @@ angular.module('dreFrontendApp')
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
-            showInactive: false,
+            showInactive: true,
             medicationsList: [],
             filteredMedicationList: [],
             entryType: 'medications'
