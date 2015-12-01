@@ -2,6 +2,8 @@
 
 angular.module('dreFrontend.fhir')
     .factory('dreFrontendObservations', function (dreFrontendFhirService, fhirEnv, _, FhirObservation) {
+        var exclude_codes = _.flatten(_.valuesIn(fhirEnv.vital_signs));
+
         function proceedBundle(bundle) {
             for (var n = 0; n < bundle.entry.length; n++) {
                 bundle.entry[n] = new FhirObservation(bundle.entry[n]);
@@ -37,6 +39,14 @@ angular.module('dreFrontend.fhir')
             } else {
                 return null;
             }
+        }
+
+        function isTestResult(resource) {
+            var res = true;
+            res = res && (resource.code && _.intersection(_.pluck(resource.code.coding, "code"), exclude_codes).length === 0);
+            res = res && (resource.category && _.intersection(_.pluck(resource.category.coding, "code"), 'social-history') === 0);
+            if (res) console.log(resource);
+            return res;
         }
 
         return {
@@ -95,11 +105,10 @@ angular.module('dreFrontend.fhir')
                 return dreFrontendFhirService.search("Observation", {patient: patient_id, _count: count || 50})
                     .then(function (bundle) {
                         var new_entry = [];
-                        var exclude_codes = _.flatten(_.valuesIn(fhirEnv.vital_signs));
 
                         angular.forEach(bundle.entry, function (resource) {
                             /* exclude weight, height, blood pressures & BMI resources */
-                            if (resource.code && _.intersection(_.pluck(resource.code.coding, "code"), exclude_codes).length === 0) {
+                            if (isTestResult(resource)) {
                                 new_entry.push(resource);
                             }
                         });

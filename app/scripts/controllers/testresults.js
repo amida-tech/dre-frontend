@@ -18,18 +18,15 @@ angular.module('dreFrontendApp')
         };
         dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
-        });
-        dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
-            dreFrontendObservations.getTestResults(patientId).then(function (results) {
+            dreFrontendObservations.getTestResults(patient.id).then(function (results) {
                 $scope.model.list = [];
                 _.forEach(results.entry, function (entry) {
-                    $scope.model.list.push({
-                        rawEntry: entry,
-                        type: dreFrontendGlobals.resourceTypes.TestResult.type,
-                        title: dreFrontendEntryService.getEntryTitle(entry),
-                        menuType: dreFrontendGlobals.menuRecordTypeEnum.inline,
-                        dates: dreFrontendEntryService.getEntryDates(entry)
-                    });
+                    $scope.model.list.push(dreFrontendEntryService.getEntry(
+                            entry,
+                            dreFrontendGlobals.resourceTypes.TestResult.type,
+                            dreFrontendGlobals.menuRecordTypeEnum.inline
+                        )
+                    );
                 });
             });
         });
