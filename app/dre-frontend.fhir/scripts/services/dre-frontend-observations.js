@@ -43,8 +43,12 @@ angular.module('dreFrontend.fhir')
 
         function isTestResult(resource) {
             var res = true;
-            res = res && (resource.code && _.intersection(_.pluck(resource.code.coding, "code"), exclude_codes).length === 0);
-            res = res && (resource.category && _.intersection(_.pluck(resource.category.coding, "code"), 'social-history') === 0);
+            if (resource.code) {
+                res = res && (_.intersection(_.pluck(resource.code.coding, "code"), exclude_codes).length === 0);
+            }
+            if (resource.category) {
+                res = res && (_.intersection(_.pluck(resource.category.coding, "code"), 'social-history') === 0);
+            }
             return res;
         }
 

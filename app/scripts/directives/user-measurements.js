@@ -7,13 +7,15 @@
  * # userMeasurements
  */
 angular.module('dreFrontendApp')
-    .directive('userMeasurements', function ($state, dreFrontendObservations, $filter, _, dreFrontEndPatientInfoService,$timeout) {
+    .directive('userMeasurements', function ($state, dreFrontendObservations, $filter, _, dreFrontEndPatientInfoService,
+                                             $timeout, $log) {
         return {
             templateUrl: 'views/directives/user-measurements.html',
             restrict: 'AE',
             scope: {},
             controller: function ($scope) {
                 $scope.model = {
+                    isVisible: false,
                     height: 'n/a',
                     weight: 'n/a',
                     BMI: 'n/a',
@@ -26,7 +28,7 @@ angular.module('dreFrontendApp')
                             type: "lineChart",
                             height: 220,
                             margin: {
-                                right: 20
+                                right: 25
                             },
                             dispatch: {},
                             useInteractiveGuideline: true,
@@ -72,11 +74,17 @@ angular.module('dreFrontendApp')
                 function prepareValues(bundle) {
                     var values = [];
                     _.forEach(bundle.entry, function (observation) {
-                        values.push({
-                            y: observation.measurement(),
-                            x: new Date(observation.dateTime())
-                        });
+                        var observationDate = observation.dateTime();
+                        if (observationDate) {
+                            values.push({
+                                y: observation.measurement(),
+                                x: new Date(observationDate)
+                            });
+                        }
                     });
+
+                    values = _.sortBy(values, 'x');
+                    $scope.model.isVisible = (values.length > 0);
                     return values;
                 }
 
@@ -85,6 +93,7 @@ angular.module('dreFrontendApp')
                     dreFrontendObservations.getLastHeight(patientId).then(function (lastHeight) {
                         if (lastHeight) {
                             $scope.model.height = lastHeight.measurement(true);
+                            $scope.model.isVisible = true;
                         }
                     });
 
@@ -92,24 +101,28 @@ angular.module('dreFrontendApp')
                         .then(function (wght) {
                             if (wght) {
                                 $scope.model.weight = wght.measurement(true);
+                                $scope.model.isVisible = true;
                             }
                         });
 
                     dreFrontendObservations.getLastBMI(patientId).then(function (lastBMI) {
                         if (lastBMI) {
                             $scope.model.BMI = lastBMI.measurement(true);
+                            $scope.model.isVisible = true;
                         }
                     });
 
                     dreFrontendObservations.getLastBloodPressureDiastolic(patientId).then(function (lastPressure) {
                         if (lastPressure) {
                             $scope.model.pressureDiastolic = lastPressure.measurement(true);
+                            $scope.model.isVisible = true;
                         }
                     });
 
                     dreFrontendObservations.getLastBloodPressureSystolic(patientId).then(function (lastPressure) {
                         if (lastPressure) {
                             $scope.model.pressureSystolic = lastPressure.measurement(true);
+                            $scope.model.isVisible = true;
                         }
                     });
 
@@ -121,18 +134,20 @@ angular.module('dreFrontendApp')
 
                     dreFrontendObservations.getBloodPressureDiastolicHistory(patientId)
                         .then(function (bundle) {
-                            $scope.model.pressureData[0].values = _.sortBy(prepareValues(bundle), 'x');
+                            $scope.model.pressureData[0].values = prepareValues(bundle);
                         });
 
                     dreFrontendObservations.getBloodPressureSystolicHistory(patientId)
                         .then(function (bundle) {
-                            $scope.model.pressureData[1].values = _.sortBy(prepareValues(bundle), 'x');
+                            $scope.model.pressureData[1].values = prepareValues(bundle);
                         });
                 });
 
                 $scope.updateChart = function (api) {
                     if (api) {
-                        $timeout(function(){api.refresh();},50);
+                        $timeout(function () {
+                            api.refresh();
+                        }, 50);
                     }
                 };
             }

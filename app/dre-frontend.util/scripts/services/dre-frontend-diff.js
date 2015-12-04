@@ -6,7 +6,7 @@
 angular.module('dreFrontend.util')
     .factory('dreFrontendDiff', function ($log, $q, dreFrontendEntryService, dreFrontendUtil, _, dreFrontendGlobals) {
 
-        var _blacklist = ['meta', 'id', 'resourceType', 'patient', 'reference', 'extension'];
+        var _blacklist = ['meta', 'id', 'resourceType', 'patient', 'reference', 'extension', 'identifier'];
 
         var _buildDiffView = function (diff) {
             diff.updating = true;

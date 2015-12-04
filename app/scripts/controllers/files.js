@@ -46,6 +46,7 @@ angular.module('dreFrontendApp')
                             sorting: {title: 'asc'}
                         },
                         {
+                            counts: [],
                             total: files.length,
                             getData: function ($defer, params) {
                                 var orderedData = params.sorting() ?
