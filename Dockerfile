@@ -4,9 +4,11 @@ FROM centos:centos7
 MAINTAINER Jacob Sachs <jacob@amida-tech.com>
 
 # Enable Extra Packages for Enterprise Linux (EPEL) for CentOS
-RUN yum install -y epel-release
-# Add additional tools
-RUN yum install -y git make
+# Install additional tools
+RUN yum install -y \
+    epel-release
+    git
+    make
 
 # Install Node and NPM
 RUN git clone https://github.com/creationix/nvm.git /.nvm && \
@@ -30,11 +32,10 @@ RUN yum install -y ruby && \
 RUN gem update --system && \
     gem install compass; exit 0
 
-# Install Bower
-RUN npm install -g bower
-
-# Install Grunt
-RUN npm install -g grunt-cli
+# Install Bower and Grunt
+RUN npm install -g \
+    bower
+    grunt-cli
 
 # Install app dependencies
 COPY package.json /src/package.json
