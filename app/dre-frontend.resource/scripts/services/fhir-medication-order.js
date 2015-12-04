@@ -4,10 +4,10 @@
 "use strict";
 
 angular.module('dreFrontend.resource')
-    .factory('FhirMedicationOrder',function(FhirResource, $q){
+    .factory('FhirMedicationOrder', function (FhirResource, $q) {
 
         // reuse the original constructor
-        var FhirMedicationOrder = function() {
+        var FhirMedicationOrder = function () {
             FhirResource.apply(this, arguments);
         };
 
@@ -36,6 +36,16 @@ angular.module('dreFrontend.resource')
                 return $q.reject("Cant load medication data");
             }
         };
+
+        FhirMedicationOrder.prototype.dates = function () {
+            return {
+                startDate: this.dateWritten ? this.dateWritten : null,
+                endDate: this.dateEnded ? this.dateEnded : null,
+                isActive: true, //this.status === 'active',
+                isInactive: false //this.status !== 'active'
+            };
+        };
+
         return FhirMedicationOrder;
     });
 

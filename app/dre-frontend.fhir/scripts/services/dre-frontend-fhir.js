@@ -69,21 +69,23 @@ angular.module('dreFrontend.fhir')
                 }
 
                 function _search(resourceType, params) {
-                    if (typeof params === "undefined") {
-                        params = resourceType;
+                    var _params = params;
+                    if (typeof _params === "undefined") {
+                        _params = resourceType;
                         resourceType = null;
                     }
 
-                    if (!params._count) {
-                        angular.extend(params, {"_count": _count});
+                    if (!_params._count) {
+                        angular.extend(_params, {"_count": _count});
                     }
+
                     if (resourceType) {
                         return _is_valid_resource_type(resourceType)
                             .then(function (resType) {
-                                return Restangular.one(resType, '_search').get(params).then(set_response);
+                                return Restangular.one(resType, '_search').get(_params).then(set_response);
                             });
                     } else {
-                        return Restangular.one('_search').get(params).then(set_response);
+                        return Restangular.one('_search').get(_params).then(set_response);
                     }
                 }
 
@@ -97,7 +99,9 @@ angular.module('dreFrontend.fhir')
                 }
 
                 function _history(resourceType, id, version, params) {
-                    return Restangular.one(resourceType, id).one("_history", version).get(params).then(set_response);
+                    var _params = params || {};
+
+                    return Restangular.one(resourceType, id).one("_history", version).get(_params).then(set_response);
                 }
 
                 function _create(resourceType, data) {
@@ -125,11 +129,8 @@ angular.module('dreFrontend.fhir')
                     delete: _delete,
                     getCount: function () {
                         return _count;
-                    },
+                    }
                 };
             }
-
-        }
-            ;
-    })
-;
+        };
+    });

@@ -95,7 +95,7 @@ angular.module('dreFrontendApp')
                         case 'l':
                             node.diff = _val.diff;
                             if (_val.diff.change.kind !== "N") {
-                                if (typeof node.diff.ref === 'object' || typeof node.diff.ref === 'array') {
+                                if (typeof node.diff.ref === 'object') {
                                     node.diff.ref = _buildTable(node.diff.ref, blackList, deep);
                                 }
                             }
@@ -243,34 +243,11 @@ angular.module('dreFrontendApp')
             var dates = {};
             switch (entry.resourceType) {
                 case 'MedicationOrder':
-                    dates = {
-                        startDate: entry.dateWritten ? entry.dateWritten : null,
-                        endDate: entry.dateEnded ? entry.dateEnded : null,
-                        isActive: true, //entry.status === 'active',
-                        isInactive: false //entry.status !== 'active'
-                    };
-                    break;
                 case 'Observation':
-                    //todo inactive social history
-                    if (angular.isDefined(entry.appliesDateTime)) {
-                        dates = {startDate: entry.appliesDateTime};
-                    } else {
-                        if (angular.isDefined(entry.appliesPeriod)) {
-                            dates = {
-                                startDate: entry.appliesPeriod.start,
-                                endDate: entry.appliesPeriod.end
-                            };
-                        } else {
-                            if (angular.isDefined(entry.issued)) {
-                                dates = {startDate: entry.issued};
-                            }
-                        }
-                    }
-                    break;
                 case 'Immunization':
-                    dates = {
-                        startDate: entry.date !== undefined ? entry.date : null
-                    };
+                case 'AllergyIntolerance':
+                case 'Condition':
+                    dates = entry.dates();
                     break;
                 case 'Encounter':
                     dates = {
@@ -278,18 +255,11 @@ angular.module('dreFrontendApp')
                         endDate: angular.isObject(entry.period) ? entry.period.end : undefined
                     };
                     break;
-                case 'Condition':
-                    dates = {
-                        startDate: angular.isObject(entry.abatementPeriod) ? entry.abatementPeriod.start : undefined,
-                        endDate: angular.isObject(entry.abatementPeriod) ? entry.abatementPeriod.end : undefined
-                    };
-                    break;
                 case 'Procedure':
                     dates = {
                         startDate: entry.performedDateTime
                     };
                     break;
-                case 'AllergyIntolerance':
                     dates = {
                         startDate: entry.lastOccurence !== undefined ? entry.lastOccurence : null
                     };
@@ -333,21 +303,7 @@ angular.module('dreFrontendApp')
                 case 'Procedure':
                     break;
                 case 'AllergyIntolerance':
-                    if (angular.isDefined(entry.event)) {
-                        if (entry.event.length !== 0) {
-                            if (angular.isDefined(entry.event[0].manifestation)) {
-                                if (entry.event[0].manifestation.length === 2) {
-                                    if (angular.isDefined(entry.event[0].manifestation[1].coding)) {
-                                        if (entry.event[0].manifestation[1].coding.length !== 0) {
-                                            if (angular.isDefined(entry.event[0].manifestation[1].coding[0].display)) {
-                                                info = entry.event[0].manifestation[1].coding[0].display;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                    info = entry.additionalInfo();
                     break;
                 case 'Claim':
                     break;

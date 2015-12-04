@@ -175,6 +175,10 @@ angular.module('dreFrontend.resource')
             }
         };
 
+        FhirResource.prototype.additionalInfo = function () {
+            return '';
+        };
+
         return FhirResource;
     });
 

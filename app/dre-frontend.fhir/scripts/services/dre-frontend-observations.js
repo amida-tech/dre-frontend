@@ -35,7 +35,7 @@ angular.module('dreFrontend.fhir')
 
         function getFirst(bundle) {
             if (bundle.entry.length > 0) {
-                return bundle.entry[0];
+                return proceedEntry(bundle.entry[0]);
             } else {
                 return null;
             }

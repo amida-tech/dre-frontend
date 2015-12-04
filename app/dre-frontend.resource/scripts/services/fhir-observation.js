@@ -42,6 +42,27 @@ angular.module('dreFrontend.resource')
             return res;
         };
 
+        FhirObservation.prototype.dates = function () {
+            if (angular.isDefined(this.appliesDateTime)) {
+                return {startDate: this.appliesDateTime};
+            } else if (this.effectiveDateTime) {
+                return {startDate: this.effectiveDateTime};
+            } else if (angular.isDefined(this.appliesPeriod)) {
+                return {
+                    startDate: this.appliesPeriod.start,
+                    endDate: this.appliesPeriod.end
+                };
+            } else if (this.effectivePeriod) {
+                return {
+                    startDate: this.effectivePeriod.start,
+                    endDate: this.effectivePeriod.end
+                };
+            } else if (angular.isDefined(this.issued)) {
+                return {startDate: this.issued};
+            }
+            return {startDate: null};
+        };
+
 
         return FhirObservation;
     });
