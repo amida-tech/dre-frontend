@@ -8,7 +8,7 @@
  */
 angular.module('dreFrontendApp')
     .directive('userMeasurements', function ($state, dreFrontendObservations, $filter, _, dreFrontEndPatientInfoService,
-                                             $timeout, $log) {
+                                             $timeout) {
         return {
             templateUrl: 'views/directives/user-measurements.html',
             restrict: 'AE',

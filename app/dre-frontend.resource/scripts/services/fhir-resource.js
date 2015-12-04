@@ -74,7 +74,6 @@ angular.module('dreFrontend.resource')
                 self.setData(resp);
                 return self;
             };
-            console.log(_data);
             if (!_data.id) {
                 return dreFrontendFhirService.create(_data.resourceType, _data)
                     .then(f);
@@ -85,15 +84,24 @@ angular.module('dreFrontend.resource')
         };
 
         FhirResource.prototype.codableConceptTitle = function (cc_data) {
+            var extrValue = function (fld) {
+                if (fld && fld.nodeValue) {
+                    return fld.nodeValue;
+                } else {
+                    return fld;
+                }
+            };
+
             var res;
+
             if (angular.isArray(cc_data)) {
                 cc_data = cc_data[0];
             }
             if (cc_data) {
                 if (cc_data.coding && cc_data.coding[0]) {
-                    res = cc_data.coding[0].display || cc_data.coding[0].code;
+                    res = extrValue(cc_data.coding[0].display) || extrValue(cc_data.coding[0].code);
                 } else {
-                    res = cc_data.text;
+                    res = extrValue(cc_data.text);
                 }
             }
             return res;

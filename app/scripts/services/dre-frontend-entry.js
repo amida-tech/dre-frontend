@@ -26,7 +26,20 @@ angular.module('dreFrontendApp')
 
         var wrapCoding = function (_val) {
             var res = [];
-            for (var c = 0; c < _val.length; c++) {
+            var hasDiff = false;
+            var c;
+            for (c = 0; c < _val.length && !hasDiff; c++) {
+                if (_val[c].display && _val[c].display.diff) {
+                    hasDiff = true;
+                }
+                if (_val[c].code && _val[c].code.diff) {
+                    hasDiff = true;
+                }
+                if (_val[c].system && _val[c].system.diff) {
+                    hasDiff = true;
+                }
+            }
+            for (c = 0; c < _val.length && !hasDiff; c++) {
                 var rows = [];
                 if (_val[c].display) {
                     rows.push(_val[c].display);
@@ -82,12 +95,14 @@ angular.module('dreFrontendApp')
                         case 'l':
                             node.diff = _val.diff;
                             if (_val.diff.change.kind !== "N") {
-                                node.diff.ref = _buildTable(node.diff.ref, blackList, deep);
+                                if (typeof node.diff.ref === 'object' || typeof node.diff.ref === 'array') {
+                                    node.diff.ref = _buildTable(node.diff.ref, blackList, deep);
+                                }
                             }
                             break;
                         case 'r':
                             node.diff = _val.diff;
-                            if (_val.diff.change.kind !=='N') {
+                            if (_val.diff.change.kind !== 'N') {
                                 delete node.diff.ref;
                             }
                             break;
