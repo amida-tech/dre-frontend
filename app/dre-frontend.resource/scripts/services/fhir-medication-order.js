@@ -37,13 +37,25 @@ angular.module('dreFrontend.resource')
             }
         };
 
+        FhirMedicationOrder.prototype.title = function () {
+            var title = this.codableConceptTitle(this.medicationCodeableConcept);
+            if (!title && this.medicationReference && this.medicationReference.code) {
+                title = this.codableConceptTitle(this.medicationReference.code);
+            }
+            return title;
+        };
+
         FhirMedicationOrder.prototype.dates = function () {
-            return {
-                startDate: this.dateWritten ? this.dateWritten : null,
-                endDate: this.dateEnded ? this.dateEnded : null,
-                isActive: true, //this.status === 'active',
-                isInactive: false //this.status !== 'active'
-            };
+            var res = FhirResource.prototype.dates();
+
+            if (this.dateWritten) {
+                res.startDate = this.dateWritten;
+            }
+            if (this.dateEnded) {
+                res.endDate = this.dateEnded;
+            }
+
+            return res;
         };
 
         return FhirMedicationOrder;

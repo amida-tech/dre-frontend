@@ -2,24 +2,16 @@
 
 angular.module('dreFrontend.fhir')
     .factory('dreFrontendMedicationOrder', function (dreFrontendFhirService, $q, FhirMedicationOrder) {
-        function proceedBundle(bundle) {
-            for (var n = 0; n < bundle.entry.length; n++) {
-                bundle.entry[n] = new FhirMedicationOrder(bundle.entry[n]);
-            }
-            return bundle;
-        }
-
-        function proceedEntry(entry) {
-            return new FhirMedicationOrder(entry);
-        }
-
         return {
             getEmpty: function () {
                 return new FhirMedicationOrder();
             },
             getByPatientId: function (patient_id) {
-                return dreFrontendFhirService.search("MedicationOrder", {patient: patient_id, "_sort:desc":"datewritten"})
-                    .then(proceedBundle)
+                return dreFrontendFhirService
+                    .search("MedicationOrder", {
+                        patient: patient_id,
+                        "_sort:desc": "datewritten"
+                    })
                     .then(function (response) {
                         var medicationsArray = [];
                         angular.forEach(response.entry, function (resource) {
@@ -33,12 +25,10 @@ angular.module('dreFrontend.fhir')
                     });
             },
             getById: function (id) {
-                return dreFrontendFhirService.read('MedicationOrder', id)
-                    .then(proceedEntry);
+                return dreFrontendFhirService.read('MedicationOrder', id);
             },
             getAll: function () {
-                return dreFrontendFhirService.read('MedicationOrder')
-                    .then(proceedBundle);
+                return dreFrontendFhirService.read('MedicationOrder');
             }
         };
     });

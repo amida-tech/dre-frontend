@@ -3,13 +3,6 @@
 angular.module('dreFrontend.fhir')
     .factory('dreFrontendDocumentReference', function (dreFrontendFhirService, dreFrontendUtil, $q,
                                                        FhirDocumentReference) {
-        function proceedBundle(bundle) {
-            for (var n = 0; n < bundle.entry.length; n++) {
-                bundle.entry[n] = new FhirDocumentReference(bundle.entry[n]);
-            }
-            return bundle;
-        }
-
         function proceedEntry(entry) {
             return new FhirDocumentReference(entry);
         }
@@ -41,16 +34,13 @@ angular.module('dreFrontend.fhir')
             DocumentReference: proceedEntry,
             getByPatientId: function (patient_id, params) {
                 angular.extend(params, {author: patient_id});
-                return dreFrontendFhirService.search("DocumentReference", params)
-                    .then(proceedBundle);
+                return dreFrontendFhirService.search("DocumentReference", params);
             },
             getById: function (id) {
-                return dreFrontendFhirService.read('DocumentReference', id)
-                    .then(proceedEntry);
+                return dreFrontendFhirService.read('DocumentReference', id);
             },
             getAll: function () {
-                return dreFrontendFhirService.read('DocumentReference')
-                    .then(proceedBundle);
+                return dreFrontendFhirService.read('DocumentReference');
             },
 
             getFileList: function (documentReferenceBundle) {

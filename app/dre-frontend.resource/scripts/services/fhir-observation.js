@@ -42,6 +42,10 @@ angular.module('dreFrontend.resource')
             return res;
         };
 
+        FhirObservation.prototype.title = function () {
+            return this.codableConceptTitle(this.code);
+        };
+
         FhirObservation.prototype.dates = function () {
             if (angular.isDefined(this.appliesDateTime)) {
                 return {startDate: this.appliesDateTime};
@@ -63,6 +67,9 @@ angular.module('dreFrontend.resource')
             return {startDate: null};
         };
 
+        FhirObservation.prototype.additionalInfo = function () {
+            return this.measurement(true);
+        };
 
         return FhirObservation;
     });

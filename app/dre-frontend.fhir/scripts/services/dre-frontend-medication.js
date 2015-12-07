@@ -2,29 +2,15 @@
 
 angular.module('dreFrontend.fhir')
     .factory('dreFrontendMedication', function (dreFrontendFhirService, $q, FhirMedication) {
-        function proceedBundle(bundle) {
-            for (var n = 0; n < bundle.entry.length; n++) {
-                bundle.entry[n] = new FhirMedication(bundle.entry[n]);
-            }
-            return bundle;
-        }
-
-        function proceedEntry(entry) {
-            return new FhirMedication(entry);
-        }
-
         return {
             getById: function (id) {
-                return dreFrontendFhirService.read('Medication', id)
-                    .then(proceedEntry);
+                return dreFrontendFhirService.read('Medication', id);
             },
             getAll: function () {
-                return dreFrontendFhirService.read('Medication')
-                    .then(proceedBundle);
+                return dreFrontendFhirService.read('Medication');
             },
             getByCode: function (code) {
-                return dreFrontendFhirService.search('Medication', {code: code})
-                    .then(proceedBundle);
+                return dreFrontendFhirService.search('Medication', {code: code});
             },
             getByRxNormData: function (data, forceCreate) {
                 return dreFrontendFhirService.search('Medication', {code: "RxNorm|" + data.rxcui})

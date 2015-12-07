@@ -4,31 +4,25 @@
 "use strict";
 
 angular.module('dreFrontend.resource')
-    .factory('FhirAllergyIntolerances', function (FhirResource) {
+    .factory('FhirAllergyIntolerance', function (FhirResource) {
 
         // reuse the original constructor
-        var FhirAllergyIntolerances = function () {
+        var FhirAllergyIntolerance = function () {
             FhirResource.apply(this, arguments);
         };
 
         // reuse the original prototype
-        FhirAllergyIntolerances.prototype = new FhirResource();
+        FhirAllergyIntolerance.prototype = new FhirResource();
 
         /* extend prototype */
-        FhirAllergyIntolerances.prototype.title = function () {
+        FhirAllergyIntolerance.prototype.title = function () {
             return this.codableConceptTitle(this.substance);
         };
 
-        FhirAllergyIntolerances.prototype.dates = function () {
-            var res = {
-                startDate: null,
-                endDate: null,
-                isActive: true,
-                isInactive: false
-            };
+        FhirAllergyIntolerance.prototype.dates = function () {
+            var res = FhirResource.prototype.dates();
 
             res.isActive = (this.status.toLowerCase() === 'active' || this.status.toLowerCase() === 'yes');
-            res.isInactive = !res.isActive;
 
             if (this.reaction && this.reaction.onset) {
                 res.startDate = this.reaction.onset;
@@ -41,7 +35,7 @@ angular.module('dreFrontend.resource')
             return res;
         };
 
-        FhirAllergyIntolerances.prototype.additionalInfo = function () {
+        FhirAllergyIntolerance.prototype.additionalInfo = function () {
             if (angular.isDefined(this.event) && this.event.length !== 0) {
                 if (angular.isDefined(this.event[0].manifestation) && this.event[0].manifestation.length === 2) {
                     return this.codableConceptTitle(this.event[0].manifestation[1]);
@@ -50,5 +44,5 @@ angular.module('dreFrontend.resource')
             return '';
         };
 
-        return FhirAllergyIntolerances;
+        return FhirAllergyIntolerance;
     });

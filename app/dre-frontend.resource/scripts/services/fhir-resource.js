@@ -140,7 +140,8 @@ angular.module('dreFrontend.resource')
         FhirResource.prototype.getSources = function () {
             var f = function (obj, _key, valueType) {
                 var res = _.filter(obj.extension, {url: _key});
-                if (valueType && res) {
+                $log.debug(res, obj.extension, _key);
+                if (valueType && res && res.length) {
                     var _tmp = res.shift();
                     res = _tmp['value' + valueType];
                 }
@@ -163,15 +164,36 @@ angular.module('dreFrontend.resource')
                         doc_refs.push(dreFrontendFhirService.history(path[0], path[1], path[3]));
                     }
                 }
-                return $q.all(doc_refs).then(function(resp){
-                    for(var r=0; r<resp.length;r++) {
-                        angular.extend(resp[r],add_data[r]);
+                return $q.all(doc_refs).then(function (resp) {
+                    for (var r = 0; r < resp.length; r++) {
+                        angular.extend(resp[r], add_data[r]);
                     }
                     $log.debug(resp);
                     return resp;
                 });
             } else {
                 return $q.resolve(doc_refs);
+            }
+        };
+
+        FhirResource.prototype.title = function () {
+            return '';
+        };
+
+        FhirResource.prototype.dates = function () {
+            return {
+                startDate: null,
+                endDate: null,
+                isActive: true
+            };
+        };
+
+        FhirResource.prototype.getSortValue = function () {
+            var _dates = this.dates();
+            if (_dates.startDate) {
+                return dreFrontendUtil.formatFhirDate(_dates.startDate);
+            } else {
+                return NaN;
             }
         };
 

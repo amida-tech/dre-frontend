@@ -16,7 +16,7 @@ angular.module('dreFrontend.resource')
 
         /* extend prototype */
         FhirCondition.prototype.title = function () {
-            return this.codableConceptTitle(this.substance);
+            return this.codableConceptTitle(this.code);
         };
 
         FhirCondition.prototype.dates = function () {

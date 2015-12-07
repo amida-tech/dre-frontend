@@ -197,118 +197,46 @@ angular.module('dreFrontendApp')
 
         var _getEntryTitle = function (entry) {
             var title;
-            if (angular.isObject(entry)) {
-                switch (entry.resourceType) {
-                    case 'MedicationOrder':
-                        title = entry.codableConceptTitle(entry.medicationCodeableConcept);
-                        if (!title && entry.medicationReference && entry.medicationReference.code) {
-                            title = entry.codableConceptTitle(entry.medicationReference.code);
-                        }
-                        break;
-                    case 'Observation':
-                        title = entry.codableConceptTitle(entry.code);
-                        break;
-                    case 'Immunization':
-                        title = entry.title();
-                        break;
-                    case 'Encounter':
-                        title = entry.codableConceptTitle(entry.type);
-                        break;
-                    case 'Condition':
-                        title = entry.codableConceptTitle(entry.code);
-                        break;
-                    case 'Procedure':
-                        title = entry.codableConceptTitle(entry.code);
-                        if (!title && entry.focalDevice) {
-                            title = entry.codableConceptTitle(entry.focalDevice[0].action);
-                        }
-                        break;
-                    case 'AllergyIntolerance':
-                        title = entry.codableConceptTitle(entry.substance);
-                        break;
-                    case 'Claim':
-                        if (entry.identifier && entry.identifier[0] && entry.identifier[0].value) {
-                            title = entry.identifier[0].value;
-                        }
-                        break;
-                }
+
+            if (entry) {
+                title = entry.title();
             }
+
             if (!title) {
                 title = 'Undefined';
             }
+
             return title;
         };
 
         var _getEntryDates = function (entry) {
             var dates = {};
-            switch (entry.resourceType) {
-                case 'MedicationOrder':
-                case 'Observation':
-                case 'Immunization':
-                case 'AllergyIntolerance':
-                case 'Condition':
-                    dates = entry.dates();
-                    break;
-                case 'Encounter':
-                    dates = {
-                        startDate: angular.isObject(entry.period) ? entry.period.start : undefined,
-                        endDate: angular.isObject(entry.period) ? entry.period.end : undefined
-                    };
-                    break;
-                case 'Procedure':
-                    dates = {
-                        startDate: entry.performedDateTime
-                    };
-                    break;
-                    dates = {
-                        startDate: entry.lastOccurence !== undefined ? entry.lastOccurence : null
-                    };
-                    break;
-                case 'Claim':
-                    dates = {
-                        startDate: entry.created !== undefined ? dreFrontendUtil.formatFhirDate(entry.created) : null
-                    };
-                    break;
-            }
-            if (dates.startDate) {
-                dates.startDate = dreFrontendUtil.formatFhirDate(dates.startDate);
-            }
-            if (dates.isInactive === false) {
-                dates.endDate = 'Present';
-            } else {
-                if (dates.endDate) {
-                    dates.endDate = dreFrontendUtil.formatFhirDate(dates.endDate);
+
+            if (entry) {
+                dates = entry.dates();
+
+                if (dates.startDate) {
+                    dates.startDate = dreFrontendUtil.formatFhirDate(dates.startDate);
+                }
+                if (dates.isActive !== false) {
+                    dates.endDate = 'Present';
+                } else {
+                    if (dates.endDate) {
+                        dates.endDate = dreFrontendUtil.formatFhirDate(dates.endDate);
+                    }
                 }
             }
-            dates.isActive = dates.isActive || (dates.isInactive === false);
+
             return dates;
 
         };
 
         var _getEntryAddInfo = function (entry) {
-            var info = '';
-            switch (entry.resourceType) {
-                case 'MedicationOrder':
-                    break;
-                case 'Observation':
-                    info = entry.measurement(true);
-                    break;
-                case 'Immunization':
-                    break;
-                case 'Encounter':
-                    info = (angular.isArray(entry.location) && entry.location.length > 0 && entry.location[0].location) ? entry.location[0].location.name : undefined;
-                    break;
-                case 'Condition':
-                    break;
-                case 'Procedure':
-                    break;
-                case 'AllergyIntolerance':
-                    info = entry.additionalInfo();
-                    break;
-                case 'Claim':
-                    break;
+            var addData = '';
+            if (entry) {
+                addData = entry.additionalInfo();
             }
-            return info;
+            return addData;
         };
 
         var _initEntry = function (rawData, iconType, menuType) {

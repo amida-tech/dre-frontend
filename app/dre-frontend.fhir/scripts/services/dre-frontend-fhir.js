@@ -9,7 +9,21 @@ angular.module('dreFrontend.fhir')
             setCount: function _set_page_length(count) {
                 _count = count;
             },
-            $get: function (Restangular, $q, fhirEnv, dreFrontendUtil, $log, _) {
+            $get: function (Restangular, $q, fhirEnv, dreFrontendUtil, $log, _, $injector) {
+
+                function _FhirClass(resource) {
+                    var Class;
+                    if (resource && resource.resourceType) {
+                        var _name = 'Fhir' + resource.resourceType;
+                        try {
+                            Class = $injector.get(_name);
+                        } catch (e) {
+                            $log.debug(_name + ' not found. Using FhirResource class');
+                            Class = $injector.get('FhirResource');
+                        }
+                    }
+                    return Class;
+                }
 
                 function _add_page_handlers(bundleResource) {
                     if (bundleResource.resourceType === fhirEnv.bundleType) {
@@ -46,6 +60,8 @@ angular.module('dreFrontend.fhir')
                 }
 
                 function set_response(resource) {
+                    var Class;
+
                     function f(r) {
                         return _.omit(r, ["base", "link", "search", "text"]);
                     }
@@ -60,9 +76,19 @@ angular.module('dreFrontend.fhir')
 
                         resource.entry = _.pluck(resource.entry, "resource");
 
-                        _.forEach(resource.entry, function (e, k) {
-                            resource.entry[k] = f(e);
-                        });
+                        if (resource.entry.length > 0) {
+                            Class = _FhirClass(resource.entry[0]);
+
+                            for (var n = 0; n < resource.entry.length; n++) {
+                                resource.entry[n] = new Class(f(resource.entry[n]));
+                            }
+                            resource.entry = _.sortBy(resource.entry, function (item) {
+                                return item.getSortValue();
+                            });
+                        }
+                    } else {
+                        Class = _FhirClass(resource);
+                        resource = new Class(resource);
                     }
 
                     return resource;

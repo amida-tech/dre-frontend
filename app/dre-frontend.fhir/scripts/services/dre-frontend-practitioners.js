@@ -2,17 +2,6 @@
 
 angular.module('dreFrontend.fhir')
     .factory('dreFrontendPractitioners', function (dreFrontendFhirService, FhirPractitioner, $q) {
-        function proceedBundle(bundle) {
-            for (var n = 0; n < bundle.entry.length; n++) {
-                bundle.entry[n] = new FhirPractitioner(bundle.entry[n]);
-            }
-            return bundle;
-        }
-
-        function proceedEntry(entry) {
-            return new FhirPractitioner(entry);
-        }
-
         function convertNpiAddress(_use, _type, addr) {
             return {
                 use: _use,
@@ -36,12 +25,10 @@ angular.module('dreFrontend.fhir')
 
         return {
             getById: function (id) {
-                return dreFrontendFhirService.read('Practitioner', id)
-                    .then(proceedEntry);
+                return dreFrontendFhirService.read('Practitioner', id);
             },
             getAll: function () {
-                return dreFrontendFhirService.read('Practitioner')
-                    .then(proceedBundle);
+                return dreFrontendFhirService.read('Practitioner');
             },
             getByNpiData: function (data,forceCreate) {
                 return dreFrontendFhirService.search('Practitioner', {identifier: "NPI|" + data.npi})
