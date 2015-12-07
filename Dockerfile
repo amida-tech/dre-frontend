@@ -6,8 +6,8 @@ MAINTAINER Jacob Sachs <jacob@amida-tech.com>
 # Enable Extra Packages for Enterprise Linux (EPEL) for CentOS
 # Install additional tools
 RUN yum install -y \
-    epel-release
-    git
+    epel-release \
+    git \
     make
 
 # Install Node and NPM
@@ -34,7 +34,7 @@ RUN gem update --system && \
 
 # Install Bower and Grunt
 RUN npm install -g \
-    bower
+    bower \
     grunt-cli
 
 # Install app dependencies
