@@ -493,7 +493,7 @@ module.exports = function (grunt) {
                         swapDiff: true,
                         name: 'local',
                         baseServerUrl: 'http://localhost:3000/api/v1',
-                        fhirServerUrl: 'http://localhost:8080/fhir/baseDstu2',
+                        fhirServerUrl: 'http://localhost:8080/fhir-test/baseDstu2',
                         enableDebugLog: true
                     }
                 }
