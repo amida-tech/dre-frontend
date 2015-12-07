@@ -9,7 +9,14 @@
  */
 angular.module('dreFrontendApp')
     .controller('RecordHistoryCtrl', function ($scope, dreFrontendEntryService, dreFrontEndPatientInfoService,
-                                               dreFrontendGlobals, dreFrontendModalsService, dreFrontendUtil) {
+                                               dreFrontendModalsService, dreFrontendUtil,
+                                               dreFrontendDocumentReference, $log) {
+        var _params = {
+            '_sort:desc': 'indexed'
+        };
+        
+        var _iconType = 'fileDownloaded';
+
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
@@ -17,35 +24,22 @@ angular.module('dreFrontendApp')
             mhrLink: dreFrontendUtil.buildServiceUrl('/mhr')
         };
 
-        dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
-            $scope.model.userName = patient.getName()[0];
-            $scope.model.actionsList = [
-                {
-                    rawEntry: {},
-                    type: dreFrontendGlobals.resourceTypes.Vital.type,
-                    title: 'New vital sign',
-                    additionalInfo: '',
-                    dates: {startDate: 'February 15, 2011'},
-                    menuType: dreFrontendGlobals.menuRecordTypeEnum.none
-                },
-                {
-                    rawEntry: {},
-                    type: dreFrontendGlobals.resourceTypes.TestResult.type,
-                    title: 'New test result',
-                    additionalInfo: '',
-                    dates: {startDate: 'February 14, 2011'},
-                    menuType: dreFrontendGlobals.menuRecordTypeEnum.none
-                },
-                {
-                    rawEntry: {},
-                    type: dreFrontendGlobals.resourceTypes.Procedure.type,
-                    title: 'New procedure',
-                    additionalInfo: '',
-                    dates: {startDate: 'February 13, 2011'},
-                    menuType: dreFrontendGlobals.menuRecordTypeEnum.none
+        dreFrontEndPatientInfoService.getPatientData()
+            .then(function (patient) {
+                $scope.model.userName = patient.getName()[0];
+                return dreFrontendDocumentReference.getByPatientId(patient.id, _params);
+            })
+            .then(function (bundle) {
+                $log.debug(bundle);
+                $scope.model.actionsList = [];
+                for (var c = 0; c < bundle.entry.length; c++) {
+                    $scope.model.actionsList.push(dreFrontendEntryService.getEntry(
+                        bundle.entry[c],
+                        _iconType,
+                        ''
+                    ));
                 }
-            ];
-        });
+            });
 
         $scope.showPrintDlg = dreFrontendModalsService.showPrintDlg;
     });

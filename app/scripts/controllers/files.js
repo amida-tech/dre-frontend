@@ -64,9 +64,6 @@ angular.module('dreFrontendApp')
                 return dreFrontendDocumentReference.getByPatientId(patientId, {_count: page_size});
             })
             .then(function (bundle) {
-                for (var b = 0; b < bundle.entry.length; b++) {
-
-                }
                 return dreFrontendDocumentReference.getFileList(bundle);
             })
             .then(function (list) {
