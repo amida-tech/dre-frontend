@@ -17,32 +17,34 @@ angular.module('dreFrontendApp')
             controller: function ($scope, _) {
                 $scope.model = {
                     events: [],
-                    total:0,
+                    total: 0,
                     wasLoaded: false
                 };
+                var medication = $scope.medicationAdverse.medicationReference;
+
                 if (!$scope.model.wasLoaded && $scope.medicationAdverse) {
-                    if(angular.isArray($scope.medicationAdverse.medicationAdverse)){
+                    if (angular.isArray($scope.medicationAdverse.medicationAdverse)) {
                         $scope.model.events = $scope.medicationAdverse.medicationAdverse;
                         $scope.model.wasLoaded = true;
-                    }else{
-                        if($scope.medicationAdverse.medication){
-                            var rxcode = dreFrontendMedicationService.getRxcuiCode($scope.medicationAdverse.medication);
-                            var medname = dreFrontendMedicationService.getMedname($scope.medicationAdverse.medication);
-                            if(rxcode || medname){
-                                $scope.model.events = dreFrontendMedicationService.getAdverseEvents(rxcode, medname).then(function(events){
+                    } else {
+                        if (medication) {
+                            var rxcode = dreFrontendMedicationService.getRxcuiCode(medication);
+                            var medname = dreFrontendMedicationService.getMedname(medication);
+                            if (rxcode || medname) {
+                                $scope.model.events = dreFrontendMedicationService.getAdverseEvents(rxcode, medname).then(function (events) {
                                     $scope.model.events = events;
                                     $scope.model.total = _.sum(events, 'count');
-                                    _.forEach($scope.model.events, function(item){
-                                       item.percentage = (100*item.count/$scope.model.total).toFixed(2);
+                                    _.forEach($scope.model.events, function (item) {
+                                        item.percentage = (100 * item.count / $scope.model.total).toFixed(2);
                                     });
                                     $scope.medicationAdverse.medicationAdverse = $scope.model.events;
-                                }).finally(function(){
+                                }).finally(function () {
                                     $scope.model.wasLoaded = true;
                                 });
-                            }else{
+                            } else {
                                 $scope.model.wasLoaded = true;
                             }
-                        }else{
+                        } else {
                             $scope.model.wasLoaded = true;
                         }
                     }
