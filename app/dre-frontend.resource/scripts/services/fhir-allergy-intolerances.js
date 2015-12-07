@@ -32,7 +32,8 @@ angular.module('dreFrontend.resource')
             } else {
                 res.startDate = this.lastOccurence ? this.lastOccurence : null;
             }
-            return res;
+
+            return this._formatDates(res);
         };
 
         FhirAllergyIntolerance.prototype.additionalInfo = function () {

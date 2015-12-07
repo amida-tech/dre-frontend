@@ -20,10 +20,7 @@ angular.module('dreFrontend.resource')
         };
 
         FhirCondition.prototype.dates = function () {
-            var res = {
-                startDate: null,
-                endDate: null
-            };
+            var res = FhirResource.prototype.dates();
 
             if (this.onsetPeriod) {
                 res.startDate = this.onsetPeriod.start;
@@ -37,7 +34,8 @@ angular.module('dreFrontend.resource')
             } else if (this.abatementPeriod) {
                 res.endDate = this.abatementPeriod.start;
             }
-            return res;
+
+            return this._formatDates(res);
         };
 
         return FhirCondition;

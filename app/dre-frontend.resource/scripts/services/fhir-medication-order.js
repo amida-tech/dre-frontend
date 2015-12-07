@@ -71,7 +71,9 @@ angular.module('dreFrontend.resource')
                 res.endDate = this.dateEnded;
             }
 
-            return res;
+            res.isActive = !res.endDate || !this.status || this.status.toLowerCase() === 'active';
+
+            return this._formatDates(res);
         };
 
         return FhirMedicationOrder;

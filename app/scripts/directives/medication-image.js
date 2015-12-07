@@ -20,24 +20,26 @@ angular.module('dreFrontendApp')
                     images: [],
                     wasLoaded: false
                 };
-                if (!$scope.model.wasLoaded && ($scope.medicationImage || $scope.rxcui)) {
+                var rxcode = $scope.rxcui;
+                var medication = $scope.medicationImage ? $scope.medicationImage.medicationReference : undefined;
 
-                    if ($scope.medicationImage && angular.isArray($scope.medicationImage.medicationImage)) {
-                        $scope.model.images = $scope.medicationImage.medicationImage;
+                if (!$scope.model.wasLoaded && (medication || rxcode)) {
+
+                    if (medication && angular.isArray(medication.medicationImage)) {
+                        $scope.model.images = medication.medicationImage;
                         $scope.model.wasLoaded = true;
                     } else {
-                        var rxcode = $scope.rxcui, medname;
+                        var medname;
 
-                        if (!rxcode && $scope.medicationImage.medication) {
-                            rxcode = dreFrontendMedicationService.getRxcuiCode($scope.medicationImage.medication);
-                            medname = dreFrontendMedicationService.getMedname($scope.medicationImage.medication);
+                        if (medication && !rxcode) {
+                            rxcode = dreFrontendMedicationService.getRxcuiCode(medication);
+                            medname = dreFrontendMedicationService.getMedname(medication);
                         }
-
                         if (rxcode || medname) {
                             $scope.model.images = dreFrontendMedicationService.getRxImages(rxcode, medname).then(function (images) {
                                 $scope.model.images = images;
-                                if ($scope.medicationImage) {
-                                    $scope.medicationImage.medicationImage = $scope.model.images;
+                                if (medication) {
+                                    medication.medicationImage = $scope.model.images;
                                 }
                             }).finally(function () {
                                 $scope.model.wasLoaded = true;

@@ -218,7 +218,7 @@ angular.module('dreFrontendApp')
                 if (dates.startDate) {
                     dates.startDate = dreFrontendUtil.formatFhirDate(dates.startDate);
                 }
-                if (dates.isActive !== false) {
+                if (dates.isActive === true) {
                     dates.endDate = 'Present';
                 } else {
                     if (dates.endDate) {

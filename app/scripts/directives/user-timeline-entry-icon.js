@@ -51,7 +51,7 @@ angular.module('dreFrontendApp')
                         break;
                     case dreFrontendGlobals.resourceTypes.MedicationOrder.type:
                         $scope.model.displayClass = 'icon-pill';
-                        $scope.model.isActive = ($scope.userTimelineEntryIcon.dates.isActive !== false);
+//                        $scope.model.isActive = ($scope.userTimelineEntryIcon.dates.isActive === true);
                         break;
                     case dreFrontendGlobals.resourceTypes.TestResult.type:
                         $scope.model.displayClass = 'fa-flask';

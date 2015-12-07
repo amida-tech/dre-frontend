@@ -20,9 +20,11 @@ angular.module('dreFrontend.resource')
         };
 
         FhirImmunization.prototype.dates = function() {
-            return {
-                startDate: this.date ? this.date : null
-            };
+            var res = FhirResource.prototype.dates();
+            if (this.date) {
+                res.startDate = this.date;
+            }
+            return this._formatDates(res);
         };
 
         return FhirImmunization;

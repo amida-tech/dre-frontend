@@ -186,18 +186,28 @@ angular.module('dreFrontend.resource')
 
         FhirResource.prototype.dates = function () {
             return {
-                startDate: null,
-                endDate: null,
-                isActive: true
+                startDate: 0,
+                endDate: 0,
+                isActive: null
             };
+        };
+
+        FhirResource.prototype._formatDates = function (dates) {
+            if (dates.startDate) {
+                dates.startDate = new Date(dates.startDate);
+            }
+            if (dates.endDate) {
+                dates.endDate = new Date(dates.endDate);
+            }
+            return dates;
         };
 
         FhirResource.prototype.getSortValue = function () {
             var _dates = this.dates();
             if (_dates.startDate) {
-                return dreFrontendUtil.formatFhirDate(_dates.startDate);
+                return _dates.startDate.getTime();
             } else {
-                return NaN;
+                return 0;
             }
         };
 

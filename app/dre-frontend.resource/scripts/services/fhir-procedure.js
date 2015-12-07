@@ -29,7 +29,7 @@ angular.module('dreFrontend.resource')
             if (this.performedDateTime) {
                 res.startDate = this.performedDateTime;
             }
-            return res;
+            return this._formatDates(res);
         };
 
         return FhirProcedure;

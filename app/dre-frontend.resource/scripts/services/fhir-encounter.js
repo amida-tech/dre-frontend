@@ -29,7 +29,7 @@ angular.module('dreFrontend.resource')
                 res.startDate = this.period.start;
                 res.endDate = this.period.end;
             }
-            return res;
+            return this._formatDates(res);
         };
 
         FhirEncounter.prototype.additionalInfo = function () {

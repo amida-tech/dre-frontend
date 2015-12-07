@@ -82,9 +82,9 @@ angular.module('dreFrontend.fhir')
                             for (var n = 0; n < resource.entry.length; n++) {
                                 resource.entry[n] = new Class(f(resource.entry[n]));
                             }
-                            resource.entry = _.sortBy(resource.entry, function (item) {
+                            resource.entry = _.sortByOrder(resource.entry, function (item) {
                                 return item.getSortValue();
-                            });
+                            },'desc');
                         }
                     } else {
                         Class = _FhirClass(resource);

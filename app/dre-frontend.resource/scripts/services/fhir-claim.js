@@ -31,7 +31,7 @@ angular.module('dreFrontend.resource')
             if (this.created) {
                 res.startDate = this.created;
             }
-            return res;
+            return this._formatDates(res);
         };
 
         return FhirClaim;
