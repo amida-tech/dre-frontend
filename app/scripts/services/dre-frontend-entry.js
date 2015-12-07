@@ -8,10 +8,7 @@
  * Service in the dreFrontendApp.
  */
 angular.module('dreFrontendApp')
-    .factory('dreFrontendEntryService', function (_, dreFrontendUtil, dreFrontendGlobals, $log) {
-
-        /* 2do: refactor code & move calls into FhirResource children implementations*/
-        $log.debug('refactor dreFrontendEntryService code & move calls into FhirResource children implementations');
+    .factory('dreFrontendEntryService', function (_, dreFrontendUtil, dreFrontendGlobals) {
 
         var _wrapLabelDeep = 1;
         var _black_list = ["photo"];

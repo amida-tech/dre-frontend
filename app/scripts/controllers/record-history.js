@@ -9,12 +9,11 @@
  */
 angular.module('dreFrontendApp')
     .controller('RecordHistoryCtrl', function ($scope, dreFrontendEntryService, dreFrontEndPatientInfoService,
-                                               dreFrontendModalsService, dreFrontendUtil,
-                                               dreFrontendDocumentReference, $log) {
+                                               dreFrontendModalsService, dreFrontendUtil, dreFrontendDocumentReference) {
         var _params = {
             '_sort:desc': 'indexed'
         };
-        
+
         var _iconType = 'fileDownloaded';
 
         $scope.model = {
@@ -30,7 +29,6 @@ angular.module('dreFrontendApp')
                 return dreFrontendDocumentReference.getByPatientId(patient.id, _params);
             })
             .then(function (bundle) {
-                $log.debug(bundle);
                 $scope.model.actionsList = [];
                 for (var c = 0; c < bundle.entry.length; c++) {
                     $scope.model.actionsList.push(dreFrontendEntryService.getEntry(
