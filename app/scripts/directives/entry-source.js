@@ -7,7 +7,7 @@
  * # mainMenu
  */
 angular.module('dreFrontendApp')
-    .directive('entrySource', function (dreFrontendDocumentReference, $log) {
+    .directive('entrySource', function (dreFrontendDocumentReference) {
         return {
             templateUrl: 'views/directives/entry-source.html',
             restrict: 'AE',
@@ -31,7 +31,6 @@ angular.module('dreFrontendApp')
                                 $scope.model.links.push(docRef);
                             }
                         }
-                        $log.debug($scope.model.links);
                     });
                 } else {
                     $scope.model.links = [];

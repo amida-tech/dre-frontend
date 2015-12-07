@@ -140,8 +140,7 @@ angular.module('dreFrontend.resource')
         FhirResource.prototype.getSources = function () {
             var f = function (obj, _key, valueType) {
                 var res = _.filter(obj.extension, {url: _key});
-                $log.debug(res, obj.extension, _key);
-                if (valueType && res && res.length) {
+                if (valueType && res) {
                     var _tmp = res.shift();
                     res = _tmp ? _tmp['value' + valueType] : undefined;
                 }
