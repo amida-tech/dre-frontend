@@ -87,14 +87,78 @@ angular.module('dreFrontendApp')
                     diff: null
                 };
 
+                var _tmpVal;
+
+                var _proceedVal = function (aVal) {
+                    var res = {
+                        type: 'string',
+                        val: null
+                    };
+                    switch (dreFrontendUtil.guessDataType(aVal)) {
+                        case 'object':
+                            var rowObjectData = _buildTable(aVal, blackList, deep + 1);
+                            if (angular.isArray(rowObjectData) && rowObjectData.length > 0) {
+                                res.val = rowObjectData;
+                                res.type = 'object';
+                            }
+                            break;
+
+                        case 'array':
+                            var allScalar = true;
+                            res.val = [];
+                            aVal.forEach(function (item) {
+                                var rowItemData = item;
+                                if (!angular.isString(item)) {
+                                    if (_key === 'coding') {
+                                        item = dreFrontendUtil.reorderObjectFields(item, _key);
+                                    }
+                                    allScalar = false;
+                                    rowItemData = _buildTable(item, blackList, deep + 1);
+                                    if (rowItemData.length > 0) {
+                                        res.val.push(rowItemData);
+                                    }
+                                } else {
+                                    res.val.push(rowItemData);
+                                }
+                            });
+
+                            res.type = allScalar ? 'array' : 'objectsList';
+
+
+                            if (res.val.length < 1) {
+                                res.val = null;
+                            } else {
+                                if (allScalar && deep) {
+                                    node.label = '';
+                                }
+                            }
+                            break;
+
+                        case 'date':
+                            if (_key === 'value' && !node.diff) {
+                                node.label = '';
+                            }
+                            res.val = dreFrontendUtil.formatFhirDate(aVal);
+                            break;
+
+                        case 'number':
+                        case 'string':
+                            if (deep > _wrapLabelDeep && !node.diff) {
+                                node.label = '';
+                            }
+                            res.val = aVal;
+                            break;
+                    }
+                    return res;
+                };
+
                 if (_val && _val.diff) {
                     switch (_val.diff.side) {
                         case 'l':
                             node.diff = _val.diff;
                             if (_val.diff.change.kind !== "N") {
-                                if (typeof node.diff.ref === 'object') {
-                                    node.diff.ref = _buildTable(node.diff.ref, blackList, deep);
-                                }
+                                _tmpVal = _proceedVal(node.diff.ref);
+                                node.diff.ref = _tmpVal.val;
                             }
                             break;
                         case 'r':
@@ -104,9 +168,10 @@ angular.module('dreFrontendApp')
                             }
                             break;
                     }
-                    delete _val.diff;
                     if (_val.nodeValue) {
                         _val = _val.nodeValue;
+                    } else {
+                        delete _val.diff;
                     }
                 }
 
@@ -118,64 +183,11 @@ angular.module('dreFrontendApp')
                         break;
                 }
 
-                switch (dreFrontendUtil.guessDataType(_val)) {
-                    case 'object':
-                        var rowObjectData = _buildTable(_val, blackList, deep + 1);
-                        if (angular.isArray(rowObjectData) && rowObjectData.length > 0) {
-                            node.value = rowObjectData;
-                            node.type = 'object';
-                        }
-                        break;
+                _tmpVal = _proceedVal(_val);
 
-                    case 'array':
-                        var allScalar = true;
-                        node.value = [];
-                        _val.forEach(function (item) {
-                            var rowItemData = item;
-                            if (!angular.isString(item)) {
-                                if (_key === 'coding') {
-                                    item = dreFrontendUtil.reorderObjectFields(item, _key);
-                                }
-                                allScalar = false;
-                                rowItemData = _buildTable(item, blackList, deep + 1);
-                                if (rowItemData.length > 0) {
-                                    node.value.push(rowItemData);
-                                }
-                            } else {
-                                node.value.push(rowItemData);
-                            }
-                        });
-
-                        node.type = allScalar ? 'array' : 'objectsList';
-
-                        if (allScalar && deep) {
-                            node.label = '';
-                        }
-
-                        if (node.value.length < 1) {
-                            node.value = null;
-                        }
-                        break;
-
-                    case 'date':
-                        if (_key === 'value' && !node.diff) {
-                            node.label = '';
-                        }
-                        node.value = dreFrontendUtil.formatFhirDate(_val);
-                        break;
-
-                    case 'number':
-                    case 'string':
-                        if (deep > _wrapLabelDeep && !node.diff) {
-                            node.label = '';
-                        }
-                        node.value = _val;
-                        break;
-                    default:
-                        node.value = null;
-                }
-
-                if (node.value !== null) {
+                if (_tmpVal.val !== null) {
+                    node.type = _tmpVal.type;
+                    node.value = _tmpVal.val;
                     dataItems.push(node);
                 }
             };

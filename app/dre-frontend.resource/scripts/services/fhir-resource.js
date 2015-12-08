@@ -30,7 +30,8 @@ angular.module('dreFrontend.resource')
                     };
 
                     if (force || !this.resourceType) {
-                        $log.debug('loading...', prop, this.reference);
+                        var ref = this.reference;
+                        $log.debug('loading...', prop, ref);
                         if (val.reference.match(/^#.+/)) {
                             /* contained resource */
                             var _data = _.first(_.filter(resource.contains, {"id": val.reference.substring(1)})) || {};
@@ -39,7 +40,12 @@ angular.module('dreFrontend.resource')
                             /* relative reference resource */
                             var p = val.reference.split("/");
                             return dreFrontendFhirService.read(p[0], p[1])
-                                .then(process_sub_resource);
+                                .then(process_sub_resource)
+                                .catch(function(err){
+                                    $log.debug('error loading ', prop, ref);
+                                    $log.debug(err);
+                                    return $q.reject(err);
+                                });
                         }
                         /*2do: add absolute reference handling */
                     } else {

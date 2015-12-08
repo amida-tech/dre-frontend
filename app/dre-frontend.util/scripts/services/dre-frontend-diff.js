@@ -8,6 +8,36 @@ angular.module('dreFrontend.util')
 
         var _blacklist = ['meta', 'id', 'resourceType', 'patient', 'reference', 'extension', 'identifier'];
 
+        var _copyObject = function (src, dst) {
+            var res;
+            if (src === null || typeof src !== 'object') {
+                res = src;
+            } else if (src instanceof Date) {
+                res = new Date().setTime(src.getTime());
+            } else if (src instanceof Array) {
+                res = dst || [];
+                for (var n = 0; n < src.length; n++) {
+                    if (dst && dst[n]) {
+                        res[n] = _copyObject(src[n], dst[n]);
+                    } else {
+                        res[n] = _copyObject(src[n]);
+                    }
+                }
+            } else if (src instanceof Object) {
+                res = dst || {};
+                for (var _key in src) {
+                    if (src.hasOwnProperty(_key) && typeof src[_key] !== 'function') {
+                        if (dst && dst[_key]) {
+                            res[_key] = _copyObject(src[_key], dst[_key]);
+                        } else {
+                            res[_key] = _copyObject(src[_key]);
+                        }
+                    }
+                }
+            }
+            return res;
+        };
+
         var _buildDiffView = function (diff) {
             diff.updating = true;
             var queue = [];
@@ -26,17 +56,13 @@ angular.module('dreFrontend.util')
 
             return $q.all(queue).then(function () {
                 /* make clone object */
-                var _lhs = _.cloneDeep(diff.lhs);
-                var _rhs = _.cloneDeep(diff.lhs);
 
-                /* extend with rhs data */
-                angular.extend(_lhs, diff.rhs);
+                var _lhs = _copyObject(diff.lhs);
+                _lhs = _copyObject(diff.rhs, _lhs);
+                _lhs = _copyObject(diff.lhs, _lhs);
 
-                /* restore original rhs data */
-                angular.extend(_rhs, diff.rhs);
-
-                /* restore original lhs data */
-                angular.extend(_lhs, diff.lhs);
+                var _rhs = _copyObject(diff.lhs);
+                _rhs = _copyObject(diff.rhs, _rhs);
 
                 var _f1 = function (marker, param_name) {
 
@@ -52,11 +78,12 @@ angular.module('dreFrontend.util')
 
                 var _f2 = function (marker, neibMarker, change, side) {
                     if (marker) {
+                        var _isDel = change.kind === 'D';
                         if (marker.nodeKey === 'reference') {
                             if (typeof marker.parent === 'object') {
                                 marker.parent.diff = {
                                     change: change,
-                                    ref: _.cloneDeep(neibMarker.parent),
+                                    ref: (!_isDel) ? _.cloneDeep(neibMarker.parent) : null,
                                     side: side
                                 };
                             }
@@ -72,7 +99,7 @@ angular.module('dreFrontend.util')
                             if (typeof marker.node === 'object') {
                                 marker.node.diff = {
                                     change: change,
-                                    ref: neibMarker.node.value || neibMarker.node,
+                                    ref: (!_isDel) ? neibMarker.node.value || neibMarker.node : null,
                                     side: side
                                 };
                             }

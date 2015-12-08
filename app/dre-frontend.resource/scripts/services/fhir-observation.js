@@ -49,17 +49,17 @@ angular.module('dreFrontend.resource')
         FhirObservation.prototype.dates = function () {
             var res = FhirResource.prototype.dates();
 
-            if (this.appliesDateTime) {
-                res.startDate = this.appliesDateTime;
-            } else if (this.effectiveDateTime) {
-                res.startDate = this.effectiveDateTime;
+            if (this.effectivePeriod) {
+                res.startDate = this.effectivePeriod.start;
+                res.endDate = this.effectivePeriod.end;
             } else if (this.appliesPeriod) {
                 res.startDate = this.appliesPeriod.start;
                 res.endDate = this.appliesPeriod.end;
-            } else if (this.effectivePeriod) {
-                res.startDate = this.effectivePeriod.start;
-                res.endDate = this.effectivePeriod.end;
-            } else if (angular.isDefined(this.issued)) {
+            } else if (this.effectiveDateTime) {
+                res.startDate = this.effectiveDateTime;
+            } else if (this.appliesDateTime) {
+                res.startDate = this.appliesDateTime;
+            } else if (this.issued) {
                 res.startDate = this.issued;
             }
             return this._formatDates(res);
