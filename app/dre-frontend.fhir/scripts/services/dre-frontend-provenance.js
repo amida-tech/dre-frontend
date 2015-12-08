@@ -1,26 +1,14 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendProvenance', function (dreFrontendFhirService, dreFrontendDocumentReference, $q, FhirProvenance, _) {
-        function proceedBundle(bundle) {
-            for (var n = 0; n < bundle.entry.length; n++) {
-                bundle.entry[n] = new FhirProvenance(bundle.entry[n]);
-            }
-            return bundle;
-        }
-
-        function proceedEntry(entry) {
-            return new FhirProvenance(entry);
-        }
-
+    .factory('dreFrontendProvenance', function (dreFrontendFhirService, dreFrontendDocumentReference, $q, _) {
         var get_for_resource = function(resourceType, resourceId) {
             var res = $q.reject("cannt get sources");
 
             if (resourceType && resourceId) {
                 var params = {};
                 params["target:" + resourceType] = resourceId;
-                res = dreFrontendFhirService.search("Provenance", params)
-                    .then(proceedBundle);
+                res = dreFrontendFhirService.search("Provenance", params);
             }
             return res;
         };
@@ -45,12 +33,10 @@ angular.module('dreFrontend.fhir')
             },
             getForResource: get_for_resource,
             getById: function (id) {
-                return dreFrontendFhirService.read('Provenance', id)
-                    .then(proceedEntry);
+                return dreFrontendFhirService.read('Provenance', id);
             },
             getAll: function () {
-                return dreFrontendFhirService.read('Provenance')
-                    .then(proceedBundle);
+                return dreFrontendFhirService.read('Provenance');
             }
         };
     });

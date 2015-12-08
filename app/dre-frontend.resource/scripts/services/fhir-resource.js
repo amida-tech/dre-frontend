@@ -74,7 +74,6 @@ angular.module('dreFrontend.resource')
                 self.setData(resp);
                 return self;
             };
-            console.log(_data);
             if (!_data.id) {
                 return dreFrontendFhirService.create(_data.resourceType, _data)
                     .then(f);
@@ -85,15 +84,24 @@ angular.module('dreFrontend.resource')
         };
 
         FhirResource.prototype.codableConceptTitle = function (cc_data) {
+            var extrValue = function (fld) {
+                if (fld && fld.nodeValue) {
+                    return fld.nodeValue;
+                } else {
+                    return fld;
+                }
+            };
+
             var res;
+
             if (angular.isArray(cc_data)) {
                 cc_data = cc_data[0];
             }
             if (cc_data) {
                 if (cc_data.coding && cc_data.coding[0]) {
-                    res = cc_data.coding[0].display || cc_data.coding[0].code;
+                    res = extrValue(cc_data.coding[0].display) || extrValue(cc_data.coding[0].code);
                 } else {
-                    res = cc_data.text;
+                    res = extrValue(cc_data.text);
                 }
             }
             return res;
@@ -134,7 +142,7 @@ angular.module('dreFrontend.resource')
                 var res = _.filter(obj.extension, {url: _key});
                 if (valueType && res) {
                     var _tmp = res.shift();
-                    res = _tmp['value' + valueType];
+                    res = _tmp ? _tmp['value' + valueType] : undefined;
                 }
                 return res;
             };
@@ -145,26 +153,66 @@ angular.module('dreFrontend.resource')
 
             if (src_links.length > 0) {
                 for (var s = 0; s < src_links.length; s++) {
+                    var ref = f(src_links[s], 'http://amida-tech.com/fhir/extensions/source/reference', 'String');
+                    var _data = {
+                        indexed: f(src_links[s], 'http://amida-tech.com/fhir/extensions/source/date', 'Date'),
+                        status: f(src_links[s], 'http://amida-tech.com/fhir/extensions/source/description', 'String')
+                    };
 
-                    var path = dreFrontendUtil.parseResourceReference(f(src_links[s], 'http://amida-tech.com/fhir/extensions/source/reference', 'String'));
-                    if (path && path.length === 4) {
-                        add_data.push({
-                            indexed: f(src_links[s], 'http://amida-tech.com/fhir/extensions/source/date', 'Date'),
-                            status: f(src_links[s], 'http://amida-tech.com/fhir/extensions/source/description', 'String')
-                        });
-                        doc_refs.push(dreFrontendFhirService.history(path[0], path[1], path[3]));
+                    if (ref) {
+                        var path = dreFrontendUtil.parseResourceReference(ref);
+                        if (path && path.length === 4) {
+                            add_data.push(_data);
+                            doc_refs.push(dreFrontendFhirService.history(path[0], path[1], path[3]));
+                        }
+                    } else {
+                        doc_refs.push($q.resolve(_data));
                     }
                 }
-                return $q.all(doc_refs).then(function(resp){
-                    for(var r=0; r<resp.length;r++) {
-                        angular.extend(resp[r],add_data[r]);
+                return $q.all(doc_refs).then(function (resp) {
+                    for (var r = 0; r < resp.length; r++) {
+                        angular.extend(resp[r], add_data[r]);
                     }
-                    $log.debug(resp);
                     return resp;
                 });
             } else {
                 return $q.resolve(doc_refs);
             }
+        };
+
+        FhirResource.prototype.title = function () {
+            return '';
+        };
+
+        FhirResource.prototype.dates = function () {
+            return {
+                startDate: 0,
+                endDate: 0,
+                isActive: null
+            };
+        };
+
+        FhirResource.prototype._formatDates = function (dates) {
+            if (dates.startDate) {
+                dates.startDate = new Date(dates.startDate);
+            }
+            if (dates.endDate) {
+                dates.endDate = new Date(dates.endDate);
+            }
+            return dates;
+        };
+
+        FhirResource.prototype.getSortValue = function () {
+            var _dates = this.dates();
+            if (_dates.startDate) {
+                return _dates.startDate.getTime();
+            } else {
+                return 0;
+            }
+        };
+
+        FhirResource.prototype.additionalInfo = function () {
+            return '';
         };
 
         return FhirResource;

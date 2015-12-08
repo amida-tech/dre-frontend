@@ -19,25 +19,26 @@ angular.module('dreFrontendApp')
                     links: [],
                     wasLoaded: false
                 };
+                var medication = $scope.medicationMore.medicationReference;
                 if (!$scope.model.wasLoaded && $scope.medicationMore) {
-                    if(angular.isArray($scope.medicationMore.medicationMore)){
+                    if (angular.isArray($scope.medicationMore.medicationMore)) {
                         $scope.model.links = $scope.medicationMore.medicationMore;
                         $scope.model.wasLoaded = true;
-                    }else{
-                        if($scope.medicationMore.medication){
-                            var rxcode = dreFrontendMedicationService.getRxcuiCode($scope.medicationMore.medication);
-                            var medname = dreFrontendMedicationService.getMedname($scope.medicationMore.medication);
-                            if(rxcode || medname){
-                                $scope.model.links = dreFrontendMedicationService.getMedlineInfo(rxcode, medname).then(function(links){
+                    } else {
+                        if (medication) {
+                            var rxcode = dreFrontendMedicationService.getRxcuiCode(medication);
+                            var medname = dreFrontendMedicationService.getMedname(medication);
+                            if (rxcode || medname) {
+                                $scope.model.links = dreFrontendMedicationService.getMedlineInfo(rxcode, medname).then(function (links) {
                                     $scope.model.links = links;
                                     $scope.medicationMore.medicationMore = $scope.model.links;
-                                }).finally(function(){
+                                }).finally(function () {
                                     $scope.model.wasLoaded = true;
                                 });
-                            }else{
+                            } else {
                                 $scope.model.wasLoaded = true;
                             }
-                        }else{
+                        } else {
                             $scope.model.wasLoaded = true;
                         }
                     }

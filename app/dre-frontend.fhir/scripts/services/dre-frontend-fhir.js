@@ -9,7 +9,21 @@ angular.module('dreFrontend.fhir')
             setCount: function _set_page_length(count) {
                 _count = count;
             },
-            $get: function (Restangular, $q, fhirEnv, dreFrontendUtil, $log, _) {
+            $get: function (Restangular, $q, fhirEnv, dreFrontendUtil, $log, _, $injector) {
+
+                function _FhirClass(resource) {
+                    var Class;
+                    if (resource && resource.resourceType) {
+                        var _name = 'Fhir' + resource.resourceType;
+                        try {
+                            Class = $injector.get(_name);
+                        } catch (e) {
+                            $log.debug(_name + ' not found. Using FhirResource class');
+                            Class = $injector.get('FhirResource');
+                        }
+                    }
+                    return Class;
+                }
 
                 function _add_page_handlers(bundleResource) {
                     if (bundleResource.resourceType === fhirEnv.bundleType) {
@@ -46,6 +60,8 @@ angular.module('dreFrontend.fhir')
                 }
 
                 function set_response(resource) {
+                    var Class;
+
                     function f(r) {
                         return _.omit(r, ["base", "link", "search", "text"]);
                     }
@@ -60,30 +76,42 @@ angular.module('dreFrontend.fhir')
 
                         resource.entry = _.pluck(resource.entry, "resource");
 
-                        _.forEach(resource.entry, function (e, k) {
-                            resource.entry[k] = f(e);
-                        });
+                        if (resource.entry.length > 0) {
+                            Class = _FhirClass(resource.entry[0]);
+
+                            for (var n = 0; n < resource.entry.length; n++) {
+                                resource.entry[n] = new Class(f(resource.entry[n]));
+                            }
+                            resource.entry = _.sortByOrder(resource.entry, function (item) {
+                                return item.getSortValue();
+                            },'desc');
+                        }
+                    } else {
+                        Class = _FhirClass(resource);
+                        resource = new Class(resource);
                     }
 
                     return resource;
                 }
 
                 function _search(resourceType, params) {
-                    if (typeof params === "undefined") {
-                        params = resourceType;
+                    var _params = params;
+                    if (typeof _params === "undefined") {
+                        _params = resourceType;
                         resourceType = null;
                     }
 
-                    if (!params._count) {
-                        angular.extend(params, {"_count": _count});
+                    if (!_params._count) {
+                        angular.extend(_params, {"_count": _count});
                     }
+
                     if (resourceType) {
                         return _is_valid_resource_type(resourceType)
                             .then(function (resType) {
-                                return Restangular.one(resType, '_search').get(params).then(set_response);
+                                return Restangular.one(resType, '_search').get(_params).then(set_response);
                             });
                     } else {
-                        return Restangular.one('_search').get(params).then(set_response);
+                        return Restangular.one('_search').get(_params).then(set_response);
                     }
                 }
 
@@ -97,7 +125,9 @@ angular.module('dreFrontend.fhir')
                 }
 
                 function _history(resourceType, id, version, params) {
-                    return Restangular.one(resourceType, id).one("_history", version).get(params).then(set_response);
+                    var _params = params || {};
+
+                    return Restangular.one(resourceType, id).one("_history", version).get(_params).then(set_response);
                 }
 
                 function _create(resourceType, data) {
@@ -125,11 +155,8 @@ angular.module('dreFrontend.fhir')
                     delete: _delete,
                     getCount: function () {
                         return _count;
-                    },
+                    }
                 };
             }
-
-        }
-            ;
-    })
-;
+        };
+    });

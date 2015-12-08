@@ -4,7 +4,7 @@
 "use strict";
 
 angular.module('dreFrontend.resource')
-    .factory('FhirDocumentReference', function (FhirResource, dreFrontendUtil, $q, dreFrontendFhirService) {
+    .factory('FhirDocumentReference', function (_, FhirResource, dreFrontendUtil, $q, dreFrontendFhirService) {
 
         // reuse the original constructor
         var FhirDocumentReference = function () {
@@ -49,6 +49,27 @@ angular.module('dreFrontend.resource')
             }
 
             return data;
+        };
+
+        FhirDocumentReference.prototype.dates = function() {
+            var res = FhirResource.prototype.dates();
+            if (this.indexed) {
+                res.startDate = this.indexed;
+            }
+            //res.isActive = (this.status === 'current');
+            return this._formatDates(res);
+        };
+
+        FhirDocumentReference.prototype.title = function() {
+            return this.codableConceptTitle(this.type) || this.status;
+        };
+
+        FhirDocumentReference.prototype.additionalInfo = function () {
+            var aFiles = [];
+            if (this.content) {
+                aFiles = _.pluck(this.content,'attachment.title');
+            }
+            return aFiles.join(' ');
         };
 
         FhirDocumentReference.prototype.getBody = FhirDocumentReference.prototype.getContent;

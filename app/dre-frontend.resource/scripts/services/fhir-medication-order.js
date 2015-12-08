@@ -4,10 +4,10 @@
 "use strict";
 
 angular.module('dreFrontend.resource')
-    .factory('FhirMedicationOrder',function(FhirResource, $q){
+    .factory('FhirMedicationOrder', function (FhirResource, $q) {
 
         // reuse the original constructor
-        var FhirMedicationOrder = function() {
+        var FhirMedicationOrder = function () {
             FhirResource.apply(this, arguments);
         };
 
@@ -27,6 +27,22 @@ angular.module('dreFrontend.resource')
                 "note": "", // Information about the prescription
                 "medicationReference": {} // Reference(Medication)
             });
+            if (!this.extension) {
+                this.extension = [];
+            }
+            this.extension.push({
+                "url":"http://amida-tech.com/fhir/extensions/source",
+                "extension":[
+                   {
+                        "url":"http://amida-tech.com/fhir/extensions/source/date",
+                        "valueDate": new Date().toISOString()
+                    },
+                    {
+                        "url":"http://amida-tech.com/fhir/extensions/source/description",
+                        "valueString":"Patient entered"
+                    }
+                ]
+            });
         };
 
         FhirMedicationOrder.prototype.loadMedication = function () {
@@ -36,6 +52,30 @@ angular.module('dreFrontend.resource')
                 return $q.reject("Cant load medication data");
             }
         };
+
+        FhirMedicationOrder.prototype.title = function () {
+            var title = this.codableConceptTitle(this.medicationCodeableConcept);
+            if (!title && this.medicationReference && this.medicationReference.code) {
+                title = this.codableConceptTitle(this.medicationReference.code);
+            }
+            return title;
+        };
+
+        FhirMedicationOrder.prototype.dates = function () {
+            var res = FhirResource.prototype.dates();
+
+            if (this.dateWritten) {
+                res.startDate = this.dateWritten;
+            }
+            if (this.dateEnded) {
+                res.endDate = this.dateEnded;
+            }
+
+            res.isActive = !res.endDate || !this.status || this.status.toLowerCase() === 'active';
+
+            return this._formatDates(res);
+        };
+
         return FhirMedicationOrder;
     });
 

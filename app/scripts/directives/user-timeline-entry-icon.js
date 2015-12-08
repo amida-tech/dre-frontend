@@ -9,8 +9,8 @@
 angular.module('dreFrontendApp')
     .directive('userTimelineEntryIcon', function ($state, dreFrontendAuthService, $rootScope, dreFrontendGlobals) {
         return {
-            template: '<a class="text-center center-block" ng-class="{\'timeline-entry-icon\': !model.isInactive, ' +
-            '\'timeline-entry-icon-inactive\': model.isInactive}" ng-click="toggleDetails()"> ' +
+            template: '<a class="text-center center-block" ng-class="{\'timeline-entry-icon\': model.isActive, ' +
+            '\'timeline-entry-icon-inactive\': !model.isActive}" ng-click="toggleDetails()"> ' +
             '<i class="fa fa-2x {{model.displayClass}}"></i></a>',
             restrict: 'AE',
             scope: {
@@ -19,7 +19,7 @@ angular.module('dreFrontendApp')
             controller: function ($scope) {
                 $scope.model = {
                     displayClass: '',
-                    isInactive: false
+                    isActive: true
                 };
                 switch ($scope.userTimelineEntryIcon.type) {
                     case 'initAccount':
@@ -51,7 +51,7 @@ angular.module('dreFrontendApp')
                         break;
                     case dreFrontendGlobals.resourceTypes.MedicationOrder.type:
                         $scope.model.displayClass = 'icon-pill';
-                        $scope.model.isInactive = $scope.userTimelineEntryIcon.dates.isInactive;
+//                        $scope.model.isActive = ($scope.userTimelineEntryIcon.dates.isActive === true);
                         break;
                     case dreFrontendGlobals.resourceTypes.TestResult.type:
                         $scope.model.displayClass = 'fa-flask';

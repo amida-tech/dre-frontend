@@ -12,17 +12,14 @@ angular.module('dreFrontend.util')
             //build service url
             options.url = dreFrontendUtil.buildServiceUrl(options.url);
 
-            return $http(angular.extend(angular.copy(defaults), options)).then(
-                function (d) {
-                    $log.debug('http success (' + options.url + '):', options);
-                    $log.debug(d);
+            return $http(angular.extend(angular.copy(defaults), options))
+                .then(function (d) {
                     if (d.status === 200) {
                         return d.data;
                     }
                     return $q.reject(d.data);
-
-                },
-                function (e) {
+                })
+                .catch(function (e) {
                     $log.debug('http failure(' + options.url + '):', options);
                     $log.debug(e);
                     return $q.reject(e.data);

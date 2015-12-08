@@ -20,9 +20,11 @@ angular.module("dreFrontend.util")
                 }
                 return res;
             },
-            formatFhirDate: function (dateString) {
-                if (angular.isString(dateString)) {
-                    var date = new Date(dateString);
+            formatFhirDate: function (date) {
+                if (typeof date === 'string') {
+                    date = new Date(date);
+                }
+                if (date) {
                     if (date.getUTCHours() === 0 && date.getUTCMinutes() === 0 && date.getUTCSeconds() === 0) {
                         return $filter('date')(date, 'longDate');
                     } else {

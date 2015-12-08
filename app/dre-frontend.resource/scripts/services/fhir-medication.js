@@ -25,7 +25,6 @@ angular.module('dreFrontend.resource')
             });
         };
 
-
         return FhirMedication;
     });
 

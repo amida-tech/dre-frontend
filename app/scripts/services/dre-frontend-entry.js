@@ -8,10 +8,7 @@
  * Service in the dreFrontendApp.
  */
 angular.module('dreFrontendApp')
-    .factory('dreFrontendEntryService', function (_, dreFrontendUtil, dreFrontendGlobals, $log) {
-
-        /* 2do: refactor code & move calls into FhirResource children implementations*/
-        $log.debug('refactor dreFrontendEntryService code & move calls into FhirResource children implementations');
+    .factory('dreFrontendEntryService', function (_, dreFrontendUtil, dreFrontendGlobals) {
 
         var _wrapLabelDeep = 1;
         var _black_list = ["photo"];
@@ -26,7 +23,20 @@ angular.module('dreFrontendApp')
 
         var wrapCoding = function (_val) {
             var res = [];
-            for (var c = 0; c < _val.length; c++) {
+            var hasDiff = false;
+            var c;
+            for (c = 0; c < _val.length && !hasDiff; c++) {
+                if (_val[c].display && _val[c].display.diff) {
+                    hasDiff = true;
+                }
+                if (_val[c].code && _val[c].code.diff) {
+                    hasDiff = true;
+                }
+                if (_val[c].system && _val[c].system.diff) {
+                    hasDiff = true;
+                }
+            }
+            for (c = 0; c < _val.length && !hasDiff; c++) {
                 var rows = [];
                 if (_val[c].display) {
                     rows.push(_val[c].display);
@@ -82,12 +92,14 @@ angular.module('dreFrontendApp')
                         case 'l':
                             node.diff = _val.diff;
                             if (_val.diff.change.kind !== "N") {
-                                node.diff.ref = _buildTable(node.diff.ref, blackList, deep);
+                                if (typeof node.diff.ref === 'object') {
+                                    node.diff.ref = _buildTable(node.diff.ref, blackList, deep);
+                                }
                             }
                             break;
                         case 'r':
                             node.diff = _val.diff;
-                            if (_val.diff.change.kind !=='N') {
+                            if (_val.diff.change.kind !== 'N') {
                                 delete node.diff.ref;
                             }
                             break;
@@ -182,162 +194,46 @@ angular.module('dreFrontendApp')
 
         var _getEntryTitle = function (entry) {
             var title;
-            if (angular.isObject(entry)) {
-                switch (entry.resourceType) {
-                    case 'MedicationOrder':
-                        title = entry.codableConceptTitle(entry.medicationCodeableConcept);
-                        if (!title && entry.medicationReference && entry.medicationReference.code) {
-                            title = entry.codableConceptTitle(entry.medicationReference.code);
-                        }
-                        break;
-                    case 'Observation':
-                        title = entry.codableConceptTitle(entry.code);
-                        break;
-                    case 'Immunization':
-                        title = entry.title();
-                        break;
-                    case 'Encounter':
-                        title = entry.codableConceptTitle(entry.type);
-                        break;
-                    case 'Condition':
-                        title = entry.codableConceptTitle(entry.code);
-                        break;
-                    case 'Procedure':
-                        title = entry.codableConceptTitle(entry.code);
-                        if (!title && entry.focalDevice) {
-                            title = entry.codableConceptTitle(entry.focalDevice[0].action);
-                        }
-                        break;
-                    case 'AllergyIntolerance':
-                        title = entry.codableConceptTitle(entry.substance);
-                        break;
-                    case 'Claim':
-                        if (entry.identifier && entry.identifier[0] && entry.identifier[0].value) {
-                            title = entry.identifier[0].value;
-                        }
-                        break;
-                }
+
+            if (entry) {
+                title = entry.title();
             }
+
             if (!title) {
                 title = 'Undefined';
             }
+
             return title;
         };
 
         var _getEntryDates = function (entry) {
             var dates = {};
-            switch (entry.resourceType) {
-                case 'MedicationOrder':
-                    dates = {
-                        startDate: entry.dateWritten ? entry.dateWritten : null,
-                        endDate: entry.dateEnded ? entry.dateEnded : null,
-                        isActive: true, //entry.status === 'active',
-                        isInactive: false //entry.status !== 'active'
-                    };
-                    break;
-                case 'Observation':
-                    //todo inactive social history
-                    if (angular.isDefined(entry.appliesDateTime)) {
-                        dates = {startDate: entry.appliesDateTime};
-                    } else {
-                        if (angular.isDefined(entry.appliesPeriod)) {
-                            dates = {
-                                startDate: entry.appliesPeriod.start,
-                                endDate: entry.appliesPeriod.end
-                            };
-                        } else {
-                            if (angular.isDefined(entry.issued)) {
-                                dates = {startDate: entry.issued};
-                            }
-                        }
+
+            if (entry) {
+                dates = entry.dates();
+
+                if (dates.startDate) {
+                    dates.startDate = dreFrontendUtil.formatFhirDate(dates.startDate);
+                }
+                if (dates.isActive === true) {
+                    dates.endDate = 'Present';
+                } else {
+                    if (dates.endDate) {
+                        dates.endDate = dreFrontendUtil.formatFhirDate(dates.endDate);
                     }
-                    break;
-                case 'Immunization':
-                    dates = {
-                        startDate: entry.date !== undefined ? entry.date : null
-                    };
-                    break;
-                case 'Encounter':
-                    dates = {
-                        startDate: angular.isObject(entry.period) ? entry.period.start : undefined,
-                        endDate: angular.isObject(entry.period) ? entry.period.end : undefined
-                    };
-                    break;
-                case 'Condition':
-                    dates = {
-                        startDate: angular.isObject(entry.abatementPeriod) ? entry.abatementPeriod.start : undefined,
-                        endDate: angular.isObject(entry.abatementPeriod) ? entry.abatementPeriod.end : undefined
-                    };
-                    break;
-                case 'Procedure':
-                    dates = {
-                        startDate: entry.performedDateTime
-                    };
-                    break;
-                case 'AllergyIntolerance':
-                    dates = {
-                        startDate: entry.lastOccurence !== undefined ? entry.lastOccurence : null
-                    };
-                    break;
-                case 'Claim':
-                    dates = {
-                        startDate: entry.created !== undefined ? dreFrontendUtil.formatFhirDate(entry.created) : null
-                    };
-                    break;
-            }
-            if (dates.startDate) {
-                dates.startDate = dreFrontendUtil.formatFhirDate(dates.startDate);
-            }
-            if (dates.isInactive === false) {
-                dates.endDate = 'Present';
-            } else {
-                if (dates.endDate) {
-                    dates.endDate = dreFrontendUtil.formatFhirDate(dates.endDate);
                 }
             }
-            dates.isActive = dates.isActive || (dates.isInactive === false);
+
             return dates;
 
         };
 
         var _getEntryAddInfo = function (entry) {
-            var info = '';
-            switch (entry.resourceType) {
-                case 'MedicationOrder':
-                    break;
-                case 'Observation':
-                    info = entry.measurement(true);
-                    break;
-                case 'Immunization':
-                    break;
-                case 'Encounter':
-                    info = (angular.isArray(entry.location) && entry.location.length > 0 && entry.location[0].location) ? entry.location[0].location.name : undefined;
-                    break;
-                case 'Condition':
-                    break;
-                case 'Procedure':
-                    break;
-                case 'AllergyIntolerance':
-                    if (angular.isDefined(entry.event)) {
-                        if (entry.event.length !== 0) {
-                            if (angular.isDefined(entry.event[0].manifestation)) {
-                                if (entry.event[0].manifestation.length === 2) {
-                                    if (angular.isDefined(entry.event[0].manifestation[1].coding)) {
-                                        if (entry.event[0].manifestation[1].coding.length !== 0) {
-                                            if (angular.isDefined(entry.event[0].manifestation[1].coding[0].display)) {
-                                                info = entry.event[0].manifestation[1].coding[0].display;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    break;
-                case 'Claim':
-                    break;
+            var addData = '';
+            if (entry) {
+                addData = entry.additionalInfo();
             }
-            return info;
+            return addData;
         };
 
         var _initEntry = function (rawData, iconType, menuType) {

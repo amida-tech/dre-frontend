@@ -4,9 +4,9 @@
 "use strict";
 
 angular.module('dreFrontend.util')
-    .factory('dreFrontendDiff', function ($log, $q, dreFrontendEntryService, dreFrontendUtil, _, dreFrontendGlobals) {
+    .factory('dreFrontendDiff', function ($q, dreFrontendEntryService, dreFrontendUtil, _, dreFrontendGlobals) {
 
-        var _blacklist = ['meta', 'id', 'resourceType', 'patient', 'reference', 'extension'];
+        var _blacklist = ['meta', 'id', 'resourceType', 'patient', 'reference', 'extension', 'identifier'];
 
         var _buildDiffView = function (diff) {
             diff.updating = true;
@@ -64,7 +64,7 @@ angular.module('dreFrontend.util')
                             if (typeof marker.node !== 'object') {
                                 var node_val = marker.node;
                                 marker.parent[marker.nodeKey] = {
-                                    value: node_val
+                                    nodeValue: node_val
                                 };
                                 marker.node = marker.parent[marker.nodeKey];
                             }

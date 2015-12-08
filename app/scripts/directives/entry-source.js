@@ -22,9 +22,14 @@ angular.module('dreFrontendApp')
                 if ($scope.entrySource) {
                     $scope.entrySource.getSources().then(function (resources) {
                         $scope.model.links = [];
+                        var docRef;
                         for (var n = 0; n < resources.length; n++) {
-                            var docRef = dreFrontendDocumentReference.DocumentReference(resources[n]);
-                            $scope.model.links.push(docRef.getLinkData());
+                            if (resources[n]) {
+                                docRef = dreFrontendDocumentReference.DocumentReference(resources[n]);
+                                $scope.model.links.push(docRef.getLinkData());
+                            } else {
+                                $scope.model.links.push(docRef);
+                            }
                         }
                     });
                 } else {

@@ -19,5 +19,13 @@ angular.module('dreFrontend.resource')
             return this.codableConceptTitle(this.vaccineCode);
         };
 
+        FhirImmunization.prototype.dates = function() {
+            var res = FhirResource.prototype.dates();
+            if (this.date) {
+                res.startDate = this.date;
+            }
+            return this._formatDates(res);
+        };
+
         return FhirImmunization;
     });

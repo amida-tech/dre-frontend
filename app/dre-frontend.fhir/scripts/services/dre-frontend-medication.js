@@ -1,33 +1,23 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendMedication', function (dreFrontendFhirService, $q, FhirMedication) {
-        function proceedBundle(bundle) {
-            for (var n = 0; n < bundle.entry.length; n++) {
-                bundle.entry[n] = new FhirMedication(bundle.entry[n]);
-            }
-            return bundle;
-        }
-
-        function proceedEntry(entry) {
-            return new FhirMedication(entry);
-        }
+    .factory('dreFrontendMedication', function (_, dreFrontendFhirService, $q, FhirMedication, dreFrontendGlobals) {
+        var _rxnormSystem = _.findKey(dreFrontendGlobals.systemCodes, function (v) {
+            return v === 'RxNORM';
+        });
 
         return {
             getById: function (id) {
-                return dreFrontendFhirService.read('Medication', id)
-                    .then(proceedEntry);
+                return dreFrontendFhirService.read('Medication', id);
             },
             getAll: function () {
-                return dreFrontendFhirService.read('Medication')
-                    .then(proceedBundle);
+                return dreFrontendFhirService.read('Medication');
             },
             getByCode: function (code) {
-                return dreFrontendFhirService.search('Medication', {code: code})
-                    .then(proceedBundle);
+                return dreFrontendFhirService.search('Medication', {code: code});
             },
             getByRxNormData: function (data, forceCreate) {
-                return dreFrontendFhirService.search('Medication', {code: "RxNorm|" + data.rxcui})
+                return dreFrontendFhirService.search('Medication', {code: _rxnormSystem+"|" + data.rxcui})
                     .then(function (bundle) {
                         var result;
 
@@ -39,7 +29,7 @@ angular.module('dreFrontend.fhir')
                                     code: {
                                         coding: [
                                             {
-                                                system: "RxNorm",
+                                                system: _rxnormSystem,
                                                 code: data.rxcui,
                                                 display: data.name
                                             }

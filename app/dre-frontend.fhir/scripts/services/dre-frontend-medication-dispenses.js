@@ -1,30 +1,16 @@
 "use strict";
 
 angular.module('dreFrontend.fhir')
-    .factory('dreFrontendMedicationDispenses', function (dreFrontendFhirService, FhirMedicationDispense) {
-        function proceedBundle(bundle) {
-            for (var n = 0; n < bundle.entry.length; n++) {
-                bundle.entry[n] = new FhirMedicationDispense(bundle.entry[n]);
-            }
-            return bundle;
-        }
-
-        function proceedEntry(entry) {
-            return new FhirMedicationDispense(entry);
-        }
-
+    .factory('dreFrontendMedicationDispenses', function (dreFrontendFhirService) {
         return {
             getByPatientId: function (patient_id) {
-                return dreFrontendFhirService.search("MedicationDispense", {patient: patient_id})
-                    .then(proceedBundle);
+                return dreFrontendFhirService.search("MedicationDispense", {patient: patient_id});
             },
             getById: function (id) {
-                return dreFrontendFhirService.read('MedicationDispense', id)
-                    .then(proceedEntry);
+                return dreFrontendFhirService.read('MedicationDispense', id);
             },
             getAll: function () {
-                return dreFrontendFhirService.read('MedicationDispense')
-                    .then(proceedBundle);
+                return dreFrontendFhirService.read('MedicationDispense');
             }
         };
     });

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('dreFrontend.util')
-    .service('dreFrontendMedicationService', function (dreFrontendHttp, _, $q) {
+    .service('dreFrontendMedicationService', function (dreFrontendHttp, dreFrontendGlobals, _, $q) {
         var urls = {
             rximage: '/rximage',
             rxspelling: '/rxnorm/spelling',
@@ -11,18 +11,26 @@ angular.module('dreFrontend.util')
             medline: '/medlineplus'
         };
 
-        var self = {
+        var _rxnormSystem = _.findKey(dreFrontendGlobals.systemCodes, function (v) {
+            return v === 'RxNORM';
+        });
+
+        var _findRxNorm = function (medication, paramName) {
+            var res;
+            if (medication && medication.code && medication.code.coding) {
+                res = _.get(_.find(medication.code.coding, function (e) {
+                    return (e.system === _rxnormSystem || e.system.toLowerCase() === 'rxnorm');
+                }), paramName);
+            }
+            return res;
+        };
+
+        return {
             getRxcuiCode: function (medication) {
-                if (angular.isObject(medication) && angular.isObject(medication.code) && angular.isArray(medication.code.coding)) {
-                    return _.get(_.find(medication.code.coding, {system: 'http://www.nlm.nih.gov/research/umls/rxnorm'}), 'code');
-                }
-                return undefined;
+                return _findRxNorm(medication, 'code');
             },
             getMedname: function (medication) {
-                if (angular.isObject(medication) && angular.isObject(medication.code) && angular.isArray(medication.code.coding)) {
-                    return _.get(_.find(medication.code.coding, {system: 'http://www.nlm.nih.gov/research/umls/rxnorm'}), 'display');
-                }
-                return undefined;
+                return _findRxNorm(medication, 'display');
             },
 
             getRxImages: function (rxcode, medname) {
@@ -122,5 +130,4 @@ angular.module('dreFrontend.util')
                 });
             }
         };
-        return self;
     });

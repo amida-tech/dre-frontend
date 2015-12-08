@@ -42,6 +42,32 @@ angular.module('dreFrontend.resource')
             return res;
         };
 
+        FhirObservation.prototype.title = function () {
+            return this.codableConceptTitle(this.code);
+        };
+
+        FhirObservation.prototype.dates = function () {
+            var res = FhirResource.prototype.dates();
+
+            if (this.appliesDateTime) {
+                res.startDate = this.appliesDateTime;
+            } else if (this.effectiveDateTime) {
+                res.startDate = this.effectiveDateTime;
+            } else if (this.appliesPeriod) {
+                res.startDate = this.appliesPeriod.start;
+                res.endDate = this.appliesPeriod.end;
+            } else if (this.effectivePeriod) {
+                res.startDate = this.effectivePeriod.start;
+                res.endDate = this.effectivePeriod.end;
+            } else if (angular.isDefined(this.issued)) {
+                res.startDate = this.issued;
+            }
+            return this._formatDates(res);
+        };
+
+        FhirObservation.prototype.additionalInfo = function () {
+            return this.measurement(true);
+        };
 
         return FhirObservation;
     });
