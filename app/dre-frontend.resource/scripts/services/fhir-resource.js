@@ -41,7 +41,7 @@ angular.module('dreFrontend.resource')
                             var p = val.reference.split("/");
                             return dreFrontendFhirService.read(p[0], p[1])
                                 .then(process_sub_resource)
-                                .catch(function(err){
+                                .catch(function (err) {
                                     $log.debug('error loading ', prop, ref);
                                     $log.debug(err);
                                     return $q.reject(err);
@@ -160,19 +160,20 @@ angular.module('dreFrontend.resource')
             if (src_links.length > 0) {
                 for (var s = 0; s < src_links.length; s++) {
                     var ref = f(src_links[s], 'http://amida-tech.com/fhir/extensions/source/reference', 'String');
-                    var _data = {
-                        indexed: f(src_links[s], 'http://amida-tech.com/fhir/extensions/source/date', 'Date'),
-                        status: f(src_links[s], 'http://amida-tech.com/fhir/extensions/source/description', 'String')
-                    };
+                    var indexed = f(src_links[s], 'http://amida-tech.com/fhir/extensions/source/date', 'Date');
+                    var status = f(src_links[s], 'http://amida-tech.com/fhir/extensions/source/description', 'String');
 
                     if (ref) {
                         var path = dreFrontendUtil.parseResourceReference(ref);
                         if (path && path.length === 4) {
-                            add_data.push(_data);
+                            add_data.push({status: status});
                             doc_refs.push(dreFrontendFhirService.history(path[0], path[1], path[3]));
                         }
                     } else {
-                        doc_refs.push($q.resolve(_data));
+                        doc_refs.push($q.resolve({
+                            indexed: indexed,
+                            status: status
+                        }));
                     }
                 }
                 return $q.all(doc_refs).then(function (resp) {
