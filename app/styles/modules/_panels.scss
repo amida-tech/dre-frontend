@@ -70,9 +70,15 @@
             span {
                 word-wrap: break-word;
             }
+
             input[type='checkbox'] {
                 position: absolute;
-                left: 0;
+                right: 0;
+            }
+            @media(min-width: 768px)  {
+                input[type='checkbox'] {
+                    left: 0;
+                }
             }
         }
 

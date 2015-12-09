@@ -12,16 +12,18 @@
         <div resource-diff="model.matches[model.index]"></div>
     </div>
     <div class="row">
-        <div class="col-sm-6">
-            <button class="btn btn-default col-sm-offset-2 col-sm-8" ng-click="undoAllButton()">
+        <div class="col-sm-6 col-sm-offset-6">
+            <button class="btn btn-default col-sm-offset-2 col-sm-8 col-xs-12" ng-click="undoAllButton()">
                 <i class="fa fa-undo"></i>&nbsp;Undo All
             </button>
-            <button class="btn btn-primary col-sm-offset-2 col-sm-8" ng-click="updateResource()">Save Updates</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <button class="btn btn-default col-sm-offset-2 col-sm-8 col-xs-12" ng-click="ignoreMatch()">not a match</button>
         </div>
         <div class="col-sm-6">
-            <button class="btn btn-warning col-sm-offset-2 col-sm-8" ng-click="replaceResource(false)">Replace with Matched
-            </button>
-            <button class="btn btn-default col-sm-offset-2 col-sm-8" ng-click="ignoreMatch()">Ignore Match</button>
+            <button class="btn btn-primary col-sm-offset-2 col-sm-8 col-xs-12" ng-click="updateResource()">Save Updates</button>
         </div>
     </div>
 </div>
