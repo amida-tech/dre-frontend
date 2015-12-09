@@ -30,7 +30,7 @@ angular.module('dreFrontend.resource')
 
         FhirDocumentReference.prototype.getLinkData = function () {
             var data = {
-                indexed: this.indexed,
+                indexed: dreFrontendUtil.formatFhirDate(this.indexed),
                 display: "User uploaded record",
                 getBody: this.getContent,
                 status: this.status
