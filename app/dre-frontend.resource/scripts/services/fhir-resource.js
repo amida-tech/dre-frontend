@@ -170,6 +170,7 @@ angular.module('dreFrontend.resource')
                             doc_refs.push(dreFrontendFhirService.history(path[0], path[1], path[3]));
                         }
                     } else {
+                        add_data.push({});
                         doc_refs.push($q.resolve({
                             indexed: indexed,
                             status: status
