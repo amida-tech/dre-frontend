@@ -32,17 +32,24 @@ angular.module('dreFrontendApp')
                 if (_val[c].code && _val[c].code.diff) {
                     hasDiff = true;
                 }
-                if (_val[c].system && _val[c].system.diff) {
-                    hasDiff = true;
+                if (_val[c].system) {
+                    if (_val[c].system.diff) {
+                        hasDiff = true;
+                        _val[c].system.nodeValue = dreFrontendUtil.encodeSystemURL(_val[c].system.nodeValue);
+                    } else {
+                        _val[c].system = dreFrontendUtil.encodeSystemURL(_val[c].system);
+                    }
+
                 }
             }
+
             for (c = 0; c < _val.length && !hasDiff; c++) {
                 var rows = [];
                 if (_val[c].display) {
                     rows.push(_val[c].display);
                 }
                 if (_val[c].code || _val[c].system) {
-                    rows.push(_val[c].code + ' (' + dreFrontendUtil.encodeSystemURL(_val[c].system) + ')');
+                    rows.push(_val[c].code + ' (' + _val[c].system + ')');
                 }
                 if (rows.length > 0) {
                     res.push(rows.join("\n"));
@@ -266,4 +273,6 @@ angular.module('dreFrontendApp')
             getEntryAddInfo: _getEntryAddInfo,
             getEntry: _initEntry
         };
-    });
+    }
+)
+;
