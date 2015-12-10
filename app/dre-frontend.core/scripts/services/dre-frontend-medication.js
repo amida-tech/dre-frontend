@@ -19,7 +19,7 @@ angular.module('dreFrontend.util')
             var res;
             if (medication && medication.code && medication.code.coding) {
                 res = _.get(_.find(medication.code.coding, function (e) {
-                    return (e.system === _rxnormSystem || e.system.toLowerCase() === 'rxnorm');
+                    return (e.system && (e.system === _rxnormSystem || e.system.toLowerCase() === 'rxnorm'));
                 }), paramName);
             }
             return res;
