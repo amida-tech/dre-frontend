@@ -163,26 +163,26 @@ angular.module('dreFrontend.resource')
             if (src_links.length > 0) {
                 for (var s = 0; s < src_links.length; s++) {
                     var ref = this._getExtension(src_links[s], dreFrontendGlobals.amidaExtensions.ref, 'String');
-                    var indexed = this._getExtension(src_links[s], dreFrontendGlobals.amidaExtensions.date, 'Date');
-                    var status = this._getExtension(src_links[s], dreFrontendGlobals.amidaExtensions.descr, 'String');
+                    var _data = {
+                        indexed: this._getExtension(src_links[s], dreFrontendGlobals.amidaExtensions.date, 'Date'),
+                        status: this._getExtension(src_links[s], dreFrontendGlobals.amidaExtensions.descr, 'String')
+                    };
 
                     if (ref) {
                         var path = dreFrontendUtil.parseResourceReference(ref);
                         if (path && path.length === 4) {
-                            add_data.push({status: status});
+                            add_data.push(_data);
                             doc_refs.push(dreFrontendFhirService.history(path[0], path[1], path[3]));
                         }
                     } else {
                         add_data.push({});
-                        doc_refs.push($q.resolve({
-                            indexed: indexed,
-                            status: status
-                        }));
+                        doc_refs.push($q.resolve(_data));
                     }
                 }
                 return $q.all(doc_refs).then(function (resp) {
                     for (var r = 0; r < resp.length; r++) {
-                        angular.extend(resp[r], add_data[r]);
+                        resp[r].indexed = resp[r].indexed || add_data[r].indexed;
+                        resp[r].status = add_data[r].status || resp[r].status;
                     }
                     return resp;
                 });
