@@ -84,7 +84,7 @@ angular.module('dreFrontend.fhir')
                             }
                             resource.entry = _.sortByOrder(resource.entry, function (item) {
                                 return item.getSortValue();
-                            },'desc');
+                            }, 'desc');
                         }
                     } else {
                         Class = _FhirClass(resource);
@@ -143,7 +143,18 @@ angular.module('dreFrontend.fhir')
                 }
 
                 function _delete(resourceType, id) {
-                    return $q.reject("not implemented 'delete(", resourceType, id, ")'");
+                    if (resourceType && id) {
+                        return Restangular.one(resourceType, id).remove()
+                            .then(function () {
+                                return true
+                            })
+                            .catch(function (err) {
+                                $log.debug("error deleting " + resourceType + '/' + id, err);
+                                return $q.reject(err);
+                            });
+                    } else {
+                        return $q.reject("can`t 'delete(", resourceType, id, ")'");
+                    }
                 }
 
                 return {

@@ -5,7 +5,7 @@
 
 angular.module('dreFrontend.resource')
     .factory('FhirResource', function (dreFrontendUtil, _, fhirEnv, $log, $q,
-                                       dreFrontendFhirService) {
+                                       dreFrontendFhirService, dreFrontendGlobals) {
 
         var FhirResource = function (data) {
             this.setData(data);
@@ -31,7 +31,6 @@ angular.module('dreFrontend.resource')
 
                     if (force || !this.resourceType) {
                         var ref = this.reference;
-                        $log.debug('loading...', prop, ref);
                         if (val.reference.match(/^#.+/)) {
                             /* contained resource */
                             var _data = _.first(_.filter(resource.contains, {"id": val.reference.substring(1)})) || {};
@@ -143,6 +142,19 @@ angular.module('dreFrontend.resource')
             });
         };
 
+        FhirResource.prototype._getExtension = function (obj, _key, valueType) {
+            var res = _.filter(obj.extension, {url: _key});
+            if (valueType && res) {
+                var _tmp = res.shift();
+                res = _tmp ? _tmp['value' + valueType] : undefined;
+            }
+            return res;
+        };
+
+        FhirResource.prototype._getSourceExtension = function () {
+            return this._getExtension(this, dreFrontendGlobals.amidaExtensions.source);
+        };
+
         FhirResource.prototype.getSources = function () {
             var f = function (obj, _key, valueType) {
                 var res = _.filter(obj.extension, {url: _key});
@@ -153,15 +165,15 @@ angular.module('dreFrontend.resource')
                 return res;
             };
 
-            var src_links = f(this, 'http://amida-tech.com/fhir/extensions/source');
+            var src_links = this._getSourceExtension();
             var doc_refs = [];
             var add_data = [];
 
             if (src_links.length > 0) {
                 for (var s = 0; s < src_links.length; s++) {
-                    var ref = f(src_links[s], 'http://amida-tech.com/fhir/extensions/source/reference', 'String');
-                    var indexed = f(src_links[s], 'http://amida-tech.com/fhir/extensions/source/date', 'Date');
-                    var status = f(src_links[s], 'http://amida-tech.com/fhir/extensions/source/description', 'String');
+                    var ref = this._getExtension(src_links[s], dreFrontendGlobals.amidaExtensions.ref, 'String');
+                    var indexed = this._getExtension(src_links[s], dreFrontendGlobals.amidaExtensions.date, 'Date');
+                    var status = this._getExtension(src_links[s], dreFrontendGlobals.amidaExtensions.descr, 'String');
 
                     if (ref) {
                         var path = dreFrontendUtil.parseResourceReference(ref);

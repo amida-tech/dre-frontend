@@ -131,6 +131,14 @@ angular.module('dreFrontend.util')
         self.highlightProperty = [];
         self.synonims = {'interpretation': 'meaning'};
 
+        self.patientEnteredText = 'Patient Entered';
+        self.amidaExtensions = {
+            source: 'http://amida-tech.com/fhir/extensions/source',
+            date: 'http://amida-tech.com/fhir/extensions/source/date',
+            descr: 'http://amida-tech.com/fhir/extensions/source/description',
+            ref: 'http://amida-tech.com/fhir/extensions/source/reference'
+        };
+
         this.$get = function () {
             return self;
         };

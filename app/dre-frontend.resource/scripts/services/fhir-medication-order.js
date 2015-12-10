@@ -4,7 +4,7 @@
 "use strict";
 
 angular.module('dreFrontend.resource')
-    .factory('FhirMedicationOrder', function (FhirResource, $q) {
+    .factory('FhirMedicationOrder', function (FhirResource, $q, dreFrontendGlobals, $log) {
 
         // reuse the original constructor
         var FhirMedicationOrder = function () {
@@ -31,15 +31,15 @@ angular.module('dreFrontend.resource')
                 this.extension = [];
             }
             this.extension.push({
-                "url":"http://amida-tech.com/fhir/extensions/source",
-                "extension":[
-                   {
-                        "url":"http://amida-tech.com/fhir/extensions/source/date",
+                "url": dreFrontendGlobals.amidaExtensions.source,
+                "extension": [
+                    {
+                        "url": dreFrontendGlobals.amidaExtensions.date,
                         "valueDate": new Date().toISOString()
                     },
                     {
-                        "url":"http://amida-tech.com/fhir/extensions/source/description",
-                        "valueString":"Patient entered"
+                        "url": dreFrontendGlobals.amidaExtensions.descr,
+                        "valueString": dreFrontendGlobals.patientEnteredText
                     }
                 ]
             });
@@ -74,6 +74,32 @@ angular.module('dreFrontend.resource')
             res.isActive = !res.endDate || !this.status || this.status.toLowerCase() === 'active';
 
             return this._formatDates(res);
+        };
+
+        FhirMedicationOrder.prototype.isEditable = function () {
+            var _res = false;
+            if (this._getSourceExtension) {
+                var sources = this._getSourceExtension();
+            } else {
+                $log.debug(this);
+            }
+
+            if (sources) {
+                var t1 = dreFrontendGlobals.patientEnteredText.toLowerCase();
+                for (var a = 0; !_res && a < sources.length; a++) {
+                    var t2 = this._getExtension(sources[a], dreFrontendGlobals.amidaExtensions.descr, 'String');
+                    _res = (t2 && t2.toLowerCase() === t1);
+                }
+            }
+            return _res;
+        };
+
+        FhirMedicationOrder.prototype.additionalInfo = function () {
+            var res = FhirResource.prototype.additionalInfo();
+            if (this.isEditable()) {
+                res = dreFrontendGlobals.patientEnteredText;
+            }
+            return res;
         };
 
         return FhirMedicationOrder;
