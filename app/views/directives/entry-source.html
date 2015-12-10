@@ -7,7 +7,7 @@
             <tr ng-repeat="link in model.links">
                 <td><fhir-binary-link doc-ref="link"/></td>
                 <td class="text-capitalize">{{link.status}}</td>
-                <td>{{link.indexed | date:'short'}}</td>
+                <td>{{link.indexed}}</td>
             </tr>
             </tbody>
         </table>

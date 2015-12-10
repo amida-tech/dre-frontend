@@ -26,9 +26,6 @@ angular.module('dreFrontend.fhir')
                             .then(function(doc_ref_set){
                                 return _.flatten(doc_ref_set);
                             });
-                    })
-                    .then(function(doc_references){
-                        return dreFrontendDocumentReference.getFileList({entry: doc_references});
                     });
             },
             getForResource: get_for_resource,

@@ -64,10 +64,11 @@ angular.module('dreFrontendApp')
                 return dreFrontendDocumentReference.getByPatientId(patientId, {_count: page_size});
             })
             .then(function (bundle) {
-                return dreFrontendDocumentReference.getFileList(bundle);
-            })
-            .then(function (list) {
-                files = list;
+                files = [];
+                for (var q = 0; q < bundle.entry.length; q++) {
+                    files.push(bundle.entry[q].getLinkData());
+                }
                 showTable();
+                return files;
             });
     });

@@ -24,8 +24,7 @@ angular.module('dreFrontend.resource')
                     if (entity.reference) {
                         var path = dreFrontendUtil.parseResourceReference(entity.reference);
                         if (path && path.length === 4) {
-                            doc_refs.push(dreFrontendFhirService.history(path[0], path[1], path[3])
-                                .then(dreFrontendDocumentReference.DocumentReference));
+                            doc_refs.push(dreFrontendFhirService.history(path[0], path[1], path[3]));
                         }
                     }
                 });
