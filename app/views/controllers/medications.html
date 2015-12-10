@@ -35,5 +35,5 @@
     <div class="blocks">
         <div ng-repeat="item in model.filteredMedicationList" user-timeline-entry="item"></div>
     </div>
-    <h5 ng-hide="model.filteredMedicationList" class="col-sm-12 text-center">No data available</h5>
+    <h5 ng-hide="model.filteredMedicationList.length>0" class="col-sm-12 text-center">No data available</h5>
 </div>
