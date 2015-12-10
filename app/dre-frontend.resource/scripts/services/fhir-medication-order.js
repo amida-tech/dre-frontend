@@ -4,7 +4,7 @@
 "use strict";
 
 angular.module('dreFrontend.resource')
-    .factory('FhirMedicationOrder', function (FhirResource, $q, dreFrontendGlobals, $log) {
+    .factory('FhirMedicationOrder', function (FhirResource, $q, dreFrontendGlobals) {
 
         // reuse the original constructor
         var FhirMedicationOrder = function () {
@@ -80,15 +80,12 @@ angular.module('dreFrontend.resource')
             var _res = false;
             if (this._getSourceExtension) {
                 var sources = this._getSourceExtension();
-            } else {
-                $log.debug(this);
-            }
-
-            if (sources) {
-                var t1 = dreFrontendGlobals.patientEnteredText.toLowerCase();
-                for (var a = 0; !_res && a < sources.length; a++) {
-                    var t2 = this._getExtension(sources[a], dreFrontendGlobals.amidaExtensions.descr, 'String');
-                    _res = (t2 && t2.toLowerCase() === t1);
+                if (sources) {
+                    var t1 = dreFrontendGlobals.patientEnteredText.toLowerCase();
+                    for (var a = 0; !_res && a < sources.length; a++) {
+                        var t2 = this._getExtension(sources[a], dreFrontendGlobals.amidaExtensions.descr, 'String');
+                        _res = (t2 && t2.toLowerCase() === t1);
+                    }
                 }
             }
             return _res;

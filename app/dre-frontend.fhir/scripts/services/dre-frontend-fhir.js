@@ -146,7 +146,7 @@ angular.module('dreFrontend.fhir')
                     if (resourceType && id) {
                         return Restangular.one(resourceType, id).remove()
                             .then(function () {
-                                return true
+                                return true;
                             })
                             .catch(function (err) {
                                 $log.debug("error deleting " + resourceType + '/' + id, err);
