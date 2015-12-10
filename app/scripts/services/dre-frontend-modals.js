@@ -40,6 +40,22 @@ angular.module('dreFrontendApp')
                     controller: 'PrintDlgCtrl',
                     size: 'lg'
                 });
+            },
+            showConfirm: function (_title, _message) {
+                var modalInstance = $modal.open({
+                    templateUrl: 'views/controllers/modals/confirm-dlg.html',
+                    controller: 'ConfirmDlgCtrl',
+                    size: 'sm',
+                    resolve: {
+                        confDlg: function () {
+                            return {
+                                title: _title,
+                                message: _message
+                            };
+                        }
+                    }
+                });
+                return modalInstance.result;
             }
         };
     });

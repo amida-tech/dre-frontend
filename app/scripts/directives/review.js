@@ -21,7 +21,7 @@ angular.module('dreFrontendApp')
                     }
                 }, true);
             },
-            controller: function ($rootScope, $scope, $state, dreFrontendMergeService, dreFrontendGlobals) {
+            controller: function ($rootScope, $scope, $state, dreFrontendMergeService, dreFrontendGlobals, dreFrontendModalsService) {
 
                 $scope.model = {
                     index: 0,
@@ -77,18 +77,28 @@ angular.module('dreFrontendApp')
                 };
 
                 $scope.updateResource = function () {
-                    dreFrontendMergeService.update($scope.model.matches[$scope.model.index])
-                        .then(_resolveMatch)
-                        .catch(function (err) {
-                            $log.debug("Update error", err);
+                    dreFrontendModalsService.showConfirm('Review updates', 'This will update your health record')
+                        .then(function (res) {
+                            if (res) {
+                                dreFrontendMergeService.update($scope.model.matches[$scope.model.index])
+                                    .then(_resolveMatch)
+                                    .catch(function (err) {
+                                        $log.debug("Update error", err);
+                                    });
+                            }
                         });
                 };
 
                 $scope.ignoreMatch = function () {
-                    dreFrontendMergeService.ignore($scope.model.matches[$scope.model.index])
-                        .then(_resolveMatch)
-                        .catch(function(err){
-                            $log.debug("Ignore error", err);
+                    dreFrontendModalsService.showConfirm('Review updates', 'This will update your health record')
+                        .then(function (res) {
+                            if (res) {
+                                dreFrontendMergeService.ignore($scope.model.matches[$scope.model.index])
+                                    .then(_resolveMatch)
+                                    .catch(function (err) {
+                                        $log.debug("Ignore error", err);
+                                    });
+                            }
                         });
                 };
 

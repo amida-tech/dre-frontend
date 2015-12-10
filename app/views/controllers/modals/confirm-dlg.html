@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <button class="close" ng-click="close()" aria-label="Close" data-dismiss="modal" type="button">
+        <span>×</span>
+    </button>
+    <h4 class="modal-title">{{model.title}}</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-sm-12"><h5>{{model.message}}</h5></div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" ng-click="proceed(1)">Proceed</button>
+    <button class="btn btn-default" ng-click="proceed(0)">Cancel</button>
+</div>
