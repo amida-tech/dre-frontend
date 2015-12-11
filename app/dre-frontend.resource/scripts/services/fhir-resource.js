@@ -163,8 +163,11 @@ angular.module('dreFrontend.resource')
             if (src_links.length > 0) {
                 for (var s = 0; s < src_links.length; s++) {
                     var ref = this._getExtension(src_links[s], dreFrontendGlobals.amidaExtensions.ref, 'String');
+                    var _date = this._getExtension(src_links[s], dreFrontendGlobals.amidaExtensions.date, 'DateTime') ||
+                        this._getExtension(src_links[s], dreFrontendGlobals.amidaExtensions.date, 'Date');
+
                     var _data = {
-                        indexed: this._getExtension(src_links[s], dreFrontendGlobals.amidaExtensions.date, 'Date'),
+                        indexed: dreFrontendUtil.formatFhirDate(_date),
                         status: this._getExtension(src_links[s], dreFrontendGlobals.amidaExtensions.descr, 'String')
                     };
 

@@ -2,7 +2,7 @@
     <h3 ng-hide="withoutHeader">Entry Sources</h3>
     <div ng-show="model.links.length > 0">
         <table class="table table-condensed table-hover">
-            <thead><tr><td>Source</td><td>Status</td><td>Indexed</td></tr></thead>
+            <thead><tr><td>Source</td><td>Status</td><td>Modified</td></tr></thead>
             <tbody>
             <tr ng-repeat="link in model.links">
                 <td><fhir-binary-link doc-ref="link"/></td>
