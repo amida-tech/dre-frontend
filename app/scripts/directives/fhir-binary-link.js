@@ -9,7 +9,7 @@
 angular.module('dreFrontendApp')
     .directive('fhirBinaryLink', function () {
         return {
-            template: '<span ng-hide="docRef.title">none</span><a ng-show="docRef.title" ng-click="getContent()" class="fhir-binary-link"><i class="fa {{getIcon(docRef.contentType)}}"></i>{{docRef.title}}</a>',
+            template: '<a ng-show="docRef.title" ng-click="getContent()" class="fhir-binary-link"><i class="fa {{getIcon(docRef.contentType)}}"></i>{{docRef.title}}</a>',
             restrict: 'AE',
             scope: {
                 docRef: "="
