@@ -12,7 +12,7 @@ angular.module('dreFrontendApp')
             "entry-details-item-member='member'></div></div>"
         };
     })
-    .directive('entryDetailsItemMember', function ($compile) {
+    .directive('entryDetailsItemMember', function ($compile, $log, Change) {
         return {
             restrict: "AE",
             scope: {
@@ -28,7 +28,12 @@ angular.module('dreFrontendApp')
                     if (angular.isObject($scope.entryDetailsItemMember.diff)) {
                         diffKind = $scope.entryDetailsItemMember.diff.change.kind || '';
                         diffSide = $scope.entryDetailsItemMember.diff.side || '';
-                        diffApply = $scope.entryDetailsItemMember.diff.change ? $scope.entryDetailsItemMember.diff.change.apply : false;
+                        if ($scope.entryDetailsItemMember.diff.change instanceof Change) {
+                            diffApply = $scope.entryDetailsItemMember.diff.change.apply();
+                            $log.debug('qqq',diffApply);
+                        } else {
+                            diffApply = $scope.entryDetailsItemMember.diff.change.apply;
+                        }
                     }
 
                     if (diffSide === 'l' && diffApply && diffKind === 'E') {
@@ -39,7 +44,7 @@ angular.module('dreFrontendApp')
 
                     if ($scope.entryDetailsItemMember.label) {
                         if (diffKind && diffSide === 'l') {
-                            checkBox = "<input type='checkbox' ng-model='entryDetailsItemMember.diff.change.apply'/>";
+                            checkBox = "<input type='checkbox' ng-model='entryDetailsItemMember.diff.change.apply' ng-model-options='{getterSetter:true}'/>";
                         }
                         element.append("<div class='detail-label'>" + checkBox + "<strong ng-bind='entryDetailsItemMember.label'></strong></div>");
                     }

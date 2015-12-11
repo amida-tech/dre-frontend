@@ -8,7 +8,7 @@
  * Service in the dreFrontendApp.
  */
 angular.module('dreFrontendApp')
-    .factory('dreFrontendEntryService', function (_, dreFrontendUtil, dreFrontendGlobals) {
+    .factory('dreFrontendEntryService', function (_, dreFrontendUtil, dreFrontendGlobals, $log, Change) {
 
         var _wrapLabelDeep = 1;
         var _black_list = ["photo"];
@@ -23,44 +23,62 @@ angular.module('dreFrontendApp')
 
         var wrapCoding = function (_val) {
             var res = [];
+            var fieldNames = ['display', 'code', 'system', 'text'];
             var hasDiff = false;
-            var c;
-            for (c = 0; c < _val.length && !hasDiff; c++) {
-                if (_val[c].display && _val[c].display.diff) {
-                    hasDiff = true;
-                }
-                if (_val[c].code && _val[c].code.diff) {
-                    hasDiff = true;
-                }
-                if (_val[c].system) {
-                    if (_val[c].system.diff) {
-                        hasDiff = true;
-                        _val[c].system.nodeValue = dreFrontendUtil.encodeSystemURL(_val[c].system.nodeValue);
-                    } else {
-                        _val[c].system = dreFrontendUtil.encodeSystemURL(_val[c].system);
+            var diffs = [];
+            var c, d;
+            for (c = 0; c < _val.length; c++) {
+                var _tmp = [];
+                for (d = 0; d < fieldNames.length; d++) {
+                    var diffFlag = (_val[c][fieldNames[d]] && _val[c][fieldNames[d]].diff);
+                    if (diffFlag) {
+                        var _diff = _val[c][fieldNames[d]].diff;
+                        _tmp.push(_diff);
+                        if (_diff.side==='l' && _diff.change.kind==='N' || _diff.change.kind==='D' && _diff.side==='r') {
+                            _val[c][fieldNames[d]] = '';
+                        } else {
+                            _val[c][fieldNames[d]] = _val[c][fieldNames[d]].nodeValue;
+                        }
                     }
-
+                }
+                if (_tmp.length) {
+                    diffs[c] = _tmp;
+                } else {
+                    diffs[c] = null;
                 }
             }
 
-            for (c = 0; c < _val.length && !hasDiff; c++) {
+            for (c = 0; c < _val.length; c++) {
                 var rows = [];
                 if (_val[c].display) {
                     rows.push(_val[c].display);
                 }
                 if (_val[c].code || _val[c].system) {
-                    rows.push(_val[c].code + ' (' + _val[c].system + ')');
+                    rows.push(_val[c].code + ' (' + dreFrontendUtil.encodeSystemURL(_val[c].system) + ')');
                 }
                 if (rows.length > 0) {
-                    res.push(rows.join("\n"));
+                    if (diffs[c]) {
+                        res = {
+                            diff: {
+                                change: new Change({
+                                    kind: 'E',
+                                    changes: diffs[c]
+                                }),
+                                ref: 'test',
+                                side: diffs[c][0].side
+                            },
+                            nodeValue: rows.join("\n")
+                        };
+                    } else {
+                        res.push(rows.join("\n"));
+                    }
                 }
             }
 
-            if (res.length > 0) {
-                return res;
-            } else {
-                return _val;
+            if (res.length <1) {
+                res = _val;
             }
+            return res;
         };
 
         var _getLabel = function (_key) {
@@ -78,6 +96,9 @@ angular.module('dreFrontendApp')
         };
 
         var _buildTable = function (dataItem, blackList, deep) {
+            if (!deep) {
+                $log.debug('building tree', dataItem);
+            }
             if (deep > 10) {
                 return [];
             }
@@ -159,6 +180,14 @@ angular.module('dreFrontendApp')
                     return res;
                 };
 
+                switch (_key) {
+                    case 'coding':
+                        if (!_val.diff) {
+                            _val = wrapCoding(_val);
+                        }
+                        break;
+                }
+
                 if (_val && _val.diff) {
                     switch (_val.diff.side) {
                         case 'l':
@@ -180,14 +209,6 @@ angular.module('dreFrontendApp')
                     } else {
                         delete _val.diff;
                     }
-                }
-
-                switch (_key) {
-                    case 'coding':
-                        if (!node.diff) {
-                            _val = wrapCoding(_val);
-                        }
-                        break;
                 }
 
                 _tmpVal = _proceedVal(_val);

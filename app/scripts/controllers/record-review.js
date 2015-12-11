@@ -28,7 +28,7 @@ angular.module('dreFrontendApp')
             } else {
                 res = matches;
             }
-
+            dreFrontendMergeService.formatList(res);
             return res;
         }
 
@@ -39,10 +39,13 @@ angular.module('dreFrontendApp')
 //                dreFrontendMergeService.getMockData()
                     .then(function (resp) {
                         if (resp) {
-                            $rootScope.$broadcast(dreFrontendGlobals.recordEvents.updateReviewList, resp);
-                            $scope.model.matches = _filter(resp);
-                            if ($scope.model.matches.length ===0 && $state.params.group) {
+                            var matches = _filter(resp);
+
+                            if (matches.length ===0 && $state.params.group) {
                                 $state.go($state.current.name, {group:undefined});
+                            } else {
+                                $rootScope.$broadcast(dreFrontendGlobals.recordEvents.updateReviewList, resp);
+                                $scope.model.matches = matches;
                             }
                         }
                     })

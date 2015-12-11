@@ -14,18 +14,18 @@ angular.module('dreFrontendApp')
             scope: {
                 matches: "="
             },
-            link: function (scope, element, attrs, ctrl) {
-                scope.$watch('matches', function (newValue) {
-                    if (newValue) {
-                        ctrl.update(newValue);
+            link: function ($scope) {
+                $scope.$watch('matches', function (_matches) {
+                    if (_matches) {
+                        $scope.model.qty = _matches.length;
                     }
-                }, true);
+                });
             },
             controller: function ($rootScope, $scope, $state, dreFrontendMergeService, dreFrontendGlobals, dreFrontendModalsService) {
 
                 $scope.model = {
                     index: 0,
-                    qty: null
+                    qty: $scope.matches.length
                 };
 
                 $scope.next = function () {
@@ -51,22 +51,21 @@ angular.module('dreFrontendApp')
                 };
 
                 var _resolveMatch = function () {
-                    $rootScope.$broadcast(dreFrontendGlobals.recordEvents.updateReviewList, dreFrontendMergeService.removeFromList($scope.model.matches[$scope.model.index]));
-//                    _.pullAt($scope.model.matches, $scope.model.index);
-                    if ($scope.model.matches.length === 0 && $state.params.group) {
+                    $rootScope.$broadcast(dreFrontendGlobals.recordEvents.updateReviewList, dreFrontendMergeService.removeFromList($scope.matches[$scope.model.index]));
+                    if ($scope.matches.length === 0 && $state.params.group) {
                         $state.go($state.current.name, {group: undefined});
                     }
                 };
 
                 $scope.undoAllButton = function () {
-                    var item = $scope.model.matches[$scope.model.index];
+                    var item = $scope.matches[$scope.model.index];
                     if (item) {
                         _revertChanges(item.changes);
                     }
                 };
 
                 $scope.replaceResource = function (isLeft) {
-                    var _match = $scope.model.matches[$scope.model.index];
+                    var _match = $scope.matches[$scope.model.index];
                     var primary_id = (isLeft) ? _match.lhs.id : _match.rhs.id;
                     var dup_id = (isLeft) ? _match.rhs.id : _match.lhs.id;
                     dreFrontendMergeService.replace(_match.lhs.resourceType, primary_id, dup_id)
@@ -80,7 +79,7 @@ angular.module('dreFrontendApp')
                     dreFrontendModalsService.showConfirm('Review updates', 'This will update your health record')
                         .then(function (res) {
                             if (res) {
-                                dreFrontendMergeService.update($scope.model.matches[$scope.model.index])
+                                dreFrontendMergeService.update($scope.matches[$scope.model.index])
                                     .then(_resolveMatch)
                                     .catch(function (err) {
                                         $log.debug("Update error", err);
@@ -93,7 +92,7 @@ angular.module('dreFrontendApp')
                     dreFrontendModalsService.showConfirm('Review updates', 'This will update your health record')
                         .then(function (res) {
                             if (res) {
-                                dreFrontendMergeService.ignore($scope.model.matches[$scope.model.index])
+                                dreFrontendMergeService.ignore($scope.matches[$scope.model.index])
                                     .then(_resolveMatch)
                                     .catch(function (err) {
                                         $log.debug("Ignore error", err);
@@ -101,12 +100,6 @@ angular.module('dreFrontendApp')
                             }
                         });
                 };
-
-                this.update = function (data) {
-                    angular.extend($scope.model, dreFrontendMergeService.formatList(data));
-                };
-
-                this.update($scope.matches);
             }
         };
     });
