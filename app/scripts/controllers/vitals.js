@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('VitalsCtrl', function ($scope, dreFrontendEntryService, dreFrontendObservations, _, dreFrontEndPatientInfoService, dreFrontendUtil, dreFrontendGlobals) {
+    .controller('VitalsCtrl', function ($scope, dreFrontendEntryService, dreFrontendObservations, _, dreFrontendPatientInfoService, dreFrontendUtil, dreFrontendGlobals) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
@@ -16,11 +16,9 @@ angular.module('dreFrontendApp')
             entryType: dreFrontendGlobals.resourceTypes.Vital.type,
             title: dreFrontendGlobals.resourceTypes.Vital.title
         };
-        dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
+        dreFrontendPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
-        });
-        dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
-            dreFrontendObservations.getVitalSigns(patientId).then(function (results) {
+            dreFrontendObservations.getVitalSigns(patient.id).then(function (results) {
                 $scope.model.list = [];
                 _.forEach(results.entry, function (entry) {
                     $scope.model.list.push({

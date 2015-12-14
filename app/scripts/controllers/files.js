@@ -9,7 +9,7 @@
  */
 angular.module('dreFrontendApp')
     .controller('FilesCtrl', function ($scope, $filter, $q, $state, NgTableParams, dreFrontendDocumentReference,
-                                       dreFrontendAuthService, dreFrontEndPatientInfoService, FileSaver) {
+                                       dreFrontendAuthService, dreFrontendPatientInfoService, FileSaver) {
         var files = [];
         var page_size = 50;
         $scope.model = {};
@@ -59,7 +59,7 @@ angular.module('dreFrontendApp')
             }
         }
 
-        dreFrontEndPatientInfoService.getPatientId()
+        dreFrontendPatientInfoService.getPatientId()
             .then(function (patientId) {
                 return dreFrontendDocumentReference.getByPatientId(patientId, {_count: page_size});
             })

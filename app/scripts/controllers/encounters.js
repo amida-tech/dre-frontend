@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('EncountersCtrl', function ($scope, dreFrontendEntryService, dreFrontendEncounters, _, dreFrontEndPatientInfoService, dreFrontendGlobals) {
+    .controller('EncountersCtrl', function ($scope, dreFrontendEntryService, dreFrontendEncounters, _, dreFrontendPatientInfoService, dreFrontendGlobals) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
@@ -16,7 +16,7 @@ angular.module('dreFrontendApp')
             entryType: dreFrontendGlobals.resourceTypes.Encounter.type,
             title: dreFrontendGlobals.resourceTypes.Encounter.title
         };
-        dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
+        dreFrontendPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
             dreFrontendEncounters.getByPatientId(patient.id).then(function (results) {
                 $scope.model.list = [];

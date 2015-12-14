@@ -8,53 +8,52 @@
  * Service in the dreFrontendApp.
  */
 angular.module('dreFrontendApp')
-    .service('dreFrontEndPatientInfoService', function ($rootScope, $q, dreFrontendPatient) {
+    .factory('dreFrontendPatientInfoService', function ($rootScope, $q, dreFrontendPatient) {
         var patientData = null;
-        var patientDataRequest = null;
+        var patientPromise = null;
         var patientId = null;
-        var patientIdPromise = null;
-        var self = {
-            getPatientId: function () {
-                if (patientId) {
-                    return $q.when(patientId);
-                } else {
-                    if (patientIdPromise === null) {
-                        patientIdPromise = $q.defer();
-                    }
-                    return patientIdPromise.promise;
-                }
-            },
-            setPatientId: function (id) {
-                patientId = id;
-                if (patientIdPromise) {
-                    patientIdPromise.resolve(patientId);
-                    patientIdPromise = null;
-                }
-            },
-            clearPatientData: function () {
-                patientData = null;
-                patientId = null;
-                if (patientIdPromise) {
-                    patientIdPromise.reject('logout');
-                    patientIdPromise = null;
-                }
-            },
-            getPatientData: function (force) {
-                return self.getPatientId().then(function (patientId) {
-                    if (angular.isObject(patientData) && !force) {
-                        patientDataRequest = null;
-                        return $q.when(patientData);
-                    }
-                    if (angular.isObject(patientDataRequest) && !force) {
-                        return patientDataRequest;
-                    }
-                    patientDataRequest = dreFrontendPatient.getById(patientId).then(function (d) {
-                        patientData = d;
-                        return patientData;
-                    });
-                    return patientDataRequest;
-                });
+
+        this.getPatientId = function () {
+            if (patientId) {
+                return $q.resolve(patientId);
+            } else {
+                return $q.reject('not logged in');
             }
         };
-        return self;
+
+        this.getPatientData = function (force) {
+            var res;
+            if (patientData && !force) {
+                res = $q.resolve(patientData);
+            } else {
+                if (!patientPromise || force) {
+                    patientPromise = this.getPatientId()
+                        .then(dreFrontendPatient.getById)
+                        .then(function (data) {
+                            patientData = data;
+                            patientPromise = null;
+                            return patientData;
+                        })
+                        .finally(function () {
+                            patientPromise = null;
+                        });
+                }
+                res = patientPromise;
+            }
+            return res;
+        };
+
+        this.setPatientId = function (id) {
+            patientId = id;
+            return this.getPatientData(true);
+        };
+
+        this.clearPatientData = function () {
+            patientData = null;
+            patientPromise = null;
+            patientId = null;
+            return $q.resolve(true);
+        };
+
+        return this;
     });

@@ -9,7 +9,7 @@
  */
 angular.module('dreFrontendApp')
     .controller('MedicationsCtrl', function ($scope, dreFrontendEntryService, dreFrontendMedicationOrder, _,
-                                             dreFrontEndPatientInfoService, dreFrontendUtil, dreFrontendGlobals,
+                                             dreFrontendPatientInfoService, dreFrontendUtil, dreFrontendGlobals,
                                              dreFrontendModalsService) {
         $scope.model = {
             userName: '-',
@@ -20,7 +20,7 @@ angular.module('dreFrontendApp')
             entryType: 'medications'
         };
 
-        dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
+        dreFrontendPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
             dreFrontendMedicationOrder.getByPatientId(patient.id).then(function (medications) {
                 $scope.model.medicationsList = [];

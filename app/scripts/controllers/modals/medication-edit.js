@@ -9,7 +9,7 @@
  */
 angular.module('dreFrontendApp')
     .controller('MedicationEditCtrl', function ($scope, $modalInstance, item, $log, $q, $state, dreFrontendEntryService,
-                                                dreFrontEndPatientInfoService, dreFrontendMedicationOrder,
+                                                dreFrontendPatientInfoService, dreFrontendMedicationOrder,
                                                 dreFrontendPractitioners, dreFrontendMedication) {
         var err_messages = {
             test_err: 'Called method is not imlemented yet in MedicationEditCtrl',
@@ -155,7 +155,7 @@ angular.module('dreFrontendApp')
 
         $scope.saveMedication = function () {
             $scope.model.isActive = true;
-            dreFrontEndPatientInfoService.getPatientData()
+            dreFrontendPatientInfoService.getPatientData()
                 .then(function (patient) {
                     var result;
                     if (!patient.id) {

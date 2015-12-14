@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('ReviewMenuCtrl', function ($scope, dreFrontEndPatientInfoService, dreFrontendMergeService,
+    .controller('ReviewMenuCtrl', function ($scope, dreFrontendPatientInfoService, dreFrontendMergeService,
                                             dreFrontendUtil, _, dreFrontendGlobals) {
         $scope.model = {
             dataTypes: []

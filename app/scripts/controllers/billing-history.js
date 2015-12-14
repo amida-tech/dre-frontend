@@ -8,13 +8,13 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('BillingHistoryCtrl', function ($scope, dreFrontendEntryService, dreFrontEndPatientInfoService, dreFrontendGlobals) {
+    .controller('BillingHistoryCtrl', function ($scope, dreFrontendEntryService, dreFrontendPatientInfoService, dreFrontendGlobals) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
             actionsList: []
         };
-        dreFrontEndPatientInfoService.getPatientData()
+        dreFrontendPatientInfoService.getPatientData()
             .then(function (patient) {
                 $scope.model.userName = patient.getName()[0];
                 $scope.model.actionsList = [

@@ -432,7 +432,7 @@ app.config(function ($logProvider, dreFrontendEnvironment, $urlMatcherFactoryPro
 
 });
 
-app.run(function ($rootScope, $state, $stateParams, dreFrontendAuthService, dreFrontEndPatientInfoService,
+app.run(function ($rootScope, $state, $stateParams, dreFrontendAuthService, dreFrontendPatientInfoService,
                   dreFrontendGlobals, dreFrontendNotesService, dreFrontendMergeService) {
     $rootScope.$on("$stateChangeError", console.log.bind(console));
 
@@ -461,12 +461,12 @@ app.run(function ($rootScope, $state, $stateParams, dreFrontendAuthService, dreF
     });
 
     $rootScope.$on(dreFrontendGlobals.authEvents.loggedIn, function (event, userId) {
-        dreFrontEndPatientInfoService.setPatientId(userId);
-        dreFrontendNotesService.getAllNotes();
+        dreFrontendPatientInfoService.setPatientId(userId)
+            .then(dreFrontendNotesService.getAllNotes());
     });
 
     $rootScope.$on(dreFrontendGlobals.authEvents.loggedOut, function () {
-        dreFrontEndPatientInfoService.clearPatientData();
+        dreFrontendPatientInfoService.clearPatientData();
         dreFrontendNotesService.clearAllNotes();
         dreFrontendMergeService.clear();
     });

@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('ImmunizationsCtrl', function ($scope, dreFrontendEntryService, dreFrontendImmunizations, dreFrontEndPatientInfoService, _, dreFrontendGlobals) {
+    .controller('ImmunizationsCtrl', function ($scope, dreFrontendEntryService, dreFrontendImmunizations, dreFrontendPatientInfoService, _, dreFrontendGlobals) {
         $scope.model = {
             lastUpdate: new Date(),
             userName: '',
@@ -16,7 +16,7 @@ angular.module('dreFrontendApp')
             entryType: dreFrontendGlobals.resourceTypes.Immunization.type,
             title: dreFrontendGlobals.resourceTypes.Immunization.title
         };
-        dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
+        dreFrontendPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
             dreFrontendImmunizations.getByPatientId(patient.id).then(function (immunizations) {
                 _.forEach(immunizations.entry, function (entry) {

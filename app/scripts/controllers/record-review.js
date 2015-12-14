@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('RecordReviewCtrl', function ($rootScope, $scope, $state, _, dreFrontEndPatientInfoService,
+    .controller('RecordReviewCtrl', function ($rootScope, $scope, $state, _, dreFrontendPatientInfoService,
                                               dreFrontendMergeService, dreFrontendGlobals) {
         $scope.model = {
             userName: '-',
@@ -32,7 +32,7 @@ angular.module('dreFrontendApp')
             return res;
         }
 
-        dreFrontEndPatientInfoService.getPatientData()
+        dreFrontendPatientInfoService.getPatientData()
             .then(function (patient) {
                 $scope.model.userName = patient.getName()[0];
                 dreFrontendMergeService.getListByPatientId(patient.id)

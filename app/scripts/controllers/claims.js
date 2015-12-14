@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('ClaimsCtrl', function ($scope, dreFrontendEntryService, dreFrontEndPatientInfoService, dreFrontendGlobals, dreFrontendClaim, _) {
+    .controller('ClaimsCtrl', function ($scope, dreFrontendEntryService, dreFrontendPatientInfoService, dreFrontendGlobals, dreFrontendClaim, _) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
@@ -16,7 +16,7 @@ angular.module('dreFrontendApp')
             entryType: dreFrontendGlobals.resourceTypes.Claim.type,
             title: dreFrontendGlobals.resourceTypes.Claim.title
         };
-        dreFrontEndPatientInfoService.getPatientData()
+        dreFrontendPatientInfoService.getPatientData()
             .then(function (patient) {
                 $scope.model.userName = patient.getName()[0];
                 dreFrontendClaim.getByPatientId(patient.id)

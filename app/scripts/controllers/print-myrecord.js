@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('PrintMyrecordCtrl', function ($scope, $stateParams, dreFrontEndPatientInfoService, dreFrontendGlobals) {
+    .controller('PrintMyrecordCtrl', function ($scope, $stateParams, dreFrontendPatientInfoService, dreFrontendGlobals) {
 
         var blocks = ["AllergyIntolerance", "MedicationOrder", "Condition", "Procedure", "TestResult",
             "Encounter", "Immunization", "Insurance", "Claim", "SocialHistory", "Vital"];
@@ -20,7 +20,7 @@ angular.module('dreFrontendApp')
             profileTitle: 'Demographics'
         };
 
-        dreFrontEndPatientInfoService.getPatientData()
+        dreFrontendPatientInfoService.getPatientData()
             .then(function (patient) {
                 $scope.model.patient = patient;
                 angular.forEach(blocks, function (block_name) {

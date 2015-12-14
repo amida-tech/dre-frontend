@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('RecordHistoryCtrl', function ($scope, dreFrontendEntryService, dreFrontEndPatientInfoService,
+    .controller('RecordHistoryCtrl', function ($scope, dreFrontendEntryService, dreFrontendPatientInfoService,
                                                dreFrontendModalsService, dreFrontendUtil, dreFrontendDocumentReference) {
         var _params = {
             '_sort:desc': 'indexed'
@@ -23,7 +23,7 @@ angular.module('dreFrontendApp')
             mhrLink: dreFrontendUtil.buildServiceUrl('/mhr')
         };
 
-        dreFrontEndPatientInfoService.getPatientData()
+        dreFrontendPatientInfoService.getPatientData()
             .then(function (patient) {
                 $scope.model.userName = patient.getName()[0];
                 return dreFrontendDocumentReference.getByPatientId(patient.id, _params);

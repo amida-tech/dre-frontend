@@ -9,7 +9,7 @@
  */
 angular.module('dreFrontendApp')
     .controller('SocialHistoryCtrl', function ($scope, dreFrontendEntryService, dreFrontendObservations, _,
-                                               dreFrontEndPatientInfoService, dreFrontendGlobals) {
+                                               dreFrontendPatientInfoService, dreFrontendGlobals) {
         $scope.model = {
             userName: '-',
             lastUpdate: new Date(),
@@ -18,7 +18,7 @@ angular.module('dreFrontendApp')
             entryType: dreFrontendGlobals.resourceTypes.SocialHistory.type,
             title: dreFrontendGlobals.resourceTypes.SocialHistory.title
         };
-        dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
+        dreFrontendPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
             dreFrontendObservations.getSocialHistory(patient.id).then(function (results) {
                 $scope.model.list = [];

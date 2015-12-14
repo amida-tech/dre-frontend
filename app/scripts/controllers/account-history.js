@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('AccountHistoryCtrl', function ($scope, dreFrontendAccountHistoryService, _, dreFrontEndPatientInfoService, dreFrontendGlobals) {
+    .controller('AccountHistoryCtrl', function ($scope, dreFrontendAccountHistoryService, _, dreFrontendPatientInfoService, dreFrontendGlobals) {
         $scope.model = {
             userName: '-',
             lastLogin: '',
@@ -16,7 +16,7 @@ angular.module('dreFrontendApp')
             actionsList: []
         };
 
-        dreFrontEndPatientInfoService.getPatientData().then(function (patient) {
+        dreFrontendPatientInfoService.getPatientData().then(function (patient) {
             $scope.model.userName = patient.getName()[0];
         });
 

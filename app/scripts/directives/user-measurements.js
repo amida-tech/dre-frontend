@@ -7,7 +7,7 @@
  * # userMeasurements
  */
 angular.module('dreFrontendApp')
-    .directive('userMeasurements', function ($state, dreFrontendObservations, $filter, _, dreFrontEndPatientInfoService,
+    .directive('userMeasurements', function ($state, dreFrontendObservations, $filter, _, dreFrontendPatientInfoService,
                                              $timeout) {
         return {
             templateUrl: 'views/directives/user-measurements.html',
@@ -88,7 +88,7 @@ angular.module('dreFrontendApp')
                     return values;
                 }
 
-                dreFrontEndPatientInfoService.getPatientId().then(function (patientId) {
+                dreFrontendPatientInfoService.getPatientId().then(function (patientId) {
                     //init base values
                     dreFrontendObservations.getLastHeight(patientId).then(function (lastHeight) {
                         if (lastHeight) {

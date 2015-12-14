@@ -7,7 +7,7 @@
  * # mainMenu
  */
 angular.module('dreFrontendApp')
-    .directive('userInfo', function ($rootScope, dreFrontendGlobals, dreFrontEndPatientInfoService) {
+    .directive('userInfo', function ($rootScope, dreFrontendGlobals, dreFrontendPatientInfoService) {
         return {
             templateUrl: 'views/directives/user-info.html',
             restrict: 'AE',
@@ -19,7 +19,7 @@ angular.module('dreFrontendApp')
                     dateOfBorn: null
                 };
                 var checkPatientData = function () {
-                    dreFrontEndPatientInfoService.getPatientData()
+                    dreFrontendPatientInfoService.getPatientData()
                         .then(function (patient) {
                             $scope.model.userName = patient.getName()[0];
                             $scope.model.dateOfBorn = new Date(patient.birthDate);

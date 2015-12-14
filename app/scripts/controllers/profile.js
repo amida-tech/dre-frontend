@@ -8,7 +8,7 @@
  * Controller of the dreFrontendApp
  */
 angular.module('dreFrontendApp')
-    .controller('ProfileCtrl', function ($scope, _, dreFrontEndPatientInfoService, dreFrontendGlobals, fhirEnv,
+    .controller('ProfileCtrl', function ($scope, _, dreFrontendPatientInfoService, dreFrontendGlobals, fhirEnv,
                                          dreFrontendFhirService, fhirValueSet) {
 
         $scope.init = function () {
@@ -92,7 +92,7 @@ angular.module('dreFrontendApp')
 
         $scope.initPatientModel = function (force) {
             $scope.init();
-            dreFrontEndPatientInfoService
+            dreFrontendPatientInfoService
                 .getPatientData(force)
                 .then(function (patient) {
                     var model = $scope.model;
