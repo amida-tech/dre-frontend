@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('dreFrontend.mocks')
-    .service('dreFrontendDiffMocks', function ($log, $q, $rootScope, $httpBackend, _) {
+    .service('dreFrontendDiffMocks', function ($q, $rootScope, $httpBackend, _) {
         return function () {
-            $log.debug('start configure Resource Diff mocks');
 
             $httpBackend.whenGET('mock/diff/m-merge').respond(function (method, url, data) {
                 return [200, m_merge, {}];

@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('dreFrontend.mocks')
-  .service('dreFrontendNotesMocks', function ($log, $q, $rootScope, $httpBackend,_) {
+  .service('dreFrontendNotesMocks', function ($q, $rootScope, $httpBackend,_) {
     return function () {
-      $log.debug('start configure notes mocks');
       var notesList = [{
         "_id": "55e3e903e770ae4417ddbd0f",
         "username": "isabella",

@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('dreFrontend.mocks')
-  .service('dreFrontendAccountHistoryMocks', function ($log, $q, $rootScope, $httpBackend, _) {
+  .service('dreFrontendAccountHistoryMocks', function ($q, $rootScope, $httpBackend, _) {
     return function () {
-      $log.debug('start configure account history mocks');
       var history = {
         "recordHistory": [{
           "type": "Logged in",

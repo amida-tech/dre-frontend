@@ -2,7 +2,7 @@
 
 angular.module('dreFrontend.util')
     .service('dreFrontendMergeService', function ($rootScope, $q, $http, _, dreFrontendHttp, dreFrontendUtil,
-                                                  dreFrontendEnvironment, dreFrontendGlobals, $log) {
+                                                  dreFrontendEnvironment, dreFrontendGlobals) {
 
         var matches = null;
 
@@ -131,8 +131,6 @@ angular.module('dreFrontend.util')
         var _ignoreMatch = function (match) {
             _addNotMatchExt(match.lhs, match.rhs.id);
             _addNotMatchExt(match.rhs, match.lhs.id);
-
-            $log.debug(match.lhs, match.rhs);
 
             var queue = [];
 

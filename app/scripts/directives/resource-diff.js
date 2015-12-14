@@ -7,7 +7,7 @@
  */
 
 angular.module('dreFrontendApp')
-    .directive('resourceDiff', function ($log, dreFrontendDiff) {
+    .directive('resourceDiff', function (dreFrontendDiff) {
         return {
             templateUrl: 'views/directives/resource-diff.html',
             restrict: 'AE',
@@ -17,14 +17,12 @@ angular.module('dreFrontendApp')
             link: function ($scope) {
                 var _updateModel = function(diff) {
                     if(typeof diff === 'object' && !diff.updating) {
-                        $log.debug('updating diff', diff);
                         dreFrontendDiff.buildDiffView(diff)
                             .then(function (model) {
                                 $scope.model = model;
                             });
                     }
                 };
-//                _updateModel($scope.resourceDiff);
                 $scope.$watch('resourceDiff', _updateModel);
             }
         };

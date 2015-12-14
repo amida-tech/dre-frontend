@@ -8,7 +8,7 @@
  * Service in the dreFrontendApp.
  */
 angular.module('dreFrontendApp')
-    .factory('dreFrontendEntryService', function (_, dreFrontendUtil, dreFrontendGlobals, $log, Change) {
+    .factory('dreFrontendEntryService', function (_, dreFrontendUtil, dreFrontendGlobals, Change) {
 
         var _wrapLabelDeep = 1;
         var _black_list = ["photo"];
@@ -21,63 +21,74 @@ angular.module('dreFrontendApp')
             return aClasses.join(' ');
         };
 
+        var wrapCodingRow = function (coding) {
+            var rows = [];
+            if (coding.display) {
+                rows.push(coding.display);
+            }
+            if (coding.code || coding.system) {
+                rows.push(coding.code + ' (' + dreFrontendUtil.encodeSystemURL(coding.system) + ')');
+            }
+            return rows;
+        };
+
         var wrapCoding = function (_val) {
             var res = [];
-            var fieldNames = ['display', 'code', 'system', 'text'];
-            var hasDiff = false;
-            var diffs = [];
+            var fieldNames = ['display', 'code', 'system'];
             var c, d;
             for (c = 0; c < _val.length; c++) {
-                var _tmp = [];
+                var hasDiff = false;
+                var diff = {};
+                var _changes = [];
+                var _tRef = {};
+                var _diff;
+
                 for (d = 0; d < fieldNames.length; d++) {
                     var diffFlag = (_val[c][fieldNames[d]] && _val[c][fieldNames[d]].diff);
                     if (diffFlag) {
-                        var _diff = _val[c][fieldNames[d]].diff;
-                        _tmp.push(_diff);
-                        if (_diff.side==='l' && _diff.change.kind==='N' || _diff.change.kind==='D' && _diff.side==='r') {
+                        hasDiff = true;
+                        _diff = _val[c][fieldNames[d]].diff;
+                        diff.side = _diff.side;
+                        _changes.push(_diff.change);
+                        _tRef[fieldNames[d]] = _diff.ref;
+
+                        if (_diff.side === 'l' && _diff.change.kind === 'N' || _diff.change.kind === 'D' && _diff.side === 'r') {
                             _val[c][fieldNames[d]] = '';
                         } else {
                             _val[c][fieldNames[d]] = _val[c][fieldNames[d]].nodeValue;
                         }
                     }
                 }
-                if (_tmp.length) {
-                    diffs[c] = _tmp;
-                } else {
-                    diffs[c] = null;
-                }
-            }
 
-            for (c = 0; c < _val.length; c++) {
-                var rows = [];
-                if (_val[c].display) {
-                    rows.push(_val[c].display);
-                }
-                if (_val[c].code || _val[c].system) {
-                    rows.push(_val[c].code + ' (' + dreFrontendUtil.encodeSystemURL(_val[c].system) + ')');
-                }
+                var rows = wrapCodingRow(_val[c]);
+
                 if (rows.length > 0) {
-                    if (diffs[c]) {
-                        res = {
-                            diff: {
-                                change: new Change({
-                                    kind: 'E',
-                                    changes: diffs[c]
-                                }),
-                                ref: 'test',
-                                side: diffs[c][0].side
-                            },
+
+                    if (hasDiff && diff.side === 'l') {
+                        for (d = 0; d < fieldNames.length; d++) {
+                            if (_tRef[fieldNames[d]] !== null) {
+                                _tRef[fieldNames[d]] = _val[c][fieldNames[d]];
+                            }
+                        }
+                        diff.change = new Change({
+                            kind: 'E',
+                            changes: _changes
+                        });
+                        diff.ref = wrapCodingRow(_tRef).join("\n");
+                        res.push({
+                            diff: diff,
                             nodeValue: rows.join("\n")
-                        };
+                        });
                     } else {
                         res.push(rows.join("\n"));
                     }
                 }
             }
 
-            if (res.length <1) {
+            if (res.length < 1) {
                 res = _val;
             }
+
             return res;
         };
 
@@ -96,9 +107,6 @@ angular.module('dreFrontendApp')
         };
 
         var _buildTable = function (dataItem, blackList, deep) {
-            if (!deep) {
-                $log.debug('building tree', dataItem);
-            }
             if (deep > 10) {
                 return [];
             }
@@ -134,19 +142,26 @@ angular.module('dreFrontendApp')
                         case 'array':
                             var allScalar = true;
                             res.val = [];
-                            aVal.forEach(function (item) {
-                                var rowItemData = item;
+                            aVal.forEach(function (item, index) {
                                 if (!angular.isString(item)) {
+
                                     if (_key === 'coding') {
                                         item = dreFrontendUtil.reorderObjectFields(item, _key);
                                     }
+
                                     allScalar = false;
-                                    rowItemData = _buildTable(item, blackList, deep + 1);
-                                    if (rowItemData.length > 0) {
+                                    var rowItemData;
+                                    if (item.diff) {
+                                        rowItemData = prepareValue('(' + index + ')', item);
+                                    } else {
+                                        rowItemData = _buildTable(item, blackList, deep + 1);
+                                    }
+                                    if (rowItemData && rowItemData.length > 0) {
                                         res.val.push(rowItemData);
                                     }
+
                                 } else {
-                                    res.val.push(rowItemData);
+                                    res.val.push(item);
                                 }
                             });
 
@@ -155,25 +170,16 @@ angular.module('dreFrontendApp')
 
                             if (res.val.length < 1) {
                                 res.val = null;
-                            } else {
-                                if (allScalar && deep) {
-                                    node.label = '';
-                                }
                             }
                             break;
 
                         case 'date':
-                            if (_key === 'value' && !node.diff) {
-                                node.label = '';
-                            }
+                            res.type = 'date';
                             res.val = dreFrontendUtil.formatFhirDate(aVal);
                             break;
 
                         case 'number':
                         case 'string':
-                            if (deep > _wrapLabelDeep && !node.diff) {
-                                node.label = '';
-                            }
                             res.val = aVal;
                             break;
                     }
@@ -214,6 +220,25 @@ angular.module('dreFrontendApp')
                 _tmpVal = _proceedVal(_val);
 
                 if (_tmpVal.val !== null) {
+                    switch (_tmpVal.type) {
+                        case 'array':
+                            if (deep) {
+                                node.label = '';
+                            }
+                            break;
+
+                        case 'string':
+                            if (deep > _wrapLabelDeep && !node.diff) {
+                                node.label = '';
+                            }
+                            break;
+                        case 'date':
+                            if (_key === 'value' && !node.diff) {
+                                node.label = '';
+                            }
+                            _tmpVal.type = 'string';
+                            break;
+                    }
                     node.type = _tmpVal.type;
                     node.value = _tmpVal.val;
                     dataItems.push(node);

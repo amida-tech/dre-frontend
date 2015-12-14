@@ -167,49 +167,9 @@ angular.module('dreFrontend.util')
                 angular.forEach(change, _buildChangeView);
             } else if (angular.isObject(change) && typeof change.apply === 'undefined') {
                 change.apply = false;
-                /*
-                 if (change.path) {
-                 var path = _buildObjectByPath(change.path, '');
-                 var lhs, rhs;
-                 lhs = change.lhs;
-                 rhs = change.rhs;
-
-                 change.model = {
-                 path: dreFrontendEntryService.buildTable(path, []),
-                 lhs: dreFrontendEntryService.buildTable(lhs, []),
-                 rhs: dreFrontendEntryService.buildTable(rhs, [])
-                 };
-                 } else {
-                 $log.debug("no path", change);
-                 }
-                 */
             }
         };
-        /*
-         var _buildObjectByPath = function (path, val) {
-         var p = path.slice(0);
 
-         var f = function (_path) {
-         var n = _path.shift();
-         var res;
-         switch (typeof n) {
-         case "number":
-         res = [];
-         res[n] = f(_path);
-         break;
-         case "string":
-         res = {};
-         res[n] = f(_path);
-         break;
-         default:
-         res = val;
-         }
-
-         return res;
-         };
-         return f(p);
-         };
-         */
         return {
             buildChangeView: _buildChangeView,
             buildDiffView: _buildDiffView

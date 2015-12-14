@@ -9,7 +9,7 @@
  */
 angular.module('dreFrontendApp')
     .controller('NotesCtrl', function ($scope, $state, $stateParams, dreFrontendNotesService, _,
-                                       dreFrontendGlobals, $log, $injector, dreFrontendEntryService) {
+                                       dreFrontendGlobals, $injector, dreFrontendEntryService) {
         $scope.model = {
             notesList: [],
             filterByStar: 'all',

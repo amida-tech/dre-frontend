@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('dreFrontend.mocks')
-  .service('dreFrontendAuthMocks', function ($log, $q, $rootScope, $httpBackend) {
+  .service('dreFrontendAuthMocks', function ($q, $rootScope, $httpBackend) {
   return function(){
-    $log.debug('start configure auth mocks');
     var isAuthenticated = true;
     var defaultUserName = 'isabella';
     //login

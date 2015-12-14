@@ -3,19 +3,20 @@
  */
 'use strict';
 angular.module('dreFrontend.core')
-    .factory('Change', function ($log) {
+    .factory('Change', function () {
 
         var Change = function (data) {
-            $log.debug('new change');
             this.setData(data);
+            this._apply = this._apply || false;
         };
 
         Change.prototype.setData = function (data) {
             if (data) {
-                angular.extend(this, data);
-                if (!this._apply) {
-                    this._apply = false;
+                if (angular.isDefined(data.apply)) {
+                    this._apply = data.apply;
+                    delete data.apply;
                 }
+                angular.extend(this, data);
             }
         };
 

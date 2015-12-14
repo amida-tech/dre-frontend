@@ -1,6 +1,6 @@
 'use strict';
 angular.module('dreFrontend.mocks', ['ngMockE2E'])
-  .run(function ($log, $q, $rootScope, $httpBackend, dreFrontendAuthMocks, dreFrontendFhirMocks, dreFrontendNotesMocks, dreFrontendAccountHistoryMocks, dreFrontendDiffMocks) {
+  .run(function ($q, $rootScope, $httpBackend, dreFrontendAuthMocks, dreFrontendFhirMocks, dreFrontendNotesMocks, dreFrontendAccountHistoryMocks, dreFrontendDiffMocks) {
     dreFrontendAuthMocks();
     dreFrontendAccountHistoryMocks();
     dreFrontendNotesMocks();

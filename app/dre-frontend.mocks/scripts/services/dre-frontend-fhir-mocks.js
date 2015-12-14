@@ -1,10 +1,9 @@
 'use strict';
 
 angular.module('dreFrontend.mocks')
-    .service('dreFrontendFhirMocks', function ($log, $q, $rootScope, $httpBackend) {
+    .service('dreFrontendFhirMocks', function ($q, $rootScope, $httpBackend) {
 
         return function () {
-            $log.debug('start configure fhir mocks');
             var _base_url = 'mock/fhir/';
             var data = [
                 {

@@ -12,7 +12,7 @@ angular.module('dreFrontendApp')
             "entry-details-item-member='member'></div></div>"
         };
     })
-    .directive('entryDetailsItemMember', function ($compile, $log, Change) {
+    .directive('entryDetailsItemMember', function ($compile, Change) {
         return {
             restrict: "AE",
             scope: {
@@ -30,7 +30,6 @@ angular.module('dreFrontendApp')
                         diffSide = $scope.entryDetailsItemMember.diff.side || '';
                         if ($scope.entryDetailsItemMember.diff.change instanceof Change) {
                             diffApply = $scope.entryDetailsItemMember.diff.change.apply();
-                            $log.debug('qqq',diffApply);
                         } else {
                             diffApply = $scope.entryDetailsItemMember.diff.change.apply;
                         }
