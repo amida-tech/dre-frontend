@@ -15,7 +15,7 @@ angular.module('dreFrontend.util')
         };
 
         var _filter = function (resp) {
-            var _knowResources = _.pluck(dreFrontendGlobals.resourceTypes, 'fhirType');
+            var _knowResources = _.map(dreFrontendGlobals.resourceTypes, 'fhirType');
             var res = _.filter(resp, function (match) {
                 var _allow = match.changeType === 'update';
                 var _resourceTypeName = match.lhs ? match.lhs.resourceType : 'resource';

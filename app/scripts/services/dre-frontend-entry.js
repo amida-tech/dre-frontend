@@ -74,7 +74,7 @@ angular.module('dreFrontendApp')
         };
 
         var isValidName = function (name, black_list) {
-            return (name[0] !== '$' && !_.contains(black_list, name));
+            return (name[0] !== '$' && !_.includes(black_list, name));
         };
 
         var _buildTable = function (dataItem, blackList, deep) {

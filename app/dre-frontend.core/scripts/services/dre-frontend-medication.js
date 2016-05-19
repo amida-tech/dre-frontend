@@ -40,7 +40,7 @@ angular.module('dreFrontend.util')
                     method: 'POST'
                 }).then(function (response) {
                     if (angular.isArray(response.nlmRxImages)) {
-                        return _.pluck(response.nlmRxImages, 'imageUrl');
+                        return _.map(response.nlmRxImages, 'imageUrl');
                     }
                     return [];
                 });

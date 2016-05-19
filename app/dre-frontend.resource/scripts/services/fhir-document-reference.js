@@ -67,7 +67,7 @@ angular.module('dreFrontend.resource')
         FhirDocumentReference.prototype.additionalInfo = function () {
             var aFiles = [];
             if (this.content) {
-                aFiles = _.pluck(this.content,'attachment.title');
+                aFiles = _.map(this.content,'attachment.title');
             }
             return aFiles.join(' ');
         };

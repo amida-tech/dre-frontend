@@ -74,7 +74,7 @@ angular.module('dreFrontend.fhir')
                     if (resource.resourceType === fhirEnv.bundleType) {
                         _add_page_handlers(resource);
 
-                        resource.entry = _.pluck(resource.entry, "resource");
+                        resource.entry = _.map(resource.entry, "resource");
 
                         if (resource.entry.length > 0) {
                             Class = _FhirClass(resource.entry[0]);
@@ -82,7 +82,7 @@ angular.module('dreFrontend.fhir')
                             for (var n = 0; n < resource.entry.length; n++) {
                                 resource.entry[n] = new Class(f(resource.entry[n]));
                             }
-                            resource.entry = _.sortByOrder(resource.entry, function (item) {
+                            resource.entry = _.orderBy(resource.entry, function (item) {
                                 return item.getSortValue();
                             }, 'desc');
                         }
