@@ -35,6 +35,10 @@ angular.module('dreFrontend.resource')
                 getBody: this.getContent,
                 status: this.status
             };
+            
+            if (this.description) {
+                data.description = this.description;
+            }
 
             if (this.type && this.type.coding[0] && this.type.coding[0].display) {
                 data.display = this.type.coding[0].display;
